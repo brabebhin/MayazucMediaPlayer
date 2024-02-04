@@ -1,0 +1,140 @@
+﻿<controls1:BaseUserControl
+    x:Class="MayazucMediaPlayer.Playlists.PlaylistDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local2="using:MayazucMediaPlayer"
+    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
+    xmlns:cvt="using:MayazucMediaPlayer.Converters"
+    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    mc:Ignorable="d" >
+    
+    <Grid Background="Transparent" Grid.Row="1" x:Name="ContentRoot">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="sizeModes">
+                <VisualState x:Name="DefaultSizeMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowHeight="350"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="CompactVerticalMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowHeight="0"/>
+                    </VisualState.StateTriggers>
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="thumbnailImage" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+
+            <Grid x:Name="MyHeaderGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Image Width="128" Height="128" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Grid.Column="0" x:Name="thumbnailImage" Source="{Binding PlaylistCoverSource}"></Image>
+
+                <StackPanel Margin="8, 0, 0, 0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <TextBlock  Style="{ThemeResource SubheaderTextBlockStyle}"  x:Name="TitleBox"
+                                     Text="{Binding TitleBoxText}"/>
+
+                    <TextBlock Style="{ThemeResource SubheaderTextBlockStyle}"
+                                     Text="{Binding NumberOfSongsText}"
+                                     TextAlignment="Left"
+                                     TextWrapping="WrapWholeWords">
+
+                    </TextBlock>
+                </StackPanel>
+
+                <CommandBar IsEnabled="{Binding Files.Count, Converter={StaticResource BooleanCountConverter}}" HorizontalAlignment="Left" Background="Transparent" DefaultLabelPosition="Right"  Grid.Row="2" Grid.ColumnSpan="2">
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="PlayButton" Command="{Binding PlayButtonCommand}" CommandParameter="{Binding ElementName=PlayButton}" Label="Play" Icon="Play" />
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="EnqueueButton" Command="{Binding EnqueueButtonCommand}" CommandParameter="{Binding ElementName=EnqueueButton}" Label="Enqueue">
+                        <AppBarButton.Icon>
+                            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+
+                    <AppBarToggleButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding ChangeSongOrderRequestCommand}" CommandParameter="{Binding ElementName=npChangeSongButton}" x:Name="npChangeSongButton" IsEnabled="{Binding NpChangeSongButton}" IsChecked="{Binding IsChangingOrder}" Label="Reorder">
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE1ED;"></FontIcon>
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+
+                    <AppBarToggleButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  x:Name="SelectButton" IsEnabled="{Binding SelectButtonIsEnabled}" Command="{Binding SelectButtonCommand}" CommandParameter="{Binding ElementName=SelectButton}"  Label="Select">
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE71D;">
+
+                            </FontIcon>
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" IsEnabled="{Binding RenameIsEnabled}" x:Name="RenameButton" Command="{Binding RenamePlaylistCommand}" CommandParameter="{Binding ElementName=RenameButton}" Icon="Rename" Label="Rename"/>
+
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="AddToPlaylistButton"  Command="{Binding AddToPlaylistButtonCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Label="Add to playlist" Icon="Add"/>
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="Delete" IsEnabled="{Binding DeleteIsEnabled}" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=Delete}" Icon="Delete" Label="Delete" />
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="RemoveSelected" IsEnabled="{Binding RemoveSelectedIsEnabled}" Command="{Binding RemoveSelectedCommand}" CommandParameter="{Binding ElementName=RemoveSelected}" Icon="Remove" Label="Remove selected"  />
+
+                </CommandBar>
+            </Grid>
+
+
+        </StackPanel>
+
+        <ListView ItemsSource="{Binding Files}" 
+                              ReorderMode="{Binding ReorderMode}"
+                              CanReorderItems="{Binding CanReorderItems}"
+                              CanDragItems ="{Binding CanReorderItems}"
+                              AllowDrop="{Binding CanReorderItems}"
+                              SelectionMode="{Binding ContentPresenterSelectionMode}" 
+                              Grid.Row="1" x:Name="COntentPresenter">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid  Tapped="GoToDetailsPage" Margin="5, 10, 0, 5"  HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Width="32" Height="32" Grid.Column="0"  BorderThickness="2">
+                            <Grid.Background>
+                                <SolidColorBrush Color="{Binding Path=Text, ElementName=TitleBox, Converter={StaticResource colorConverter}}"/>
+                            </Grid.Background>
+                            <Grid Width="32" Height="32" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
+
+                            </Grid>
+                            <SymbolIcon Symbol="{Binding MediaData.MediaDataTypeSymbol}">
+
+                            </SymbolIcon>
+                            <Image Width="32" Height="32"  Source="{Binding ThumbnailImage}"></Image>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Margin="2">
+                            <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" Text="{Binding Title}" FontSize="18"  />
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+</controls1:BaseUserControl>

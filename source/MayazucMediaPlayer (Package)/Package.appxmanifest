@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  IgnorableNamespaces="uap rescap uap3">
+
+  <Identity
+    Name="4cc20931-4840-4e0b-8f0b-a47f320cd8d6"
+    Publisher="CN=mihai"
+    Version="1.0.0.0" />
+
+  <Properties>
+    <DisplayName>MayazucMediaPlayer (Package)</DisplayName>
+    <PublisherDisplayName>mihai</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="$targetentrypoint$">
+      <uap:VisualElements
+        DisplayName="Mayazuc Media Player"
+        Description="Mayazuc Media Player"
+        BackgroundColor="darkGray"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png"/>
+        <uap:SplashScreen Image="Images\SplashScreen.png"  BackgroundColor="darkGray"/>
+      </uap:VisualElements>
+      <Extensions>
+		  <uap:Extension Category="windows.fileTypeAssociation">
+			  <uap:FileTypeAssociation Name="fileassociation">
+				  <uap:Logo>Images\Square44x44Logo.png</uap:Logo>
+				  <uap:SupportedFileTypes>
+					  <uap:FileType>.wma</uap:FileType>
+					  <uap:FileType>.mp3</uap:FileType>
+					  <uap:FileType>.ogg</uap:FileType>
+					  <uap:FileType>.opus</uap:FileType>
+					  <uap:FileType>.flac</uap:FileType>
+					  <uap:FileType>.m4a</uap:FileType>
+					  <uap:FileType>.aac</uap:FileType>
+					  <uap:FileType>.adt</uap:FileType>
+					  <uap:FileType>.adts</uap:FileType>
+					  <uap:FileType>.ac3</uap:FileType>
+					  <uap:FileType>.ec3</uap:FileType>
+					  <uap:FileType>.wav</uap:FileType>
+					  <uap:FileType>.oga</uap:FileType>
+					  <uap:FileType>.wv</uap:FileType>
+					  <uap:FileType>.mpc</uap:FileType>
+					  <uap:FileType>.tta</uap:FileType>
+					  <uap:FileType>.m4r</uap:FileType>
+					  <uap:FileType>.m4b</uap:FileType>
+					  <uap:FileType>.m4p</uap:FileType>
+					  <uap:FileType>.3g2</uap:FileType>
+					  <uap:FileType>.asf</uap:FileType>
+					  <uap:FileType>.aif</uap:FileType>
+					  <uap:FileType>.aiff</uap:FileType>
+					  <uap:FileType>.afc</uap:FileType>
+					  <uap:FileType>.aifc</uap:FileType>
+					  <uap:FileType>.ape</uap:FileType>
+					  <uap:FileType>.alac</uap:FileType>
+					  <uap:FileType>.m3u</uap:FileType>
+					  <uap:FileType>.cue</uap:FileType>
+					  <uap:FileType>.awb</uap:FileType>
+					  <uap:FileType>.mp4</uap:FileType>
+					  <uap:FileType>.avi</uap:FileType>
+					  <uap:FileType>.wmv</uap:FileType>
+					  <uap:FileType>.h264</uap:FileType>
+					  <uap:FileType>.mkv</uap:FileType>
+					  <uap:FileType>.wpl</uap:FileType>
+					  <uap:FileType>.zpl</uap:FileType>
+					  <uap:FileType>.vob</uap:FileType>
+					  <uap:FileType>.mediaplayerhub</uap:FileType>
+					  <uap:FileType>.mcmediacenter10</uap:FileType>
+					  <uap:FileType>.ts</uap:FileType>
+					  <uap:FileType>.glv</uap:FileType>
+					  <uap:FileType>.av1</uap:FileType>
+					  <uap:FileType>.webm</uap:FileType>
+				  </uap:SupportedFileTypes>
+				  <uap2:SupportedVerbs>
+					  <uap3:Verb Id="Play">Play with Mayazuc</uap3:Verb>
+					  <uap3:Verb Id="PlayNext">Play next with Mayazuc</uap3:Verb>
+					  <uap3:Verb Id="AddToNowPlaying">Enqueue to Mayazuc</uap3:Verb>
+				  </uap2:SupportedVerbs>
+			  </uap:FileTypeAssociation>
+		  </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+    <uap3:Capability Name="backgroundMediaPlayback"/>
+    <uap:Capability Name="musicLibrary"/>
+    <uap:Capability Name="videosLibrary"/>
+    <Capability Name="privateNetworkClientServer"/>
+    <DeviceCapability Name="proximity"/>
+  </Capabilities>
+</Package>

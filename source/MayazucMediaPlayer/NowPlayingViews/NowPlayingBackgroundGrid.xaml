@@ -1,0 +1,193 @@
+<UserControl
+    x:Class="MayazucMediaPlayer.NowPlayingViews.NowPlayingBackgroundGrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Stretch x:Key="ImageStrentch">Fill</Stretch>
+    </UserControl.Resources>
+    <Grid>
+        <controls:AdaptiveGridView x:Name="LayoutRoot">
+            <controls:UniformGrid 
+            x:Name="TopLeft"
+            FirstColumn="0"
+            Columns="4"
+            Rows="3"
+            Orientation="Horizontal">
+                <Border 
+            Grid.Row="0"
+                    Grid.Column="0"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2">
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border>
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+            </controls:UniformGrid>
+
+            <controls:UniformGrid 
+            x:Name="TopRight"
+            FirstColumn="0"
+            Columns="4"
+            Rows="3"
+            Orientation="Horizontal">
+                <Border 
+            Grid.Row="1"
+                    Grid.Column="2"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2">
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+            </controls:UniformGrid>
+
+            <controls:UniformGrid 
+            x:Name="BottomLeft"
+            FirstColumn="0"
+            Columns="4"
+            Rows="3"
+            Orientation="Horizontal">
+                <Border 
+            Grid.Row="1"
+                    Grid.Column="0"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2">
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+            </controls:UniformGrid>
+
+
+            <controls:UniformGrid 
+            x:Name="BottomRight"
+            FirstColumn="0"
+            Columns="4"
+            Rows="3"
+            Orientation="Horizontal">
+                <Border 
+            Grid.Row="0"
+                    Grid.Column="0"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2">
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+                <Border >
+                    <Image Stretch="{StaticResource ImageStrentch}"/>
+                </Border>
+            </controls:UniformGrid>
+
+
+        </controls:AdaptiveGridView>
+        <Grid Background="#DF080808"></Grid>
+    </Grid>
+</UserControl>

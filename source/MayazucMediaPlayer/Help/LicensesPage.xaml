@@ -1,0 +1,33 @@
+﻿<mcmediacentershared2:BasePage
+    xmlns:mcmediacentershared2="using:MayazucMediaPlayer"
+    xmlns:mcmediacentershared="using:MayazucMediaPlayer.NowPlayingViews"
+    x:Class="MayazucMediaPlayer.Help.LicensesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Help"
+    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
+    mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+     >
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ListView x:Name="lsvLicenses" SelectionMode="None">
+            <ListView.Header>
+                <TextBlock TextWrapping="WrapWholeWords" Style="{ThemeResource CaptionTextBlockStyle}" Margin="2" Text="The application uses the following open source libraries"/>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Click="OpenLicenseFile" Width="300" HorizontalContentAlignment="Center" Content="{Binding}"></Button>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</mcmediacentershared2:BasePage>

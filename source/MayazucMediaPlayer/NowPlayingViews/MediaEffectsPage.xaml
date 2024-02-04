@@ -1,0 +1,32 @@
+﻿<mayazucmediaplayer:BasePage
+    xmlns:mayazucmediaplayer="using:MayazucMediaPlayer"
+    x:Class="MayazucMediaPlayer.NowPlayingViews.MediaEffectsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local4="using:MayazucMediaPlayer.AudioEffects"
+    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
+    xmlns:Video="using:MayazucMediaPlayer.VideoEffects"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:MayazucMediaPlayer.Controls"
+    mc:Ignorable="d">
+
+    <Grid >
+        <SplitView IsPaneOpen="True" DisplayMode="Inline" PaneBackground="Transparent" OpenPaneLength="100" LightDismissOverlayMode="Off">
+            <SplitView.Pane>
+                <ListView SelectionMode="Single" x:Name="lsvPaneView" SelectionChanged="ShowAudioVideoEffects">
+                    <ListView.Items>
+                        <x:String>Audio</x:String>
+                        <x:String>Video</x:String>
+                    </ListView.Items>
+                </ListView>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <local4:AudioEnhancementsPage Visibility="Collapsed" x:Name="AudioEffectsUI"/>
+
+                    <Video:VideoEffectsPage Visibility="Collapsed"  x:Name="VidioEffectsUI"></Video:VideoEffectsPage>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</mayazucmediaplayer:BasePage>

@@ -1,0 +1,168 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net7.0-windows10.0.22000.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+		<RootNamespace>MayazucMediaPlayer</RootNamespace>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<Platforms>x64;arm64</Platforms>
+		<RuntimeIdentifiers>win10-x64;win10-arm64</RuntimeIdentifiers>
+		<UseWinUI>true</UseWinUI>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="AppBackground.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Controls\GenericContentControl.xaml" />
+		<None Remove="Controls\MediaPlayerRenderingElement.xaml" />
+		<None Remove="Controls\SettingsItemsListView.xaml" />
+		<None Remove="Help\Licenses\bzip2.txt" />
+		<None Remove="Help\Licenses\CueSharp.txt" />
+		<None Remove="Help\Licenses\ffmpeg.txt" />
+		<None Remove="Help\Licenses\iconv.txt" />
+		<None Remove="Help\Licenses\liblzma.txt" />
+		<None Remove="Help\Licenses\libxml2.txt" />
+		<None Remove="Help\Licenses\Shell API Code Pack.txt" />
+		<None Remove="Help\Licenses\Taglib-Sharp.txt" />
+		<None Remove="Help\Licenses\zlib.txt" />
+		<None Remove="Help\LicenseViewWindow.xaml" />
+		<None Remove="NowPlayingViews\NowPlayingBackgroundGrid.xaml" />
+		<None Remove="NowPlayingViews\NowPlayingManagementPage.xaml" />
+		<None Remove="Settings\SubtitlesSettingsItem.xaml" />
+		<None Remove="Tests\BlankPage1.xaml" />
+		<None Remove="Transcoding\TranscodingRootPage.xaml" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Help\Licenses\bzip2.txt" />
+		<Content Include="Help\Licenses\CueSharp.txt" />
+		<Content Include="Help\Licenses\ffmpeg.txt" />
+		<Content Include="Help\Licenses\iconv.txt" />
+		<Content Include="Help\Licenses\liblzma.txt" />
+		<Content Include="Help\Licenses\libxml2.txt" />
+		<Content Include="Help\Licenses\Shell API Code Pack.txt" />
+		<Content Include="Help\Licenses\Taglib-Sharp.txt" />
+		<Content Include="Help\Licenses\zlib.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Microsoft.VCRTForwarders.140" Version="1.0.7" />
+		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Behaviors" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Media" Version="7.1.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
+		<PackageReference Include="FFmpegInteropX.FFmpegUWP" Version="5.1.100" />
+		<PackageReference Include="FluentResults" Version="3.15.2" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0-preview.2.23128.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.2.23128.3" />
+		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.5.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25188-preview" />
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.3" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+		<PackageReference Include="MovieCollection.OpenSubtitles" Version="1.0.0-preview.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Nito.AsyncEx.Coordination" Version="5.1.2" />
+		<PackageReference Include="PlaylistsNET" Version="1.3.1" />
+		<PackageReference Include="Quartz" Version="3.6.2" />
+		<PackageReference Include="TagLibSharp" Version="2.3.0" />
+		<PackageReference Include="WinUIEx" Version="2.3.1" />
+		<PackageReference Include="ZXing.Net.Mobile" Version="3.1.0-beta2" />
+		<Manifest Include="$(ApplicationManifest)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Help\LicenseViewWindow.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="NowPlayingViews\NowPlayingBackgroundGrid.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<!--If CsWinRTIncludes is not specified, generate projections for all referenced winmd files-->
+		<CsWinRTIncludes Condition="'$(CsWinRTIncludes)' == ''">@(CsWinRTRemovedReferences->'%(FileName)')</CsWinRTIncludes>
+
+	</PropertyGroup>
+
+	<Target Name="IncludeFFmpegInteropXInRuntimesFolder" BeforeTargets="GetCopyToOutputDirectoryItems">
+		<ItemGroup>
+			<AllItemsFullPathWithTargetPath Include="$(OutDir)FFmpegInteropX.dll">
+				<TargetPath>runtimes\win10-$(Platform)\native\FFmpegInteropX.dll</TargetPath>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</AllItemsFullPathWithTargetPath>
+			<AllItemsFullPathWithTargetPath Include="$(OutDir)FFmpegInteropX.pdb">
+				<TargetPath>runtimes\win10-$(Platform)\native\FFmpegInteropX.pdb</TargetPath>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</AllItemsFullPathWithTargetPath>
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+		<CustomAdditionalCompileInputs Remove="Transcoding\TranscodingRootPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Resource Remove="Transcoding\TranscodingRootPage.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FFmpegInterop\FFmpegInteropX.vcxproj" />
+		<ProjectReference Include="..\Shell.Shell\Shell.Shell.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\MediaPlayerRenderingElement.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Settings\SubtitlesSettingsItem.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\SettingsItemsListView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\GenericContentControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Tests\BlankPage1.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="NowPlayingViews\NowPlayingManagementPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+</Project>

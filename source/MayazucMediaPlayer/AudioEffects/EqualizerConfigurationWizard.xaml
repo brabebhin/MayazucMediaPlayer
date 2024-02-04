@@ -1,0 +1,77 @@
+﻿<ContentDialog
+    x:Class="MayazucMediaPlayer.AudioEffects.EqualizerConfigurationWizard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
+     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonClick="Save"
+    PrimaryButtonText="OK"
+    SecondaryButtonClick="Cancel"
+    SecondaryButtonText="Cancel"
+    HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+    <Grid    x:Name="LayoutRoot">
+
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock     Text="Equalizer configuration" Style="{ThemeResource SubheaderTextBlockStyle}">
+            </TextBlock>
+
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="ContentRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel   >
+                <TextBox Text="{Binding ConfigName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="tbConfigurationName">
+                    <TextBox.Header>
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="Configuration name"/>
+                    </TextBox.Header>
+                </TextBox>
+                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="Add the equalizer bands and cuttof frequencies bellow. You can add equalizer presets afterwards, by settings this new configuration as default. The last band always spreads out on 2 octaves. Be careful, you may break the player or cause high CPU usage." TextWrapping="WrapWholeWords"/>
+                <Button Click="AddBand" Content="Add new band"/>
+
+            </StackPanel>
+            <ListView ItemsSource="{Binding Bands}" SelectionMode="None" Grid.Row="2"  x:Name="ConfigurationsPresenter">
+             
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="8" Click="RemoveBand">
+                                <SymbolIcon Symbol="Delete"/>
+                            </Button>
+                            <TextBox Margin="8, 0, 8, 0"  InputScope="Number" Grid.Column="1" Text="{Binding CutOff, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Header>
+                                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="Frequency in HZ."/>
+                                </TextBox.Header>
+                            </TextBox>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+
+</ContentDialog>

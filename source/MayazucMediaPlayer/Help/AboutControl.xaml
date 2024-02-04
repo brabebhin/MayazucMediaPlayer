@@ -1,0 +1,18 @@
+﻿<UserControl
+    x:Class="MayazucMediaPlayer.Help.AboutControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local2="using:MayazucMediaPlayer"
+    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MayazucMediaPlayer.Controls" 
+    xmlns:helpAbout="using:MayazucMediaPlayer.Help" 
+    xmlns:settings="using:MayazucMediaPlayer.Settings"
+    mc:Ignorable="d">
+
+    <Grid Margin="8" >
+        <helpAbout:GeneralAboutControl></helpAbout:GeneralAboutControl>
+    </Grid>
+</UserControl>

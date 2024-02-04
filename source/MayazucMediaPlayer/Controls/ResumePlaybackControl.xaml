@@ -1,0 +1,45 @@
+﻿<UserControl
+    x:Class="MayazucMediaPlayer.Controls.ResumePlaybackControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:triggers="using:Microsoft.Toolkit.Uwp.UI.Triggers"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid x:Name="HorizontalSpaceLayout">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <CommandBar Background="Transparent" HorizontalAlignment="Left" FlowDirection="LeftToRight" Grid.ColumnSpan="2" DefaultLabelPosition="Right">
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Tapped="Resume_click"  Label="Resume" Icon="Play"/>
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Tapped="StartOver_click" Label="Restart">
+                        <AppBarButton.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF83E;" />
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Tapped="Dissmiss_dialog" Label="Dismiss" Icon="Cancel"/>
+                </CommandBar>
+                <Grid Grid.Column="1" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="5, 2, 5, 2" TextWrapping="Wrap" x:Name="ResumeFile"/>
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="5, 2, 5, 2" x:Name="Position"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            <Grid Grid.Column="1" Visibility="Collapsed">
+                <Image MaxWidth="128" MaxHeight="128" MinWidth="128" MinHeight="128" x:Name="ResumeThumbnail" Margin="5"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

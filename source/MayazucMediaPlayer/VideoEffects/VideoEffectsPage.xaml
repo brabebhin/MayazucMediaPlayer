@@ -1,0 +1,98 @@
+﻿<controls1:BaseUserControl
+    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    x:Class="MayazucMediaPlayer.VideoEffects.VideoEffectsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <SplitView IsPaneOpen="True" PaneBackground="Transparent" OpenPaneLength="250" LightDismissOverlayMode="Off" DisplayMode="Inline" PanePlacement="Right">
+        <SplitView.Pane>
+            <ListView SelectionMode="Single" Width="250" Margin="2, 0, 0, 2"  SelectionChanged="ColorProfileSelectionChanged"  FontWeight="SemiBold" ItemsSource="{Binding SavedColorProfiles}" x:Name="cbSavedProfiles">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid  HorizontalAlignment="Stretch">
+                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Text="{Binding }"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </SplitView.Pane>
+
+        <Grid x:Name="rootPage">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+
+            </Grid.RowDefinitions>
+
+            <Grid>
+
+                <CommandBar Grid.Column="1" DefaultLabelPosition="Right" VerticalAlignment="Center"  Background="Transparent">
+                    <CommandBar.Content>
+                        <StackPanel Orientation="Horizontal"  Grid.Row="1" >
+                            <ToggleSwitch x:Name="tgsMasterSwitch" OnContent="Effects on" OffContent="Effects off" IsOn="{Binding MasterSwitch, Mode=TwoWay}"></ToggleSwitch>
+                            <CheckBox IsEnabled="{Binding MasterSwitch, Mode=TwoWay}"  x:Name="chkGrayScale"  IsChecked="{Binding GrayscaleEnabled, Mode=TwoWay}" Content="Grayscale"/>
+                            <CheckBox IsEnabled="{Binding MasterSwitch, Mode=TwoWay}"  x:Name="chkblue"  IsChecked="{Binding BlurEnabled, Mode=TwoWay}" Content="Blur"/>
+                        </StackPanel>
+                    </CommandBar.Content>
+
+                    <AppBarButton Label="Save profile" ToolTipService.ToolTip="Save color profile" Command="{Binding SaveColorProfile}">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" />
+                    </AppBarButton>
+                    <AppBarButton  Label="Manage profiles" ToolTipService.ToolTip="Manage color profiles" Click="ShowManagementDialog">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE912;" />
+                    </AppBarButton>
+                    <AppBarButton Label="Reset" ToolTipService.ToolTip="Reset defaults" Click="ResetDefaultProfile">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE777;" />
+                    </AppBarButton>
+
+                </CommandBar>
+            </Grid>
+
+            <ListView Grid.Row="2" SelectionMode="None" 
+                      x:Name="lsvSliders"
+                      ItemsSource="{Binding EffectProperties}" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Slider IsEnabled="{Binding Enabled, Mode=TwoWay}" Grid.Column="1" Value="{Binding EffectPropertyValue, Mode=TwoWay}" Minimum="{Binding EffectPropertyMinimum}" SnapsTo="Ticks" Maximum="{Binding EffectPropertyMaximum}" TickFrequency="{Binding Resolution}">
+                                <Slider.Header>
+                                    <Grid HorizontalAlignment="Stretch">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition Width="20"></ColumnDefinition>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center" Grid.Row="0"  Text="{Binding EffectPropertyMinimum}"/>
+                                        <Grid Grid.Column="2" Grid.Row="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Column="0" VerticalAlignment="Center" Text="{Binding EffectPropertyName}"/>
+                                            <AppBarSeparator Grid.Column="1" ></AppBarSeparator>
+                                            <AppBarButton Height="48" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Grid.Column="2"  Icon="Refresh" Command="{Binding RestoreDefaultValue}"/>
+                                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}"  Grid.Column="3"  VerticalAlignment="Center"  Text="{Binding EffectPropertyValue}"/>
+                                        </Grid>
+                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="4" Text="{Binding EffectPropertyMaximum}"/>
+                                    </Grid>
+                                </Slider.Header>
+                            </Slider>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </SplitView>
+</controls1:BaseUserControl>

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net6.0-windows10.0.18362.0</TargetFramework>
+	  <ImplicitUsings>disable</ImplicitUsings>
+	  <Nullable>disable</Nullable>
+	  <UseWindowsForms>true</UseWindowsForms>
+	  <UseWPF>true</UseWPF>
+	  <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interop\ShellExtensions\**" />
+    <EmbeddedResource Remove="Interop\ShellExtensions\**" />
+    <None Remove="Interop\ShellExtensions\**" />
+    <Page Remove="Interop\ShellExtensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shell.Core\Shell.Core.csproj" />
+    <ProjectReference Include="..\Shell.ExtendedLinguisticServices\Shell.ExtendedLinguisticServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Shell.ShellExtensions</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+
+</Project>

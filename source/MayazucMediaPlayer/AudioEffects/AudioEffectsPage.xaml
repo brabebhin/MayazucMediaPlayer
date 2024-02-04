@@ -1,0 +1,48 @@
+﻿<controls1:BaseUserControl
+    xmlns:mcmediacentershared2="using:MayazucMediaPlayer"
+    xmlns:mcmediacentershared="using:MayazucMediaPlayer.NowPlayingViews"
+    x:Class="MayazucMediaPlayer.AudioEffects.AudioEffectsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.AudioEffects"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:MayazucMediaPlayer.AudioEffects.ViewModels"
+    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    mc:Ignorable="d">
+
+
+    <Grid  x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>       
+
+        <GridView ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Grid.Row="1"  SelectionMode="None"  ItemsSource="{Binding Effects}" x:Name="lsvAudioEffects">
+
+            <GridView.Header>
+                <StackPanel>
+                    <CommandBar VerticalContentAlignment="Center" DefaultLabelPosition="Right">
+                        <CommandBar.Content>
+                            <TextBlock Text="Audio effects" VerticalAlignment="Bottom" Style="{ThemeResource BodyTextBlockStyle}"/>
+                        </CommandBar.Content>
+                        <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Clear" Command="{Binding ResetEffectsCommand}" Label="Clear effects"/>
+                    </CommandBar>
+                </StackPanel>
+
+            </GridView.Header>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Command="{Binding DataContext.SaveEffectsCommand, ElementName=LayoutRoot}" IsChecked="{Binding IsEnabled, Mode=TwoWay}">
+                            <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding DisplayTitle}" Grid.Column="1"/>
+                        </CheckBox>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </Grid>
+</controls1:BaseUserControl>

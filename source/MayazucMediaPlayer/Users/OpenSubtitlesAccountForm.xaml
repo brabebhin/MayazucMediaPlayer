@@ -1,0 +1,65 @@
+﻿<UserControl
+    
+    x:Class="MayazucMediaPlayer.Users.OpenSubtitlesAccountForm"
+  
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Users"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="logoGrid">
+            <StackPanel Orientation="Vertical">
+                <TextBlock  Margin="0, 2, 0, 0" Text="OpenSubtitles"  Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                <Image Width="150" Height="80" HorizontalAlignment="Left"  Margin="0, 2, 0, 0" Source="ms-appx:///Assets/OpenSubtitlesLogo.png"/>
+            </StackPanel>
+        </Grid>
+        <StackPanel Grid.Row="1">
+            <TextBox Margin="0, 2, 0, 0" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" PlaceholderText="Open Subtitles account name">
+                <TextBox.Header>
+                    <StackPanel>
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="0, 2, 0, 0"  Text="To download subtitles from Open Subtitles you need an account" TextWrapping="WrapWholeWords"/>
+
+                        <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="Account name"/>
+                    </StackPanel>
+                </TextBox.Header>
+            </TextBox>
+            <PasswordBox Margin="0, 2, 0, 0"  Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <PasswordBox.Header>
+                    <TextBlock Text="Password" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                </PasswordBox.Header>
+            </PasswordBox>
+            <CommandBar Margin="2" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
+                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Save" Label="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=notificationRoot}"></AppBarButton>
+                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=notificationRoot}"></AppBarButton>
+                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Retrieve password" Command="{Binding LoadPassword}" CommandParameter="{Binding ElementName=notificationRoot}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xF78D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar>
+            <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}" Margin="0, 2, 0, 0" Text="This application has no relationship with Open Subtitles, other than usings the site APIs. The links bellow are provided for convenice only" TextWrapping="WrapWholeWords"/>
+            <toolkit:WrapPanel>
+                <HyperlinkButton Margin="2"  NavigateUri="https://www.opensubtitles.com/en/privacy/" Content="Open Subtitles privacy policy">
+                </HyperlinkButton>
+                <HyperlinkButton Margin="2"  NavigateUri="https://www.opensubtitles.com/en/home" Content="Open Subtitles home"/>
+                <HyperlinkButton Margin="2"  NavigateUri="https://www.opensubtitles.com/en/support_us" Content="Open Subtitles VIP info"/>
+
+            </toolkit:WrapPanel>
+        </StackPanel>
+
+        <toolkit:InAppNotification x:Name="notificationRoot" StackMode="Replace" Content="this is some weird text"  Height="75" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+
+
+    </Grid>
+</UserControl>

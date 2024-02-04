@@ -1,0 +1,42 @@
+﻿<mcc2:BasePage
+    x:Class="MayazucMediaPlayer.Tests.TestExplorer"
+    xmlns:mcc2="using:MayazucMediaPlayer"
+    xmlns:mcc="using:MayazucMediaPlayer.NowPlayingViews"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Tests"
+    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Pivot Title="Tests">
+            <PivotItem Header="Methods">
+                <ListView  x:Name="lsvTests">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Button Margin="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"  IsEnabled="{Binding IsTestRunnable}" Command="{Binding TestCommand}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Ellipse Grid.Column="0" Height="36" Width="36" VerticalAlignment="Center">
+                                            <Ellipse.Fill>
+                                                <SolidColorBrush Color="{Binding TestResultColor}"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <TextBlock Margin="2" Grid.Column="1" TextWrapping="WrapWholeWords" Text="{Binding TestName}"/>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+</mcc2:BasePage>

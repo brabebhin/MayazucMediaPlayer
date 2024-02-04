@@ -1,0 +1,59 @@
+﻿<local:BaseDialog
+    x:Class="MayazucMediaPlayer.Dialogs.OnlineSubtitlePicker"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"  xmlns:users="using:MayazucMediaPlayer.Users"
+    mc:Ignorable="d"
+    Title="Select subtitle"
+    IsPrimaryButtonEnabled="True"
+    PrimaryButtonText="OK">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <ToggleButton x:Name="ToggleShowLogin" Checked="ShowLogin" Unchecked="ShowLogin">Manage logins</ToggleButton>
+            <users:OpenSubtitlesAccountForm Visibility="Collapsed" x:Name="osdbForm"></users:OpenSubtitlesAccountForm>
+        </StackPanel>
+
+        <Grid HorizontalAlignment="Stretch" x:Name="usualContentGrid"  Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Text="Select the subtitle to download and load. Once it is downloaded it will automatically be added to the video"/>
+                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Text="The application uses the new opensubtitles.com REST API. You may need to recreate your account."/>
+            </StackPanel>
+            <ListView MaxHeight="700" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollMode="Enabled" ItemsSource="{Binding AvailableSubtitles}" IsItemClickEnabled="True" ItemClick="SelectSubtitle" x:Name="lsvOnlineSubtitles" Grid.Row="1" >
+                <ListView.Header>
+                    <StackPanel Margin="8">
+                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="Searching for subtitles" x:Name="statusTextBlock" Margin="2"/>
+                        <ProgressBar x:Name="LoadingBar" Margin="2" IsIndeterminate="True" >
+                        </ProgressBar>
+                    </StackPanel>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" TextWrapping="Wrap" Text="{Binding SubFileName}" Margin="2"/>
+                            <StackPanel Margin="4, 2, 4, 2" Orientation="Horizontal" Grid.Row="1">
+                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding LanguageName}" Grid.Column="1" Margin="2"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+    </Grid>
+</local:BaseDialog>

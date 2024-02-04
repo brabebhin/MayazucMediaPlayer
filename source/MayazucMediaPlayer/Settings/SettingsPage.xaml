@@ -1,0 +1,61 @@
+﻿<themed2:BasePage
+    x:Class="MayazucMediaPlayer.Settings.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Settings"
+    xmlns:common="using:MayazucMediaPlayer.Common"
+    xmlns:converters="using:MayazucMediaPlayer.Converters"
+    xmlns:themed2="using:MayazucMediaPlayer"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:themed="using:MayazucMediaPlayer.NowPlayingViews"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
+    xmlns:users="using:MayazucMediaPlayer.Users"
+    xmlns:audioeffects="using:MayazucMediaPlayer.AudioEffects"
+    mc:Ignorable="d">
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition ></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <muxc:NavigationView x:Name="NavigationViewRoot"
+                                 IsBackButtonVisible="Collapsed" 
+                                 IsSettingsVisible="False" 
+                                 PaneDisplayMode="Auto"
+                                 Grid.Row="1" 
+                                 Background="Transparent"
+                                 MenuItemTemplate="{StaticResource GenericCategoryDataTemplate}"
+                                 OpenPaneLength="200" 
+                                 IsPaneOpen="True">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Margin="8" Style="{ThemeResource SubheaderTextBlockStyle}"  Text="{Binding Path=SelectedItem.GroupName, ElementName=NavigationViewRoot}"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="32"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <controls:SettingsItemsListView
+                               x:Name="lsvAllGrouppedItems"  
+                               ItemsSource="{Binding Path=SelectedItem, ElementName=NavigationViewRoot}">
+
+                    </controls:SettingsItemsListView>
+                    <controls:SettingsItemsListView
+                               Grid.Column="2"
+                               x:Name="lsvAllGrouppedItems2"  
+                               ItemsSource="{Binding Path=SelectedItem.SecondarySettings, ElementName=NavigationViewRoot}">
+
+                    </controls:SettingsItemsListView>
+                </Grid>
+            </Grid>
+        </muxc:NavigationView>
+    </Grid>
+</themed2:BasePage>

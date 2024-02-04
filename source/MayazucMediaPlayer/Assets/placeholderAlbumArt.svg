@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="300"
+   height="300"
+   viewBox="0 0 79.374999 79.374999"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="PlaceholderAlbumArt.svg">
+  <title
+     id="title126">PlaceholderAlbumArt</title>
+  <defs
+     id="defs2">
+    <rect
+       x="-0.53453905"
+       y="-2.6726953"
+       width="246.4225"
+       height="286.51293"
+       id="rect44" />
+    <rect
+       x="62.541069"
+       y="81.784477"
+       width="89.268021"
+       height="85.526253"
+       id="rect38" />
+    <rect
+       x="17.63979"
+       y="39.021351"
+       width="189.22684"
+       height="227.17909"
+       id="rect32" />
+    <filter
+       inkscape:label="Pencil"
+       inkscape:menu="Image Paint and Draw"
+       inkscape:menu-tooltip="Detect color edges and retrace them in grayscale"
+       style="color-interpolation-filters:sRGB;"
+       id="filter124">
+      <feConvolveMatrix
+         bias="0"
+         result="result0"
+         preserveAlpha="true"
+         targetY="1"
+         targetX="1"
+         divisor="1"
+         in="SourceGraphic"
+         kernelMatrix="1 1 1 1 -8 1 1 1 1"
+         order="3 3"
+         id="feConvolveMatrix120" />
+      <feColorMatrix
+         values="-0.15 -0.3 -0.05 0 1 -0.15 -0.3 -0.05 0 1 -0.15 -0.3 -0.05 0 1 0 0 0 1 0"
+         result="result3"
+         id="feColorMatrix122" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="114.2142"
+     inkscape:cy="155.69898"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>PlaceholderAlbumArt</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="49.712132"
+       y="139.51469"
+       id="text28"><tspan
+         sodipodi:role="line"
+         id="tspan26"
+         x="49.712132"
+         y="139.51469"
+         style="stroke-width:0.264583" /></text>
+    <text
+       xml:space="preserve"
+       id="text30"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect32);fill:#000000;fill-opacity:1;stroke:none;" />
+    <text
+       xml:space="preserve"
+       id="text36"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect38);fill:#000000;fill-opacity:1;stroke:none;" />
+    <text
+       xml:space="preserve"
+       id="text42"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect44);fill:#000000;fill-opacity:1;stroke:none;" />
+    <rect
+       style="fill:#000080;stroke-width:0.264583;opacity:0.9"
+       id="rect48"
+       width="79.913589"
+       height="79.913589"
+       x="-0.26726952"
+       y="0.13363476" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:59.8263px;line-height:1.25;font-family:sans-serif;opacity:0.89;fill:#e3dedb;fill-opacity:1;stroke:none;stroke-width:1.49565;"
+       x="11.306081"
+       y="69.16497"
+       id="text52"
+       transform="matrix(0.98103725,0,0,1.0193293,0.40090429,0.13363476)"><tspan
+         sodipodi:role="line"
+         id="tspan50"
+         x="11.306081"
+         y="69.16497"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Segoe MDL2 Assets';-inkscape-font-specification:'Segoe MDL2 Assets';fill:#e3dedb;stroke-width:1.49565;"></tspan></text>
+  </g>
+</svg>

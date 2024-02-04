@@ -1,0 +1,11 @@
+﻿[AS5]
+ScriptType: AS5
+Resolution: 640x480
+
+[Styles]
+Style: NarratorSpeaking,,\i1\1c#FFEEEE\3c#FF4444
+
+[Events]
+Line: 0:00:06.10,0:00:11.00,NarratorSpeaking,,This is a demo of\NThe Core Media Player\Nsubtitle format
+Line: 0:00:11.00,0:00:15.00,NarratorSpeaking,,What can be done ?
+Line: 0:00:14.00,0:00:15.00,NarratorSpeaking,,What can be done ?

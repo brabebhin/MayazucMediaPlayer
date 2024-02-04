@@ -1,0 +1,36 @@
+﻿<UserControl
+    x:Class="MayazucMediaPlayer.Settings.AdvancedTrackMetadataSettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <StackPanel>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ComboboxVisibilities">
+                <VisualState x:Name="ExtratTagsFromFiles"/>
+                <VisualState x:Name="UseFolderStructure">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FolderTagOrderPanel" Storyboard.TargetProperty="Visibility">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <TextBlock   Style="{ThemeResource BodyStrongTextBlockStyle}" Text="Metadata tag source. Either extract tags from the file itself or use the folder hierarchy as source for album and artist" TextWrapping="WrapWholeWords"/>
+        <ComboBox Width="280"   FontWeight="SemiBold" Margin="4" x:Name="MetadataSourceCombobox">
+        </ComboBox>
+
+        <StackPanel x:Name="FolderTagOrderPanel" Visibility="Collapsed">
+            <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}" TextWrapping="WrapWholeWords" Text="Folder tag order."/>
+            <ComboBox Width="280"  FontWeight="SemiBold"  Margin="4" x:Name="FolderHigerarchyTag">
+            </ComboBox>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

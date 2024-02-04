@@ -1,0 +1,22 @@
+﻿<UserControl
+    xmlns:mcmediacentershared="using:MayazucMediaPlayer.NowPlayingViews"
+    x:Class="MayazucMediaPlayer.Settings.ResetSettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  xmlns:controls="using:MayazucMediaPlayer.Controls"
+    mc:Ignorable="d"
+    x:Name="RootPage"
+    >
+
+    <StackPanel>
+        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8" TextWrapping="WrapWholeWords" Text="Delete offline cached album art images, like album art extracted from files, and any metadata tags extracted from files and cached"/>
+        <Button  Click="ClearAlbumArtCache" Margin="8" Content="Clear metadata cache" ToolTipService.ToolTip="Delete offline cached album art images, like album art extracted from files, and any metadata tags extracted from files and cached."/>
+        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8"  TextWrapping="WrapWholeWords" Text="Delete offline cached subtitles that were downloaded from openSubtitles.org. If the app is allowed to run in background, this cache is cleared periodically."/>
+        <Button  Click="ClearSubtitleCache" Margin="8"  Content="Clear subtitle cache" ToolTipService.ToolTip="Delete offline cached subtitles that were downloaded from openSubtitles.org. If the app is allowed to run in background, this cache is cleared periodically."/>
+        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8"  TextWrapping="WrapWholeWords" Text="Reset settings back to default values."/>
+        <Button  Click="ResetSettings" Margin="8"  Content="Reset settings" ToolTipService.ToolTip="Reset settings back to default values."/>
+
+    </StackPanel>
+</UserControl>
