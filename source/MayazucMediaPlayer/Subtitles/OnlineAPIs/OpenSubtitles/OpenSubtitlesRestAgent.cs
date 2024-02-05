@@ -21,7 +21,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-        readonly OpenSubtitlesService service;
+        readonly Lazy<OpenSubtitlesService> service;
         private bool disposedValue;
 
         private string ApiKey
@@ -34,7 +34,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
 
         public void EnsureHasApiKey()
         {
-            if(string.IsNullOrWhiteSpace(ApiKey))
+            if (string.IsNullOrWhiteSpace(ApiKey))
             {
                 throw new InvalidOperationException("API key must be supplied in environment variable \"mayazuc.opensubtitles.apikey\" for current user account.");
             }
@@ -46,7 +46,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
 
         public OpenSubtitlesRestAgent()
         {
-            service = new OpenSubtitlesService(httpClient, GetOptions());
+            service = new Lazy<OpenSubtitlesService>(() => new OpenSubtitlesService(httpClient, GetOptions()));
         }
 
         public async Task<FileInfo?> AutoDownloadSubtitleAsync(SubtitleRequest request)
@@ -88,7 +88,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
                 FileId = impl.FileId
             };
 
-            var downloadUrlResponse = await service.GetSubtitleForDownloadAsync(urlSubtitleDownloadRequest);
+            var downloadUrlResponse = await service.Value.GetSubtitleForDownloadAsync(urlSubtitleDownloadRequest);
             if (downloadUrlResponse.Remaining <= 0)
                 throw new InvalidOperationException("Too many subtitle downloads. ");
             try
@@ -131,7 +131,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
                     return false;
                 }
 
-                var login = await service.LoginAsync(new NewLogin()
+                var login = await service.Value.LoginAsync(new NewLogin()
                 {
                     Username = username,
                     Password = password,
@@ -151,7 +151,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
             EnsureHasApiKey();
             if (Token != null)
             {
-                await service.LogoutAsync(Token);
+                await service.Value.LogoutAsync(Token);
             }
         }
 
@@ -180,7 +180,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
                 Query = fileName
             };
 
-            var subsSearchResult = await service.SearchSubtitlesAsync(searchOptions);
+            var subsSearchResult = await service.Value.SearchSubtitlesAsync(searchOptions);
             if (subsSearchResult != null && subsSearchResult.TotalCount > 0 && subsSearchResult.Data != null)
             {
                 var fileNameSplits = fileName.ToLowerInvariant().SplitByNonAlphaNumeric();

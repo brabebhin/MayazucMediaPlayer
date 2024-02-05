@@ -28,15 +28,11 @@ namespace MayazucMediaPlayer.Settings
             {
                 ContextualSettings.GetUISettings(),
                 ContextualSettings.FilePickerPageSettings(),
-                //ContextualSettings.GetAutoPlaySettings(),
                 ContextualSettings.GetPlaybackControlSettings(),
                 ContextualSettings.GetSubtitleSettings(),
-                ContextualSettings.GetTrackMetadataSettings(),
-                //ContextualSettings.GetEqualizerManagamenetGroup(),
 
                 new SettingsItemGroup("\uED10", "Reset ") { new ContentSettingsItem(new ResetSettingsPage(allSettings)) },
 
-                //new SettingsItemGroup("\uE168", "Accounts") { new ContentSettingsItem(new UsersManagement()) },
                 new SettingsItemGroup("\uE7F5", "Audio + Video", ContextualSettings.GetVideoSettings(), new SettingsItem[]{ new ContentSettingsItem(new WindowsAudioSettingsShortcutControl()) }) 
             };
 
@@ -45,7 +41,6 @@ namespace MayazucMediaPlayer.Settings
             AllSettingsItems.AddRange(groups);
             NavigationViewRoot.MenuItemsSource = AllSettingsItems;
             NavigationViewRoot.SelectedItem = AllSettingsItems.FirstOrDefault();
-            //NavigationViewRoot./*SelectedIndex*/ = 0;
         }
 
         IEnumerable<SettingsItem> allSettings()
