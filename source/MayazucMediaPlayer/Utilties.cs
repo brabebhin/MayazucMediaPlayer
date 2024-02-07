@@ -60,11 +60,11 @@ namespace MayazucMediaPlayer
 
                     break;
                 case SupportedFileTypesConfiguration.AllWriteableFiles:
-                    extensions = SupportedFileFormats.AllWriteableFormats;
+                    extensions = SupportedFileFormats.WriteableFormats;
 
                     break;
                 case SupportedFileTypesConfiguration.CueableFormats:
-                    extensions = SupportedFileFormats.AllAudioFormats;
+                    extensions = SupportedFileFormats.MusicFormats;
                     break;
             }
 

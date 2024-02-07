@@ -11,7 +11,7 @@ namespace MayazucMediaPlayer.Services
         Task<Result<MediaPlayerItemSourceUIWrapper>> GetMediaDataItemAtIndex(int index);
         Task LoadSequenceAsync();
         void LoadSequence();
-        int RandomizeMusicDataStorage(int observableIndex);
+        int Randomize(int observableIndex);
         Task RemoveItemsFromSequenceAsync(IEnumerable<MediaPlayerItemSourceUIWrapper> items);
         Task SetSequence(IEnumerable<IMediaPlayerItemSource> mediaDatas);
         void Switch(int source, int destination);

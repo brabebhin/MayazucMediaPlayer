@@ -645,7 +645,7 @@ namespace MayazucMediaPlayer
         {
             MediaPlayerItemSourceList data = new MediaPlayerItemSourceList();
             var files = await RandomPlaylist.GetRandomPlaylist();
-            foreach (var f in files.Select(x => x.ToFileInfo()))
+            foreach (var f in files)
             {
                 data.AddRange(await f.GetMediaPlayerItemSources());
             }

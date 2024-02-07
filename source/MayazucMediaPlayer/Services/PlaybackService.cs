@@ -44,7 +44,7 @@ namespace MayazucMediaPlayer.Services
 
         public async Task<int> RandomizeNowPlayingAsync(int oldIndex)
         {
-            var newIndex = NowPlayingBackStore.RandomizeMusicDataStorage(oldIndex);
+            var newIndex = NowPlayingBackStore.Randomize(oldIndex);
             return newIndex;
         }
 

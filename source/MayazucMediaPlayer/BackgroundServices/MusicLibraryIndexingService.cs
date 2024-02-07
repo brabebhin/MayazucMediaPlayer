@@ -22,7 +22,7 @@ namespace MayazucMediaPlayer.BackgroundServices
             {
                 try
                 {
-                    var files = await KnownFoldersExtensions.GetFilesAsync(LibraryFolderId.MusicFolder);
+                    var files = await KnownFoldersExtensions.GetFilesAsync(LibraryFolderId.MusicFolder, SupportedFileFormats.MusicFormats);
                     foreach (var file in files)
                     {
                         if (cancelSignal.IsCancellationRequested)

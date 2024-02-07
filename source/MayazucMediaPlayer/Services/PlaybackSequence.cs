@@ -78,7 +78,7 @@ namespace MayazucMediaPlayer.Services
             });
         }
 
-        public int RandomizeMusicDataStorage(int observableIndex)
+        public int Randomize(int observableIndex)
         {
             var retValue = this.Randomize<MediaPlayerItemSourceUIWrapper>(observableIndex);
             NumberNowPlayingInternal();

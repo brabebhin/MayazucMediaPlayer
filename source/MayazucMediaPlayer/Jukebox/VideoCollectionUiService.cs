@@ -26,7 +26,7 @@ namespace MayazucMediaPlayer.Jukebox
         {
             using (await collectionlock.LockAsync())
             {
-                VideoCollection = (await KnownFoldersExtensions.GetFilesAsync(LibraryFolderId.VideosFolder)).Where(x => SupportedFileFormats.IsVideoFile(x.Extension));
+                VideoCollection = (await KnownFoldersExtensions.GetFilesAsync(LibraryFolderId.VideosFolder, SupportedFileFormats.AllVideoFormats));
             }
         }
     }

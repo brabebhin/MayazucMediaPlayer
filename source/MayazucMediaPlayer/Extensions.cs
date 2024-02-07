@@ -365,7 +365,7 @@ namespace MayazucMediaPlayer
     {
 
         // There is no TaskCompletionSource<void> so we use a bool that we throw away.
-        public static void Randomize(this IList list)
+        public static IList<T> Randomize<T>(this IList<T> list)
         {
             Random rng = new Random();
             int n = list.Count;
@@ -373,10 +373,12 @@ namespace MayazucMediaPlayer
             {
                 n--;
                 int k = rng.Next(n + 1);
-                object value = list[k];
+                T value = list[k];
                 list[k] = list[n];
                 list[n] = value;
             }
+
+            return list;
         }
 
         public static int Randomize<T>(this IList<T> list, int observableIndex)

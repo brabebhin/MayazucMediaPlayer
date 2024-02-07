@@ -15,12 +15,12 @@ namespace MayazucMediaPlayer
         /// </summary>
         static SupportedFileFormats()
         {
-            AllSupportedFileFormats = AllSupportedFormats.ToImmutableHashSet();
-            AllMusicAndPlaylistFormats = allMusicFormats.ToImmutableHashSet();
-            AllAudioFormats = allCueableFormats.ToImmutableHashSet();
-            AllWriteableFormats = writeableFormats.ToImmutableHashSet();
-            SupportedVideoFiles = _SupportedVideoFiles.ToImmutableHashSet();
-            SupportedStreamingUriSchemes = StreamUris.ToImmutableHashSet();
+            AllSupportedFileFormats = allSupportedFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
+            AllMusicAndPlaylistFormats = allMusicAndPlaylistFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
+            MusicFormats = allMusicFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
+            WriteableFormats = allWriteableFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
+            AllVideoFormats = allVideoFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
+            SupportedStreamingUriSchemes = allStreamingUriSchemeInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
         }
 
         public static ImmutableHashSet<string> AllSupportedFileFormats
@@ -40,7 +40,7 @@ namespace MayazucMediaPlayer
         /// <summary>
         /// All supported audio files.
         /// </summary>
-        public static ImmutableHashSet<string> AllAudioFormats
+        public static ImmutableHashSet<string> MusicFormats
         {
             get;
             private set;
@@ -49,7 +49,7 @@ namespace MayazucMediaPlayer
         /// <summary>
         /// All files which can be fed into the tag editor
         /// </summary>
-        public static ImmutableHashSet<string> AllWriteableFormats
+        public static ImmutableHashSet<string> WriteableFormats
         {
             get;
             private set;
@@ -64,7 +64,7 @@ namespace MayazucMediaPlayer
             private set;
         }
 
-        static readonly string[] writeableFormats = new string[]
+        static readonly List<string> allWriteableFormatsInternal = new List<string>
         {
             ".wma", ".mp3", ".ogg",
             ".flac", ".m4a", ".aac", ".adt", ".adts", ".ac3", ".ec3", ".wav", ".oga", ".wv",   ".mpc", ".tta",".m4a",
@@ -72,31 +72,31 @@ namespace MayazucMediaPlayer
             ".ape", ".alac", ".awb"
         };
 
-        static readonly string[] allMusicFormats = new string[] { ".wma", ".mp3", ".ogg", ".opus",
+        static readonly List<string> allMusicAndPlaylistFormatsInternal = new List<string> { ".wma", ".mp3", ".ogg", ".opus",
             ".flac", ".m4a", ".aac", ".adt", ".adts", ".ac3", ".ec3", ".wav", ".oga", ".wv",   ".mpc", ".tta",".m4a",
         ".m4r", ".m4b", ".m4p", ".3g2", ".asf", ".aif", ".aiff", ".afc", ".aifc",
         ".ape",     ".alac", ".m3u", ".awb", ".wpl", ".zpl", ".m3u8"};
 
-        static readonly string[] allCueableFormats = new string[] { ".wma", ".mp3", ".ogg", ".opus",
+        static readonly List<string> allMusicFormatsInternal = new List<string> { ".wma", ".mp3", ".ogg", ".opus",
             ".flac", ".m4a", ".aac", ".adt", ".adts", ".ac3", ".ec3", ".wav", ".oga", ".wv",   ".mpc", ".tta",".m4a",
         ".m4r", ".m4b", ".m4p", ".3g2", ".asf", ".aif", ".aiff", ".afc", ".aifc",
         ".ape",     ".alac", ".awb" };
 
-        static readonly string[] SystemSupportedMusicFormats = new string[] { ".wma", ".mp3", ".m4a", ".aac", ".adt", ".adts", ".ac3", ".ec3" };
-        static readonly string[] _SupportedVideoFiles = new string[] { ".mp4", ".avi", ".wmv", ".h264", ".mkv", ".vob", ".h265", ".ts", ".glv", ".m4v", ".av1", ".webm" };
+        static readonly List<string> SystemSupportedMusicFormats = new List<string> { ".wma", ".mp3", ".m4a", ".aac", ".adt", ".adts", ".ac3", ".ec3" };
+        static readonly List<string> allVideoFormatsInternal = new List<string> { ".mp4", ".avi", ".wmv", ".h264", ".mkv", ".vob", ".h265", ".ts", ".glv", ".m4v", ".av1", ".webm" };
 
-        static readonly string[] AllSupportedFormats = new string[] { ".wma", ".mp3", ".ogg", ".opus",
+        static readonly List<string> allSupportedFormatsInternal = new List<string> { ".wma", ".mp3", ".ogg", ".opus",
             ".flac", ".m4a", ".aac", ".adt", ".adts", ".ac3", ".ec3", ".wav", ".oga", ".wv",   ".mpc", ".tta",".m4a",
         ".m4r", ".m4b", ".m4p", ".3g2", ".asf", ".aif", ".aiff", ".afc", ".aifc",
         ".ape",     ".alac", ".m3u", ".awb", ".mp4", ".avi", ".wmv", ".h264", ".mkv", ".wpl", ".zpl", ".vob", ".h265", ".ts", ".glv", ".m4v", ".m3u8", ".av1", ".webm"  };
 
-        static readonly string[] SubtitleFormats = new string[] { ".srt", ".sub", ".ttml", ".vtt" };
+        static readonly List<string> SubtitleFormats = new List<string> { ".srt", ".sub", ".ttml", ".vtt" };
 
-        static readonly string[] PlaylistFormats = new string[] { ".m3u", ".wpl", ".zpl", ".m3u8" };
+        static readonly List<string> PlaylistFormats = new List<string> { ".m3u", ".wpl", ".zpl", ".m3u8" };
 
-        static readonly string[] PictureFormats = new string[] { ".png", ".jpg", ".jpeg", ".bmp" };
+        static readonly List<string> PictureFormats = new List<string> { ".png", ".jpg", ".jpeg", ".bmp" };
 
-        static readonly string[] StreamUris = new string[] { "http", "rtsp", "rtmp" };
+        static readonly List<string> allStreamingUriSchemeInternal = new List<string> { "http", "rtsp", "rtmp" };
 
         public static ReadOnlyCollection<string> SupportedAlbumArtPictureFormats
         {
@@ -120,7 +120,7 @@ namespace MayazucMediaPlayer
         /// <summary>
         /// All supported video formats
         /// </summary>
-        public static ImmutableHashSet<string> SupportedVideoFiles
+        public static ImmutableHashSet<string> AllVideoFormats
         {
             get;
             private set;
@@ -155,7 +155,7 @@ namespace MayazucMediaPlayer
             }
 
             var ext = Path.GetExtension(path).ToLowerInvariant();
-            return SupportedVideoFiles.Contains(ext);
+            return AllVideoFormats.Contains(ext);
         }
 
         public static bool IsAudioFile(string path)
@@ -166,7 +166,7 @@ namespace MayazucMediaPlayer
             }
 
             var ext = Path.GetExtension(path).ToLowerInvariant();
-            return AllAudioFormats.Contains(ext);
+            return MusicFormats.Contains(ext);
         }
 
         public static bool IsPlaylistFile(string path)
@@ -183,7 +183,7 @@ namespace MayazucMediaPlayer
         public static bool IsSupportedExtension(this IStorageItem item)
         {
             var pathLower = item.Path.ToLowerInvariant();
-            return AllSupportedFormats.Any(x => pathLower.EndsWith(x));
+            return allSupportedFormatsInternal.Any(x => pathLower.EndsWith(x));
         }
     }
 

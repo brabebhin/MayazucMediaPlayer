@@ -65,7 +65,7 @@ namespace MayazucMediaPlayer
     {
         public static bool IsSupportedExtension(FileInfo info)
         {
-            return SupportedFileFormats.AllAudioFormats.Contains(info.Extension);
+            return SupportedFileFormats.MusicFormats.Contains(info.Extension);
         }
 
         public static async Task<FileInfo> GetMetadataDocumentForFile(string filePath)

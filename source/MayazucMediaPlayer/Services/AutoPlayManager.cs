@@ -80,7 +80,7 @@ namespace MayazucMediaPlayer.Services
                         HashSet<string> autoPlayViewQuery = new HashSet<string>();
                         HashSet<string> flatFolderViewQuery = new HashSet<string>();
 
-                        foreach (var f in SupportedFileFormats.AllAudioFormats)
+                        foreach (var f in SupportedFileFormats.MusicFormats)
                         {
                             if (aMusic)
                             {
@@ -89,7 +89,7 @@ namespace MayazucMediaPlayer.Services
                             flatFolderViewQuery.Add(f);
                         }
 
-                        foreach (var f in SupportedFileFormats.SupportedVideoFiles)
+                        foreach (var f in SupportedFileFormats.AllVideoFormats)
                         {
                             if (aVideo)
                             {

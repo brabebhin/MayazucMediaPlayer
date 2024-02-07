@@ -47,7 +47,7 @@ namespace MayazucMediaPlayer
 
     public static class KnownFoldersExtensions
     {
-        public static async Task<IEnumerable<FileInfo>> GetFilesAsync(LibraryFolderId knownFolderId)
+        public static async Task<IEnumerable<FileInfo>> GetFilesAsync(LibraryFolderId knownFolderId, IEnumerable<string> extensions)
         {
             return await Task.Run(async () =>
             {
@@ -61,22 +61,22 @@ namespace MayazucMediaPlayer
                 bool userFolderProcessed = false;
 
                 var folders = await knownFolder.GetFoldersAsync();
-                LinkedList<FileInfo> files = new LinkedList<FileInfo>();
+                IEnumerable<FileInfo> files = Enumerable.Empty<FileInfo>();
 
                 foreach (var folder in folders)
                 {
                     if (folder.Path == userFolder) userFolderProcessed = true;
                     var directory = folder.ToDirectoryInfo();
-                    files.AddRangeLast(directory.EnumerateFiles("*.*", SearchOption.AllDirectories));
+                    files = files.Union(directory.EnumerateFiles("*.*", SearchOption.AllDirectories));
                 }
                 if (!userFolderProcessed)
                 {
                     var userFolderInfo = new DirectoryInfo(userFolder);
-                    files.AddRangeLast(userFolderInfo.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly));
+                    files = files.Union(userFolderInfo.EnumerateFiles("*.*", SearchOption.TopDirectoryOnly));
                 }
 
 
-                return files;
+                return files.Where(x => extensions.Contains(x.Extension));
             });
         }
     }
