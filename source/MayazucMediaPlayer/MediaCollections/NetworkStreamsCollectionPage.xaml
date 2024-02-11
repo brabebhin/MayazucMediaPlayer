@@ -1,0 +1,57 @@
+﻿<mayazucmediaplayer:BasePage
+    xmlns:mayazucmediaplayer="using:MayazucMediaPlayer"
+    x:Class="MayazucMediaPlayer.MediaCollections.NetworkStreamsCollectionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.MediaCollections"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <CommandBar Grid.Column="0" DefaultLabelPosition="Right">
+                <AppBarButton Icon="Play" Command="{Binding PlayUrlCommand}" CommandParameter="{Binding ElementName=tbStreamPlay, Path=Text, UpdateSourceTrigger=PropertyChanged}"/>
+            </CommandBar>
+
+            <TextBox VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Stretch" x:Name="tbStreamPlay"></TextBox>
+
+
+            <CommandBar Grid.Column="2" DefaultLabelPosition="Right">
+                <AppBarButton Icon="Clear" Label="Clear history" />
+            </CommandBar>
+        </Grid>
+
+        <ListView Grid.Row="1" x:Name="lsvStreamHistory" 
+                  SelectionMode="None"
+                  ItemsSource="{Binding NetworkStreamsHistory}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="12"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <CommandBar Grid.Column="0" DefaultLabelPosition="Right">
+                            <AppBarButton Icon="Play" Click="PlayUrlHistory_click"/>
+                        </CommandBar>
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Url}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</mayazucmediaplayer:BasePage>

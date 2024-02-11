@@ -28,8 +28,6 @@ namespace MayazucMediaPlayer.Common
             {
                 _canExecuteMethod = canExecuteMethod;
             }
-
-            //Keybinds.TryGetValue(CommandName, out keybind);
         }
 
 

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace MayazucMediaPlayer.Jukebox
+namespace MayazucMediaPlayer.MediaCollections
 {
     public class MusicCollectionUiService : ServiceBase
     {

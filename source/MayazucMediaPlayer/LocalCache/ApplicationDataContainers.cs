@@ -4,13 +4,6 @@ namespace MayazucMediaPlayer.LocalCache
 {
     internal static class ApplicationDataContainers
     {
-        public static ApplicationDataContainer DirbleFavorites
-        {
-            get
-            {
-                return ApplicationData.Current.LocalSettings.CreateContainer("DirbleFavorites", ApplicationDataCreateDisposition.Always);
-            }
-        }
 
         public static ApplicationDataContainer AudioEffectsSlim
         {

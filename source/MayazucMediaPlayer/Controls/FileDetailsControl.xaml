@@ -44,9 +44,7 @@
                         <TextBlock   Text="File name" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"    Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="Wrap" x:Name="FileNameTextBlock" Margin="5" />
 
-                        <TextBlock    Text="Extension" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                        <TextBlock x:Name="FileExtensionTextBlock"   Style="{ThemeResource BodyTextBlockStyle}"  Margin="5"  />
-
+                       
                         <TextBlock   Text="Full path" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"   Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" x:Name="FullPathTextBlock" Margin="5" />
 
@@ -61,7 +59,7 @@
                             <TextBlock x:Name="FileSizeTextBlock"   Style="{ThemeResource BodyTextBlockStyle}"  Margin="5"  />
                         </StackPanel>
 
-                        <TextBlock FontSize="16" Margin="5, 0, 0, 0" Text="Title"   Foreground="Gray" />
+                        <TextBlock  Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}"  Text="Title" />
                         <StackPanel>
                             <TextBlock   IsTextSelectionEnabled="True"  Margin="8"   x:Name="TrackInfoTitle" Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="WrapWholeWords" />
                         </StackPanel>
@@ -78,6 +76,10 @@
                         <StackPanel  Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}" >
                             <TextBlock    IsTextSelectionEnabled="True" Margin="8"    x:Name="TrackInfoGenre" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords"  />
                         </StackPanel>
+
+                        <TextBlock    Text="Extension" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <TextBlock x:Name="FileExtensionTextBlock"   Style="{ThemeResource BodyTextBlockStyle}"  Margin="5"  />
+
                     </StackPanel>
                 </ScrollViewer>
             </TabViewItem>

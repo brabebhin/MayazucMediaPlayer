@@ -4,7 +4,7 @@ using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
-using MayazucMediaPlayer.Jukebox;
+using MayazucMediaPlayer.MediaCollections;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.NowPlayingViews;
@@ -360,7 +360,7 @@ namespace MayazucMediaPlayer
                 try
                 {
                     notificationRoot.Content = content;
-                    
+
                     notificationRoot.Show(duration);
                 }
                 catch { }
@@ -619,6 +619,9 @@ namespace MayazucMediaPlayer
                     break;
                 case "FilesFolders":
                     await NavigateCommandInternal(typeof(FileFolderPickerPage));
+                    break;
+                case "NetworkStreamHistory":
+                    await NavigateCommandInternal(typeof(NetworkStreamsCollectionPage));
                     break;
             }
         }

@@ -1,28 +1,34 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
 namespace MayazucMediaPlayer
 {
-    public class ObservableHashSet<T> : HashSet<T>, INotifyCollectionChanged
+    public class ObservableHashSet<T> : ObservableCollection<T>
     {
-        public event NotifyCollectionChangedEventHandler? CollectionChanged;
+        HashSet<T> uniqueCheck = new HashSet<T>();
 
-        public new bool Add(T item)
+        public bool TryGetValue(T key, out T value)
         {
-            var ok = base.Add(item);
+            return uniqueCheck.TryGetValue(key, out value);
+        }
+
+        public new virtual bool Add(T item)
+        {
+            var ok = uniqueCheck.Add(item);
             if (ok)
             {
-                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
+                base.Add(item);
             }
             return ok;
         }
 
-        public new bool Remove(T item)
+        public new virtual bool Remove(T item)
         {
-            var ok = base.Remove(item);
+            var ok = uniqueCheck.Remove(item);
             if (ok)
             {
-                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
+                base.Remove(item);
             }
             return ok;
         }

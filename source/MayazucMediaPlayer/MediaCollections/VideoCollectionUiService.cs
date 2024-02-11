@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MayazucMediaPlayer.Jukebox
+namespace MayazucMediaPlayer.MediaCollections
 {
     public class VideoCollectionUiService : ServiceBase
     {

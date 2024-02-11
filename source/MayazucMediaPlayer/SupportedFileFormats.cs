@@ -185,6 +185,12 @@ namespace MayazucMediaPlayer
             var pathLower = item.Path.ToLowerInvariant();
             return allSupportedFormatsInternal.Any(x => pathLower.EndsWith(x));
         }
+
+        public static bool IsSupportedStreamingProtocol(string  protocol)
+        {
+            if (string.IsNullOrWhiteSpace(protocol)) return false;
+            return SupportedStreamingUriSchemes.Contains(protocol);
+        }
     }
 
     public enum SupportedFileTypesConfiguration

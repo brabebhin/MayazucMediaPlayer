@@ -208,14 +208,14 @@ namespace MayazucMediaPlayer.LocalCache
             }
         }
 
-        internal static async Task<FileInfo> GetInternetStreamsFavoritesFile()
+        internal static async Task<FileInfo> GetInternetStreamsHistoryFile()
         {
-            const string Key = "DirbleFavStations";
+            const string Key = "streamhistory";
             using (await lockProvider.GetLock(Key).LockAsync())
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var file = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "DirbleFavStations.json"));
+                    var file = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "streamhistory.json"));
                     if (!file.Exists) file.Create().Dispose();
                     resultsProvider.TryAdd(Key, file);
                 }

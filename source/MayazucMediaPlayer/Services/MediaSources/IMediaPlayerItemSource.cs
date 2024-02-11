@@ -76,8 +76,12 @@ namespace MayazucMediaPlayer.Services.MediaSources
             return Get(path, title, metadata);
         }
 
-        public static IMediaPlayerItemSource Get(Uri uri, string title, EmbeddedMetadataResult metadata)
+        public static IMediaPlayerItemSource Get(Uri uri, string title, EmbeddedMetadataResult metadata = null)
         {
+            if (metadata == null)
+            {
+                metadata = new EmbeddedMetadataResult(title: uri.OriginalString, performer: uri.Host);
+            }
             return new InternetStreamMediaPlayerItemSource(title: title, streamingAddress: uri.OriginalString, metadata: metadata);
         }
 

@@ -50,6 +50,8 @@
                     <MenuFlyoutItem   Text="Music library" Tag="MusicLibrary" Click="GoToSomeScreen"/>
                     <MenuFlyoutItem   Text="Video library" Tag="VideoLibrary" Click="GoToSomeScreen"/>
                     <MenuFlyoutItem   Text="Playlists" Tag="PlaylistsLibrary" Click="GoToSomeScreen"/>
+                    <MenuFlyoutItem   Text="Network stream history" Tag="NetworkStreamHistory" Click="GoToSomeScreen"/>
+
                 </MenuBarItem>
 
                 <MenuBarItem Title="Queue" Tapped="GoToQueueManagement">

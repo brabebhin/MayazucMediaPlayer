@@ -129,7 +129,6 @@
                                                     <StackPanel Margin="2" Grid.Column="1">
                                                         <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  x:Name="tbFileName" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Title}">
                                                         </TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding Description}"/>
                                                     </StackPanel>
                                                 </Grid>
                                             </Grid>
