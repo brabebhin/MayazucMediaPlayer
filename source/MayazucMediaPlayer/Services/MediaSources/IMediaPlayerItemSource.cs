@@ -53,36 +53,22 @@ namespace MayazucMediaPlayer.Services.MediaSources
     }
 
     public static class IMediaPlayerItemSourceFactory
-    {
-        public static IMediaPlayerItemSource Get(string path, string title, EmbeddedMetadataResult metadata)
-        {
-            var uri = new Uri(path);
-            if (uri.IsFile)
-            {
-                var pickedItem = new PickedFileItem(new FileInfo(path));
-                return Get(pickedItem);
-            }
-            else if (SupportedFileFormats.SupportedStreamingUriSchemes.Contains(uri.Scheme))
-            {
-                return Get(uri, title, metadata);
-            }
-            return null;
-        }
-
+    {       
         public static IMediaPlayerItemSource Get(string path)
         {
-            var title = Path.GetFileNameWithoutExtension(path);
-            var metadata = EmbeddedMetadataResolver.GetDefaultMetadataForFile(path);
-            return Get(path, title, metadata);
+            if(Uri.TryCreate(path, UriKind.Absolute, out var streamUri))
+            {
+                if(SupportedFileFormats.IsSupportedStreamingProtocol(streamUri.Scheme))
+                {
+                    return Get(streamUri);
+                }
+            }
+            return new FileMediaPlayerItemSource(new PickedFileItem(new FileInfo(path)));
         }
 
-        public static IMediaPlayerItemSource Get(Uri uri, string title, EmbeddedMetadataResult metadata = null)
+        public static IMediaPlayerItemSource Get(Uri uri)
         {
-            if (metadata == null)
-            {
-                metadata = new EmbeddedMetadataResult(title: uri.OriginalString, performer: uri.Host);
-            }
-            return new InternetStreamMediaPlayerItemSource(title: title, streamingAddress: uri.OriginalString, metadata: metadata);
+            return new InternetStreamMediaPlayerItemSource(title: uri.Host, streamingAddress: uri.OriginalString, metadata: new EmbeddedMetadataResult(title: uri.Host, performer: string.Empty) );
         }
 
         public static IMediaPlayerItemSource Get(PickedFileItem item)

@@ -19,9 +19,18 @@ namespace MayazucMediaPlayer.MediaCollections
 
         public AsyncRelayCommand<string> PlayUrlCommand { get; private set; }
 
+        public AsyncRelayCommand ClearHistoryCommand { get; private set; }
+
         public NetworkStreamsCollectionUiService(DispatcherQueue dispatcher) : base(dispatcher)
         {
             PlayUrlCommand = new AsyncRelayCommand<string>(PlayUrl);
+            ClearHistoryCommand = new AsyncRelayCommand(ClearHistory);
+        }
+
+        private async Task ClearHistory()
+        {
+            NetworkStreamsHistory.Clear();
+            await SaveHistory();
         }
 
         public NetworkStreamHistoryEntryCollection NetworkStreamsHistory { get; private set; } = new NetworkStreamHistoryEntryCollection();
@@ -55,7 +64,7 @@ namespace MayazucMediaPlayer.MediaCollections
             var url = (string)param;
             if (ValidateUrl(url, out var result))
             {
-                var mediaData = IMediaPlayerItemSourceFactory.Get(result, result.Host);
+                var mediaData = IMediaPlayerItemSourceFactory.Get(result);
                 await AppState.Current.MediaServiceConnector.StartPlaybackFromBeginning(mediaData);
                 NetworkStreamsHistory.Add(url);
                 await SaveHistory();

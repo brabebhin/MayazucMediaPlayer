@@ -113,7 +113,7 @@ namespace MayazucMediaPlayer.Playlists
 
             foreach (var item in playlist.GetTracksPaths())
             {
-                var src = IMediaPlayerItemSourceFactory.Get(item, Path.GetFileNameWithoutExtension(item), EmbeddedMetadataResolver.GetDefaultMetadataForFileNotFound(item));
+                var src = IMediaPlayerItemSourceFactory.Get(item);
                 if (src != null)
                     result.Add(src);
             }
