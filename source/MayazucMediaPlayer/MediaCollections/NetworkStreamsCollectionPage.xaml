@@ -23,11 +23,10 @@
             </Grid.ColumnDefinitions>
 
             <CommandBar Grid.Column="0" DefaultLabelPosition="Right">
-                <AppBarButton Icon="Play" Command="{Binding PlayUrlCommand}" CommandParameter="{Binding ElementName=tbStreamPlay, Path=Text, UpdateSourceTrigger=PropertyChanged}"/>
+                <AppBarButton IsEnabled="{Binding HasValidUrl}" Icon="Play" Command="{Binding PlayUrlCommand}" CommandParameter="{Binding InputStreamUrl}"/>
             </CommandBar>
 
-            <TextBox PlaceholderText="Enter URL" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Stretch" x:Name="tbStreamPlay"></TextBox>
-
+            <TextBox PlaceholderText="Enter URL" Text="{Binding InputStreamUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Stretch" x:Name="tbStreamPlay"></TextBox>
 
             <CommandBar Grid.Column="2" DefaultLabelPosition="Right">
                 <AppBarButton Icon="Clear" Label="Clear history" Command="{Binding ClearHistoryCommand}" />

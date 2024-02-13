@@ -21,6 +21,33 @@ namespace MayazucMediaPlayer.MediaCollections
 
         public AsyncRelayCommand ClearHistoryCommand { get; private set; }
 
+        string _inputStreamUrl;
+        public string InputStreamUrl
+        {
+            get
+            {
+                return _inputStreamUrl;
+            }
+            set
+            {
+                base.SetProperty(ref _inputStreamUrl, value);
+                HasValidUrl = ValidateUrl(_inputStreamUrl, out var _);
+            }
+        }
+
+        bool _HasValidUrl;
+        public bool HasValidUrl
+        {
+            get
+            {
+                return _HasValidUrl;
+            }
+            set
+            {
+                base.SetProperty(ref _HasValidUrl, value, nameof(HasValidUrl));
+            }
+        }
+
         public NetworkStreamsCollectionUiService(DispatcherQueue dispatcher) : base(dispatcher)
         {
             PlayUrlCommand = new AsyncRelayCommand<string>(PlayUrl);
