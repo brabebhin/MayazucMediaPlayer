@@ -36,8 +36,21 @@ namespace MayazucMediaPlayer.Controls
             DataContext = this;
 
             SkipToQueueItemCommand = new AsyncRelayCommand(SkipToQueueItemMethod);
-
         }
+
+        public Visibility PlaybackCommandBarVisibility
+        {
+            get
+            {
+                return (Visibility)GetValue(PlaybackCommandBarVisibilityProperty);
+            }
+            set
+            {
+                SetValue(PlaybackCommandBarVisibilityProperty, value);
+            }
+        }
+
+        public static DependencyProperty PlaybackCommandBarVisibilityProperty = DependencyProperty.Register(nameof(PlaybackCommandBarVisibility), typeof(Visibility), typeof(FileDetailsControl), new PropertyMetadata(Visibility.Visible));
 
         private MediaPlaybackItemUIInformation? CurrentPlaybackItemInfo = null;
 

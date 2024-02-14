@@ -9,6 +9,6 @@
     xmlns:controls1="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d">
     <Grid x:Name="LayoutRoot">
-        <controls:FileDetailsControl x:Name="AdvancedFileDetailsControl"></controls:FileDetailsControl>
+        <controls:FileDetailsControl PlaybackCommandBarVisibility="Collapsed" x:Name="AdvancedFileDetailsControl"></controls:FileDetailsControl>
     </Grid>
 </UserControl>
