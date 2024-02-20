@@ -22,13 +22,6 @@ namespace MayazucMediaPlayer.Services
 
         public PlaybackSequence NowPlayingBackStore { get; private set; }
 
-
-        public ObservableCollection<PlaylistItem> NowPlayingHistoryPlaylists
-        {
-            get;
-            set;
-        }
-
         public DispatcherQueue Dispatcher
         {
             get;
@@ -69,11 +62,6 @@ namespace MayazucMediaPlayer.Services
                     NowPlayingBackStore[i].IsInPlayback = i == index;
                 }
             }
-        }
-
-        public Task FillDataAsync()
-        {
-            return Task.WhenAll(LoadNowPlaying());
         }
 
         public void FillData()

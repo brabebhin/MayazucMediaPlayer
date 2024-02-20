@@ -52,6 +52,8 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
 
         public MediaPlaybackItem CurrentPlaybackItem { get; private set; }
 
+        public bool LocalSource => false;
+
         public PlayToMediaPlaybackListAdapter(MediaPlayer player,
             IFFmpegInteropMediaSourceProvider<SourceChangeRequestedEventArgs> itemBuilder,
             SourceChangeRequestedEventArgs source,
@@ -64,8 +66,6 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
             Connector = connector;
             PlaybackServiceInstance = playbackServiceInstance;
         }
-
-
 
         public Task<bool> MoveToNextItem(MediaPlaybackItem CurrentItem, bool userAction, bool incrementIndex)
         {

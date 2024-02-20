@@ -7,12 +7,13 @@ using MayazucMediaPlayer.VideoEffects;
 using Microsoft.UI.Dispatching;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 {
-    public sealed class MediaSequencerMediaPlaylistAdapter : IMediaPlaybackListAdapter
+    public class MediaSequencerMediaPlaylistAdapter : IMediaPlaybackListAdapter
     {
         public BusyFlag IsBusy { get; private set; } = new BusyFlag();
 
@@ -44,14 +45,14 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             IFFmpegInteropMediaSourceProvider<IMediaPlayerItemSource> provider,
             MediaPlayer player,
             DispatcherQueue dispatcher,
-            CommandDispatcher mediaCommandsDispatche,
+            CommandDispatcher mediaCommandsDispatcher,
             VideoEffectProcessorConfiguration videoEffectsConfiguration)
         {
             PlaybackModelsInstance = playbackQueueService ?? throw new ArgumentNullException(nameof(playbackQueueService));
             playbackItemProvider = provider ?? throw new ArgumentNullException(nameof(provider));
             this.player = player ?? throw new ArgumentNullException(nameof(player));
             this.dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-            this.mediaCommandsDispatche = mediaCommandsDispatche ?? throw new ArgumentNullException(nameof(mediaCommandsDispatche));
+            this.mediaCommandsDispatche = mediaCommandsDispatcher ?? throw new ArgumentNullException(nameof(mediaCommandsDispatcher));
             PlaybackModelsInstance.NowPlayingBackStore.CollectionChanged += NowPlayingBackStore_CollectionChanged;
             playbackQueueProvider = new MediaPlaybackQueueProvider(PlaybackModelsInstance.NowPlayingBackStore);
             VideoEffectsConfiguration = videoEffectsConfiguration;
@@ -59,7 +60,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         private void NowPlayingBackStore_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-
+            LocalSource = !PlaybackModelsInstance.NowPlayingBackStore.All(x => x.MediaData.HasExternalSource);
         }
 
         private IMediaSourceSequencer nextBackStore;
@@ -90,6 +91,12 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
                     currentbackStore.MediaFailed += BackStore_MediaFailed;
                 }
             }
+        }
+
+        public bool LocalSource
+        {
+            get;
+            private set;
         }
 
         private async void BackStore_MediaFailed(object? sender, MediaPlaybackItem e)
@@ -369,9 +376,9 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             var hasVideoEffects = VideoEffectsConfiguration.MasterSwitch;
             if (isVideo && hasVideoEffects)
             {
-                var hasSeqSource = currentbackStore != null && currentbackStore is VideoEffectSequentionalMediaSourceSequence;
+                var hasSeqSource = currentbackStore != null && currentbackStore is VideoEffectSequentialMediaSourceSequence;
                 if (!hasSeqSource)
-                    return new VideoEffectSequentionalMediaSourceSequence(VideoEffectsConfiguration);
+                    return new VideoEffectSequentialMediaSourceSequence(VideoEffectsConfiguration);
                 else return currentbackStore;
             }
             else

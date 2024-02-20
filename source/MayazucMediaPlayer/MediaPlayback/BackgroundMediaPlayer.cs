@@ -52,7 +52,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             private set;
         }
 
-        readonly AsyncLock mediaOpenedLock = new AsyncLock();
         readonly AsyncLock playToReceiverLock = new AsyncLock();
 
         public MediaPlaybackItem? CurrentPlaybackItem
@@ -110,7 +109,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         }
 
         public event TypedEventHandler<MediaPlayer, MediaOpenedEventArgs> OnMediaOpened;
-        public event EventHandler<PlaybackQueueTypeChangedArgs> PlaybackQueueTypeChanged;
 
         internal FFmpegInteropItemBuilder ItemBuilder
         {
@@ -169,6 +167,15 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             get;
             private set;
+        }
+
+        public bool LocalSource
+        {
+            get
+            {
+                if (PlaybackListAdapter != null) return PlaybackListAdapter.LocalSource;
+                else return false;
+            }
         }
 
         public BackgroundMediaPlayer(DispatcherQueue dispatcher,
@@ -383,7 +390,6 @@ namespace MayazucMediaPlayer.MediaPlayback
                          }
                      }
 
-                     PlaybackQueueTypeChanged?.Invoke(this, new PlaybackQueueTypeChangedArgs(QueueType.DLNA));
                      await PlaybackQueueService.NowPlayingBackStore.LoadSequenceAsync();// (NowPlayingManager.GetNowPlaying());
                  }
                  catch { }
@@ -394,15 +400,12 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             commandDispatcher.EnqueueAsync(async () =>
             {
-                //whats up mon?
-                using (await mediaOpenedLock.LockAsync())
+                try
                 {
-                    try
-                    {
-                        await HandleMediaOpened(CurrentPlayer, e);
-                    }
-                    catch { }
+                    await HandleMediaOpened(CurrentPlayer, e);
                 }
+                catch { }
+
             });
         }
 
@@ -417,8 +420,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         private async Task ResetToLocalPlaybackAdapter()
         {
             PlaybackListAdapter = new MediaSequencerMediaPlaylistAdapter(PlaybackQueueService, ItemBuilder, CurrentPlayer, DispatcherUiThread, commandDispatcher, VideoEffectsConfiguration);
-            PlaybackQueueTypeChanged?.Invoke(this, new PlaybackQueueTypeChangedArgs(QueueType.Local));
-            await PlaybackQueueService.NowPlayingBackStore.LoadSequenceAsync();// (NowPlayingManager.GetNowPlaying());
+            await PlaybackQueueService.NowPlayingBackStore.LoadSequenceAsync();
         }
 
         public Task HandleStopMusicOnTimer()
@@ -899,7 +901,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         private void SetFilters(IMediaPlaybackListAdapter playbackListAdapter)
         {
             List<AvEffectDefinition> defs = new List<AvEffectDefinition>();
-            
+
             //defs.Add(new AvEffectDefinition("sine", "frequency=8500:beep_factor=4:duration=5"));
             defs.AddRange(MediaHelperExtensions.GetEqualizerEffectDefinitions(EqualizerService.GetCurrentEqualizerConfig()));
             defs.AddRange(MediaHelperExtensions.GetAdditionalEffectsDefinitions());

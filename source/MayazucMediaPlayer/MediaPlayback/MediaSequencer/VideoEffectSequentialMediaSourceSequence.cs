@@ -8,9 +8,9 @@ using Windows.Media.Playback;
 namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 {
     /// <summary>
-    /// A media seqencer that plays each item individually
+    /// A media sequencer that plays each item individually
     /// </summary>
-    public class VideoEffectSequentionalMediaSourceSequence : IMediaSourceSequencer
+    public class VideoEffectSequentialMediaSourceSequence : IMediaSourceSequencer
     {
         bool started = false;
         readonly Queue<MediaPlaybackItem> items = new Queue<MediaPlaybackItem>();
@@ -68,7 +68,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             player.MediaFailed -= Player_MediaFailed;
         }
 
-        public VideoEffectSequentionalMediaSourceSequence(VideoEffectProcessorConfiguration videoEffectConfig)
+        public VideoEffectSequentialMediaSourceSequence(VideoEffectProcessorConfiguration videoEffectConfig)
         {
             VideoEffectsConfiguration = videoEffectConfig;
         }

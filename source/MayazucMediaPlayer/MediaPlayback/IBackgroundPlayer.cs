@@ -14,6 +14,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 {
     public interface IBackgroundPlayer : IDisposable
     {
+        bool LocalSource { get; }
         VideoEffectProcessorConfiguration VideoEffectsConfiguration { get; }
         PlaybackSequenceService PlaybackQueueService { get; }
         IMediaPlayerItemSource CurrentPlaybackData { get; }
@@ -156,11 +157,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         Task ForceDisconnectDlnaAsync();
 
         /// <summary>
-        /// Cross-concearn: rise when playback queue changes between local and DLNA
-        /// </summary>
-        event EventHandler<PlaybackQueueTypeChangedArgs> PlaybackQueueTypeChanged;
-
-        /// <summary>
         /// Cross-concearn: set active subtitles on current item
         /// </summary>
         /// <param name="currentPlaybackItem"></param>
@@ -290,25 +286,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         public MediaPlaybackItem InitialItem { get; set; }
     }
 
-    public class PlaybackQueueTypeChangedArgs
-    {
-        public QueueType PlaybackType
-        {
-            get;
-            private set;
-        }
-
-        public PlaybackQueueTypeChangedArgs(QueueType playbackType)
-        {
-            PlaybackType = playbackType;
-        }
-    }
-
-    public enum QueueType
-    {
-        Local,
-        DLNA
-    }
 
     public enum EqualizerConfigurationDeletionResult
     {

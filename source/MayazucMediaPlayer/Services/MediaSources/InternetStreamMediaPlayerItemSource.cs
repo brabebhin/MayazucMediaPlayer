@@ -93,7 +93,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public string MediaPath => StreamingAddress;
 
-        public bool HasExternalSource => false;
+        public bool HasExternalSource => true;
 
         public bool SupportsSubtitles => false;
 

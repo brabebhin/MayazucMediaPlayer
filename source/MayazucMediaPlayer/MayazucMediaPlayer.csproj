@@ -43,7 +43,6 @@
 		<None Remove="NowPlayingViews\NowPlayingBackgroundGrid.xaml" />
 		<None Remove="NowPlayingViews\NowPlayingManagementPage.xaml" />
 		<None Remove="Settings\SubtitlesSettingsItem.xaml" />
-		<None Remove="Tests\BlankPage1.xaml" />
 		<None Remove="Transcoding\TranscodingRootPage.xaml" />
 	</ItemGroup>
 	<ItemGroup>
@@ -159,12 +158,6 @@
 	  <Page Update="Controls\GenericContentControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </Page>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Page Update="Tests\BlankPage1.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
 	</ItemGroup>
 
 	<ItemGroup>

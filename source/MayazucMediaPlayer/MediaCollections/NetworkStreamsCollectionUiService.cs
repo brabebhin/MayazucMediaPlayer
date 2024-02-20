@@ -85,7 +85,6 @@ namespace MayazucMediaPlayer.MediaCollections
             await File.WriteAllTextAsync(historyFile.FullName, json);
         }
 
-        //http://asculta.radioromanian.net:8400/
         public async Task PlayUrl(object param)
         {
             var url = (string)param;

@@ -386,7 +386,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             PlaylistsService = playlistsService;
             NowPlayingCollectionViewSource = new AdvancedCollectionView(NowPlaying);
             BackgroundMediaPlayerInstance = backgroundMediaPlayerInstance;
-            BackgroundMediaPlayerInstance.PlaybackQueueTypeChanged += BackgroundMediaPlayerInstance_PlaybackQueueTypeChanged;
             SaveNowPlayingAsPlaylistCommand = new AsyncRelayCommand(SaveAsPlaylistCommandFunction);
             ShuffleRequestClickCommand = new AsyncRelayCommand(ShuffleRequestCommandFunction);
             ChangeSongOrderRequestCommand = new AsyncRelayCommand(ChangeSongRequestCommandFunction);
@@ -414,21 +413,32 @@ namespace MayazucMediaPlayer.NowPlayingViews
             });
 
             base.PlaybackServiceInstance.NowPlayingBackStore.CollectionChanged += NowPlayingBackStore_CollectionChanged;
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
+            CheckCommandBarEnabled();
         }
 
-        private void BackgroundMediaPlayerInstance_PlaybackQueueTypeChanged(object? sender, PlaybackQueueTypeChangedArgs e)
+        private void PlayerInstance_OnMediaOpened(Windows.Media.Playback.MediaPlayer sender, MediaOpenedEventArgs args)
         {
-            SetPlaybackModeUIElements(e);
-        }
+            CheckCommandBarEnabled();
 
-        private void SetPlaybackModeUIElements(PlaybackQueueTypeChangedArgs e)
-        {
-            NowPlayingCommandBarEnabled = e.PlaybackType == QueueType.Local;
         }
 
         private void NowPlayingBackStore_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            NowPlayingCommandBarEnabled = base.PlaybackServiceInstance.NowPlayingBackStore.Count(x => x.MediaData.Persistent) > 0;
+            CheckCommandBarEnabled();
+        }
+
+        private void CheckCommandBarEnabled()
+        {
+            if (AppState.Current.MediaServiceConnector.PlayerInstance.LocalSource)
+            {
+                NowPlayingCommandBarEnabled = base.PlaybackServiceInstance.NowPlayingBackStore.Count(x => x.MediaData.Persistent) > 0;
+            }
+            else
+            {
+                NowPlayingCommandBarEnabled = false;
+            }
+            
         }
 
         private async Task StopPlaybackAsync(object arg)
@@ -613,7 +623,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
                 PlaybackServiceInstance.NowPlayingBackStore.CollectionChanged -= NowPlayingBackStore_CollectionChanged;
                 PlaybackServiceInstance = null;
-                BackgroundMediaPlayerInstance.PlaybackQueueTypeChanged -= BackgroundMediaPlayerInstance_PlaybackQueueTypeChanged;
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
