@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI.UI;
+using FFmpegInteropX;
 using FluentResults;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
@@ -13,18 +14,23 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.VisualBasic;
+using Microsoft.WindowsAPICodePack.Shell;
 using Nito.AsyncEx;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Media.MediaProperties;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Search;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.FileSystemViews
@@ -385,7 +391,8 @@ namespace MayazucMediaPlayer.FileSystemViews
         public CommandBase CopyAlbum { get; private set; }
         public CommandBase CopyArtist { get; private set; }
         public CommandBase CopyGenre { get; private set; }
-
+        public CommandBase CopyFileToFolder { get; private set; }
+        public CommandBase CopyFileToClipboard { get; private set; }
 
         public bool PlayButtonIsEnabled
         {
@@ -545,6 +552,43 @@ namespace MayazucMediaPlayer.FileSystemViews
             {
                 CopyMetadata(obj, x => x.Metadata.Genre);
             });
+
+            CopyFileToFolder = new AsyncRelayCommand(CopyFileToFolderFunction);
+            CopyFileToClipboard = new AsyncRelayCommand(CopyFileToClipboardFunction);
+        }
+
+        private Task CopyFileToClipboardFunction(object arg)
+        {
+            try
+            {
+                var targetItem = arg as IMediaPlayerItemSourceProvder;
+                StringCollection paths = new StringCollection();
+                paths.Add(targetItem.Path);
+                System.Windows.Forms.Clipboard.SetFileDropList(paths);
+            }
+            catch
+            {
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private async Task CopyFileToFolderFunction(object arg)
+        {
+            try
+            {
+                var sourceItem = arg as IMediaPlayerItemSourceProvder;
+                var folderPicker = FileFolderPickerService.GetFolderPicker();
+                var folder = await folderPicker.PickSingleFolderAsync();
+                if (folder != null)
+                {
+                    _ = FileCopyService.CopyFilesToFolderAsync(new string[] { sourceItem.Path }, folder.Path);
+                }
+            }
+            catch
+            {
+
+            }
         }
 
         private async Task PlayStartingFromFile(object arg)

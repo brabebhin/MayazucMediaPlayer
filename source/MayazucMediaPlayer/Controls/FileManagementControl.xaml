@@ -28,6 +28,11 @@
                         <MenuFlyoutItem Command="{Binding ElementName=RootPage, Path = DataContext.GoToPropertiesCommand}" CommandParameter="{Binding}" Text="Properties"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutSubItem Text="Copy">
+                            <MenuFlyoutSubItem Text="File to">
+                                <MenuFlyoutItem Text="Folder.."  Command="{Binding ElementName=RootPage, Path = DataContext.CopyFileToFolder}" CommandParameter="{Binding}" ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Clipboard" Command="{Binding ElementName=RootPage, Path = DataContext.CopyFileToClipboard}" CommandParameter="{Binding}" ></MenuFlyoutItem>
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
                             <MenuFlyoutItem Text="File path" Command="{Binding ElementName=RootPage, Path = DataContext.CopyFilePath}" CommandParameter="{Binding}" />
                             <MenuFlyoutItem Text="File name" Command="{Binding ElementName=RootPage, Path = DataContext.CopyFileName}" CommandParameter="{Binding}" />
                             <MenuFlyoutItem Text="Album name"  Command="{Binding ElementName=RootPage, Path = DataContext.CopyAlbum}" CommandParameter="{Binding}"/>
@@ -94,8 +99,13 @@
                         <MenuFlyoutItem Command="{Binding ElementName=RootPage, Path = DataContext.GoToPropertiesCommand}" CommandParameter="{Binding}" Text="Properties"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutSubItem Text="Copy">
-                            <MenuFlyoutItem Text="File path" />
-                            <MenuFlyoutItem Text="File name" />
+                            <MenuFlyoutSubItem Text="File to">
+                                <MenuFlyoutItem Text="Folder.."  Command="{Binding ElementName=RootPage, Path = DataContext.CopyFileToFolder}" CommandParameter="{Binding}" ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Clipboard" Command="{Binding ElementName=RootPage, Path = DataContext.CopyFileToClipboard}" CommandParameter="{Binding}" ></MenuFlyoutItem>
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <MenuFlyoutItem Text="File path" Command="{Binding ElementName=RootPage, Path = DataContext.CopyFilePath}" CommandParameter="{Binding}" />
+                            <MenuFlyoutItem Text="File name" Command="{Binding ElementName=RootPage, Path = DataContext.CopyFileName}" CommandParameter="{Binding}" />
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Grid.Resources>
