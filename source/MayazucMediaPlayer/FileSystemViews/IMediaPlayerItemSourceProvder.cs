@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services.MediaSources;
 using System;
 using System.Collections.ObjectModel;

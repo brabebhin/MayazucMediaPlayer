@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Navigation;
 using Microsoft.UI.Xaml;
 using System;
@@ -51,10 +52,10 @@ namespace MayazucMediaPlayer.Settings
             get; set;
         }
 
-        public virtual RelayCommand Command
+        public virtual RelayCommand<object> Command
         {
             get; set;
-        } = new RelayCommand(navigate);
+        } = new RelayCommand<object>(navigate);
 
         protected override void RecheckValueInternal()
         {

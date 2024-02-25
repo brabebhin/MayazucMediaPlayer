@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
@@ -30,12 +31,12 @@ namespace MayazucMediaPlayer.Controls
         public FileDetailsControl()
         {
             InitializeComponent();
-            PlayCommand = new AsyncRelayCommand(PlayCommandmethod);
-            AddToNowPlayingCommand = new AsyncRelayCommand(AddToNowPlayomgCommandmethod);
-            SaveToPlaylistCommand = new AsyncRelayCommand(SaveToPlaylistCommandmethod);
+            PlayCommand = new AsyncRelayCommand<object>(PlayCommandmethod);
+            AddToNowPlayingCommand = new AsyncRelayCommand<object>(AddToNowPlayomgCommandmethod);
+            SaveToPlaylistCommand = new AsyncRelayCommand<object>(SaveToPlaylistCommandmethod);
             DataContext = this;
 
-            SkipToQueueItemCommand = new AsyncRelayCommand(SkipToQueueItemMethod);
+            SkipToQueueItemCommand = new AsyncRelayCommand<object>(SkipToQueueItemMethod);
         }
 
         public Visibility PlaybackCommandBarVisibility
@@ -106,31 +107,31 @@ namespace MayazucMediaPlayer.Controls
             private set;
         } = new ObservableCollection<MediaThumbnailPreviewData>();
 
-        public CommandBase PlayCommand
+        public IRelayCommand<object> PlayCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToNowPlayingCommand
+        public IRelayCommand<object> AddToNowPlayingCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SaveToPlaylistCommand
+        public IRelayCommand<object> SaveToPlaylistCommand
         {
             get;
             private set;
         }
 
-        public CommandBase GoToSendToCommand
+        public IRelayCommand<object> GoToSendToCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SkipToQueueItemCommand
+        public IRelayCommand<object> SkipToQueueItemCommand
         {
             get;
             private set;

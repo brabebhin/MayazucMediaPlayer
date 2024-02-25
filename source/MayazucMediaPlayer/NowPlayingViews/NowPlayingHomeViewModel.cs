@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI.UI;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.UI;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.MediaPlayback;
@@ -197,34 +198,26 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
         }
 
-        public CommandBase ClearPlaybackQueueCommand
+        public IRelayCommand<object> ClearPlaybackQueueCommand
         {
             get;
             private set;
         }
 
 
-        public CommandBase SaveNowPlayingAsPlaylistCommand
+        public IRelayCommand<object> SaveNowPlayingAsPlaylistCommand
         {
             get;
             private set;
         }
 
-        public CommandBase ShuffleRequestClickCommand
+        public IRelayCommand<object> ShuffleRequestClickCommand
         {
             get;
             private set;
         }
 
-        public CommandBase ChangeSongOrderRequestCommand
-        {
-            get;
-            private set;
-        }
-
-
-
-        public CommandBase SelectRequestCommand
+        public IRelayCommand<object> ChangeSongOrderRequestCommand
         {
             get;
             private set;
@@ -232,31 +225,38 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
 
 
-        public CommandBase ClearSelectionCommand
+        public IRelayCommand<object> SelectRequestCommand
         {
             get;
             private set;
         }
 
-        public CommandBase RemoveCommand
+
+        public IRelayCommand<object> ClearSelectionCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SkipBackFrames
+        public IRelayCommand<object> RemoveCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SkipForwardFrames
+        public IRelayCommand SkipBackFrames
         {
             get;
             private set;
         }
 
-        public CommandBase IncreasePlaybackRate
+        public IRelayCommand SkipForwardFrames
+        {
+            get;
+            private set;
+        }
+
+        public IRelayCommand IncreasePlaybackRate
         {
             get;
             private set;
@@ -386,21 +386,21 @@ namespace MayazucMediaPlayer.NowPlayingViews
             PlaylistsService = playlistsService;
             NowPlayingCollectionViewSource = new AdvancedCollectionView(NowPlaying);
             BackgroundMediaPlayerInstance = backgroundMediaPlayerInstance;
-            SaveNowPlayingAsPlaylistCommand = new AsyncRelayCommand(SaveAsPlaylistCommandFunction);
-            ShuffleRequestClickCommand = new AsyncRelayCommand(ShuffleRequestCommandFunction);
-            ChangeSongOrderRequestCommand = new AsyncRelayCommand(ChangeSongRequestCommandFunction);
-            SelectRequestCommand = new RelayCommand(SelectionRequestCommandFunction);
-            ClearSelectionCommand = new RelayCommand(UnSelectAllRequestCommandFunction);
-            RemoveCommand = new AsyncRelayCommand(RemoveFromPlaybackRequestCommandFunction);
+            SaveNowPlayingAsPlaylistCommand = new AsyncRelayCommand<object>(SaveAsPlaylistCommandFunction);
+            ShuffleRequestClickCommand = new AsyncRelayCommand<object>(ShuffleRequestCommandFunction);
+            ChangeSongOrderRequestCommand = new AsyncRelayCommand<object>(ChangeSongRequestCommandFunction);
+            SelectRequestCommand = new RelayCommand<object>(SelectionRequestCommandFunction);
+            ClearSelectionCommand = new RelayCommand<object>(UnSelectAllRequestCommandFunction);
+            RemoveCommand = new AsyncRelayCommand<object>(RemoveFromPlaybackRequestCommandFunction);
             SkipBackFrames = new AsyncRelayCommand(async () =>
             {
                 await AppState.Current.MediaServiceConnector.SkipSecondsBack(Constants.JumpBackSeconds);
             });
-            SkipForwardFrames = new RelayCommand(async () =>
+            SkipForwardFrames = new AsyncRelayCommand(async () =>
             {
                 await AppState.Current.MediaServiceConnector.SkipSecondsForth(Constants.JumpAheadSeconds);
             });
-            ClearPlaybackQueueCommand = new AsyncRelayCommand(StopPlaybackAsync);
+            ClearPlaybackQueueCommand = new AsyncRelayCommand<object>(StopPlaybackAsync);
 
             IncreasePlaybackRate = new AsyncRelayCommand(async () =>
             {

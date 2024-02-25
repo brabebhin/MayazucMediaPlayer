@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.UserInput;
@@ -15,31 +16,31 @@ namespace MayazucMediaPlayer.NowPlayingViews
             CreatePlaybackCommands();
         }
 
-        public CommandBase PlayPauseCommand
+        public IRelayCommand<object> PlayPauseCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SkipNextCommand
+        public IRelayCommand<object> SkipNextCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SkipPreviousCommand
+        public IRelayCommand<object> SkipPreviousCommand
         {
             get;
             private set;
         }
 
-        public CommandBase RepeatCommand
+        public IRelayCommand<object> RepeatCommand
         {
             get;
             private set;
         }
 
-        public CommandBase ShuffleCommand
+        public IRelayCommand<object> ShuffleCommand
         {
             get;
             private set;
@@ -47,12 +48,12 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private void CreatePlaybackCommands()
         {
-            PlayPauseCommand = new AsyncRelayCommand(PlayPauSeButton);
-            SkipNextCommand = new AsyncRelayCommand(SkipNextButton);
-            SkipPreviousCommand = new AsyncRelayCommand(SkipPreviousButton);
+            PlayPauseCommand = new AsyncRelayCommand<object>(PlayPauSeButton);
+            SkipNextCommand = new AsyncRelayCommand<object>(SkipNextButton);
+            SkipPreviousCommand = new AsyncRelayCommand<object>(SkipPreviousButton);
 
-            ShuffleCommand = new RelayCommand(ToggleShuffle);
-            RepeatCommand = new RelayCommand(ToggleRepeat);
+            ShuffleCommand = new RelayCommand<object>(ToggleShuffle);
+            RepeatCommand = new RelayCommand<object>(ToggleRepeat);
         }
 
         private async Task SkipPreviousButton(object? sender)

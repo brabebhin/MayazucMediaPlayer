@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -139,10 +140,10 @@ namespace MayazucMediaPlayer.Settings
 
         private int selectedIndex;
 
-        public override RelayCommand Command
+        public override RelayCommand<object> Command
         {
             get; set;
-        } = new RelayCommand(SaveCoverClick);
+        } = new RelayCommand<object>(SaveCoverClick);
 
 
         private static void SaveCoverClick(object? sender)

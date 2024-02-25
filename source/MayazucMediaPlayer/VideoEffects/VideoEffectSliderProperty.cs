@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.UserInput;
 using System;
@@ -82,7 +83,7 @@ namespace MayazucMediaPlayer.VideoEffects
             }
         }
 
-        public CommandBase RestoreDefaultValue
+        public IRelayCommand RestoreDefaultValue
         {
             get;
             private set;

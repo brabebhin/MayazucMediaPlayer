@@ -3,6 +3,7 @@ using FFmpegInteropX;
 using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.BackgroundServices;
 using MayazucMediaPlayer.Helpers;
+using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.MediaPlayback.MediaSequencer;
 using MayazucMediaPlayer.MediaPlayback.PlayTo;
 using MayazucMediaPlayer.Services;

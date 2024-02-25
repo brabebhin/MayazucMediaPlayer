@@ -1,7 +1,7 @@
-﻿using CommunityToolkit.WinUI.UI;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.UI;
 using FFmpegInteropX;
 using FluentResults;
-using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.Playlists;
@@ -9,7 +9,6 @@ using MayazucMediaPlayer.Runtime;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.UserInput;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -32,6 +31,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
+
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
@@ -162,237 +162,237 @@ namespace MayazucMediaPlayer.FileSystemViews
             private set;
         }
 
-        public CommandBase PlayCommand
+        public IRelayCommand<object> PlayCommand
         {
             get;
             private set;
         }
 
-        public CommandBase PlayCommandOnlySelected
+        public IRelayCommand<object> PlayCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public CommandBase PlayCommandOnlyMusicFiles
+        public IRelayCommand<object> PlayCommandOnlyMusicFiles
         {
             get;
             private set;
         }
 
-        public CommandBase PlayCommandOnlyVideoFiles
+        public IRelayCommand<object> PlayCommandOnlyVideoFiles
         {
             get;
             private set;
         }
 
-        public CommandBase EnableSelection
+        public IRelayCommand EnableSelection
         {
             get;
             private set;
         }
 
-        public CommandBase SelectAllCommandOnlyVideo
+        public IRelayCommand<object> SelectAllCommandOnlyVideo
         {
             get;
             private set;
         }
 
-        public CommandBase SelectAllCommandOnlyAudio
+        public IRelayCommand<object> SelectAllCommandOnlyAudio
         {
             get;
             private set;
         }
 
-        public CommandBase SelectAllCommandSelected
+        public IRelayCommand<object> SelectAllCommandSelected
         {
             get;
             private set;
         }
 
-        public CommandBase UnselectAllCommand
+        public IRelayCommand<object> UnselectAllCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToNowPlayingCommand
+        public IRelayCommand<object> AddToNowPlayingCommand
         {
             get;
             private set;
         }
 
-        public CommandBase PlayNextCommand
+        public IRelayCommand<object> PlayNextCommand
         {
             get;
             private set;
         }
 
-        public CommandBase PlayStartingFromFileCommand
+        public IRelayCommand<object> PlayStartingFromFileCommand
         {
             get;
             private set;
         }
 
-        public CommandBase PlayNextSingleFileCommand
+        public IRelayCommand<object> PlayNextSingleFileCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToNowPlayingCommandOnlySelected
+        public IRelayCommand<object> AddToNowPlayingCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public CommandBase AddToNowPlayingCommandOnlyAudio
+        public IRelayCommand<object> AddToNowPlayingCommandOnlyAudio
         {
             get;
             private set;
         }
 
-        public CommandBase AddToNowPlayingCommandOnlyVideo
+        public IRelayCommand<object> AddToNowPlayingCommandOnlyVideo
         {
             get;
             private set;
         }
 
-        public CommandBase GoToPropertiesCommand
+        public IRelayCommand<object> GoToPropertiesCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SaveAsPlaylistCommand
+        public IRelayCommand<object> SaveAsPlaylistCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SaveAsPlaylistCommandOnlyMusic
-        {
-            get;
-            private set;
-        }
-
-
-        public CommandBase SaveAsPlaylistCommandOnlyVideo
+        public IRelayCommand<object> SaveAsPlaylistCommandOnlyMusic
         {
             get;
             private set;
         }
 
 
-        public CommandBase SaveAsPlaylistCommandOnlySelected
-        {
-            get;
-            private set;
-        }
-
-        public CommandBase SaveAsPlaylistCommandOnlyunselected
+        public IRelayCommand<object> SaveAsPlaylistCommandOnlyVideo
         {
             get;
             private set;
         }
 
 
-        public CommandBase RemoveSelectedCommand
+        public IRelayCommand<object> SaveAsPlaylistCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public CommandBase RemoveOnlyMusicCommand
+        public IRelayCommand<object> SaveAsPlaylistCommandOnlyunselected
         {
             get;
             private set;
         }
 
-        public CommandBase RemoveOnlyVideoCommand
+
+        public IRelayCommand RemoveSelectedCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToExistingPlaylistCommand
+        public IRelayCommand RemoveOnlyMusicCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToExistingPlaylistCommandOnlyMusic
+        public IRelayCommand RemoveOnlyVideoCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToExistingPlaylistCommandOnlyVideo
+        public IRelayCommand<object> AddToExistingPlaylistCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToExistingPlaylistCommandOnlySelected
+        public IRelayCommand<object> AddToExistingPlaylistCommandOnlyMusic
         {
             get;
             private set;
         }
 
-        public CommandBase AddToExistingPlaylistCommandOnlyUnselected
+        public IRelayCommand<object> AddToExistingPlaylistCommandOnlyVideo
         {
             get;
             private set;
         }
 
-        public CommandBase GoToNetworkPlaybackCommand
+        public IRelayCommand<object> AddToExistingPlaylistCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public CommandBase OpenFilesCommand
+        public IRelayCommand<object> AddToExistingPlaylistCommandOnlyUnselected
         {
             get;
             private set;
         }
 
-        public CommandBase OpenFoldersCommand
+        public IRelayCommand<object> GoToNetworkPlaybackCommand
+        {
+            get;
+            private set;
+        }
+
+        public IRelayCommand<object> OpenFilesCommand
+        {
+            get;
+            private set;
+        }
+
+        public IRelayCommand<object> OpenFoldersCommand
         {
             get; private set;
 
         }
 
-        public CommandBase ClearAllCommand
+        public IRelayCommand<object> ClearAllCommand
         {
             get; private set;
         }
 
-        public CommandBase AddDeepFoldersCommand
+        public IRelayCommand<object> AddDeepFoldersCommand
         {
             get;
             private set;
         }
 
-        public RelayCommand RemoveSlidedItem
+        public IRelayCommand<object> RemoveSlidedItem
         {
             get;
             private set;
         }
 
 
-        public CommandBase ChangeSongOrderRequestCommand { get; private set; }
+        public IRelayCommand<object> ChangeSongOrderRequestCommand { get; private set; }
 
-        public CommandBase PlayFileCommand { get; private set; }
-        public CommandBase EnqueueFileCommand { get; private set; }
-        public CommandBase AddFileToPlaylistCommand { get; private set; }
-        public CommandBase CopyFilePath { get; private set; }
-        public CommandBase CopyFileName { get; private set; }
-        public CommandBase CopyAlbum { get; private set; }
-        public CommandBase CopyArtist { get; private set; }
-        public CommandBase CopyGenre { get; private set; }
-        public CommandBase CopyFileToFolder { get; private set; }
-        public CommandBase CopyFileToClipboard { get; private set; }
+        public IRelayCommand<object> PlayFileCommand { get; private set; }
+        public IRelayCommand<object> EnqueueFileCommand { get; private set; }
+        public IRelayCommand<object> AddFileToPlaylistCommand { get; private set; }
+        public IRelayCommand<object> CopyFilePath { get; private set; }
+        public IRelayCommand<object> CopyFileName { get; private set; }
+        public IRelayCommand<object> CopyAlbum { get; private set; }
+        public IRelayCommand<object> CopyArtist { get; private set; }
+        public IRelayCommand<object> CopyGenre { get; private set; }
+        public IRelayCommand<object> CopyFileToFolder { get; private set; }
+        public IRelayCommand<object> CopyFileToClipboard { get; private set; }
 
         public bool PlayButtonIsEnabled
         {
@@ -477,84 +477,84 @@ namespace MayazucMediaPlayer.FileSystemViews
             ConfigureFilePickers();
 
 
-            PlayCommand = new AsyncRelayCommand(PlayClickCommandFunction);
-            AddToNowPlayingCommand = new AsyncRelayCommand(AddToNowPlayingCommandFunction);
+            PlayCommand = new AsyncRelayCommand<object>(PlayClickCommandFunction);
+            AddToNowPlayingCommand = new AsyncRelayCommand<object>(AddToNowPlayingCommandFunction);
             EnableSelection = new RelayCommand(SelectAllCommandFunction);
-            SaveAsPlaylistCommand = new AsyncRelayCommand(SaveAsPlaylistCommandFunction);
+            SaveAsPlaylistCommand = new AsyncRelayCommand<object>(SaveAsPlaylistCommandFunction);
             RemoveSelectedCommand = new AsyncRelayCommand(RemoveSelectedCommandFunction);
 
-            AddToExistingPlaylistCommand = new AsyncRelayCommand(AddToExistingPlaylistCommandFunction);
+            AddToExistingPlaylistCommand = new AsyncRelayCommand<object>(AddToExistingPlaylistCommandFunction);
 
-            ClearAllCommand = new AsyncRelayCommand(ClearContents);
-            OpenFilesCommand = new AsyncRelayCommand(OpenFilesAsync);
+            ClearAllCommand = new AsyncRelayCommand<object>(ClearContents);
+            OpenFilesCommand = new AsyncRelayCommand<object>(OpenFilesAsync);
 
-            OpenFoldersCommand = new AsyncRelayCommand(OpenFolderAsync);
+            OpenFoldersCommand = new AsyncRelayCommand<object>(OpenFolderAsync);
 
-            AddDeepFoldersCommand = new AsyncRelayCommand(OpenDeepFolderAsync);
+            AddDeepFoldersCommand = new AsyncRelayCommand<object>(OpenDeepFolderAsync);
 
-            RemoveSlidedItem = new RelayCommand(RemoveSlided);
-            PlayCommandOnlySelected = new AsyncRelayCommand(PlayCommandOnlySelectedInternal);
-            PlayCommandOnlyMusicFiles = new AsyncRelayCommand(PlayCommandOnlyMusicFilesInternal);
-            PlayCommandOnlyVideoFiles = new AsyncRelayCommand(PlayCommandOnlyVideoFilesInternal);
+            RemoveSlidedItem = new RelayCommand<object>(RemoveSlided);
+            PlayCommandOnlySelected = new AsyncRelayCommand<object>(PlayCommandOnlySelectedInternal);
+            PlayCommandOnlyMusicFiles = new AsyncRelayCommand<object>(PlayCommandOnlyMusicFilesInternal);
+            PlayCommandOnlyVideoFiles = new AsyncRelayCommand<object>(PlayCommandOnlyVideoFilesInternal);
 
-            AddToNowPlayingCommandOnlySelected = new AsyncRelayCommand(AddToNowPlayingCommandOnlySelectedInternal);
-            AddToNowPlayingCommandOnlyAudio = new AsyncRelayCommand(AddToNowPlayingCommandOnlyAudioInternal);
-            AddToNowPlayingCommandOnlyVideo = new AsyncRelayCommand(AddToNowPlayingCommandOnlyVideoInternal);
+            AddToNowPlayingCommandOnlySelected = new AsyncRelayCommand<object>(AddToNowPlayingCommandOnlySelectedInternal);
+            AddToNowPlayingCommandOnlyAudio = new AsyncRelayCommand<object>(AddToNowPlayingCommandOnlyAudioInternal);
+            AddToNowPlayingCommandOnlyVideo = new AsyncRelayCommand<object>(AddToNowPlayingCommandOnlyVideoInternal);
 
-            SaveAsPlaylistCommandOnlyMusic = new AsyncRelayCommand(SaveAsPlaylistCommandOnlyMusicInternal);
-            SaveAsPlaylistCommandOnlySelected = new AsyncRelayCommand(SaveAsPlaylistCommandOnlySelectedInternal);
-            SaveAsPlaylistCommandOnlyVideo = new AsyncRelayCommand(SaveAsPlaylistCommandOnlyVideoInternal);
-            SaveAsPlaylistCommandOnlyunselected = new AsyncRelayCommand(SaveAsPlaylistCommandOnlyunselectedInternal);
+            SaveAsPlaylistCommandOnlyMusic = new AsyncRelayCommand<object>(SaveAsPlaylistCommandOnlyMusicInternal);
+            SaveAsPlaylistCommandOnlySelected = new AsyncRelayCommand<object>(SaveAsPlaylistCommandOnlySelectedInternal);
+            SaveAsPlaylistCommandOnlyVideo = new AsyncRelayCommand<object>(SaveAsPlaylistCommandOnlyVideoInternal);
+            SaveAsPlaylistCommandOnlyunselected = new AsyncRelayCommand<object>(SaveAsPlaylistCommandOnlyunselectedInternal);
 
-            AddToExistingPlaylistCommandOnlyMusic = new AsyncRelayCommand(AddToExistingPlaylistCommandOnlyMusicInternal);
-            AddToExistingPlaylistCommandOnlySelected = new AsyncRelayCommand(AddToExistingPlaylistCommandOnlySelectedInternal);
-            AddToExistingPlaylistCommandOnlyVideo = new AsyncRelayCommand(AddToExistingPlaylistCommandOnlyVideoInternal);
-            AddToExistingPlaylistCommandOnlyUnselected = new AsyncRelayCommand(AddToExistingPlaylistCommandOnlyUnselectedInternal);
+            AddToExistingPlaylistCommandOnlyMusic = new AsyncRelayCommand<object>(AddToExistingPlaylistCommandOnlyMusicInternal);
+            AddToExistingPlaylistCommandOnlySelected = new AsyncRelayCommand<object>(AddToExistingPlaylistCommandOnlySelectedInternal);
+            AddToExistingPlaylistCommandOnlyVideo = new AsyncRelayCommand<object>(AddToExistingPlaylistCommandOnlyVideoInternal);
+            AddToExistingPlaylistCommandOnlyUnselected = new AsyncRelayCommand<object>(AddToExistingPlaylistCommandOnlyUnselectedInternal);
 
-            SelectAllCommandOnlyVideo = new RelayCommand(SelectAllCommandOnlyVideoInternal);
-            SelectAllCommandOnlyAudio = new RelayCommand(SelectAllCommandOnlyAudioInternal);
-            UnselectAllCommand = new RelayCommand(UnselectAllCommandnternal);
-            SelectAllCommandSelected = new RelayCommand(SelectAllCommandSelectedInternal);
+            SelectAllCommandOnlyVideo = new RelayCommand<object>(SelectAllCommandOnlyVideoInternal);
+            SelectAllCommandOnlyAudio = new RelayCommand<object>(SelectAllCommandOnlyAudioInternal);
+            UnselectAllCommand = new RelayCommand<object>(UnselectAllCommandnternal);
+            SelectAllCommandSelected = new RelayCommand<object>(SelectAllCommandSelectedInternal);
 
             RemoveOnlyMusicCommand = new AsyncRelayCommand(RemoveOnlyMusicCommandInternal);
             RemoveOnlyVideoCommand = new AsyncRelayCommand(RemoveOnlyVideoCommandInternal);
 
             FilterCollectionView.Source = Items;
 
-            ChangeSongOrderRequestCommand = new RelayCommand(ChangeSongRequestCommandFunction);
+            ChangeSongOrderRequestCommand = new RelayCommand<object>(ChangeSongRequestCommandFunction);
 
-            PlayFileCommand = new AsyncRelayCommand(PlaySingleFile);
-            EnqueueFileCommand = new AsyncRelayCommand(EnqueueSingleFile);
-            AddFileToPlaylistCommand = new AsyncRelayCommand(AddSingleFileToPlaylist);
-            PlayNextCommand = new AsyncRelayCommand(AddToNowPlayingNext);
-            PlayNextSingleFileCommand = new AsyncRelayCommand(PlayNextSingleFile);
-            PlayStartingFromFileCommand = new AsyncRelayCommand(PlayStartingFromFile);
+            PlayFileCommand = new AsyncRelayCommand<object>(PlaySingleFile);
+            EnqueueFileCommand = new AsyncRelayCommand<object>(EnqueueSingleFile);
+            AddFileToPlaylistCommand = new AsyncRelayCommand<object>(AddSingleFileToPlaylist);
+            PlayNextCommand = new AsyncRelayCommand<object>(AddToNowPlayingNext);
+            PlayNextSingleFileCommand = new AsyncRelayCommand<object>(PlayNextSingleFile);
+            PlayStartingFromFileCommand = new AsyncRelayCommand<object>(PlayStartingFromFile);
 
-            GoToPropertiesCommand = new AsyncRelayCommand(GoToItemProperties);
+            GoToPropertiesCommand = new AsyncRelayCommand<object>(GoToItemProperties);
 
-            CopyFileName = new RelayCommand((obj) =>
+            CopyFileName = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.DisplayName);
             });
-            CopyFilePath = new RelayCommand((obj) =>
+            CopyFilePath = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Path);
             });
-            CopyAlbum = new RelayCommand((obj) =>
+            CopyAlbum = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Metadata.Album);
             });
-            CopyArtist = new RelayCommand((obj) =>
+            CopyArtist = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Metadata.Artist);
             });
-            CopyGenre = new RelayCommand((obj) =>
+            CopyGenre = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Metadata.Genre);
             });
 
-            CopyFileToFolder = new AsyncRelayCommand(CopyFileToFolderFunction);
-            CopyFileToClipboard = new AsyncRelayCommand(CopyFileToClipboardFunction);
+            CopyFileToFolder = new AsyncRelayCommand<object>(CopyFileToFolderFunction);
+            CopyFileToClipboard = new AsyncRelayCommand<object>(CopyFileToClipboardFunction);
         }
 
         private Task CopyFileToClipboardFunction(object arg)

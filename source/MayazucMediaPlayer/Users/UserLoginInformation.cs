@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.UI.Controls;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.UserInput;
@@ -53,19 +54,19 @@ namespace MayazucMediaPlayer.Users
             }
         }
 
-        public CommandBase SaveCommand
+        public IRelayCommand<object> SaveCommand
         {
             get;
             private set;
         }
 
-        public CommandBase DeleteCommand
+        public IRelayCommand<object> DeleteCommand
         {
             get;
             private set;
         }
 
-        public CommandBase LoadPassword
+        public IRelayCommand<object> LoadPassword
         {
             get;
             private set;
@@ -84,9 +85,9 @@ namespace MayazucMediaPlayer.Users
             WindowsCredential = windowsCredential;
             UserName = WindowsCredential.UserName;
             ServiceName = windowsCredential.Resource;
-            SaveCommand = new AsyncRelayCommand(Save);
-            DeleteCommand = new AsyncRelayCommand(Delete);
-            LoadPassword = new RelayCommand(LoadPass);
+            SaveCommand = new AsyncRelayCommand<object>(Save);
+            DeleteCommand = new AsyncRelayCommand<object>(Delete);
+            LoadPassword = new RelayCommand<object>(LoadPass);
             ServiceProvider = loginProvider;
         }
 

@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Settings;
@@ -41,17 +42,17 @@ namespace MayazucMediaPlayer.AudioEffects
             get; private set;
         } = new ObservableCollection<FrequencyBandContext>();
 
-        public CommandBase ResetButtonCommand
+        public IRelayCommand ResetButtonCommand
         {
             get; private set;
         }
 
-        public CommandBase SavePresetButtonCommand
+        public IRelayCommand SavePresetButtonCommand
         {
             get; private set;
         }
 
-        public CommandBase ManageEqConfigurationsButtonCommand
+        public IRelayCommand ManageEqConfigurationsButtonCommand
         {
             get; private set;
         }
@@ -68,7 +69,7 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             EQModels = eqm;
             ResetButtonCommand = new RelayCommand(ResetEffects);
-            SavePresetButtonCommand = new AsyncRelayCommand(SavePreset);
+            SavePresetButtonCommand = new AsyncRelayCommand<object>(SavePreset);
             ManageEqConfigurationsButtonCommand = new RelayCommand(manageEqualizerConfigurations);
             PlayerService = playerService;
         }
@@ -99,7 +100,7 @@ namespace MayazucMediaPlayer.AudioEffects
                 FrequencyBands.Add(new FrequencyBandContext(c));
         }
 
-        private void ResetEffects(object? sender)
+        private void ResetEffects()
         {
             ResetEqualizerSliders();
             ResetAudioEffects();
@@ -115,7 +116,7 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
-        private void manageEqualizerConfigurations(object? sender)
+        private void manageEqualizerConfigurations()
         {
             SubmitNavigationEvent(typeof(EQConfigurationManagementPage), EQModels);
         }

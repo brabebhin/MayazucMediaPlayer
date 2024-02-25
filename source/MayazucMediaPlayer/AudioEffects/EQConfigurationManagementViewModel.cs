@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Navigation;
@@ -44,18 +45,18 @@ namespace MayazucMediaPlayer.AudioEffects
         }
 
 
-        public CommandBase AddCommand
+        public IRelayCommand<object> AddCommand
         {
             get; private set;
         }
 
-        public CommandBase DeleteButtonCommand
+        public IRelayCommand<object> DeleteButtonCommand
         {
             get;
             private set;
         }
 
-        public CommandBase EditEqualizerConfigurationPresetsCommand
+        public IAsyncRelayCommand<object> EditEqualizerConfigurationPresetsCommand
         {
             get;
             private set;
@@ -74,9 +75,9 @@ namespace MayazucMediaPlayer.AudioEffects
             EQModels = eqm;
             ServiceProvider = serviceProvider;
 
-            AddCommand = new AsyncRelayCommand(CreateNewConfiguration);
-            DeleteButtonCommand = new RelayCommand(DeleteSelection);
-            EditEqualizerConfigurationPresetsCommand = new AsyncRelayCommand(EditEqualizerConfigurationPresets);
+            AddCommand = new AsyncRelayCommand<object>(CreateNewConfiguration);
+            DeleteButtonCommand = new RelayCommand<object>(DeleteSelection);
+            EditEqualizerConfigurationPresetsCommand = new AsyncRelayCommand<object>(EditEqualizerConfigurationPresets);
         }
 
         private async Task EditEqualizerConfigurationPresets(object arg)

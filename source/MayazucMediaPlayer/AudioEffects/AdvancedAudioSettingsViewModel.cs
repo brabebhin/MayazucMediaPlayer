@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.UserInput;
@@ -40,7 +41,7 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
-        public CommandBase SetBalanceToZeroCommand
+        public IRelayCommand SetBalanceToZeroCommand
         {
             get;
             private set;
@@ -48,7 +49,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public AdvancedAudioSettingsViewModel(DispatcherQueue disp) : base(disp)
         {
-            SetBalanceToZeroCommand = new RelayCommand((s) => { AudioBalanceValue = 0; });
+            SetBalanceToZeroCommand = new RelayCommand(() => { AudioBalanceValue = 0; });
 
         }
 

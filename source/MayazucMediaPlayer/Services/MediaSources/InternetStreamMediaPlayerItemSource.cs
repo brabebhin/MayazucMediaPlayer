@@ -1,4 +1,5 @@
 ﻿using FFmpegInteropX;
+using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.NowPlayingViews;
 using Microsoft.UI.Xaml.Media.Imaging;

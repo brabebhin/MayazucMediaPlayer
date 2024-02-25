@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI.Controls;
 using FluentResults;
 using MayazucMediaPlayer.Common;
@@ -97,7 +98,7 @@ namespace MayazucMediaPlayer.Controls
 
         public static DependencyProperty CurrentTrackTitleProperty = DependencyProperty.Register(nameof(CurrentTrackTitle), typeof(string), typeof(CustomMediaTransportControls), new PropertyMetadata("Nothing is currently playing"));
 
-        public CommandBase SaveVideoFrameCommand
+        public IRelayCommand<object> SaveVideoFrameCommand
         {
             get;
             private set;
@@ -126,7 +127,7 @@ namespace MayazucMediaPlayer.Controls
 
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
             AppState.Current.MediaServiceConnector.SubtitleDelayChanged += BackgroundMediaService_SubtitleDelayChanged;
-            SaveVideoFrameCommand = new AsyncRelayCommand(async (o) => { await SaveVideoFrameButtonClickInternal(); }, null);
+            SaveVideoFrameCommand = new AsyncRelayCommand<object>(async (o) => { await SaveVideoFrameButtonClickInternal(); }, null);
 
             DoubleTapped += CustomMediaTransportControls_DoubleTapped;
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;

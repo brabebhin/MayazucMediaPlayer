@@ -4,7 +4,6 @@ namespace MayazucMediaPlayer.LocalCache
 {
     internal static class ApplicationDataContainers
     {
-
         public static ApplicationDataContainer AudioEffectsSlim
         {
             get

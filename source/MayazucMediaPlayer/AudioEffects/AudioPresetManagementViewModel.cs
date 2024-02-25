@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.UserInput;
@@ -18,17 +19,17 @@ namespace MayazucMediaPlayer.AudioEffects
             private set;
         }
 
-        public CommandBase AddNewPresetCommand
+        public IRelayCommand<object> AddNewPresetCommand
         {
             get; private set;
         }
 
-        public CommandBase EditAmplificationsCommand
+        public IAsyncRelayCommand<object> EditAmplificationsCommand
         {
             get; private set;
         }
 
-        public CommandBase DeletePresetCommand
+        public IAsyncRelayCommand<object> DeletePresetCommand
         {
             get; private set;
         }
@@ -52,9 +53,9 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             ServiceProvider = serviceProvider;
             TargetEqualizerConfiguration = eqConfiguration;
-            AddNewPresetCommand = new AsyncRelayCommand(AddNewPreset_tapped);
-            EditAmplificationsCommand = new AsyncRelayCommand(EditAmplifications_click);
-            DeletePresetCommand = new RelayCommand(DeletePreset_click);
+            AddNewPresetCommand = new AsyncRelayCommand<object>(AddNewPreset_tapped);
+            EditAmplificationsCommand = new AsyncRelayCommand<object>(EditAmplifications_click);
+            DeletePresetCommand = new AsyncRelayCommand<object>(DeletePreset_click);
             SavedPresets = eqConfiguration.Presets;
         }
 
@@ -74,7 +75,7 @@ namespace MayazucMediaPlayer.AudioEffects
             await preset.SetAmplificationsAsync(false, TargetEqualizerConfiguration);
         }
 
-        private async void DeletePreset_click(object? sender)
+        private async Task DeletePreset_click(object? sender)
         {
             var preset = (sender as FrameworkElement).DataContext as AudioEqualizerPreset;
             var playerInstance = ServiceProvider.GetService<IBackgroundPlayer>();

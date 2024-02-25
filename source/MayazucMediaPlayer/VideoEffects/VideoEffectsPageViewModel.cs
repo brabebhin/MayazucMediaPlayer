@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.Services;
 using Microsoft.UI.Dispatching;
@@ -28,13 +29,13 @@ namespace MayazucMediaPlayer.VideoEffects
             private set;
         } = new ObservableHashSet<SavedColorProfile>();
 
-        public RelayCommand ResetDefault
+        public IRelayCommand ResetDefault
         {
             get;
             private set;
         }
 
-        public AsyncRelayCommand SaveColorProfile
+        public IRelayCommand<object> SaveColorProfile
         {
             get;
             private set;
@@ -68,7 +69,7 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             LoadSliders();
             ResetDefault = new RelayCommand(ResetDefaultValues);
-            SaveColorProfile = new AsyncRelayCommand(SaveColorProfileAsync);
+            SaveColorProfile = new AsyncRelayCommand<object>(SaveColorProfileAsync);
             EffectConfig = effectConfig;
         }
 

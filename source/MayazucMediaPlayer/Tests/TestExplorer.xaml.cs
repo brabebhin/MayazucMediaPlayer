@@ -1,4 +1,5 @@
-﻿using FFmpegInteropX;
+﻿using CommunityToolkit.Mvvm.Input;
+using FFmpegInteropX;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Services;
@@ -26,7 +27,7 @@ namespace MayazucMediaPlayer.Tests
             InitializeComponent();
             lsvTests.ItemsSource = Tests;
 
-            Tests.Add(new TestItem("Now playing playbacklist", new AsyncRelayCommand(async (x) =>
+            Tests.Add(new TestItem("Now playing playbacklist", new AsyncRelayCommand<object>(async (x) =>
             {
                 MediaPlaybackList list = new MediaPlaybackList();
                 var nowPlaying = ServiceProvider.GetService<IPlaybackSequenceProvider>().GetPlaybackQueue();
@@ -47,7 +48,7 @@ namespace MayazucMediaPlayer.Tests
 
 
 
-            Tests.Add(new TestItem("System playlists", new AsyncRelayCommand(async (x) =>
+            Tests.Add(new TestItem("System playlists", new AsyncRelayCommand<object>(async (x) =>
             {
 
                 var playlists = await KnownFolders.Playlists.GetFilesAsync();
@@ -62,7 +63,7 @@ namespace MayazucMediaPlayer.Tests
             })));
 
 
-            Tests.Add(new TestItem("Youtube player", new AsyncRelayCommand(async (x) =>
+            Tests.Add(new TestItem("Youtube player", new AsyncRelayCommand<object>(async (x) =>
             {
 
                 //YouTubeUri url = await YouTube.GetVideoUriAsync("xloasKalGGM", YouTubeQuality.Quality360P);
@@ -77,7 +78,7 @@ namespace MayazucMediaPlayer.Tests
 
             })));
 
-            Tests.Add(new TestItem("external subtitles ffmpeg", new AsyncRelayCommand(async (x) =>
+            Tests.Add(new TestItem("external subtitles ffmpeg", new AsyncRelayCommand<object>(async (x) =>
             {
                 var subtitleFiles = new string[] { "subviewer.sub", "ttml.ttml", "VTT.vtt", "sami.sami", "subtitle.lrc", "subRIP.srt", "MicroDVD.sub" };
 
@@ -124,7 +125,7 @@ namespace MayazucMediaPlayer.Tests
 
 
 
-            Tests.Add(new TestItem("external subtitles ffmpeg (URI)", new AsyncRelayCommand(async (x) =>
+            Tests.Add(new TestItem("external subtitles ffmpeg (URI)", new AsyncRelayCommand<object>(async (x) =>
             {
 
                 var subtitleFiles = new string[] { "sami.sami", "subtitle.lrc", "ass.ssa", "ttml.ttml", "VTT.vtt", "subRIP.srt", "MicroDVD.sub" };
@@ -159,7 +160,7 @@ namespace MayazucMediaPlayer.Tests
 
 
             })));
-            //tests.Add(new TestItem("Custom playback surface", new AsyncRelayCommand(async (x) =>
+            //tests.Add(new TestItem("Custom playback surface", new AsyncRelayCommand<object>(async (x) =>
             //{
             //    this.Frame.NavigateSingle(typeof(CustomCompositionSurface));
             //})));

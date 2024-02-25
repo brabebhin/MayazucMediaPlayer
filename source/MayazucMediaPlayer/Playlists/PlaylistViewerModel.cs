@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI;
+﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
@@ -29,50 +30,50 @@ namespace MayazucMediaPlayer.Playlists
         bool _PlayButtonIsEnabled, _AddToPlaylistButtonIsEnabled, _SaveAsPlaylistButtonIsEnabled, _DeleteButtonIsEnabled;
         Visibility _SearchGridVisibility = Visibility.Collapsed;
 
-        public CommandBase PlayCommand
+        public IRelayCommand<object> PlayCommand
         {
             get;
             private set;
         }
 
-        public CommandBase AddToNowPlayingCommand
+        public IRelayCommand<object> AddToNowPlayingCommand
         {
             get;
             private set;
         }
 
-        public CommandBase SaveToExistingPlaylistCommand
+        public IRelayCommand<object> SaveToExistingPlaylistCommand
         {
             get;
             private set;
         }
 
-        public CommandBase DeleteSelectedPlaylistsCommand
+        public IRelayCommand<object> DeleteSelectedPlaylistsCommand
         {
             get;
             private set;
         }
 
 
-        public CommandBase SetSelectionModeCommand
+        public IRelayCommand<object> SetSelectionModeCommand
         {
             get;
             private set;
         }
 
-        public CommandBase ShowSearchGridCommand
+        public IRelayCommand<object> ShowSearchGridCommand
         {
             get;
             private set;
         }
 
-        public CommandBase DeleteSinglePlaylist
+        public IRelayCommand<object> DeleteSinglePlaylist
         {
             get;
             private set;
         }
 
-        public CommandBase CreateEmptyPlaylistCommand
+        public IRelayCommand<object> CreateEmptyPlaylistCommand
         {
             get;
             private set;
@@ -104,14 +105,14 @@ namespace MayazucMediaPlayer.Playlists
         {
             PlaylistsService = playlistService;
             PlaylistsView = new AdvancedCollectionView(Playlists);
-            ShowSearchGridCommand = new RelayCommand(ShowHideSearchGrid);
-            SetSelectionModeCommand = new RelayCommand(SelectAllCommand);
-            DeleteSelectedPlaylistsCommand = new AsyncRelayCommand(DeleteSelectedCommand);
-            SaveToExistingPlaylistCommand = new AsyncRelayCommand(SaveToExistingPlaylist);
-            PlayCommand = new AsyncRelayCommand(PlayCommandAsync);
-            AddToNowPlayingCommand = new AsyncRelayCommand(AddToNowPlayingAsyncCommand);
-            DeleteSinglePlaylist = new AsyncRelayCommand(DeleteSinglePlaylistAsync);
-            CreateEmptyPlaylistCommand = new AsyncRelayCommand(CreateEmptyPlaylist);
+            ShowSearchGridCommand = new RelayCommand<object>(ShowHideSearchGrid);
+            SetSelectionModeCommand = new RelayCommand<object>(SelectAllCommand);
+            DeleteSelectedPlaylistsCommand = new AsyncRelayCommand<object>(DeleteSelectedCommand);
+            SaveToExistingPlaylistCommand = new AsyncRelayCommand<object>(SaveToExistingPlaylist);
+            PlayCommand = new AsyncRelayCommand<object>(PlayCommandAsync);
+            AddToNowPlayingCommand = new AsyncRelayCommand<object>(AddToNowPlayingAsyncCommand);
+            DeleteSinglePlaylist = new AsyncRelayCommand<object>(DeleteSinglePlaylistAsync);
+            CreateEmptyPlaylistCommand = new AsyncRelayCommand<object>(CreateEmptyPlaylist);
         }
 
         private async Task CreateEmptyPlaylist(object args)

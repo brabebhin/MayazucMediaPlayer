@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Common;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.Runtime;
@@ -141,43 +142,43 @@ namespace MayazucMediaPlayer.Playlists
             }
         }
 
-        public CommandBase ChangeSongOrderRequestCommand
+        public IRelayCommand<object> ChangeSongOrderRequestCommand
         {
             get;
             private set;
         }
 
-        public CommandBase PlayButtonCommand
+        public IRelayCommand<object> PlayButtonCommand
         {
             get; private set;
         }
 
-        public CommandBase EnqueueButtonCommand
+        public IRelayCommand<object> EnqueueButtonCommand
         {
             get; private set;
         }
 
-        public CommandBase SelectButtonCommand
+        public IRelayCommand<object> SelectButtonCommand
         {
             get; private set;
         }
 
-        public CommandBase AddToPlaylistButtonCommand
+        public IRelayCommand<object> AddToPlaylistButtonCommand
         {
             get; private set;
         }
 
-        public CommandBase DeleteCommand
+        public IRelayCommand<object> DeleteCommand
         {
             get; private set;
         }
 
-        public CommandBase RemoveSelectedCommand
+        public IRelayCommand<object> RemoveSelectedCommand
         {
             get; private set;
         }
 
-        public CommandBase RenamePlaylistCommand
+        public IRelayCommand<object> RenamePlaylistCommand
         {
             get;
             private set;
@@ -192,16 +193,16 @@ namespace MayazucMediaPlayer.Playlists
         {
             PlaylistsService = playlistsService;
             Files.CollectionChanged += Files_CollectionChanged;
-            PlayButtonCommand = new AsyncRelayCommand(PlayCLick);
-            EnqueueButtonCommand = new AsyncRelayCommand(AddToNowPlaying);
+            PlayButtonCommand = new AsyncRelayCommand<object>(PlayCLick);
+            EnqueueButtonCommand = new AsyncRelayCommand<object>(AddToNowPlaying);
 
-            SelectButtonCommand = new RelayCommand(SelectTapped);
-            AddToPlaylistButtonCommand = new AsyncRelayCommand(AddToExistingPlaylist);
-            DeleteCommand = new AsyncRelayCommand(DeleteClick);
-            RemoveSelectedCommand = new AsyncRelayCommand(RemoveSelectedItems);
-            RenamePlaylistCommand = new AsyncRelayCommand(RenamePlaylistAsync);
+            SelectButtonCommand = new RelayCommand<object>(SelectTapped);
+            AddToPlaylistButtonCommand = new AsyncRelayCommand<object>(AddToExistingPlaylist);
+            DeleteCommand = new AsyncRelayCommand<object>(DeleteClick);
+            RemoveSelectedCommand = new AsyncRelayCommand<object>(RemoveSelectedItems);
+            RenamePlaylistCommand = new AsyncRelayCommand<object>(RenamePlaylistAsync);
 
-            ChangeSongOrderRequestCommand = new AsyncRelayCommand(ChangeSongRequestCommandFunction);
+            ChangeSongOrderRequestCommand = new AsyncRelayCommand<object>(ChangeSongRequestCommandFunction);
             PlaylistsService.PlaylistItemChanged += PlaybackService_PlaylistItemChanged;
         }
 

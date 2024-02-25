@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Services;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.UserInput;
 using Microsoft.UI;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace MayazucMediaPlayer.Tests
         }
 
 
-        public CommandBase TestCommand
+        public AsyncRelayCommand<object> TestCommand
         {
             get;
             private set;
@@ -52,7 +53,7 @@ namespace MayazucMediaPlayer.Tests
 
 
 
-        public TestItem(string name, CommandBase command)
+        public TestItem(string name, AsyncRelayCommand<object> command)
         {
             TestName = name;
             TestCommand = command;

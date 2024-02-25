@@ -24,6 +24,8 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="AppBackground.cs" />
+		<Compile Remove="Common\AsyncRelayCommand.cs" />
+		<Compile Remove="Common\RelayCommand.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Controls\GenericContentControl.xaml" />

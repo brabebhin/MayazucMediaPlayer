@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.Common;
@@ -138,13 +139,13 @@ namespace MayazucMediaPlayer
             }
         }
 
-        public CommandBase ShowHideNowPlayingEqualizer
+        public IRelayCommand ShowHideNowPlayingEqualizer
         {
             get;
             private set;
         }
 
-        public CommandBase ExitFullScreenMode
+        public IRelayCommand ExitFullScreenMode
         {
             get;
             private set;

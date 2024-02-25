@@ -11,54 +11,109 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 
-namespace MayazucMediaPlayer
+namespace MayazucMediaPlayer.MediaMetadata
 {
-    public static class FFmpegMetadataExtensions
+    public class EmbeddedMetadataResult
     {
-        public static string GetArtist(this FFmpegMediaSource ffmpegMediaSource)
+        public string Album { get; private set; } = string.Empty;
+
+        public string Artist { get; private set; } = string.Empty;
+
+        public string Genre { get; private set; } = string.Empty;
+
+        public string Title { get; private set; } = string.Empty;
+
+        public string SavedThumbnailFile { get; private set; } = AssetsPaths.PlaceholderAlbumArt;
+
+        public bool HasSavedThumbnailFile()
         {
-            string[] tagKeys = new string[] { "performer", "artist", "album_artist" };
-            return ExtractMetadataInternal(ffmpegMediaSource, tagKeys);
+            return SavedThumbnailFile != AssetsPaths.PlaceholderAlbumArt;
         }
 
-        public static string GetTitle(this FFmpegMediaSource ffmpegMediaSource)
+        public ReadOnlyDictionary<string, string> AdditionalMetadata { get; private set; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
+
+        public EmbeddedMetadataResult(string album, string artist, string genre, string title, ReadOnlyDictionary<string, string> additionalMetadata)
         {
-            string[] tagKeys = new string[] { "title" };
-            return ExtractMetadataInternal(ffmpegMediaSource, tagKeys);
+            Album = album;
+            Artist = artist;
+            Genre = genre;
+            Title = title;
+            AdditionalMetadata = additionalMetadata;
         }
 
-        private static string ExtractMetadataInternal(FFmpegMediaSource ffmpegMediaSource, string[] albumTagKeys)
+        public EmbeddedMetadataResult(string album, string artist, string genre, string title, string savedThumbnailFile, ReadOnlyDictionary<string, string> additionalMetadata)
         {
-            HashSet<string> resultsBuilder = new HashSet<string>();
-            foreach (string key in albumTagKeys)
-            {
-                if (ffmpegMediaSource.MetadataTags.TryGetValue(key, out var tag))
-                {
-                    var joinedTag = string.Join(' ', tag);
-                    resultsBuilder.Add(joinedTag);
-                }
-            }
-
-            return string.Join(" - ", resultsBuilder);
+            SavedThumbnailFile = string.IsNullOrWhiteSpace(savedThumbnailFile) ? AssetsPaths.PlaceholderAlbumArt : savedThumbnailFile;
+            Album = album;
+            Artist = artist;
+            Genre = genre;
+            Title = title;
+            AdditionalMetadata = additionalMetadata;
         }
 
-        public static string GetAlbum(this FFmpegMediaSource ffmpegMediaSource)
+        public EmbeddedMetadataResult(string album, string author, string genre, string title)
         {
-            string[] tagKeys = new string[] { "album" };
-            return ExtractMetadataInternal(ffmpegMediaSource, tagKeys);
+            Artist = author;
+            Album = album;
+            Genre = genre;
+            Title = title;
         }
 
-        public static string GetGenre(this FFmpegMediaSource ffmpegMediaSource)
+        public EmbeddedMetadataResult(string performer, string title)
         {
-            string[] tagKeys = new string[] { "genre" };
-            return ExtractMetadataInternal(ffmpegMediaSource, tagKeys);
+            Artist = performer;
+            Title = title;
         }
 
-        public static ReadOnlyDictionary<string, string> GetMetadataDictionary(this FFmpegMediaSource fFmpegMediaSource)
+        public override bool Equals(object obj)
         {
-            return new ReadOnlyDictionary<string, string>(fFmpegMediaSource.MetadataTags.ToDictionary(x => x.Key, x => string.Join(" ", x.Value)));
+            return obj is EmbeddedMetadataResult result &&
+                   Album == result.Album &&
+                   Artist == result.Artist &&
+                   Genre == result.Genre &&
+                   Title == result.Title;
         }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Album, Artist, Genre, Title);
+        }
+    }
+
+    public class EmbeddedMetadataResultFile
+    {
+        public string Album { get; set; } = string.Empty;
+
+        public string Artist { get; set; } = string.Empty;
+
+        public string Genre { get; set; } = string.Empty;
+
+        public string Title { get; set; } = string.Empty;
+
+        public string SavedThumbnailFile { get; set; }
+
+        public string FilePath { get; set; } = string.Empty;
+
+        public Dictionary<string, string> AdditionalMetadata { get; set; } = new Dictionary<string, string>();
+
+        public EmbeddedMetadataResult ToMetadataResult()
+        {
+            return new EmbeddedMetadataResult(album: Album, artist: Artist, genre: Genre, title: Title, savedThumbnailFile: SavedThumbnailFile, additionalMetadata: new ReadOnlyDictionary<string, string>(AdditionalMetadata));
+        }
+
+        public EmbeddedMetadataResultFile() { }
+
+        public EmbeddedMetadataResultFile(EmbeddedMetadataResult metadata, string filePath)
+        {
+            Album = metadata.Album;
+            Artist = metadata.Artist;
+            Genre = metadata.Genre;
+            Title = metadata.Title;
+
+            SavedThumbnailFile = metadata.SavedThumbnailFile;
+            AdditionalMetadata = metadata.AdditionalMetadata.ToDictionary(x => x.Key, x => x.Value);
+            FilePath = filePath;
+        }
     }
 
     public static class EmbeddedMetadataResolver
@@ -210,107 +265,5 @@ namespace MayazucMediaPlayer
         }
     }
 
-    public class EmbeddedMetadataResult
-    {
-        public string Album { get; private set; } = string.Empty;
-
-        public string Artist { get; private set; } = string.Empty;
-
-        public string Genre { get; private set; } = string.Empty;
-
-        public string Title { get; private set; } = string.Empty;
-
-        public string SavedThumbnailFile { get; private set; } = AssetsPaths.PlaceholderAlbumArt;
-
-        public bool HasSavedThumbnailFile()
-        {
-            return SavedThumbnailFile != AssetsPaths.PlaceholderAlbumArt;
-        }
-
-        public ReadOnlyDictionary<string, string> AdditionalMetadata { get; private set; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
-
-        public EmbeddedMetadataResult(string album, string artist, string genre, string title, ReadOnlyDictionary<string, string> additionalMetadata)
-        {
-            Album = album;
-            Artist = artist;
-            Genre = genre;
-            Title = title;
-            AdditionalMetadata = additionalMetadata;
-        }
-
-        public EmbeddedMetadataResult(string album, string artist, string genre, string title, string savedThumbnailFile, ReadOnlyDictionary<string, string> additionalMetadata)
-        {
-            SavedThumbnailFile = string.IsNullOrWhiteSpace(savedThumbnailFile) ? AssetsPaths.PlaceholderAlbumArt : savedThumbnailFile;
-            Album = album;
-            Artist = artist;
-            Genre = genre;
-            Title = title;
-            AdditionalMetadata = additionalMetadata;
-        }
-
-        public EmbeddedMetadataResult(string album, string author, string genre, string title)
-        {
-            Artist = author;
-            Album = album;
-            Genre = genre;
-            Title = title;
-        }
-
-        public EmbeddedMetadataResult(string performer, string title)
-        {
-            Artist = performer;
-            Title = title;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is EmbeddedMetadataResult result &&
-                   Album == result.Album &&
-                   Artist == result.Artist &&
-                   Genre == result.Genre &&
-                   Title == result.Title;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Album, Artist, Genre, Title);
-        }
-    }
-
-    public class EmbeddedMetadataResultFile
-    {
-        public string Album { get; set; } = string.Empty;
-
-        public string Artist { get; set; } = string.Empty;
-
-        public string Genre { get; set; } = string.Empty;
-
-        public string Title { get; set; } = string.Empty;
-
-        public string SavedThumbnailFile { get; set; }
-
-        public string FilePath { get; set; } = string.Empty;
-
-        public Dictionary<string, string> AdditionalMetadata { get; set; } = new Dictionary<string, string>();
-
-        public EmbeddedMetadataResult ToMetadataResult()
-        {
-            return new EmbeddedMetadataResult(album: Album, artist: Artist, genre: Genre, title: Title, savedThumbnailFile: SavedThumbnailFile, additionalMetadata: new ReadOnlyDictionary<string, string>(AdditionalMetadata));
-        }
-
-        public EmbeddedMetadataResultFile() { }
-
-        public EmbeddedMetadataResultFile(EmbeddedMetadataResult metadata, string filePath)
-        {
-            Album = metadata.Album;
-            Artist = metadata.Artist;
-            Genre = metadata.Genre;
-            Title = metadata.Title;
-
-            SavedThumbnailFile = metadata.SavedThumbnailFile;
-            AdditionalMetadata = metadata.AdditionalMetadata.ToDictionary(x => x.Key, x => x.Value);
-            FilePath = filePath;
-        }
-    }
 }
 

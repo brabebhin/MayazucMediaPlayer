@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using MayazucMediaPlayer.MediaMetadata;
+using Microsoft.Extensions.Caching.Memory;
 using Nito.AsyncEx;
 using System;
 using System.IO;
