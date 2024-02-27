@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.WindowsAPICodePack.Shell;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace MayazucMediaPlayer
@@ -10,6 +11,7 @@ namespace MayazucMediaPlayer
         public new bool Add(T item)
         {
             var result = base.Add(item);
+            ShellFile file = null;
 
             if (result)
             {
