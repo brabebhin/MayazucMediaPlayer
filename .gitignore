@@ -31,3 +31,4 @@ _ReSharper*/
 #Nuget packages folder
 packages/
 */FFmpegInterop/Generated Files*
+*/Generated Files/*
