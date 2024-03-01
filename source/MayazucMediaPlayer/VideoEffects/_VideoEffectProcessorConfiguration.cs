@@ -4,7 +4,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.VideoEffects
 {
-    public class VideoEffectProcessorConfiguration : ObservableObject
+    public class _VideoEffectProcessorConfiguration : ObservableObject
     {
         bool _masterSwitch;
         float _Brightness;
@@ -15,7 +15,6 @@ namespace MayazucMediaPlayer.VideoEffects
         float _Sharpness;
         float _SharpnessThreshold;
 
-        //readonly VideoEffectConfiguration FFmpegEffectConfig = new VideoEffectConfiguration();
 
         public bool MasterSwitch
         {
@@ -95,11 +94,6 @@ namespace MayazucMediaPlayer.VideoEffects
         }
 
         public event EventHandler<string> ConfigurationChanged;
-
-        public void ApplyVideoEffect(MediaPlayer player)
-        {
-            //FFmpegEffectConfig.AddVideoEffect(player, false);
-        }
 
         public void RemoveVideoEffect(MediaPlayer player)
         {

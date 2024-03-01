@@ -1,5 +1,6 @@
 ﻿using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Dialogs;
+using MayazucNativeFramework;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.Linq;

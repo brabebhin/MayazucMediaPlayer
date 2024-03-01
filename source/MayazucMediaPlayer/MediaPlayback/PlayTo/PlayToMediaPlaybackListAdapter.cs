@@ -4,7 +4,7 @@ using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.VideoEffects;
+using MayazucNativeFramework;
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;

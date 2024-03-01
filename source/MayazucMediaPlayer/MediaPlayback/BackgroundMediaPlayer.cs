@@ -9,7 +9,7 @@ using MayazucMediaPlayer.MediaPlayback.PlayTo;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.VideoEffects;
+using MayazucNativeFramework;
 using Microsoft.UI.Dispatching;
 using Nito.AsyncEx;
 using System;

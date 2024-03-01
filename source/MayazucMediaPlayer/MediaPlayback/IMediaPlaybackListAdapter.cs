@@ -1,5 +1,5 @@
 ﻿using MayazucMediaPlayer.Helpers;
-using MayazucMediaPlayer.VideoEffects;
+using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

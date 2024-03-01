@@ -1,4 +1,4 @@
-﻿using MayazucMediaPlayer.VideoEffects;
+﻿using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +49,6 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
                     //hadAutoPlay = player.AutoPlay;
                     //player.AutoPlay = true;
                     AttachMediaPlayerEvents();
-                    AddMcVideoEffect(player);
                 }
             }
         }
@@ -71,11 +70,6 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         public VideoEffectSequentialMediaSourceSequence(VideoEffectProcessorConfiguration videoEffectConfig)
         {
             VideoEffectsConfiguration = videoEffectConfig;
-        }
-
-        private void AddMcVideoEffect(MediaPlayer CurrentPlayer)
-        {
-            VideoEffectsConfiguration.ApplyVideoEffect(CurrentPlayer);
         }
 
         private void Player_MediaFailed(MediaPlayer sender, MediaPlayerFailedEventArgs args)

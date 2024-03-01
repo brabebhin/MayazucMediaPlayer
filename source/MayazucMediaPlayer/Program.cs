@@ -75,7 +75,7 @@ namespace MayazucMediaPlayer
         // wait method to wait for the redirection to complete.
         public static void RedirectActivationTo(
             AppActivationArguments args, AppInstance keyInstance)
-        {
+        {           
             var redirectSemaphore = new Semaphore(0, 1);
             Task.Run(() =>
             {

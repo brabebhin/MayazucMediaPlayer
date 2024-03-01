@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media.Imaging;
 using CommunityToolkit.WinUI.UI;
 using MayazucMediaPlayer.MediaPlayback;
+using MayazucNativeFramework;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,11 +33,8 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class MediaPlayerRenderingElement : UserControl
     {
-        private SoftwareBitmap frameServerImageSource;
-        private CanvasImageSource canvasImageSource;
-        readonly AsyncLock sizeChangedLock = new AsyncLock();
-        private CanvasDevice canvasDevice;
-        private ImageSource transparentPosterSource;
+        FrameServerRenderer renderer = new FrameServerRenderer();
+
         private EffectProcessor EffectRenderer = new EffectProcessor();
 
         MediaPlayer _mediaPlayer;
@@ -79,10 +77,8 @@ namespace MayazucMediaPlayer.Controls
         {
             this.InitializeComponent();
             mediaPlayerElementInstance.RegisterPropertyChangedCallback(MediaPlayerElement.MediaPlayerProperty, new DependencyPropertyChangedCallback(OnMediaPlayerChanged));
-            transparentPosterSource = new BitmapImage(new Uri("ms-appx:///assets/transparent.png"));
             this.SizeChanged += MediaPlayerRenderingElement_SizeChanged;
-            EffectRenderer.EffectConfiguration = AppState.Current.MediaServiceConnector.VideoEffectsConfiguration;
-            EffectRenderer.EffectConfiguration.ConfigurationChanged += EffectConfiguration_ConfigurationChanged;
+            AppState.Current.MediaServiceConnector.VideoEffectsConfiguration.ConfigurationChanged += EffectConfiguration_ConfigurationChanged;
         }
 
         private async void EffectConfiguration_ConfigurationChanged(object? sender, string e)
@@ -122,8 +118,6 @@ namespace MayazucMediaPlayer.Controls
         {
             try
             {
-                canvasDevice = CanvasDevice.GetSharedDevice();
-
                 FrameServerImage.Width = this.ActualWidth;
                 FrameServerImage.Height = this.ActualHeight;
 
@@ -132,35 +126,10 @@ namespace MayazucMediaPlayer.Controls
                 FrameServerImage.Visibility = Visibility.Visible;
                 FrameServerImage.Opacity = 1;
 
-                if (frameServerImageSource == null || (frameServerImageSource.PixelWidth != FrameServerImage.Width) || (frameServerImageSource.PixelHeight != FrameServerImage.Height))
-                {
-                    frameServerImageSource?.Dispose();
-                    frameServerImageSource = new SoftwareBitmap(BitmapPixelFormat.Bgra8, (int)FrameServerImage.Width, (int)FrameServerImage.Height, BitmapAlphaMode.Ignore);
-                }
-
-                if (canvasImageSource == null || (canvasImageSource.Size.Width != FrameServerImage.Width) || (canvasImageSource.Size.Height != FrameServerImage.Height))
-                {
-                    canvasImageSource = new CanvasImageSource(canvasDevice, (int)FrameServerImage.Width, (int)FrameServerImage.Height, 96);
-                }
-
-                using (canvasDevice.Lock())
-                {
-                    using (CanvasBitmap inputBitmap = CanvasBitmap.CreateFromSoftwareBitmap(canvasDevice, frameServerImageSource))
-                    using (CanvasDrawingSession ds = canvasImageSource.CreateDrawingSession(Microsoft.UI.Colors.Transparent))
-                    {
-                        sender.CopyFrameToVideoSurface(inputBitmap);
-                        ds.DrawImage(EffectRenderer.ProcessFrame(inputBitmap));
-                        ds.Flush();
-
-                        FrameServerImage.Source = canvasImageSource;
-                    }
-                }
+                renderer.RenderMediaPlayerFrame(sender, FrameServerImage, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {
-                frameServerImageSource?.Dispose();
-                frameServerImageSource = null;
-                canvasImageSource = null;
             }
         }
 

@@ -127,7 +127,7 @@ namespace MayazucMediaPlayer.Controls
 
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
             AppState.Current.MediaServiceConnector.SubtitleDelayChanged += BackgroundMediaService_SubtitleDelayChanged;
-            SaveVideoFrameCommand = new AsyncRelayCommand<object>(async (o) => { await SaveVideoFrameButtonClickInternal(); }, null);
+            SaveVideoFrameCommand = new AsyncRelayCommand<object>(async (o) => { await SaveVideoFrameButtonClickInternal(); });
 
             DoubleTapped += CustomMediaTransportControls_DoubleTapped;
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;

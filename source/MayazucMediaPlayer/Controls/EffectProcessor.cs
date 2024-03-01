@@ -93,7 +93,7 @@ namespace MayazucMediaPlayer.Controls
             return gaussianBlurEffect;
         }
 
-        public VideoEffectProcessorConfiguration EffectConfiguration { get; set; }
+        public _VideoEffectProcessorConfiguration EffectConfiguration { get; set; }
 
         public EffectProcessor()
         {

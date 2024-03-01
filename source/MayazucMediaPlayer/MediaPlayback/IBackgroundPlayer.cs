@@ -3,7 +3,7 @@ using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.Helpers;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
-using MayazucMediaPlayer.VideoEffects;
+using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

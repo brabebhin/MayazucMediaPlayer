@@ -15,9 +15,9 @@ namespace MayazucMediaPlayer
     {
         public event EventHandler<NavigationRequestEventArgs> ExternalNavigationRequest;
         public abstract string Title { get; }
-
         public IBackgroundPlayer BackgroundMediaPlayerInstance
         {
+
             get
             {
                 return ServiceProvider.GetService<IBackgroundPlayer>();

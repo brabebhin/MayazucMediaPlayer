@@ -1,0 +1,35 @@
+namespace MayazucNativeFramework
+{
+	runtimeclass VideoEffectProcessorConfiguration
+	{
+		VideoEffectProcessorConfiguration();
+
+		event Windows.Foundation.EventHandler<String> ConfigurationChanged;
+
+        Boolean MasterSwitch {get; set; };
+
+        Single Brightness{ get; set; };
+
+		Single Contrast{ get; set; };
+
+		Single Saturation{ get; set; };
+
+		Single Temperature{ get; set; };
+
+		Single Tint{ get; set; };
+
+		Single Sharpness{ get; set; };
+
+		Boolean GrayscaleEffect{ get; set; };
+
+		Boolean BlurEffect{ get; set; };
+	}
+
+	[default_interface]
+	runtimeclass FrameServerRenderer
+	{
+		FrameServerRenderer();
+
+		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.UI.Xaml.Controls.Image targetImage, VideoEffectProcessorConfiguration effectConfiguration);
+	}
+}

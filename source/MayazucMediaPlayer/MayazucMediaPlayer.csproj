@@ -73,9 +73,9 @@
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0-preview.2.23128.3" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.2.23128.3" />
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.5.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.25188-preview" />
-		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.3" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.0.7" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
 		<PackageReference Include="MovieCollection.OpenSubtitles" Version="1.0.0-preview.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -116,6 +116,24 @@
 				<TargetPath>runtimes\win10-$(Platform)\native\FFmpegInteropX.pdb</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
+			
+			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework.dll">
+				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework.dll</TargetPath>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</AllItemsFullPathWithTargetPath>
+			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework.pdb">
+				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework.pdb</TargetPath>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</AllItemsFullPathWithTargetPath>
+
+			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework\MediaEffectsMediaPlayerElement.xaml">
+				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework\MediaEffectsMediaPlayerElement.xaml</TargetPath>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</AllItemsFullPathWithTargetPath>
+			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework\MediaEffectsMediaPlayerElement.xbf">
+				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework\MediaEffectsMediaPlayerElement.xbf</TargetPath>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</AllItemsFullPathWithTargetPath>
 		</ItemGroup>
 	</Target>
 
@@ -129,6 +147,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\FFmpegInterop\FFmpegInteropX.vcxproj" />
+		<ProjectReference Include="..\MayazucNativeFramework\MayazucNativeFramework.vcxproj" />
 		<ProjectReference Include="..\Shell.Shell\Shell.Shell.csproj" />
 	</ItemGroup>
 
