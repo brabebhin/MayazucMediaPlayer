@@ -61,6 +61,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="FFmpegInteropX.Desktop.FFmpeg" Version="5.1.100-pre3" />
 		<PackageReference Include="Microsoft.VCRTForwarders.140" Version="1.0.7" />
 		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />
@@ -108,11 +109,11 @@
 	<Target Name="IncludeFFmpegInteropXInRuntimesFolder" BeforeTargets="GetCopyToOutputDirectoryItems">
 		<ItemGroup>
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)FFmpegInteropX.dll">
-				<TargetPath>runtimes\win10-$(Platform)\native\FFmpegInteropX.dll</TargetPath>
+				<TargetPath>runtimes\win-$(Platform)\native\FFmpegInteropX.dll</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)FFmpegInteropX.pdb">
-				<TargetPath>runtimes\win10-$(Platform)\native\FFmpegInteropX.pdb</TargetPath>
+				<TargetPath>runtimes\win-$(Platform)\native\FFmpegInteropX.pdb</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
 			

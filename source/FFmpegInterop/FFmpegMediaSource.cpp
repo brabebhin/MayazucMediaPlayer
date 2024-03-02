@@ -18,7 +18,7 @@
 #include "ChapterInfo.h"
 #include "FFmpegReader.h"
 
-#ifdef WinUI
+#ifdef Win32
 #include <winrt/Microsoft.Graphics.Display.h>
 #include <winrt/Microsoft.UI.Xaml.h>
 #include <winrt/Microsoft.UI.Windowing.h>
@@ -359,7 +359,7 @@ namespace winrt::FFmpegInteropX::implementation
         playbackItemWeak = playbackItem;
     }
 
-    IAsyncOperation<FFmpegInteropX::FFmpegMediaSource> FFmpegMediaSource::CreateFromStreamAsync(
+    IAsyncOperation<FFmpegInteropX::FFmpegMediaSource> FFmpegMediaSource::CreateFromStreamInternalAsync(
         IRandomAccessStream stream, FFmpegInteropX::MediaSourceConfig config, uint64_t windowId)
     {
         winrt::apartment_context caller; // Capture calling context.
@@ -373,7 +373,7 @@ namespace winrt::FFmpegInteropX::implementation
         co_return result.as<FFmpegInteropX::FFmpegMediaSource>();
     }
 
-    IAsyncOperation<FFmpegInteropX::FFmpegMediaSource> FFmpegMediaSource::CreateFromUriAsync(
+    IAsyncOperation<FFmpegInteropX::FFmpegMediaSource> FFmpegMediaSource::CreateFromUriInternalAsync(
         hstring uri, FFmpegInteropX::MediaSourceConfig config, uint64_t windowId)
     {
         winrt::apartment_context caller; // Capture calling context.
@@ -389,7 +389,7 @@ namespace winrt::FFmpegInteropX::implementation
 
     DispatcherQueue FFmpegMediaSource::GetCurrentDispatcherQueue()
     {
-#ifdef WinUI
+#ifdef Win32
         if (WinUIChecker::HasWinUI())
         {
             return DispatcherQueue::GetForCurrentThread();
@@ -1888,7 +1888,7 @@ namespace winrt::FFmpegInteropX::implementation
             {
                 try
                 {
-#ifdef WinUI
+#ifdef Win32
                     ////if (windowId == 0)
                     ////{
                     ////    windowId = Microsoft::UI::Xaml::Window::Current().AppWindow().Id().Value;

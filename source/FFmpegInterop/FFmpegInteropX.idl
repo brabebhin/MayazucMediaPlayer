@@ -193,7 +193,8 @@ namespace FFmpegInteropX
             Boolean isDefault,
             Boolean isForced,
             Windows.Media.Core.TimedMetadataTrack  track,
-            Boolean isExternal);
+            Boolean isExternal,
+            Int32 streamIndex);
 
         Boolean IsExternal{ get; };
         Boolean IsForced{ get; };
@@ -454,16 +455,16 @@ namespace FFmpegInteropX
 #endif
     runtimeclass FFmpegMediaSource : Windows.Foundation.IClosable
     {
-#ifdef WinUI
+#ifdef Win32
 
         ///<summary>Creates a FFmpegMediaSource from a stream.</summary>
-        static Windows.Foundation.IAsyncOperation<FFmpegMediaSource> CreateFromStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream, MediaSourceConfig config, Microsoft.UI.WindowId windowId);
+        static Windows.Foundation.IAsyncOperation<FFmpegMediaSource> CreateFromStreamAsync(Windows.Storage.Streams.IRandomAccessStream stream, MediaSourceConfig config, UInt64 windowId);
 
         ///<summary>Creates a FFmpegMediaSource from a Uri.</summary>
-        static Windows.Foundation.IAsyncOperation<FFmpegMediaSource> CreateFromUriAsync(String uri, MediaSourceConfig config, Microsoft.UI.WindowId windowId);
+        static Windows.Foundation.IAsyncOperation<FFmpegMediaSource> CreateFromUriAsync(String uri, MediaSourceConfig config, UInt64 windowId);
 
         ///<summary>Creates a FFmpegMediaSource from a file.</summary>
-        static Windows.Foundation.IAsyncOperation<FFmpegMediaSource> CreateFromFileAsync(String fileName, MediaSourceConfig config, Microsoft.UI.WindowId windowId);
+        static Windows.Foundation.IAsyncOperation<FFmpegMediaSource> CreateFromFileAsync(String fileName, MediaSourceConfig config, UInt64 windowId);
 
 #endif
 
@@ -750,7 +751,7 @@ namespace FFmpegInteropX
 
     runtimeclass GeneralConfig
     {
-        ///<summary>The maximum number of broken frames to skipp in a stream before stopping decoding.</summary>
+        ///<summary>Auto extend duration of media source when data is available beyond the initial duration calculation.</summary>
         Boolean AutoExtendDuration{ get; set; };
 
         ///<summary>The maximum number of broken frames to skipp in a stream before stopping decoding.</summary>

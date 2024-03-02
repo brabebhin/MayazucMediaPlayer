@@ -13,7 +13,7 @@ using namespace winrt::Windows::Media::Playback;
 using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Foundation;
 
-#ifdef WinUI
+#ifdef Win32
 using namespace winrt::Microsoft::UI::Dispatching;
 #else
 using namespace winrt::Windows::System;
@@ -71,7 +71,7 @@ public:
         auto forced = (m_pAvStream->disposition & AV_DISPOSITION_FORCED) == AV_DISPOSITION_FORCED;
 
         streamInfo = SubtitleStreamInfo(Name, Language, CodecName, (StreamDisposition)m_pAvStream->disposition,
-            false, forced, SubtitleTrack, IsExternal());
+            false, forced, SubtitleTrack, IsExternal(), m_streamIndex);
     }
 
     virtual void NotifyVideoFrameSize(int width, int height, double aspectRatio)
@@ -285,11 +285,6 @@ private:
             auto enteredCue = args.Cue();
             auto refCue = enteredCue.as<ReferenceCue>();
 
-            if (clearSubtitlesRequested)
-            {
-                ClearSubtitles();
-            }
-
             referenceTrack.RemoveCue(enteredCue);
 
             auto changedCue = refCue->ChangedCue();
@@ -455,7 +450,6 @@ public:
         catch (...)
         {
         }
-        clearSubtitlesRequested = false;
     }
 
 public:
@@ -466,17 +460,7 @@ public:
 
         if (!IsExternal() && flushBuffers)
         {
-            std::lock_guard lock(mutex);
-
-            if (IsPlayingLive())
-            {
-                clearSubtitlesRequested = true;
-                AddUpdatePoint(TimeSpan{ 0 }, nullptr);
-            }
-            else
-            {
-                ClearSubtitles();
-            }
+            ClearSubtitles();
         }
     }
 
@@ -491,7 +475,6 @@ private:
     DispatcherQueueTimer timer = { nullptr };
     TimeSpan actualSubtitleDelay{};
     std::vector<std::pair<IMediaCue, long long>> negativePositionCues;
-    bool clearSubtitlesRequested;
     IMediaCue infiniteDurationCue = { nullptr };
     IMediaCue lastExtendedDurationCue = { nullptr };
     TimeSpan lastExtendedDurationCueOriginalEndTime{};
