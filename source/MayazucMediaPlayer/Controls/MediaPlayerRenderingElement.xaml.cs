@@ -25,6 +25,8 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using CommunityToolkit.WinUI.UI;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucNativeFramework;
+using MayazucMediaPlayer.LocalCache;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -130,6 +132,37 @@ namespace MayazucMediaPlayer.Controls
             }
             catch
             {
+            }
+        }
+
+        public async Task SaveVideoFrameAsync()
+        {
+            if (AppState.Current.MediaServiceConnector.HasActivePlaybackSession())
+            {
+                try
+                {
+                    var session = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
+                    var outputFolder = await LocalFolders.GetSavedVideoFramesFolder();
+                    var currentMediaData = AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackData;
+
+                    var sourceFile = new FileInfo(currentMediaData.MediaPath);
+                    if (sourceFile != null && sourceFile.Exists)
+                    {
+                        var name = $"{Path.GetFileNameWithoutExtension(sourceFile.Name)}-{session.Position.TotalSeconds}.png";
+                        var folder = await LocalCache.LocalFolders.GetSavedVideoFramesFolder();
+                        var file = await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
+                        using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                        {
+                            await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
+                        }
+
+                        PopupHelper.ShowInfoMessage($"Frame saved: {DateTime.Now.ToString("hh:mm:ss")}");
+                    }
+                }
+                catch
+                {
+
+                }
             }
         }
 

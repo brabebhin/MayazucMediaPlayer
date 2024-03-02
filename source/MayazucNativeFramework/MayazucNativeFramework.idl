@@ -31,5 +31,8 @@ namespace MayazucNativeFramework
 		FrameServerRenderer();
 
 		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.UI.Xaml.Controls.Image targetImage, VideoEffectProcessorConfiguration effectConfiguration);
+
+		Windows.Foundation.IAsyncAction RenderMediaPlayerFrameToStreamAsync(Windows.Media.Playback.MediaPlayer player, VideoEffectProcessorConfiguration effectConfiguration, Windows.Storage.Streams.IRandomAccessStream outputStream);
+
 	}
 }

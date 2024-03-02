@@ -84,7 +84,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         }
 
         public event EventHandler<MediaPlayerCompactOverlayEventArgs> CompactOverlayRequest;
-        public void NotifyViewMode(bool isFullPlayer, MediaPlayerElement element)
+        public void NotifyViewMode(bool isFullPlayer, UserControl element)
         {
             CompactOverlayRequest?.Invoke(null, new MediaPlayerCompactOverlayEventArgs(isFullPlayer, element));
         }

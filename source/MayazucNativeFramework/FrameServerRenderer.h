@@ -30,13 +30,13 @@ namespace winrt::MayazucNativeFramework::implementation
     {
         FrameServerRenderer()
         {
-            effectsPrcessor = std::make_unique< EffectProcessor>();
         }
 
         void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
-        
+        winrt::Windows::Foundation::IAsyncAction RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream);
+
     private:
-        std::unique_ptr<EffectProcessor> effectsPrcessor;
+        EffectProcessor effectsPrcessor;
         winrt::Microsoft::Graphics::Canvas::UI::Xaml::CanvasImageSource win2dImageSource = { nullptr };
         winrt::Windows::Graphics::Imaging::SoftwareBitmap frameServerImageSource = { nullptr };
     };

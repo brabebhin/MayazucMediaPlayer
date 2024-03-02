@@ -10,13 +10,13 @@ namespace MayazucMediaPlayer.MediaPlayback
             private set;
         }
 
-        public MediaPlayerElement MediaPlayerElementInstance
+        public UserControl MediaPlayerElementInstance
         {
             get;
             private set;
         }
 
-        public MediaPlayerCompactOverlayEventArgs(bool compact, MediaPlayerElement element)
+        public MediaPlayerCompactOverlayEventArgs(bool compact, UserControl element)
         {
             IsNormalOverlayRequested = compact;
             MediaPlayerElementInstance = element;

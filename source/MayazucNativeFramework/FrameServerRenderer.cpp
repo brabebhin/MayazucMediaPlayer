@@ -12,7 +12,7 @@ namespace winrt::MayazucNativeFramework::implementation
 	{
 		try {
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
-			effectsPrcessor->EffectConfiguration = effectConfiguration;
+			effectsPrcessor.EffectConfiguration = effectConfiguration;
 
 			if (frameServerImageSource == nullptr || (frameServerImageSource.PixelWidth() != targetImage.Width()) || (frameServerImageSource.PixelHeight() != targetImage.Height()))
 			{
@@ -32,7 +32,7 @@ namespace winrt::MayazucNativeFramework::implementation
 				CanvasBitmap inputBitmap = CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, frameServerImageSource);
 				CanvasDrawingSession ds = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.CopyFrameToVideoSurface(inputBitmap);
-				ds.DrawImage(effectsPrcessor->ProcessFrame(inputBitmap));
+				ds.DrawImage(effectsPrcessor.ProcessFrame(inputBitmap));
 				ds.Flush();
 
 				targetImage.Source(win2dImageSource);
@@ -42,5 +42,25 @@ namespace winrt::MayazucNativeFramework::implementation
 		{
 
 		}
+	}
+
+	winrt::Windows::Foundation::IAsyncAction FrameServerRenderer::RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream)
+	{
+		winrt::apartment_context caller; // Capture calling context.
+
+		CanvasDevice canvasDevice = CanvasDevice::GetSharedDevice();
+
+		auto frameServerDest = SoftwareBitmap(BitmapPixelFormat::Bgra8, player.PlaybackSession().NaturalVideoWidth(), player.PlaybackSession().NaturalVideoHeight(), BitmapAlphaMode::Ignore);
+		auto canvasImageSource = Microsoft::Graphics::Canvas::CanvasRenderTarget(canvasDevice, player.PlaybackSession().NaturalVideoWidth(), player.PlaybackSession().NaturalVideoHeight(), 96);
+
+		auto inputBitmap = CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, frameServerDest);
+		auto ds = canvasImageSource.CreateDrawingSession();
+
+		player.CopyFrameToVideoSurface(inputBitmap);
+
+		ds.DrawImage(effectsPrcessor.ProcessFrame(inputBitmap));
+		ds.Flush();
+
+		co_await canvasImageSource.SaveAsync(outputStream, CanvasBitmapFileFormat::Png);
 	}
 }

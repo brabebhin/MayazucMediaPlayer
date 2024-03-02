@@ -320,30 +320,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private void VideoEffectsConfiguration_ConfigurationChanged(object? sender, string e)
         {
-            commandDispatcher.EnqueueAsync(async () =>
-            {
-                if (e == nameof(VideoEffectsConfiguration.MasterSwitch))
-                {
-                    var hasFilters = VideoEffectsConfiguration.MasterSwitch;
-                    var currentItem = CurrentPlaybackItem;
-                    if (currentItem != null)
-                    {
-                        bool hasVideo = currentItem.IsVideo();
-
-                        if (hasVideo)
-                        {
-                            await ReloadCurrentPlaybackItem(currentItem);
-                        }
-                        else
-                        {
-                            await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: currentItem,
-                                userAction: false,
-                                changeIndex: true,
-                                currentIndex: SettingsWrapper.PlaybackIndex);
-                        }
-                    }
-                }
-            });
+          
         }
 
         private async Task ReloadCurrentPlaybackItem(MediaPlaybackItem item)

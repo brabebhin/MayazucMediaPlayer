@@ -171,10 +171,10 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 MediaPlayerElementInstance.TransportControls.IsPlaybackRateButtonVisible = true;
 
                 UIMediaTransportControls = (MediaPlayerElementInstance.TransportControls as CustomMediaTransportControls);
-                UIMediaTransportControls?.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
+                UIMediaTransportControls.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
                 UIMediaTransportControls.PlayerElementIsFullWindowChanged += _transportControls_PlayerElementIsFullWindowChanged;
                 AppState.Current.MediaServiceConnector.MediaPlayerElementFullScreenModeChanged += BackgroundAudioService_MediaPlayerElementFullScreenModeChanged;
-                UIMediaTransportControls.PlayerElement = MediaPlayerElementInstance;
+                UIMediaTransportControls.PlayerElement = mediaPlayerElementInstance;
                 mediaPlayerInit = true;
                 FadeInTransportControls();
                 CheckCompactState(ActualHeight);
@@ -279,7 +279,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
                     ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
                 }
-                AppState.Current.MediaServiceConnector.NotifyViewMode(true, MediaPlayerElementInstance);
+                AppState.Current.MediaServiceConnector.NotifyViewMode(true, mediaPlayerElementInstance);
 
             }
             finally

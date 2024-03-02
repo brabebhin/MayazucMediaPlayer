@@ -63,7 +63,7 @@ namespace MayazucMediaPlayer.Controls
         readonly List<FrameworkElement> doubleTappedDisabledChildren = new List<FrameworkElement>();
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public MediaPlayerElement PlayerElement
+        public MediaPlayerRenderingElement PlayerElement
         {
             get;
             set;
@@ -535,9 +535,8 @@ namespace MayazucMediaPlayer.Controls
                 var oldState = (AppState.Current.MediaServiceConnector.CurrentPlaybackSession).PlaybackState;
 
                 (AppState.Current.MediaServiceConnector.CurrentPlayer).Pause();
-                var position = _player.PlaybackSession.Position;
 
-                await SaveVideoFrameInternalCommand(position);
+                await SaveVideoFrameInternalCommand();
 
                 if (oldState == MediaPlaybackState.Playing)
                 {
@@ -546,34 +545,11 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private async Task SaveVideoFrameInternalCommand(TimeSpan position)
+        private async Task SaveVideoFrameInternalCommand()
         {
             using (await frameSaveLock.LockAsync())
             {
-                var currentDataStatus = await PlaybackServiceModel.CurrentMediaMetadata();
-                if (currentDataStatus.IsFailed) return;
-                var CurrentData = currentDataStatus.Value.MediaData;
-                throw new NotImplementedException();
-                //if (m_CurrentPlaybackItem.IsVideo())
-                //{
-                //    if (AppState.Current.MediaServiceConnector.HasActivePlaybackSession())
-                //    {
-                //        var session = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
-                //        if (session.PlaybackState == MediaPlaybackState.Paused || session.PlaybackState == MediaPlaybackState.Playing)
-                //        {
-                //            var sourceFile = await CurrentData.GetFileAsync();
-                //            if (sourceFile != null)
-                //            {
-                //                var name = $"{sourceFile.Name}-{session.Position.TotalSeconds}.png";
-
-                //                await VideoThumbnailPreviewData.SaveVideoFrameAsync(position, await LocalCache.LocalFolders.GetSavedVideoFramesFolder(), sourceFile, name);
-
-                //            }
-
-                //            ShowNotification($"Frame saved: {DateTime.Now.ToString("hh:mm:ss")}");
-                //        }
-                //    }
-                //}
+                await PlayerElement.SaveVideoFrameAsync();
             }
         }
 

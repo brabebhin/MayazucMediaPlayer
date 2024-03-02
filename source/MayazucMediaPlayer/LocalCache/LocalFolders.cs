@@ -74,12 +74,12 @@ namespace MayazucMediaPlayer.LocalCache
         public static async Task<StorageFolder> GetSavedVideoFramesFolder()
         {
             const string Key = "GetSavedVideoFramesFolder";
-            using (await lockProvider.GetLock("Key").LockAsync())
+            using (await lockProvider.GetLock(Key).LockAsync())
             {
                 if (!resultsProvider.HasKey(Key))
                 {
                     var value = resultsProvider.TryAdd(Key,
-                        await KnownFolders.PicturesLibrary.CreateFolderAsync("MC Video frames", CreationCollisionOption.OpenIfExists).AsTask());
+                        await KnownFolders.PicturesLibrary.CreateFolderAsync("Mayazuc video frames", CreationCollisionOption.OpenIfExists).AsTask());
                 }
                 return resultsProvider.Get<StorageFolder>(Key);
             }
