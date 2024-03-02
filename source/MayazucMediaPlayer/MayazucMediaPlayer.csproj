@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net7.0-windows10.0.22000.0</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>MayazucMediaPlayer</RootNamespace>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Platforms>x64;arm64</Platforms>
-		<RuntimeIdentifiers>win10-x64;win10-arm64</RuntimeIdentifiers>
+		<RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
 		<UseWinUI>true</UseWinUI>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -118,20 +118,20 @@
 			</AllItemsFullPathWithTargetPath>
 			
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework.dll">
-				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework.dll</TargetPath>
+				<TargetPath>runtimes\win-$(Platform)\native\MayazucNativeFramework.dll</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework.pdb">
-				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework.pdb</TargetPath>
+				<TargetPath>runtimes\win-$(Platform)\native\MayazucNativeFramework.pdb</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
 
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework\MediaEffectsMediaPlayerElement.xaml">
-				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework\MediaEffectsMediaPlayerElement.xaml</TargetPath>
+				<TargetPath>runtimes\win-$(Platform)\native\MayazucNativeFramework\MediaEffectsMediaPlayerElement.xaml</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework\MediaEffectsMediaPlayerElement.xbf">
-				<TargetPath>runtimes\win10-$(Platform)\native\MayazucNativeFramework\MediaEffectsMediaPlayerElement.xbf</TargetPath>
+				<TargetPath>runtimes\win-$(Platform)\native\MayazucNativeFramework\MediaEffectsMediaPlayerElement.xbf</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
 		</ItemGroup>

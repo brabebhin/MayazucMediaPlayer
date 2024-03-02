@@ -5,8 +5,6 @@ VisualStudioVersion = 17.3.32519.111
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FFmpegInteropX", "FFmpegInterop\FFmpegInteropX.vcxproj", "{9CFA3B3E-B7AF-4629-84E2-C962C5B046B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpegInteropX.DotNet", "FFmpegInterop\FFmpegInteropX.DotNet.csproj", "{5477705C-6069-4810-81A4-B9F69DE24DDE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MayazucMediaPlayer", "MayazucMediaPlayer\MayazucMediaPlayer.csproj", "{59B32718-C396-4E8C-B841-D610060BDB85}"
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "MayazucMediaPlayer (Package)", "MayazucMediaPlayer (Package)\MayazucMediaPlayer (Package).wapproj", "{94F89F98-7463-4095-ADAB-85069A799217}"
@@ -45,18 +43,6 @@ Global
 		{9CFA3B3E-B7AF-4629-84E2-C962C5B046B1}.Release|ARM64.Build.0 = Release_Desktop|ARM64
 		{9CFA3B3E-B7AF-4629-84E2-C962C5B046B1}.Release|x64.ActiveCfg = Release_Desktop|x64
 		{9CFA3B3E-B7AF-4629-84E2-C962C5B046B1}.Release|x64.Build.0 = Release_Desktop|x64
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Debug|Any CPU.ActiveCfg = Debug_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Debug|Any CPU.Build.0 = Debug_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Debug|ARM64.ActiveCfg = Debug_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Debug|ARM64.Build.0 = Debug_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Debug|x64.ActiveCfg = Debug_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Debug|x64.Build.0 = Debug_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Release|Any CPU.ActiveCfg = Release_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Release|Any CPU.Build.0 = Release_Desktop|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Release|ARM64.Build.0 = Release|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Release|x64.ActiveCfg = Release|Any CPU
-		{5477705C-6069-4810-81A4-B9F69DE24DDE}.Release|x64.Build.0 = Release|Any CPU
 		{59B32718-C396-4E8C-B841-D610060BDB85}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{59B32718-C396-4E8C-B841-D610060BDB85}.Debug|Any CPU.Build.0 = Debug|x64
 		{59B32718-C396-4E8C-B841-D610060BDB85}.Debug|ARM64.ActiveCfg = Debug|arm64
