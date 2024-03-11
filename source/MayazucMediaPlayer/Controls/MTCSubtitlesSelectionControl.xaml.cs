@@ -82,7 +82,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 try
                 {
-                    if (item.TimedMetadataTracks[(int)i].TimedMetadataKind == TimedMetadataKind.Subtitle)
+                    if (item.TimedMetadataTracks[(int)i].IsSubtitle())
                     {
                         var presentationModeActive = item.TimedMetadataTracks.GetPresentationMode(i) == TimedMetadataTrackPresentationMode.PlatformPresented;
                         ItemsSource.Add(new TimedMetadataTrackViewModelItem(item.TimedMetadataTracks[(int)i], i)

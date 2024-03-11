@@ -154,7 +154,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private async Task<bool> LookupInternalSubtitle(MediaPlaybackItem PlaybackItem)
         {
-            var subs = PlaybackItem.TimedMetadataTracks.Where(x => x.TimedMetadataKind == TimedMetadataKind.Subtitle).ToList();
+            var subs = PlaybackItem.TimedMetadataTracks.Where(x => x.IsSubtitle()).ToList();
             var subsDictionary = PlaybackItem.GetExtradata().FFmpegMediaSource.SubtitleStreams.ToDictionary(x => x.SubtitleTrack, y => y.IsForced);
             int index = 0;
             TimedMetadataTrack internalSub = null;

@@ -640,6 +640,14 @@ namespace MayazucMediaPlayer
         }
     }
 
+    public static class TimedMetadataTrackExtensions
+    {
+        public static bool IsSubtitle(this TimedMetadataTrack track)
+        {
+            return track.TimedMetadataKind == TimedMetadataKind.Subtitle || track.TimedMetadataKind == TimedMetadataKind.ImageSubtitle;
+        }
+    }
+
     public static class RsaExtensions
     {
         public static string ExportRsaPrivateKey(this RSACng cng)
