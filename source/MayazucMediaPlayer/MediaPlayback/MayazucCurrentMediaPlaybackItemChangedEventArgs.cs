@@ -30,12 +30,5 @@ namespace MayazucMediaPlayer.MediaPlayback
             Reason = reason;
             MediaPlaybackListAdapter = mediaPlaybackListAdapter;
         }
-
-        public MayazucCurrentMediaPlaybackItemChangedEventArgs(CurrentMediaPlaybackItemChangedEventArgs eventargs, IMediaPlaybackListAdapter mediaPlaybackListAdapter)
-        {
-            NewItem = eventargs.NewItem;
-            Reason = eventargs.Reason;
-            MediaPlaybackListAdapter = mediaPlaybackListAdapter;
-        }
     }
 }

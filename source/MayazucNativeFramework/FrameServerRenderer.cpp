@@ -18,6 +18,7 @@ namespace winrt::MayazucNativeFramework::implementation
 			{
 				if (frameServerImageSource)
 					frameServerImageSource.Close();
+				//TODO: deal with HDR
 				frameServerImageSource = SoftwareBitmap(BitmapPixelFormat::Bgra8, (int)targetImage.Width(), (int)targetImage.Height(), BitmapAlphaMode::Ignore);
 			}
 			if (win2dImageSource == nullptr
@@ -29,10 +30,16 @@ namespace winrt::MayazucNativeFramework::implementation
 
 			{
 				auto lock = canvasDevice.Lock();
+				
+				auto subsRenderTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
+				auto subsSession = subsRenderTarget.CreateDrawingSession();
+				player.RenderSubtitlesToSurface(subsRenderTarget);
+
 				CanvasBitmap inputBitmap = CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, frameServerImageSource);
 				CanvasDrawingSession ds = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.CopyFrameToVideoSurface(inputBitmap);
 				ds.DrawImage(effectsPrcessor.ProcessFrame(inputBitmap));
+				ds.DrawImage(subsRenderTarget);
 				ds.Flush();
 
 				targetImage.Source(win2dImageSource);
@@ -49,7 +56,8 @@ namespace winrt::MayazucNativeFramework::implementation
 		winrt::apartment_context caller; // Capture calling context.
 
 		CanvasDevice canvasDevice = CanvasDevice::GetSharedDevice();
-
+		
+		//TODO: deal with HDR
 		auto frameServerDest = SoftwareBitmap(BitmapPixelFormat::Bgra8, player.PlaybackSession().NaturalVideoWidth(), player.PlaybackSession().NaturalVideoHeight(), BitmapAlphaMode::Ignore);
 		auto canvasImageSource = Microsoft::Graphics::Canvas::CanvasRenderTarget(canvasDevice, player.PlaybackSession().NaturalVideoWidth(), player.PlaybackSession().NaturalVideoHeight(), 96);
 
