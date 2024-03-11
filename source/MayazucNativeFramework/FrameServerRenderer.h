@@ -38,7 +38,9 @@ namespace winrt::MayazucNativeFramework::implementation
     private:
         EffectProcessor effectsPrcessor;
         winrt::Microsoft::Graphics::Canvas::UI::Xaml::CanvasImageSource win2dImageSource = { nullptr };
-        winrt::Windows::Graphics::Imaging::SoftwareBitmap frameServerImageSource = { nullptr };
+        winrt::Microsoft::Graphics::Canvas::CanvasRenderTarget renderingTarget = { nullptr };
+        winrt::Microsoft::Graphics::Canvas::CanvasRenderTarget subtitlesTarget = { nullptr };
+
     };
 }
 namespace winrt::MayazucNativeFramework::factory_implementation

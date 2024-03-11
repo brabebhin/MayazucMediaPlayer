@@ -14,13 +14,20 @@ namespace winrt::MayazucNativeFramework::implementation
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
 			effectsPrcessor.EffectConfiguration = effectConfiguration;
 
-			//if (frameServerImageSource == nullptr || (frameServerImageSource.PixelWidth() != targetImage.Width()) || (frameServerImageSource.PixelHeight() != targetImage.Height()))
-			//{
-			//	if (frameServerImageSource)
-			//		frameServerImageSource.Close();
-			//	//TODO: deal with HDR
-			//	frameServerImageSource = SoftwareBitmap(BitmapPixelFormat::Bgra8, (int)targetImage.Width(), (int)targetImage.Height(), BitmapAlphaMode::Ignore);
-			//}
+			//it appears the entire rendering can be done with a CanvasRenderTarget
+			//still need to test HDR, and if the frame comes too early or too late. 
+			//the CanvasRenderTarget can also be cached so it is not recreated every frame
+
+			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != targetImage.Width()) || (renderingTarget.Bounds().Height != targetImage.Height()))
+			{
+				if (renderingTarget)
+					renderingTarget.Close();
+				if (subtitlesTarget)
+					subtitlesTarget.Close();
+				//TODO: deal with HDR
+				subtitlesTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
+				renderingTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
+			}
 			if (win2dImageSource == nullptr
 				|| (win2dImageSource.Size().Width != targetImage.Width())
 				|| (win2dImageSource.Size().Height != targetImage.Height()))
@@ -30,18 +37,14 @@ namespace winrt::MayazucNativeFramework::implementation
 
 			{
 				auto lock = canvasDevice.Lock();
+				CanvasDrawingSession outputDrawingSession = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				
-				auto subsRenderTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
-				auto subsSession = subsRenderTarget.CreateDrawingSession();
+				player.CopyFrameToVideoSurface(renderingTarget);
+				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
 
-				//CanvasBitmap inputBitmap = CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, frameServerImageSource);
-				CanvasDrawingSession ds = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
-				player.CopyFrameToVideoSurface(subsRenderTarget);
-				ds.DrawImage(effectsPrcessor.ProcessFrame(subsRenderTarget));
-				ds.DrawImage(subsRenderTarget);
-				player.RenderSubtitlesToSurface(subsRenderTarget);
-
-				ds.Flush();
+				player.RenderSubtitlesToSurface(subtitlesTarget);
+				outputDrawingSession.DrawImage(subtitlesTarget);
+				outputDrawingSession.Flush();
 
 				targetImage.Source(win2dImageSource);
 			}
