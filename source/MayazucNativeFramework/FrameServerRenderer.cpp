@@ -38,7 +38,13 @@ namespace winrt::MayazucNativeFramework::implementation
 			{
 				auto lock = canvasDevice.Lock();
 				CanvasDrawingSession outputDrawingSession = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
-				
+				CanvasDrawingSession videoDrawingSession = renderingTarget.CreateDrawingSession();
+				videoDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
+
+				CanvasDrawingSession subtitesDrawingSession = subtitlesTarget.CreateDrawingSession();
+				subtitesDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
+
+
 				player.CopyFrameToVideoSurface(renderingTarget);
 				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
 
