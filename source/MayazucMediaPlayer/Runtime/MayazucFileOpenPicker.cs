@@ -9,7 +9,12 @@ namespace MayazucMediaPlayer.Runtime
 {
     public class MayazucFileOpenPicker : IFileOpenPicker
     {
-        readonly FileOpenPicker picker = new FileOpenPicker();
+        readonly FileOpenPicker picker;
+
+        public MayazucFileOpenPicker(FileOpenPicker _picker)
+        {
+            picker = _picker;
+        }
 
         public PickerViewMode ViewMode
         {

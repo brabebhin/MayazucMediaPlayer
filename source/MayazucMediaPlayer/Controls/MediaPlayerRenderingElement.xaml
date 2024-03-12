@@ -12,6 +12,8 @@
 
     <Grid>
         <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  x:Name="FrameServerImage"></Image>
+        <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  x:Name="SubtitleImage"></Image>
+
         <MediaPlayerElement Background="Transparent"
                             HorizontalAlignment="Stretch" 
                             VerticalAlignment="Stretch" 

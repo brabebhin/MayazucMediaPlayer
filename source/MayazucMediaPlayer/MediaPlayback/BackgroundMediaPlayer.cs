@@ -869,7 +869,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     {
                         if (MediaHelperExtensions.CheckSubtitlelanguage(subStream.SubtitleTrack, language))
                         {
-                            e.TimedMetadataTracks.SetPresentationMode((uint)i, TimedMetadataTrackPresentationMode.PlatformPresented);
+                            e.TimedMetadataTracks.SetPresentationMode((uint)i, Constants.DefaultSubtitlePresentationMode);
                         }
                     }
                 }
@@ -1231,7 +1231,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     if (currentPlaybackItem == null) return;
 
                     if (currentPlaybackItem.TimedMetadataTracks.Count > trackIndex)
-                        currentPlaybackItem.TimedMetadataTracks.SetPresentationMode(trackIndex, TimedMetadataTrackPresentationMode.PlatformPresented);
+                        currentPlaybackItem.TimedMetadataTracks.SetPresentationMode(trackIndex, Constants.DefaultSubtitlePresentationMode);
                 }
                 catch { }
             });

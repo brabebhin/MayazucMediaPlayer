@@ -9,12 +9,16 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Nito.AsyncEx;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage.Pickers;
+using Windows.Storage.Pickers.Provider;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -46,7 +50,6 @@ namespace MayazucMediaPlayer.Controls
                 }
             }
         }
-        readonly IFileOpenPicker subtitlePicker = new MayazucFileOpenPicker();
 
         public IOpenSubtitlesAgent SubtitlesAgent
         {
@@ -54,15 +57,21 @@ namespace MayazucMediaPlayer.Controls
             internal set;
         }
 
+        private IFileOpenPicker GetSubtitlePicker()
+        {
+            var subtitlePicker = FileFolderPickerService.GetFileOpenPicker();
+            foreach (var format in SupportedFileFormats.SupportedSubtitleFormats)
+            {
+                subtitlePicker.FileTypeFilter.Add(format);
+            }
+
+            return new MayazucFileOpenPicker(subtitlePicker);
+        }
+
         public MTCSubtitlesSelectionControl()
         {
             InitializeComponent();
             DataContext = this;
-
-            subtitlePicker.FileTypeFilter.Add(".srt");
-            subtitlePicker.FileTypeFilter.Add(".sub");
-            subtitlePicker.FileTypeFilter.Add(".ttml");
-            subtitlePicker.FileTypeFilter.Add(".vtt");
         }
 
         public async void LoadMediaPlaybackItem(MediaPlaybackItem item)
@@ -84,7 +93,7 @@ namespace MayazucMediaPlayer.Controls
                 {
                     if (item.TimedMetadataTracks[(int)i].IsSubtitle())
                     {
-                        var presentationModeActive = item.TimedMetadataTracks.GetPresentationMode(i) == TimedMetadataTrackPresentationMode.PlatformPresented;
+                        var presentationModeActive = item.TimedMetadataTracks.GetPresentationMode(i) == Constants.DefaultSubtitlePresentationMode;
                         ItemsSource.Add(new TimedMetadataTrackViewModelItem(item.TimedMetadataTracks[(int)i], i)
                         {
                             IsActive = presentationModeActive
@@ -110,7 +119,7 @@ namespace MayazucMediaPlayer.Controls
                     var track = itemsSource.FirstOrDefault(x => x.Track == args.Track);
                     if (track != null)
                     {
-                        track.IsActive = args.NewPresentationMode == TimedMetadataTrackPresentationMode.PlatformPresented;
+                        track.IsActive = args.NewPresentationMode == Constants.DefaultSubtitlePresentationMode;
                     }
                 });
             }
@@ -192,14 +201,11 @@ namespace MayazucMediaPlayer.Controls
 
         private async void OpenLocalSubtitles(object? sender, RoutedEventArgs e)
         {
-            using (await lockSync.LockAsync())
+            try
             {
-                try
-                {
-                    await LoadLocalSubtitle(CurrentWrappedPlaybackItem);
-                }
-                catch { }
+                await LoadLocalSubtitle(CurrentWrappedPlaybackItem);
             }
+            catch { }
         }
 
         private async void LookForSubtitlesOnline(object? sender, RoutedEventArgs e)
@@ -223,7 +229,7 @@ namespace MayazucMediaPlayer.Controls
                     var extraData = item.GetExtradata();
                     if (extraData != null)
                     {
-                        await extraData.SubtitleService.OpenSubtitleFile(subtitlePicker);
+                        await extraData.SubtitleService.OpenSubtitleFile(GetSubtitlePicker());
                     }
                 }
                 catch { }
@@ -237,7 +243,7 @@ namespace MayazucMediaPlayer.Controls
                 var extraData = item.GetExtradata();
                 if (extraData != null)
                 {
-                    await extraData.SubtitleService.OpenSubtitleFile(subtitlePicker);
+                    await extraData.SubtitleService.OpenSubtitleFile(GetSubtitlePicker());
                 }
             }
             catch { }
@@ -340,7 +346,7 @@ namespace MayazucMediaPlayer.Controls
         public void ReloadItem(TimedMetadataTrack track, uint index)
         {
             Track = track;
-            IsActive = track.PlaybackItem.TimedMetadataTracks.GetPresentationMode(index) == TimedMetadataTrackPresentationMode.PlatformPresented;
+            IsActive = track.PlaybackItem.TimedMetadataTracks.GetPresentationMode(index) == Constants.DefaultSubtitlePresentationMode;
             Index = index;
             NotifyPropertyChanged(nameof(Name));
         }

@@ -90,7 +90,7 @@ namespace MayazucMediaPlayer
         ".m4r", ".m4b", ".m4p", ".3g2", ".asf", ".aif", ".aiff", ".afc", ".aifc",
         ".ape",     ".alac", ".m3u", ".awb", ".mp4", ".avi", ".wmv", ".h264", ".mkv", ".wpl", ".zpl", ".vob", ".h265", ".ts", ".glv", ".m4v", ".m3u8", ".av1", ".webm"  };
 
-        static readonly List<string> SubtitleFormats = new List<string> { ".srt", ".sub", ".ttml", ".vtt" };
+        static readonly List<string> SubtitleFormats = new List<string> { ".srt", ".sub", ".ttml", ".vtt", ".ssa", ".ass" };
 
         static readonly List<string> PlaylistFormats = new List<string> { ".m3u", ".wpl", ".zpl", ".m3u8" };
 

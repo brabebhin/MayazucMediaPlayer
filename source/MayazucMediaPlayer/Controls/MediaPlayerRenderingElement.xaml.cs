@@ -27,6 +27,7 @@ using MayazucMediaPlayer.MediaPlayback;
 using MayazucNativeFramework;
 using MayazucMediaPlayer.LocalCache;
 using Windows.Storage;
+using MayazucMediaPlayer.Tests;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,6 +37,7 @@ namespace MayazucMediaPlayer.Controls
     public sealed partial class MediaPlayerRenderingElement : UserControl
     {
         FrameServerRenderer renderer = new FrameServerRenderer();
+        Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
 
         private EffectProcessor EffectRenderer = new EffectProcessor();
 
@@ -58,9 +60,30 @@ namespace MayazucMediaPlayer.Controls
                     {
                         _mediaPlayer.VideoFrameAvailable += _mediaPlayer_VideoFrameAvailable;
                         _mediaPlayer.IsVideoFrameServerEnabled = true;
+                        _mediaPlayer.SubtitleFrameChanged += _mediaPlayer_SubtitleFrameChanged;
                     }
                 }
             }
+        }
+
+        private async void _mediaPlayer_SubtitleFrameChanged(MediaPlayer sender, object args)
+        {
+            await DispatcherQueue.EnqueueAsync(async () =>
+            {
+                DrawSubtitles();
+
+            });
+        }
+
+        private void DrawSubtitles()
+        {
+            SubtitleImage.Width = this.ActualWidth;
+            SubtitleImage.Height = this.ActualHeight;
+
+            SubtitleImage.Visibility = Visibility.Visible;
+            SubtitleImage.Opacity = 1;
+
+            //subsRenderer.RenderSubtitlesToImage(SubtitleImage, AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, DispatcherQueue);
         }
 
         public ImageSource PosterSource
@@ -81,6 +104,26 @@ namespace MayazucMediaPlayer.Controls
             mediaPlayerElementInstance.RegisterPropertyChangedCallback(MediaPlayerElement.MediaPlayerProperty, new DependencyPropertyChangedCallback(OnMediaPlayerChanged));
             this.SizeChanged += MediaPlayerRenderingElement_SizeChanged;
             AppState.Current.MediaServiceConnector.VideoEffectsConfiguration.ConfigurationChanged += EffectConfiguration_ConfigurationChanged;
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
+        }
+
+        private void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        {
+            if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
+            foreach(var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
+            {
+                tmd.CueEntered += Tmd_CueEntered;
+                tmd.CueExited += Tmd_CueEntered;
+            }
+        }
+
+        private async void Tmd_CueEntered(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
+        {
+            await DispatcherQueue.EnqueueAsync(async () =>
+            {
+                DrawSubtitles();
+
+            });
         }
 
         private async void EffectConfiguration_ConfigurationChanged(object? sender, string e)
@@ -123,12 +166,15 @@ namespace MayazucMediaPlayer.Controls
                 FrameServerImage.Width = this.ActualWidth;
                 FrameServerImage.Height = this.ActualHeight;
 
+
                 if (FrameServerImage.Width == 0 || FrameServerImage.Height == 0) return;
 
                 FrameServerImage.Visibility = Visibility.Visible;
                 FrameServerImage.Opacity = 1;
 
                 renderer.RenderMediaPlayerFrame(sender, FrameServerImage, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+                //DrawSubtitles();
+
             }
             catch
             {

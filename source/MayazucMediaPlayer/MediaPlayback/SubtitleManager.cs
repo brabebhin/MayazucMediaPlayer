@@ -18,7 +18,7 @@ namespace MayazucMediaPlayer.MediaPlayback
     public class SubtitleManager
     {
         private readonly AsyncLock operationLock = new AsyncLock();
-        readonly TimedMetadataTrackPresentationMode defaultPresentationMode = TimedMetadataTrackPresentationMode.PlatformPresented;
+        readonly TimedMetadataTrackPresentationMode defaultPresentationMode = Constants.DefaultSubtitlePresentationMode;
         public MediaPlaybackItem PlaybackItem
         {
             get;

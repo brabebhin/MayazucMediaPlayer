@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Windows.ApplicationModel.Contacts;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
@@ -115,7 +116,11 @@ namespace MayazucMediaPlayer.MediaPlayback
             config.Subtitles.AutoSelectForcedSubtitles = false;
             config.Subtitles.MinimumSubtitleDuration = TimeSpan.FromSeconds(SettingsWrapper.MinimumSubtitleDuration);
             config.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsWrapper.PreventSubtitleOverlaps;
-
+            //TimedTextStyle configStyle = config.Subtitles.SubtitleStyle;
+            //configStyle.OutlineColor = Microsoft.UI.Colors.Blue;
+            //configStyle.OutlineRadius = new TimedTextDouble(80, TimedTextUnit.Percentage);
+            //configStyle.OutlineThickness = new TimedTextDouble(80, TimedTextUnit.Percentage);
+            //config.Subtitles.SubtitleStyle = configStyle;
             return config;
         }
 

@@ -69,7 +69,7 @@
             </MenuBar>
 
             <Grid Grid.Column="2" x:Name="TitleBarGrid" Background="{Binding ElementName=PlayMenuItem, Path=Background}">
-                <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" x:Name="CurrentViewTitle"/>
+                <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" TextWrapping="NoWrap" x:Name="CurrentViewTitle"/>
             </Grid>
             <Border  Width="100" Grid.Column="4">
             </Border>

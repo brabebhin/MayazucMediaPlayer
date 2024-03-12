@@ -58,12 +58,15 @@ namespace MayazucMediaPlayer.NowPlayingViews
             int i = 0;
             foreach (var img in images)
             {
-                if (i >= imageSources.Count) i = 0;
-                await DispatcherQueue.EnqueueAsync(() =>
+                if (imageSources.Count > 0)
                 {
-                    img.Source = new BitmapImage(new Uri(imageSources[i]));
-                });
-                i++;
+                    if (i >= imageSources.Count) i = 0;
+                    await DispatcherQueue.EnqueueAsync(() =>
+                    {
+                        img.Source = new BitmapImage(new Uri(imageSources[i]));
+                    });
+                    i++;
+                }
             }
         }
 
