@@ -14,12 +14,14 @@
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="VideoEffectProcessorConfiguration.cpp" />
     <ClCompile Include="FrameServerRenderer.cpp" />
+    <ClCompile Include="SubtitleRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="VideoEffectProcessorConfiguration.h" />
     <ClInclude Include="EffectsProcessor.h" />
     <ClInclude Include="FrameServerRenderer.h" />
+    <ClInclude Include="SubtitleRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MayazucNativeFramework.idl" />

@@ -36,11 +36,13 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class MediaPlayerRenderingElement : UserControl
     {
+        bool useNativeSubtitleRenderer = true;
+
         FrameServerRenderer renderer = new FrameServerRenderer();
         Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
 
         private EffectProcessor EffectRenderer = new EffectProcessor();
-
+        SubtitleRenderer nativeSubRenderer = new SubtitleRenderer();
         MediaPlayer _mediaPlayer;
 
         public MediaPlayer WrappedMediaPlayer
@@ -83,7 +85,9 @@ namespace MayazucMediaPlayer.Controls
             SubtitleImage.Visibility = Visibility.Visible;
             SubtitleImage.Opacity = 1;
 
-            //subsRenderer.RenderSubtitlesToImage(SubtitleImage, AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, DispatcherQueue);
+            if (useNativeSubtitleRenderer)
+                nativeSubRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
+            else subsRenderer.RenderSubtitlesToImage(SubtitleImage, AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, DispatcherQueue);
         }
 
         public ImageSource PosterSource
@@ -110,7 +114,15 @@ namespace MayazucMediaPlayer.Controls
         private void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
-            foreach(var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
+            if (args.EventData.PreviousItem != null)
+            {
+                foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
+                {
+                    tmd.CueEntered -= Tmd_CueEntered;
+                    tmd.CueExited -= Tmd_CueEntered;
+                }
+            }
+            foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
             {
                 tmd.CueEntered += Tmd_CueEntered;
                 tmd.CueExited += Tmd_CueEntered;

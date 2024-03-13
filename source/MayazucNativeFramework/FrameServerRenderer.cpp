@@ -33,6 +33,7 @@ namespace winrt::MayazucNativeFramework::implementation
 				|| (win2dImageSource.Size().Height != targetImage.Height()))
 			{
 				win2dImageSource = CanvasImageSource(canvasDevice, (int)targetImage.Width(), (int)targetImage.Height(), 96);
+				targetImage.Source(win2dImageSource);
 			}
 
 			{
@@ -48,11 +49,10 @@ namespace winrt::MayazucNativeFramework::implementation
 				player.CopyFrameToVideoSurface(renderingTarget);
 				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
 
-				player.RenderSubtitlesToSurface(subtitlesTarget);
-				outputDrawingSession.DrawImage(subtitlesTarget);
+				//player.RenderSubtitlesToSurface(subtitlesTarget);
+				//outputDrawingSession.DrawImage(subtitlesTarget);
 				outputDrawingSession.Flush();
 
-				targetImage.Source(win2dImageSource);
 			}
 		}
 		catch (...)

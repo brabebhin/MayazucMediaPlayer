@@ -35,4 +35,12 @@ namespace MayazucNativeFramework
 		Windows.Foundation.IAsyncAction RenderMediaPlayerFrameToStreamAsync(Windows.Media.Playback.MediaPlayer player, VideoEffectProcessorConfiguration effectConfiguration, Windows.Storage.Streams.IRandomAccessStream outputStream);
 
 	}
+
+	[default_interface]
+	runtimeclass SubtitleRenderer
+	{
+		SubtitleRenderer();
+
+		void RenderSubtitlesToFrame(Windows.Media.Playback.MediaPlaybackItem playbackItem, Microsoft.UI.Xaml.Controls.Image targetImage);
+	}
 }
