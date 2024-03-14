@@ -36,7 +36,7 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class MediaPlayerRenderingElement : UserControl
     {
-        bool useNativeSubtitleRenderer = true;
+        bool useNativeSubtitleRenderer = false;
 
         FrameServerRenderer renderer = new FrameServerRenderer();
         Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
@@ -114,6 +114,7 @@ namespace MayazucMediaPlayer.Controls
         private void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
+
             if (args.EventData.PreviousItem != null)
             {
                 foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
@@ -121,11 +122,31 @@ namespace MayazucMediaPlayer.Controls
                     tmd.CueEntered -= Tmd_CueEntered;
                     tmd.CueExited -= Tmd_CueEntered;
                 }
+
+                args.EventData.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
+
             }
             foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
             {
                 tmd.CueEntered += Tmd_CueEntered;
                 tmd.CueExited += Tmd_CueEntered;
+            }
+
+            args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
+        }
+
+        private void PlaybackItem_TimedMetadataTracksChanged(MediaPlaybackItem sender, IVectorChangedEventArgs args)
+        {
+            switch(args.CollectionChange)
+            {
+                case CollectionChange.ItemInserted:
+                    sender.TimedMetadataTracks[(int)args.Index].CueEntered += Tmd_CueEntered;
+                    sender.TimedMetadataTracks[(int)args.Index].CueExited += Tmd_CueEntered;
+                    break;
+                case CollectionChange.ItemRemoved:
+                    sender.TimedMetadataTracks[(int)args.Index].CueEntered -= Tmd_CueEntered;
+                    sender.TimedMetadataTracks[(int)args.Index].CueExited -= Tmd_CueEntered;
+                    break;
             }
         }
 

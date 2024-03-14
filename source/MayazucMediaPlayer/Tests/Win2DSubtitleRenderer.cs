@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.WinUI;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI;
 using Microsoft.UI.Dispatching;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
 
 namespace MayazucMediaPlayer.Tests
 {
@@ -110,25 +112,88 @@ namespace MayazucMediaPlayer.Tests
                 }
 
                 //move to text cues
-                foreach (var region in timedTextCuesWithRegions)
+                //the default text format for now.
+
+                var canvasTextFormat = new CanvasTextFormat()
                 {
+                    HorizontalAlignment = CanvasHorizontalAlignment.Center
+                };
+                //this should be ordered by the zIndex
+                foreach (var regionWithCues in timedTextCuesWithRegions)
+                {
+                    //each region is a CanvasRenderTarget
+
+                    var region = regionWithCues.Key;
+                    var absoluteExtent = TimedTextSizeRelativeToAbsolute(region.Extent, width, height);
+                    var regionW = (float)absoluteExtent.Width;
+                    var regionH = (float)absoluteExtent.Height;
+
+                    var regionDrawPoint = TimedTextPointRelativeToAbsolute(region.Position, width, height);
+                    using var regionRenderTarget = new CanvasRenderTarget(canvasDevice, regionW, regionH, 96);
+
+                    using var regionRenderTargetDs = regionRenderTarget.CreateDrawingSession();
+
+                    regionRenderTargetDs.Clear(Colors.Transparent); //this should be region.Background
                     //each region has a bunch of cues
-                    var cuesInRegion = region.Value;
-                    for (int i = 0; i < cuesInRegion.Count; i++)
+                    var cuesInRegion = regionWithCues.Value;
+                    for (int cueIndex = 0; cueIndex < cuesInRegion.Count; cueIndex++)
                     {
-                        var textCue = cuesInRegion[i];
+                        var textCue = cuesInRegion[cueIndex];
+
                         //each cue has a bunch of lines
-                        for (int l = 0; l < textCue.Lines.Count; l++)
+
+                        //the only supported case so far is alignment LeftRightTopBottom.
+                        //the others shouldn't be too difficult to support, allignment calculations will be different.
+                        //the last line is the first to render at the bottom of the region
+
+                        //this variable is used to determine where the rendering of the line will take place.
+                        //for LeftRightTopBottom this is initialized with the maximum Height of the region (i.e. after the last line)
+                        //it will then be used to compute the actual rendering position of the line based on the line computed height
+                        var renderingAvailableHeight = regionH;
+
+                        for (int lineIndex = textCue.Lines.Count - 1; lineIndex >= 0; lineIndex--)
                         {
-                            var line = textCue.Lines[l];
+                            var line = textCue.Lines[lineIndex];
                             var text = line.Text;
-                            //each line has a bunch of subformats
-                            for (int s = 0; i < line.Subformats.Count; s++)
+                            //each line has a CanvasTextLayout.
+                            //the requested size will be the full size of the region canvas. the text should not use the whole space.
+                            var textLayout = new CanvasTextLayout(canvasDevice, text, canvasTextFormat, regionW, regionH);
+                            textLayout.SetColor(0, text.Length, Microsoft.UI.Colors.White);
+                            //apply subformats
+                            for (int subformatIndex = 0; subformatIndex < line.Subformats.Count; subformatIndex++)
                             {
-                                var subFormat = line.Subformats[s];
+                                var subFormat = line.Subformats[subformatIndex];
+                                //we do not fully support the TimedTextStyle specifications.
+                                var subStyle = subFormat.SubformatStyle;
+                                var startIndex = subFormat.StartIndex;
+                                var length = subFormat.Length;
+                                if (length == 0) continue;
+                                textLayout.SetStrikethrough(startIndex, length, subStyle.IsLineThroughEnabled);
+                                textLayout.SetUnderline(startIndex, length, subStyle.IsUnderlineEnabled);
+                                textLayout.SetColor(startIndex, length, subStyle.Background);
+                                //textLayout.SetFontFamily(startIndex, length, subStyle.FontFamily);
+                                //textLayout.SetFontSize(startIndex, length, TimedTextDoubleRelativeToAbsolute(subStyle.FontSize, width, height));
+                                textLayout.SetFontStyle(startIndex, length, (Windows.UI.Text.FontStyle)subStyle.FontStyle);
+                                textLayout.SetFontWeight(startIndex, length, new Windows.UI.Text.FontWeight((ushort)subFormat.SubformatStyle.FontWeight));
                             }
+
+
+                            var lineGeometry = Microsoft.Graphics.Canvas.Geometry.CanvasGeometry.CreateText(textLayout);
+                            lineGeometry = lineGeometry.Simplify(Microsoft.Graphics.Canvas.Geometry.CanvasGeometrySimplification.Lines);
+                            var lineRenderHeight = (float)(renderingAvailableHeight - lineGeometry.ComputeBounds().Height - 10); //the -10 makes the text look nicer
+                            regionRenderTargetDs.FillGeometry(lineGeometry, new System.Numerics.Vector2(0, lineRenderHeight), Microsoft.UI.Colors.White);
+
+                            renderingAvailableHeight = lineRenderHeight; //shrink the available space to render the next line on top of the current line
+
                         }
                     }
+
+                    //done rendering all lines per region
+
+                    //now it is time to draw the region to the main drawing surface
+                    regionRenderTargetDs.Flush();
+                    var regionDestinationRectangle = new Windows.Foundation.Rect(new Windows.Foundation.Point(regionDrawPoint.X, regionDrawPoint.Y), new Windows.Foundation.Size(regionW, regionH));
+                    renderSurfaceDrawingSession.DrawImage(regionRenderTarget, regionDestinationRectangle);
                 }
 
                 if (targetImageSource == null || targetImageSource.SizeInPixels.Width != width || targetImageSource.SizeInPixels.Height != height)
@@ -138,6 +203,7 @@ namespace MayazucMediaPlayer.Tests
                 }
                 using var finalSurfaceDS = targetImageSource.CreateDrawingSession(Microsoft.UI.Colors.Transparent);
                 finalSurfaceDS.Clear(Colors.Transparent);
+                renderSurfaceDrawingSession.Flush();
                 finalSurfaceDS.DrawImage(renderTargetSurface);
             }
         }
@@ -171,6 +237,13 @@ namespace MayazucMediaPlayer.Tests
             };
 
             return returnValue;
+        }
+
+        private static float TimedTextDoubleRelativeToAbsolute(TimedTextDouble value, float width, float height)
+        {
+            if (value.Unit == TimedTextUnit.Pixels) return (float)value.Value;
+
+            return (float)value.Value * width / 100;
         }
     }
 }
