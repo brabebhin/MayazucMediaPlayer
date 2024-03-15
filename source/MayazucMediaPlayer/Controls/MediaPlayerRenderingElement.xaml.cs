@@ -36,7 +36,7 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class MediaPlayerRenderingElement : UserControl
     {
-        bool useNativeSubtitleRenderer = false;
+        bool useNativeSubtitleRenderer = true;
 
         FrameServerRenderer renderer = new FrameServerRenderer();
         Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
