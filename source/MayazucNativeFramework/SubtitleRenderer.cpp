@@ -8,7 +8,12 @@
 #include <winrt/Microsoft.Graphics.Canvas.UI.Xaml.h>
 #include <winrt/Microsoft.Graphics.Canvas.Text.h>
 #include <winrt/Microsoft.Graphics.Canvas.Geometry.h>
+#include <winrt/Windows.Media.ClosedCaptioning.h>
+#include <winrt/Windows.Media.h>
+#include <winrt/Microsoft.Graphics.Canvas.Brushes.h>
 #include <map>
+#include <SsaAssTextRenderer.h>
+
 using namespace std;
 
 namespace winrt::MayazucNativeFramework::implementation
@@ -19,7 +24,9 @@ namespace winrt::MayazucNativeFramework::implementation
 	using namespace winrt::Microsoft::Graphics::Canvas::UI::Xaml;
 	using namespace winrt::Microsoft::Graphics::Canvas::Text;
 	using namespace winrt::Microsoft::Graphics::Canvas::Geometry;
-
+	using namespace winrt::Windows::Media::ClosedCaptioning;
+	using namespace winrt::Windows::Media;
+	using namespace winrt::Microsoft::Graphics::Canvas::Brushes;
 
 	void SubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage)
 	{
@@ -91,9 +98,9 @@ namespace winrt::MayazucNativeFramework::implementation
 		{
 			//this is the directx surface we will be rendering all subtitles onto.
 			auto renderSurfaceDrawingSession = renderTargetSurface.CreateDrawingSession();
-
 			renderSurfaceDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
 
+			auto subtitleOutputSpriteBatch = renderSurfaceDrawingSession.CreateSpriteBatch();
 			//start with image cues
 			for (int i = 0; i < imageCuesToRender.size(); i++)
 			{
@@ -106,9 +113,9 @@ namespace winrt::MayazucNativeFramework::implementation
 					auto targetPosition = TimedTextPositionSizeToRect(position, extent);
 					if (targetPosition.Width == 0 || targetPosition.Height == 0)
 					{
-
+						continue;
 					}
-					renderSurfaceDrawingSession.DrawImage(CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, imageCue.SoftwareBitmap()), targetPosition);
+					subtitleOutputSpriteBatch.Draw(CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, imageCue.SoftwareBitmap()), targetPosition);
 				}
 				catch (...) {}
 			}
@@ -116,6 +123,10 @@ namespace winrt::MayazucNativeFramework::implementation
 			//move on to textCues
 			auto canvasTextFormat = CanvasTextFormat();
 			canvasTextFormat.HorizontalAlignment(CanvasHorizontalAlignment::Center);
+			canvasTextFormat.FontSize(24);
+
+			CanvasStrokeStyle dashedStroke = CanvasStrokeStyle();
+			dashedStroke.DashStyle(CanvasDashStyle::Solid);
 
 			for (auto regionWithCues : timedTextCuesWithRegions)
 			{
@@ -129,9 +140,7 @@ namespace winrt::MayazucNativeFramework::implementation
 				auto regionDrawPoint = TimedTextPointRelativeToAbsolute(region.Position(), width, height);
 
 				auto regionRenderTarget = CanvasRenderTarget(canvasDevice, regionW, regionH, 96);
-
 				auto regionRenderTargetDs = regionRenderTarget.CreateDrawingSession();
-
 				regionRenderTargetDs.Clear(Microsoft::UI::Colors::Transparent()); //this should be region.Background
 				//each region has a bunch of cues
 				auto cuesInRegion = regionWithCues.second;
@@ -158,6 +167,8 @@ namespace winrt::MayazucNativeFramework::implementation
 						//the requested size will be the full size of the region canvas. the text should not use the whole space.
 						auto textLayout = CanvasTextLayout(canvasDevice, text, canvasTextFormat, regionW, regionH);
 						textLayout.SetColor(0, text.size(), Microsoft::UI::Colors::White());
+
+
 						//apply subformats
 						for (int subformatIndex = 0; subformatIndex < line.Subformats().Size(); subformatIndex++)
 						{
@@ -167,24 +178,25 @@ namespace winrt::MayazucNativeFramework::implementation
 							auto startIndex = subFormat.StartIndex();
 							auto length = subFormat.Length();
 							if (length == 0) continue;
+
 							textLayout.SetStrikethrough(startIndex, length, subStyle.IsLineThroughEnabled());
 							textLayout.SetUnderline(startIndex, length, subStyle.IsUnderlineEnabled());
-							textLayout.SetColor(startIndex, length, subStyle.Background());
-							//textLayout.SetFontFamily(startIndex, length, subStyle.FontFamily);
-							//textLayout.SetFontSize(startIndex, length, TimedTextDoubleRelativeToAbsolute(subStyle.FontSize, width, height));
 							textLayout.SetFontStyle(startIndex, length, (Windows::UI::Text::FontStyle)subStyle.FontStyle());
+
 							auto fontWeight = winrt::Windows::UI::Text::FontWeight();
 							fontWeight.Weight = (uint16_t)subFormat.SubformatStyle().FontWeight();
 
 							textLayout.SetFontWeight(startIndex, length, fontWeight);
 						}
 
-
 						auto lineGeometry = CanvasGeometry::CreateText(textLayout);
-						auto lineRenderHeight = (float)(renderingAvailableHeight - lineGeometry.ComputeBounds().Height - 10); //the -10 makes the text look nicer
-						regionRenderTargetDs.FillGeometry(lineGeometry, 0, lineRenderHeight, Microsoft::UI::Colors::White());
-						renderingAvailableHeight = lineRenderHeight; //shrink the available space to render the next line on top of the current line
+						auto lineRenderHeight = (float)(renderingAvailableHeight - lineGeometry.ComputeBounds().Height - canvasTextFormat.FontSize());
+						if (lineRenderHeight <= 0) break;
 
+						auto textRenderer = winrt::make<SsaAssTextRenderer>(regionRenderTargetDs, textCue.CueStyle());
+						textLayout.DrawToTextRenderer(textRenderer, 0, lineRenderHeight);
+
+						renderingAvailableHeight = lineRenderHeight; //shrink the available space to render the next line on top of the current line
 					}
 				}
 
@@ -193,11 +205,10 @@ namespace winrt::MayazucNativeFramework::implementation
 				//now it is time to draw the region to the main drawing surface
 				regionRenderTargetDs.Flush();
 				auto regionDestinationRectangle = winrt::Windows::Foundation::Rect(winrt::Windows::Foundation::Point(regionDrawPoint.X, regionDrawPoint.Y), Windows::Foundation::Size(regionW, regionH));
-				renderSurfaceDrawingSession.DrawImage(regionRenderTarget, regionDestinationRectangle);
+				subtitleOutputSpriteBatch.Draw(regionRenderTarget, regionDestinationRectangle);
 			}
 
-
-
+			subtitleOutputSpriteBatch.Close();
 			renderSurfaceDrawingSession.Flush();
 			if (!targetImageSource || targetImageSource.SizeInPixels().Width != width || targetImageSource.SizeInPixels().Height != height)
 			{
@@ -212,3 +223,5 @@ namespace winrt::MayazucNativeFramework::implementation
 		}
 	}
 }
+
+

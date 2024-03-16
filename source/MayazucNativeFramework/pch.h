@@ -28,3 +28,11 @@
 #include "VideoEffectProcessorConfiguration.h"
 
 #include <winrt/Windows.Media.Playback.h>
+#include <winrt/Microsoft.Graphics.Canvas.h>
+#include <winrt/Microsoft.Graphics.Canvas.Text.h>
+#include <winrt/Microsoft.Graphics.Canvas.Geometry.h>
+#include <winrt/Windows.Foundation.Numerics.h>
+#include <winrt/Microsoft.Graphics.Canvas.UI.Xaml.h>
+#include <winrt/Windows.UI.h>
+#include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Media.Core.h>

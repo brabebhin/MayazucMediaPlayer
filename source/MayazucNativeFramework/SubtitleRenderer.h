@@ -1,9 +1,6 @@
 #pragma once
 #include "SubtitleRenderer.g.h"
-#include <winrt/Microsoft.Graphics.Canvas.UI.Xaml.h>
-#include <winrt/Windows.UI.h>
-#include <winrt/Windows.Foundation.h>
-#include <winrt/Windows.Media.Core.h>
+
 
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Media::Core;
