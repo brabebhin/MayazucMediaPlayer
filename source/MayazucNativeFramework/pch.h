@@ -36,3 +36,10 @@
 #include <winrt/Windows.UI.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Media.Core.h>
+
+#include <vector>
+#include <winrt/Microsoft.UI.h>
+#include <winrt/Windows.Media.ClosedCaptioning.h>
+#include <winrt/Windows.Media.h>
+#include <winrt/Microsoft.Graphics.Canvas.Brushes.h>
+#include <map>

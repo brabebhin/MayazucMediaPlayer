@@ -1,20 +1,7 @@
 #include "pch.h"
 #include "SubtitleRenderer.h"
 #include "SubtitleRenderer.g.cpp"
-#include <vector>
-#include <winrt/Windows.Media.Core.h>
-#include <winrt/Windows.Media.Playback.h>
-#include <winrt/Microsoft.UI.h>
-#include <winrt/Microsoft.Graphics.Canvas.UI.Xaml.h>
-#include <winrt/Microsoft.Graphics.Canvas.Text.h>
-#include <winrt/Microsoft.Graphics.Canvas.Geometry.h>
-#include <winrt/Windows.Media.ClosedCaptioning.h>
-#include <winrt/Windows.Media.h>
-#include <winrt/Microsoft.Graphics.Canvas.Brushes.h>
-#include <map>
 #include <SsaAssTextRenderer.h>
-
-using namespace std;
 
 namespace winrt::MayazucNativeFramework::implementation
 {
@@ -27,6 +14,9 @@ namespace winrt::MayazucNativeFramework::implementation
 	using namespace winrt::Windows::Media::ClosedCaptioning;
 	using namespace winrt::Windows::Media;
 	using namespace winrt::Microsoft::Graphics::Canvas::Brushes;
+	using namespace winrt::Windows::Foundation;
+	using namespace winrt::Microsoft::UI;
+	using namespace std;
 
 	void SubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage)
 	{
@@ -125,9 +115,6 @@ namespace winrt::MayazucNativeFramework::implementation
 			canvasTextFormat.HorizontalAlignment(CanvasHorizontalAlignment::Center);
 			canvasTextFormat.FontSize(24);
 
-			CanvasStrokeStyle dashedStroke = CanvasStrokeStyle();
-			dashedStroke.DashStyle(CanvasDashStyle::Solid);
-
 			for (auto regionWithCues : timedTextCuesWithRegions)
 			{
 				//each region is a CanvasRenderTarget
@@ -204,7 +191,7 @@ namespace winrt::MayazucNativeFramework::implementation
 
 				//now it is time to draw the region to the main drawing surface
 				regionRenderTargetDs.Flush();
-				auto regionDestinationRectangle = winrt::Windows::Foundation::Rect(winrt::Windows::Foundation::Point(regionDrawPoint.X, regionDrawPoint.Y), Windows::Foundation::Size(regionW, regionH));
+				auto regionDestinationRectangle = Rect(Point(regionDrawPoint.X, regionDrawPoint.Y), Size(regionW, regionH));
 				subtitleOutputSpriteBatch.Draw(regionRenderTarget, regionDestinationRectangle);
 			}
 
@@ -216,7 +203,7 @@ namespace winrt::MayazucNativeFramework::implementation
 				targetImage.Source(targetImageSource);
 			}
 			{
-				auto finalSurfaceDS = targetImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
+				auto finalSurfaceDS = targetImageSource.CreateDrawingSession(Colors::Transparent());
 				finalSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
 				finalSurfaceDS.DrawImage(renderTargetSurface);
 			}

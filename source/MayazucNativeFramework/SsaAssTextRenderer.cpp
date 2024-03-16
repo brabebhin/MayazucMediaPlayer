@@ -5,23 +5,26 @@ namespace winrt::MayazucNativeFramework::implementation
 {
 	using namespace winrt::Microsoft::Graphics::Canvas::Geometry;
 	using namespace winrt::Windows::Media::Core;
+	using namespace Numerics;
+	using namespace winrt::Microsoft::Graphics::Canvas::Text;
+	using namespace winrt::Windows::Foundation;
 
-	SsaAssTextRenderer::SsaAssTextRenderer(winrt::Microsoft::Graphics::Canvas::CanvasDrawingSession const& resourceCreator, TimedTextStyle const& lineStyle) :
+	SsaAssTextRenderer::SsaAssTextRenderer(CanvasDrawingSession const& resourceCreator, TimedTextStyle const& lineStyle) :
 		ResourceCreator(resourceCreator),
 		LineStyle(lineStyle)
 	{
 	}
 
-	void SsaAssTextRenderer::DrawGlyphRun(winrt::Windows::Foundation::Numerics::float2 const& point, winrt::Microsoft::Graphics::Canvas::Text::CanvasFontFace const& fontFace, float fontSize, array_view<winrt::Microsoft::Graphics::Canvas::Text::CanvasGlyph const> glyphs, bool isSideways, uint32_t bidiLevel, winrt::Windows::Foundation::IInspectable const& brush, winrt::Microsoft::Graphics::Canvas::Text::CanvasTextMeasuringMode const& measuringMode, hstring const& localeName, hstring const& textString, array_view<int32_t const> clusterMapIndices, uint32_t characterIndex, winrt::Microsoft::Graphics::Canvas::Text::CanvasGlyphOrientation const& glyphOrientation)
+	void SsaAssTextRenderer::DrawGlyphRun(float2 const& point, CanvasFontFace const& fontFace, float fontSize, array_view<CanvasGlyph const> glyphs, bool isSideways, uint32_t bidiLevel, IInspectable const& brush, CanvasTextMeasuringMode const& measuringMode, hstring const& localeName, hstring const& textString, array_view<int32_t const> clusterMapIndices, uint32_t characterIndex, CanvasGlyphOrientation const& glyphOrientation)
 	{
-		auto glyphrun = winrt::Microsoft::Graphics::Canvas::Geometry::CanvasGeometry::CreateGlyphRun(ResourceCreator, point, fontFace, fontSize, glyphs, isSideways, bidiLevel, measuringMode, glyphOrientation);
+		auto glyphrun = CanvasGeometry::CreateGlyphRun(ResourceCreator, point, fontFace, fontSize, glyphs, isSideways, bidiLevel, measuringMode, glyphOrientation);
 		if (!brush)
 			ResourceCreator.FillGeometry(glyphrun, LineStyle.Foreground());
 		else if (auto color = brush.try_as<Windows::UI::Color>())
 		{
 			ResourceCreator.FillGeometry(glyphrun, color.value());
 		}
-		else if (auto cBrush = brush.try_as<winrt::Microsoft::Graphics::Canvas::Brushes::ICanvasBrush>())
+		else if (auto cBrush = brush.try_as<Brushes::ICanvasBrush>())
 		{
 			ResourceCreator.FillGeometry(glyphrun, cBrush);
 		}
@@ -31,7 +34,7 @@ namespace winrt::MayazucNativeFramework::implementation
 		}
 	}
 
-	void SsaAssTextRenderer::DrawStrikethrough(winrt::Windows::Foundation::Numerics::float2 const& point, float strikethroughWidth, float strikethroughThickness, float strikethroughOffset, winrt::Microsoft::Graphics::Canvas::Text::CanvasTextDirection const& textDirection, winrt::Windows::Foundation::IInspectable const& brush, winrt::Microsoft::Graphics::Canvas::Text::CanvasTextMeasuringMode const& textMeasuringMode, hstring const& localeName, winrt::Microsoft::Graphics::Canvas::Text::CanvasGlyphOrientation const& glyphOrientation)
+	void SsaAssTextRenderer::DrawStrikethrough(float2 const& point, float strikethroughWidth, float strikethroughThickness, float strikethroughOffset, CanvasTextDirection const& textDirection, IInspectable const& brush, CanvasTextMeasuringMode const& textMeasuringMode, hstring const& localeName, CanvasGlyphOrientation const& glyphOrientation)
 	{
 		if (!brush)
 			ResourceCreator.FillRectangle(point.x, point.y + strikethroughOffset, strikethroughWidth, strikethroughThickness, LineStyle.Foreground());
@@ -39,17 +42,17 @@ namespace winrt::MayazucNativeFramework::implementation
 		{
 			ResourceCreator.FillRectangle(point.x, point.y + strikethroughOffset, strikethroughWidth, strikethroughThickness, color.value());
 		}
-		else if (auto cBrush = brush.try_as<winrt::Microsoft::Graphics::Canvas::Brushes::ICanvasBrush>())
+		else if (auto cBrush = brush.try_as<Brushes::ICanvasBrush>())
 		{
 			ResourceCreator.FillRectangle(point.x, point.y + strikethroughOffset, strikethroughWidth, strikethroughThickness, cBrush);
 		}
 		else
 		{
-			ResourceCreator.FillRectangle(point.x, point.y + strikethroughOffset, strikethroughWidth, strikethroughThickness, color.value());
+			ResourceCreator.FillRectangle(point.x, point.y + strikethroughOffset, strikethroughWidth, strikethroughThickness, LineStyle.Foreground());
 		}
 	}
 
-	void SsaAssTextRenderer::DrawUnderline(winrt::Windows::Foundation::Numerics::float2 const& point, float underlineWidth, float underlineThickness, float underlineOffset, float runHeight, winrt::Microsoft::Graphics::Canvas::Text::CanvasTextDirection const& textDirection, winrt::Windows::Foundation::IInspectable const& brush, winrt::Microsoft::Graphics::Canvas::Text::CanvasTextMeasuringMode const& textMeasuringMode, hstring const& localeName, winrt::Microsoft::Graphics::Canvas::Text::CanvasGlyphOrientation const& glyphOrientation)
+	void SsaAssTextRenderer::DrawUnderline(float2 const& point, float underlineWidth, float underlineThickness, float underlineOffset, float runHeight, CanvasTextDirection const& textDirection, IInspectable const& brush, CanvasTextMeasuringMode const& textMeasuringMode, hstring const& localeName, CanvasGlyphOrientation const& glyphOrientation)
 	{
 		ResourceCreator.FillRectangle(point.x, point.y, underlineWidth, underlineThickness, LineStyle.Foreground());
 		if (!brush)
@@ -58,7 +61,7 @@ namespace winrt::MayazucNativeFramework::implementation
 		{
 			ResourceCreator.FillRectangle(point.x, point.y, underlineWidth, underlineThickness, color.value());
 		}
-		else if (auto cBrush = brush.try_as<winrt::Microsoft::Graphics::Canvas::Brushes::ICanvasBrush>())
+		else if (auto cBrush = brush.try_as<Brushes::ICanvasBrush>())
 		{
 			ResourceCreator.FillRectangle(point.x, point.y, underlineWidth, underlineThickness, cBrush);
 		}
@@ -68,7 +71,7 @@ namespace winrt::MayazucNativeFramework::implementation
 		}
 	}
 
-	void SsaAssTextRenderer::DrawInlineObject(winrt::Windows::Foundation::Numerics::float2 const& point, winrt::Microsoft::Graphics::Canvas::Text::ICanvasTextInlineObject const& inlineObject, bool isSideways, bool isRightToLeft, winrt::Windows::Foundation::IInspectable const& brush, winrt::Microsoft::Graphics::Canvas::Text::CanvasGlyphOrientation const& glyphOrientation)
+	void SsaAssTextRenderer::DrawInlineObject(float2 const& point, ICanvasTextInlineObject const& inlineObject, bool isSideways, bool isRightToLeft, IInspectable const& brush, CanvasGlyphOrientation const& glyphOrientation)
 	{
 
 	}
@@ -78,9 +81,9 @@ namespace winrt::MayazucNativeFramework::implementation
 		return true;
 	}
 
-	winrt::Windows::Foundation::Numerics::float3x2 SsaAssTextRenderer::Transform()
+	float3x2 SsaAssTextRenderer::Transform()
 	{
-		return winrt::Windows::Foundation::Numerics::float3x2::identity();
+		return float3x2::identity();
 	}
 
 	float SsaAssTextRenderer::Dpi()
