@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MayazucMediaPlayer.Controls.CustomMediaTransportControls2"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:contract4Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,4)"
+    xmlns:contract6Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,6)"
+    xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:contract7NotPresent="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractNotPresent(Windows.Foundation.UniversalApiContract,7)"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives" 
+    xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
+    mc:Ignorable="d">
+
+    <Grid x:Name="RootGrid" Margin="8" Background="{ThemeResource SystemAltLowColor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="8"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="8"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="000:00:00" VerticalAlignment="Center" x:Name="MediaPositionTextBlock"/>
+            <Slider Maximum="100" Minimum="0" Grid.Column="2" x:Name="MediaProgressBar">
+
+            </Slider>
+            <TextBlock Grid.Column="4" Text="000:00:00" x:Name="MediaDurationTextBlock" VerticalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <CommandBar HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed">
+                <AppBarButton Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
+                <AppBarButton Click="SkipBack_click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9E;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton x:Name="PlayPauseButton" Icon="Play" Click="PlayPause_click"></AppBarButton>
+                <AppBarButton Click="SkipForward_click">
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9D;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Icon="Next" Click="SkipNext_click"></AppBarButton>
+                <AppBarSeparator></AppBarSeparator>
+                <AppBarButton Icon="Shuffle"></AppBarButton>
+                <AppBarButton Icon="RepeatAll"></AppBarButton>
+                <AppBarSeparator></AppBarSeparator>
+                <AppBarButton Icon="ClosedCaption"></AppBarButton>
+                <AppBarButton Icon="Audio"></AppBarButton>
+                <AppBarButton Icon="Video"></AppBarButton>
+                <AppBarSeparator></AppBarSeparator>
+                <AppBarButton x:Name="FullScreenButton" Icon="FullScreen" Label="Fullscreen toggle" Click="GoFullScreen_click"></AppBarButton>
+                <AppBarButton Icon="Setting" Label="Settings"></AppBarButton>
+            </CommandBar>
+        </Grid>
+    </Grid>
+</UserControl>

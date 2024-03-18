@@ -16,12 +16,12 @@
 
     <Grid x:Name="GridRoot">
         <Grid>
-            <local:NowPlayingBackgroundGrid Visibility="{Binding ElementName=mediaPlayerElementInstance, Path=MediaPlayerElementInstance.PosterSource, Converter={StaticResource VisibilityNullConverter}}"></local:NowPlayingBackgroundGrid>
+            <local:NowPlayingBackgroundGrid Visibility="Collapsed"></local:NowPlayingBackgroundGrid>
         </Grid>
 
         <Grid  VerticalAlignment="Stretch" Grid.Row="1" x:Name="LayoutRoot">
-            <controls:MediaPlayerRenderingElement x:Name="mediaPlayerElementInstance" Grid.Row="0" Grid.RowSpan="2">
-            </controls:MediaPlayerRenderingElement>
+            <controls:MediaPlayerRenderingElement2 x:Name="mediaPlayerElementInstance" Grid.Row="0" Grid.RowSpan="2">
+            </controls:MediaPlayerRenderingElement2>
         </Grid>
     </Grid>
 </local2:BasePage>

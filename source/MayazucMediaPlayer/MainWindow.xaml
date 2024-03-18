@@ -78,7 +78,7 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="contentRow" Height="*"></RowDefinition>
-                <RowDefinition x:Name="nowPlayingRow" Height="100"></RowDefinition>
+                <RowDefinition x:Name="nowPlayingRow" Height="124"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid IsDoubleTapEnabled="True" x:Name="LayoutRoot" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" >

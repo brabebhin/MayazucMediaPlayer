@@ -287,5 +287,18 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             await (PlayerInstance).SkipToQueueItem(mediaData);
         }
+
+        internal double GetNormalizedPosition()
+        {
+            if (HasActviePlaybackSession && PlayerInstance.CurrentPlaybackItem != null && CurrentPlayer.PlaybackSession.NaturalDuration.TotalSeconds != 0)
+            {
+                //100 -> naturalDuration
+                //x  --> position
+
+                return (CurrentPlayer.Position.TotalSeconds * 100) / CurrentPlayer.PlaybackSession.NaturalDuration.TotalSeconds;
+            }
+
+            return 0;
+        }
     }
 }

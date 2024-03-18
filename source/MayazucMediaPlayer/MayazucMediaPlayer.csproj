@@ -28,8 +28,10 @@
 		<Compile Remove="Common\RelayCommand.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove="Controls\CustomMediaTransportControls2.xaml" />
 		<None Remove="Controls\GenericContentControl.xaml" />
 		<None Remove="Controls\MediaPlayerRenderingElement.xaml" />
+		<None Remove="Controls\MediaPlayerRenderingElement2.xaml" />
 		<None Remove="Controls\SettingsItemsListView.xaml" />
 		<None Remove="Help\Licenses\bzip2.txt" />
 		<None Remove="Help\Licenses\CueSharp.txt" />
@@ -151,6 +153,18 @@
 		<ProjectReference Include="..\FFmpegInterop\FFmpegInteropX.vcxproj" />
 		<ProjectReference Include="..\MayazucNativeFramework\MayazucNativeFramework.vcxproj" />
 		<ProjectReference Include="..\Shell.Shell\Shell.Shell.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\CustomMediaTransportControls2.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\MediaPlayerRenderingElement2.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>

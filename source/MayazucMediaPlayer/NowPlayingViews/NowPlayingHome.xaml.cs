@@ -31,13 +31,12 @@ namespace MayazucMediaPlayer.NowPlayingViews
         public event EventHandler<FullscreenRequestEventArgs>? OnFullScreenRequest;
 
         private const double NowPlayingSplitViewsPercentage = 0.5;
-        CustomMediaTransportControls? UIMediaTransportControls = null;
         public override string Title => "Now Playing";
         readonly InputSystemCursor disposableCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
 
-        public MediaPlayerElement MediaPlayerElementInstance
+        public MediaPlayerRenderingElement2 MediaPlayerElementInstance
         {
-            get => mediaPlayerElementInstance.MediaPlayerElementInstance;
+            get => mediaPlayerElementInstance;
         }
 
         readonly AutoResetEvent _fullscreenTimerLock = new AutoResetEvent(true);
@@ -67,9 +66,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             InitializeComponent();
             disposableCursor.Dispose();
 
-            UIMediaTransportControls = CreateTransportControls(ServiceProvider.GetService<PlaybackSequenceService>());
-            MediaPlayerElementInstance.TransportControls = UIMediaTransportControls;
-
             NowPlayingHomeViewModelInstance = ServiceProvider.GetService<NowPlayingHomeViewModel>();
 
             NavigationCacheMode = NavigationCacheMode.Required;
@@ -83,7 +79,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             try
             {
                 _fullscreenTimerLock.WaitOne();
-                if (ProtectedCursor == disposableCursor && UIMediaTransportControls.PlayerElementIsFullWindow)
+                if (ProtectedCursor == disposableCursor)
                 {
                     ShowCursorEnableHideTimer();
                 }
@@ -139,16 +135,16 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         public void FadeInTransportControls()
         {
-            if (UIMediaTransportControls != null && GetNowPlayingCount() > 0)
-                VisualStateManager.GoToState(UIMediaTransportControls, "ControlPanelFadeIn2", false);
+            //if (UIMediaTransportControls != null && GetNowPlayingCount() > 0)
+            //    VisualStateManager.GoToState(UIMediaTransportControls, "ControlPanelFadeIn2", false);
         }
 
         public void FadeOutTransportControls()
         {
-            if (UIMediaTransportControls != null)
-                if (IsCompactMode && GetNowPlayingCount() > 0 || UIMediaTransportControls.IsPointerOverControlAreas) FadeInTransportControls();
-                else if (!UIMediaTransportControls.IsPointerOverControlAreas)
-                    VisualStateManager.GoToState(UIMediaTransportControls, "ControlPanelFadeOut2", false);
+            //if (UIMediaTransportControls != null)
+            //    if (IsCompactMode && GetNowPlayingCount() > 0 || UIMediaTransportControls.IsPointerOverControlAreas) FadeInTransportControls();
+            //    else if (!UIMediaTransportControls.IsPointerOverControlAreas)
+            //        VisualStateManager.GoToState(UIMediaTransportControls, "ControlPanelFadeOut2", false);
         }
 
         bool mediaPlayerInit = false;
@@ -156,25 +152,15 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             if (!mediaPlayerInit)
             {
-                MediaPlayerElementInstance.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
+                MediaPlayerElementInstance.WrappedMediaPlayer = AppState.Current.MediaServiceConnector.CurrentPlayer;
                 //MediaPlayerElementInstance.EffectsConfiguration = (await AppState.Current.BackgroundMediaServiceCurrent.PlayerInstance).VideoEffectsConfiguration;
 
                 fullscreenCallbackRegistrationToken = MediaPlayerElementInstance.RegisterPropertyChangedCallback(MediaPlayerElement.IsFullWindowProperty, FullscreenChangedCallback);
                 MediaPlayerElementInstance.AreTransportControlsEnabled = true;
                 MediaPlayerElementInstance.KeyDown += MediaPlayerElementInstance_KeyDown;
-                MediaPlayerElementInstance.TransportControls.IsNextTrackButtonVisible = true;
-                MediaPlayerElementInstance.TransportControls.IsPreviousTrackButtonVisible = true;
-                MediaPlayerElementInstance.TransportControls.IsVolumeButtonVisible = false;
-                MediaPlayerElementInstance.TransportControls.IsSeekBarVisible = false;
-                MediaPlayerElementInstance.TransportControls.IsZoomButtonVisible = false;
-                MediaPlayerElementInstance.TransportControls.IsPlaybackRateEnabled = true;
-                MediaPlayerElementInstance.TransportControls.IsPlaybackRateButtonVisible = true;
 
-                UIMediaTransportControls = (MediaPlayerElementInstance.TransportControls as CustomMediaTransportControls);
-                UIMediaTransportControls.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
-                UIMediaTransportControls.PlayerElementIsFullWindowChanged += _transportControls_PlayerElementIsFullWindowChanged;
                 AppState.Current.MediaServiceConnector.MediaPlayerElementFullScreenModeChanged += BackgroundAudioService_MediaPlayerElementFullScreenModeChanged;
-                UIMediaTransportControls.PlayerElement = mediaPlayerElementInstance;
+                //UIMediaTransportControls.PlayerElement = mediaPlayerElementInstance;
                 mediaPlayerInit = true;
                 FadeInTransportControls();
                 CheckCompactState(ActualHeight);
@@ -217,8 +203,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             MediaPlayerElementInstance.KeyDown -= MediaPlayerElementInstance_KeyDown;
             AppState.Current.MediaServiceConnector.MediaPlayerElementFullScreenModeChanged -= BackgroundAudioService_MediaPlayerElementFullScreenModeChanged;
 
-            MediaPlayerElementInstance.SetMediaPlayer(null);
-            UIMediaTransportControls?.Dispose();
+            MediaPlayerElementInstance.WrappedMediaPlayer = null;
             mediaPlayerInit = false;
         }
 
@@ -258,28 +243,28 @@ namespace MayazucMediaPlayer.NowPlayingViews
             try
             {
                 _fullscreenTimerLock.WaitOne();
-                if (UIMediaTransportControls.PlayerElementIsFullWindow)
-                {
-                    MediaPlayerElementInstance.TransportControls.IsNextTrackButtonVisible = true;
-                    MediaPlayerElementInstance.TransportControls.IsPreviousTrackButtonVisible = true;
-                    MediaPlayerElementInstance.TransportControls.IsVolumeButtonVisible = true;
+                //if (UIMediaTransportControls.PlayerElementIsFullWindow)
+                //{
+                //    //MediaPlayerElementInstance.TransportControls.IsNextTrackButtonVisible = true;
+                //    //MediaPlayerElementInstance.TransportControls.IsPreviousTrackButtonVisible = true;
+                //    //MediaPlayerElementInstance.TransportControls.IsVolumeButtonVisible = true;
 
-                    ScreenSessionManager.Current.RequestKeepScreenOn();
-                    _fullscreenCursorTimer = ThreadPoolTimer.CreatePeriodicTimer(HideMouseCursor, TimeSpan.FromSeconds(6));
-                }
-                else
-                {
-                    MediaPlayerElementInstance.TransportControls.IsNextTrackButtonVisible = true;
-                    MediaPlayerElementInstance.TransportControls.IsPreviousTrackButtonVisible = true;
-                    MediaPlayerElementInstance.TransportControls.IsVolumeButtonVisible = false;
+                //    ScreenSessionManager.Current.RequestKeepScreenOn();
+                //    _fullscreenCursorTimer = ThreadPoolTimer.CreatePeriodicTimer(HideMouseCursor, TimeSpan.FromSeconds(6));
+                //}
+                //else
+                //{
+                //    //MediaPlayerElementInstance.TransportControls.IsNextTrackButtonVisible = true;
+                //    //MediaPlayerElementInstance.TransportControls.IsPreviousTrackButtonVisible = true;
+                //    //MediaPlayerElementInstance.TransportControls.IsVolumeButtonVisible = false;
 
 
-                    ScreenSessionManager.Current.RequestScreenOff();
-                    _fullscreenCursorTimer?.Cancel();
+                //    ScreenSessionManager.Current.RequestScreenOff();
+                //    _fullscreenCursorTimer?.Cancel();
 
-                    ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
-                }
-                AppState.Current.MediaServiceConnector.NotifyViewMode(true, mediaPlayerElementInstance);
+                //    ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
+                //}
+                //AppState.Current.MediaServiceConnector.NotifyViewMode(true, mediaPlayerElementInstance);
 
             }
             finally
@@ -287,7 +272,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 _fullscreenTimerLock.Set();
             }
 
-            AppState.Current.MediaServiceConnector.IsRenderingFullScreen = UIMediaTransportControls.PlayerElementIsFullWindow;
+            //AppState.Current.MediaServiceConnector.IsRenderingFullScreen = UIMediaTransportControls.PlayerElementIsFullWindow;
         }
 
         private async void HideMouseCursor(ThreadPoolTimer timer)
@@ -297,11 +282,11 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 try
                 {
                     _fullscreenTimerLock.WaitOne();
-                    if (UIMediaTransportControls.PlayerElementIsFullWindow && AppState.Current.MediaServiceConnector.IsPlaying() && !UIMediaTransportControls.IsPointerOverControlAreas)
-                    {
-                        ProtectedCursor = disposableCursor;
-                        System.Diagnostics.Debug.WriteLine("****HIDE CURSOR****");
-                    }
+                    //if (UIMediaTransportControls.PlayerElementIsFullWindow && AppState.Current.MediaServiceConnector.IsPlaying() && !UIMediaTransportControls.IsPointerOverControlAreas)
+                    //{
+                    //    ProtectedCursor = disposableCursor;
+                    //    System.Diagnostics.Debug.WriteLine("****HIDE CURSOR****");
+                    //}
                     FadeOutTransportControls();
                 }
                 finally
@@ -317,16 +302,13 @@ namespace MayazucMediaPlayer.NowPlayingViews
             unInitMediaPlayerElement();
 
             MediaPlayerElementInstance.UnregisterPropertyChangedCallback(MediaPlayerElement.IsFullWindowProperty, fullscreenCallbackRegistrationToken);
-            UIMediaTransportControls.ExternalNavigationRequest -= NowPlayingCOntroller_ExternalNavigationRequest;
 
 
             Window.Current.CoreWindow.SizeChanged -= NowPlayingHome_SizeChanged;
             //MediaPlayerElementInstance.TransportControls = null;
-            MediaPlayerElementInstance.SetMediaPlayer(null);
-            UIMediaTransportControls.SetMediaPlayer(null);
+            MediaPlayerElementInstance.WrappedMediaPlayer = null;
 
             NowPlayingHomeViewModelInstance.Dispose();
-            UIMediaTransportControls.Dispose();
 
             NowPlayingHomeViewModelInstance.PlaybackServiceInstance.NowPlayingBackStore.CollectionChanged -= NowPlayingBackStore_CollectionChanged;
 
@@ -356,10 +338,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private void NowPlayingCOntroller_ExternalNavigationRequest(object? sender, NavigationRequestEventArgs e)
         {
-            if (UIMediaTransportControls.PlayerElementIsFullWindow)
-            {
-                //MediaPlayerElementInstance.IsFullWindow = false;
-            }
             NotifyExternalNavigationRequest(sender, e);
         }
 
@@ -412,18 +390,18 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 fullScreenBusy = true;
                 await DispatcherQueue.EnqueueAsync(async () =>
                 {
-                    if (UIMediaTransportControls.PlayerElementIsFullWindow)
-                    {
-                        if (MainWindowingService.Instance.IsInCompactOverlayMode())
-                        {
-                            await MainWindowingService.Instance.RequestCompactOverlayMode(false);
-                        }
-                    }
+                    //if (UIMediaTransportControls.PlayerElementIsFullWindow)
+                    //{
+                    //    if (MainWindowingService.Instance.IsInCompactOverlayMode())
+                    //    {
+                    //        await MainWindowingService.Instance.RequestCompactOverlayMode(false);
+                    //    }
+                    //}
 
-                    if (e != UIMediaTransportControls.PlayerElementIsFullWindow)
-                    {
-                        //MediaPlayerElementInstance.IsFullWindow = e;
-                    }
+                    //if (e != UIMediaTransportControls.PlayerElementIsFullWindow)
+                    //{
+                    //    //MediaPlayerElementInstance.IsFullWindow = e;
+                    //}
                     fullScreenBusy = false;
 
                 });
@@ -491,7 +469,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         public override async Task<bool> GoBack()
         {
-            return await UIMediaTransportControls.GoBack();
+            return false;
+            //return await UIMediaTransportControls.GoBack();
         }
     }
 }

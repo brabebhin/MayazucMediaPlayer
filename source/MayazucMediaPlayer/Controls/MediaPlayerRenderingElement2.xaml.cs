@@ -1,6 +1,7 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Graphics.Canvas;
-using Microsoft.UI.Dispatching;
+using CommunityToolkit.WinUI;
+using MayazucMediaPlayer.LocalCache;
+using MayazucMediaPlayer.MediaPlayback;
+using MayazucNativeFramework;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -8,41 +9,32 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Graphics.Imaging;
 using Windows.Media.Playback;
-using CommunityToolkit.WinUI;
-using Microsoft.Graphics.Canvas.Brushes;
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml.Media.Imaging;
-using CommunityToolkit.WinUI.UI;
-using MayazucMediaPlayer.MediaPlayback;
-using MayazucNativeFramework;
-using MayazucMediaPlayer.LocalCache;
 using Windows.Storage;
-using MayazucMediaPlayer.Tests;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class MediaPlayerRenderingElement : UserControl
+    public sealed partial class MediaPlayerRenderingElement2 : UserControl
     {
-        bool useNativeSubtitleRenderer = true;
+        SubtitleRenderer NativeSubtitleRenderer
+        {
+            get;
+            set;
+        } = new SubtitleRenderer();
 
         FrameServerRenderer renderer = new FrameServerRenderer();
-        Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
 
-        private EffectProcessor EffectRenderer = new EffectProcessor();
-        SubtitleRenderer nativeSubRenderer = new SubtitleRenderer();
         MediaPlayer _mediaPlayer;
 
         public MediaPlayer WrappedMediaPlayer
@@ -54,58 +46,22 @@ namespace MayazucMediaPlayer.Controls
                 {
                     if (_mediaPlayer != null)
                     {
-                        _mediaPlayer.VideoFrameAvailable -= _mediaPlayer_VideoFrameAvailable;
+                        _mediaPlayer.VideoFrameAvailable -= VideoFameAvailanle;
                         _mediaPlayer.IsVideoFrameServerEnabled = false;
                     }
                     _mediaPlayer = value;
                     if (_mediaPlayer != null)
                     {
-                        _mediaPlayer.VideoFrameAvailable += _mediaPlayer_VideoFrameAvailable;
+                        _mediaPlayer.VideoFrameAvailable += VideoFameAvailanle;
                         _mediaPlayer.IsVideoFrameServerEnabled = true;
-                        _mediaPlayer.SubtitleFrameChanged += _mediaPlayer_SubtitleFrameChanged;
                     }
                 }
             }
         }
 
-        private async void _mediaPlayer_SubtitleFrameChanged(MediaPlayer sender, object args)
-        {
-            await DispatcherQueue.EnqueueAsync(async () =>
-            {
-                DrawSubtitles();
-
-            });
-        }
-
-        private void DrawSubtitles()
-        {
-            SubtitleImage.Width = this.ActualWidth;
-            SubtitleImage.Height = this.ActualHeight;
-
-            SubtitleImage.Visibility = Visibility.Visible;
-            SubtitleImage.Opacity = 1;
-
-            if (useNativeSubtitleRenderer)
-                nativeSubRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
-            else subsRenderer.RenderSubtitlesToImage(SubtitleImage, AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, DispatcherQueue);
-        }
-
-        public ImageSource PosterSource
-        {
-            get
-            {
-                return mediaPlayerElementInstance.PosterSource;
-            }
-            set
-            {
-                mediaPlayerElementInstance.PosterSource = value;
-            }
-        }
-
-        public MediaPlayerRenderingElement()
+        public MediaPlayerRenderingElement2()
         {
             this.InitializeComponent();
-            mediaPlayerElementInstance.RegisterPropertyChangedCallback(MediaPlayerElement.MediaPlayerProperty, new DependencyPropertyChangedCallback(OnMediaPlayerChanged));
             this.SizeChanged += MediaPlayerRenderingElement_SizeChanged;
             AppState.Current.MediaServiceConnector.VideoEffectsConfiguration.ConfigurationChanged += EffectConfiguration_ConfigurationChanged;
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
@@ -119,8 +75,8 @@ namespace MayazucMediaPlayer.Controls
             {
                 foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
                 {
-                    tmd.CueEntered -= Tmd_CueEntered;
-                    tmd.CueExited -= Tmd_CueEntered;
+                    tmd.CueEntered -= UpdateSubtitles;
+                    tmd.CueExited -= UpdateSubtitles;
                 }
 
                 args.EventData.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
@@ -128,8 +84,8 @@ namespace MayazucMediaPlayer.Controls
             }
             foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
             {
-                tmd.CueEntered += Tmd_CueEntered;
-                tmd.CueExited += Tmd_CueEntered;
+                tmd.CueEntered += UpdateSubtitles;
+                tmd.CueExited += UpdateSubtitles;
             }
 
             args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
@@ -140,22 +96,40 @@ namespace MayazucMediaPlayer.Controls
             switch (args.CollectionChange)
             {
                 case CollectionChange.ItemInserted:
-                    sender.TimedMetadataTracks[(int)args.Index].CueEntered += Tmd_CueEntered;
-                    sender.TimedMetadataTracks[(int)args.Index].CueExited += Tmd_CueEntered;
+                    sender.TimedMetadataTracks[(int)args.Index].CueEntered += UpdateSubtitles;
+                    sender.TimedMetadataTracks[(int)args.Index].CueExited += UpdateSubtitles;
                     break;
                 case CollectionChange.ItemRemoved:
-                    sender.TimedMetadataTracks[(int)args.Index].CueEntered -= Tmd_CueEntered;
-                    sender.TimedMetadataTracks[(int)args.Index].CueExited -= Tmd_CueEntered;
+                    sender.TimedMetadataTracks[(int)args.Index].CueEntered -= UpdateSubtitles;
+                    sender.TimedMetadataTracks[(int)args.Index].CueExited -= UpdateSubtitles;
                     break;
             }
         }
 
-        private async void Tmd_CueEntered(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
+        private void DrawSubtitles()
+        {
+            SubtitleImage.Width = this.ActualWidth;
+            SubtitleImage.Height = this.ActualHeight - TransportControlsRow.ActualHeight;
+
+            SubtitleImage.Visibility = Visibility.Visible;
+            SubtitleImage.Opacity = 1;
+
+            NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
+        }
+
+        public ImageSource PosterSource
+        {
+            get => FrameServerImage.Source;
+            set => FrameServerImage.Source = value;
+        }
+        public bool AreTransportControlsEnabled { get; internal set; }
+        public bool IsFullWindow { get; internal set; }
+
+        private async void UpdateSubtitles(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
         {
             await DispatcherQueue.EnqueueAsync(async () =>
             {
                 DrawSubtitles();
-
             });
         }
 
@@ -167,18 +141,17 @@ namespace MayazucMediaPlayer.Controls
             }));
         }
 
-        private async void MediaPlayerRenderingElement_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void MediaPlayerRenderingElement_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            RedrawPaused(WrappedMediaPlayer);
-           
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                RedrawPaused(WrappedMediaPlayer);
+
+                DrawSubtitles();
+            });
         }
 
-        private void OnMediaPlayerChanged(DependencyObject sender, DependencyProperty dp)
-        {
-            WrappedMediaPlayer = (sender as MediaPlayerElement).MediaPlayer;
-        }
-
-        private async void _mediaPlayer_VideoFrameAvailable(MediaPlayer sender, object args)
+        private async void VideoFameAvailanle(MediaPlayer sender, object args)
         {
             await DispatcherQueue.EnqueueAsync(async () =>
             {
@@ -200,15 +173,12 @@ namespace MayazucMediaPlayer.Controls
                 FrameServerImage.Width = this.ActualWidth;
                 FrameServerImage.Height = this.ActualHeight;
 
-
-                if (FrameServerImage.Width == 0 || FrameServerImage.Height == 0) return;
+                if (FrameServerImage.ActualWidth == 0 || FrameServerImage.ActualHeight == 0) return;
 
                 FrameServerImage.Visibility = Visibility.Visible;
                 FrameServerImage.Opacity = 1;
 
                 renderer.RenderMediaPlayerFrame(sender, FrameServerImage, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
-                //DrawSubtitles();
-
             }
             catch
             {
@@ -243,14 +213,6 @@ namespace MayazucMediaPlayer.Controls
                 {
 
                 }
-            }
-        }
-
-        public MediaPlayerElement MediaPlayerElementInstance
-        {
-            get
-            {
-                return mediaPlayerElementInstance;
             }
         }
     }

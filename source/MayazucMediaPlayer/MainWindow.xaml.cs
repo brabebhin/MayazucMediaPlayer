@@ -87,7 +87,7 @@ namespace MayazucMediaPlayer
         private bool disposedValue;
         public const int CompactNowPlayingHeightThreshold = 450;
         public const int SplitViewerForceOverlayHeightThreshold = 720;
-        public const int CompactNowPlayingHight = 100;
+        public const int CompactNowPlayingHight = 124;
         private bool WasNowPlayingMaximziedSomeTime = false;
         private double NowPlatyingCompactSize
         {

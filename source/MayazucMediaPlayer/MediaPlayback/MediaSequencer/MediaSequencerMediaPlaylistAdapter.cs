@@ -36,7 +36,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         IReadOnlyList<AvEffectDefinition> currentVideoEffects;
 
         readonly DispatcherQueue dispatcher;
-        readonly CommandDispatcher mediaCommandsDispatche;
+        readonly CommandDispatcher mediaCommandsDispatcher;
 
         readonly VideoEffectProcessorConfiguration VideoEffectsConfiguration;
 
@@ -52,7 +52,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             playbackItemProvider = provider ?? throw new ArgumentNullException(nameof(provider));
             this.player = player ?? throw new ArgumentNullException(nameof(player));
             this.dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-            this.mediaCommandsDispatche = mediaCommandsDispatcher ?? throw new ArgumentNullException(nameof(mediaCommandsDispatcher));
+            this.mediaCommandsDispatcher = mediaCommandsDispatcher ?? throw new ArgumentNullException(nameof(mediaCommandsDispatcher));
             PlaybackModelsInstance.NowPlayingBackStore.CollectionChanged += NowPlayingBackStore_CollectionChanged;
             playbackQueueProvider = new MediaPlaybackQueueProvider(PlaybackModelsInstance.NowPlayingBackStore);
             VideoEffectsConfiguration = videoEffectsConfiguration;
@@ -101,7 +101,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         private async void BackStore_MediaFailed(object? sender, MediaPlaybackItem e)
         {
-            await mediaCommandsDispatche.EnqueueAsync(async () =>
+            await mediaCommandsDispatcher.EnqueueAsync(async () =>
             {
                 await MoveToNextItem(e, true, true);
             });
@@ -109,7 +109,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         private async void BackStore_MediaOpened(object? sender, MediaOpenedEventArgs e)
         {
-            var nextItemTask = mediaCommandsDispatche.EnqueueAsync(async () =>
+            var nextItemTask = mediaCommandsDispatcher.EnqueueAsync(async () =>
             {
                 using (IsBusy.SetBusy())
                 {
@@ -151,7 +151,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         private void BackStore_SequenceEnded(object? sender, EventArgs e)
         {
-            mediaCommandsDispatche.EnqueueAsync(async () =>
+            mediaCommandsDispatcher.EnqueueAsync(async () =>
             {
                 await TrySwitchSequences();
             });
