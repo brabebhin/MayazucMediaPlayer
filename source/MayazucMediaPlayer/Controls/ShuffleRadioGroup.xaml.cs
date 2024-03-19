@@ -18,7 +18,6 @@ namespace MayazucMediaPlayer.Controls
         public ShuffleRadioGroup()
         {
             InitializeComponent();
-            Loaded += ShuffleRadioGroup_Loaded;
             Unloaded += ShuffleRadioGroup_Unloaded;
 
             shuffleModes.Add(new ShuffleModeItem(Symbol.Shuffle, "Shuffle tracks", true));
@@ -26,36 +25,34 @@ namespace MayazucMediaPlayer.Controls
             cbShuffleModes.ItemsSource = shuffleModes;
             cbShuffleModes.SelectionChanged += CbShuffleModes_SelectionChanged;
             SettingsWrapper.ShuffleModeChanged += SettingsWrapper_ShuffleModeChanged;
+            LoadState();
         }
 
         private async void CbShuffleModes_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (cbShuffleModes.SelectedIndex >= 0)
             {
-                await (cbShuffleModes.SelectedItem as ShuffleModeItem).SetShuffleMode();
+                try
+                {
+                    this.IsEnabled = false;
+                    await (cbShuffleModes.SelectedItem as ShuffleModeItem).SetShuffleMode();
+                }
+                finally
+                {
+                    this.IsEnabled = true;
+                }
             }
         }
 
         private async void ShuffleRadioGroup_Unloaded(object? sender, RoutedEventArgs e)
         {
             SettingsWrapper.ShuffleModeChanged -= SettingsWrapper_ShuffleModeChanged;
-            var playerInstance = AppState.Current.MediaServiceConnector.PlayerInstance;
-            if (playerInstance.DataBusyFlag != null)
-            {
-                playerInstance.DataBusyFlag.StateChanged -= InternalDataBusyFlag_StateChanged;
-            }
 
-            Loaded -= ShuffleRadioGroup_Loaded;
             Unloaded -= ShuffleRadioGroup_Unloaded;
         }
 
-        private async void ShuffleRadioGroup_Loaded(object? sender, RoutedEventArgs e)
+        private void LoadState()
         {
-            var playerInstance = AppState.Current.MediaServiceConnector.PlayerInstance;
-            if (playerInstance.DataBusyFlag != null)
-            {
-                playerInstance.DataBusyFlag.StateChanged += InternalDataBusyFlag_StateChanged;
-            }
             SetSelectedButton();
         }
 
@@ -73,11 +70,6 @@ namespace MayazucMediaPlayer.Controls
             }
 
             cbShuffleModes.SelectionChanged += CbShuffleModes_SelectionChanged;
-        }
-
-        private async void InternalDataBusyFlag_StateChanged(object? sender, bool e)
-        {
-            await DispatcherQueue.EnqueueAsync(() => { IsEnabled = !e; });
         }
 
         private async void SettingsWrapper_ShuffleModeChanged(object? sender, bool e)

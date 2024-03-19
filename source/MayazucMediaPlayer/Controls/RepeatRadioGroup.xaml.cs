@@ -17,7 +17,6 @@ namespace MayazucMediaPlayer.Controls
         {
             InitializeComponent();
             Unloaded += RepeatRadioGroup_Unloaded;
-            Loaded += RepeatRadioGroup_Loaded;
 
             repeatModes.Add(new RepeatModeItem(Symbol.RepeatAll, "Repeat entire list", Constants.RepeatAll));
             repeatModes.Add(new RepeatModeItem(Symbol.RepeatOne, "Repeat current item", Constants.RepeatOne));
@@ -27,34 +26,29 @@ namespace MayazucMediaPlayer.Controls
             cbRepeatModes.SelectionChanged += CbRepeatModes_SelectionChanged;
 
             SettingsWrapper.RepeatModeChanged += SettingsWrapper_RepeatModeChanged;
+            LoadState();
         }
 
         private async void CbRepeatModes_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (cbRepeatModes.SelectedIndex >= 0)
             {
-                await (cbRepeatModes.SelectedItem as RepeatModeItem).SetRepeatMode();
+                try
+                {
+                    this.IsEnabled = false;
+                    await (cbRepeatModes.SelectedItem as RepeatModeItem).SetRepeatMode();
+                }
+                finally
+                {
+                    this.IsEnabled = true;
+                }
             }
         }
 
-        private async void RepeatRadioGroup_Loaded(object? sender, RoutedEventArgs e)
+        private void LoadState()
         {
-            var playerInstance = AppState.Current.MediaServiceConnector.PlayerInstance;
-
-            if (playerInstance != null && playerInstance.DataBusyFlag != null)
-            {
-                playerInstance.DataBusyFlag.StateChanged += InternalDataBusyFlag_StateChanged;
-            }
             SetSelectedButton();
-        }
-
-        private async void InternalDataBusyFlag_StateChanged(object? sender, bool e)
-        {
-            await DispatcherQueue.EnqueueAsync(() =>
-            {
-                IsEnabled = !e;
-            });
-        }
+        }   
 
         private async void SettingsWrapper_RepeatModeChanged(object? sender, string e)
         {
@@ -66,16 +60,9 @@ namespace MayazucMediaPlayer.Controls
 
         private async void RepeatRadioGroup_Unloaded(object? sender, RoutedEventArgs e)
         {
-            SettingsWrapper.RepeatModeChanged -= SettingsWrapper_RepeatModeChanged;
-            var playerInstance = AppState.Current.MediaServiceConnector.PlayerInstance;
-
-            if (playerInstance != null && playerInstance.DataBusyFlag != null)
-            {
-                playerInstance.DataBusyFlag.StateChanged -= InternalDataBusyFlag_StateChanged;
-            }
+            SettingsWrapper.RepeatModeChanged -= SettingsWrapper_RepeatModeChanged;      
 
             Unloaded -= RepeatRadioGroup_Unloaded;
-            Loaded -= RepeatRadioGroup_Loaded;
         }
 
         private void SetSelectedButton()
@@ -88,6 +75,8 @@ namespace MayazucMediaPlayer.Controls
                 if (repeatModes[i].RepeatMode == SettingsWrapper.RepeatMode)
                 {
                     cbRepeatModes.SelectedIndex = i;
+                    this.Icon = new SymbolIcon(repeatModes[i].ModeSymbol);
+
                     break;
                 }
             }

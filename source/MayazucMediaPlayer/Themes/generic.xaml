@@ -595,12 +595,6 @@
                                 <Setter Property="AllowFocusOnInteraction" Value="True" />
                             </Style>
 
-                            <Style x:Key="AppBarButtonStyleNoChevron" BasedOn="{StaticResource AniversaryUpdateAppBarButtonStyle}" TargetType="AppBarButton">
-                                <Setter Property="LabelPosition" Value="Default"/>
-                                <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
-                                <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
-                                <Setter Property="AllowFocusOnInteraction" Value="True" />
-                            </Style>
 
                             <Style x:Key="AppBarToggleButtonStyle" TargetType="AppBarToggleButton" BasedOn="{StaticResource ContentHighlightedAppBarToggleButton}">
                                 <Setter Property="LabelPosition" Value="Default"/>

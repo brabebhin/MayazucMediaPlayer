@@ -14,6 +14,14 @@
         <GradientStop Color="Transparent" Offset="0.5" />
     </LinearGradientBrush>
 
+    <Style x:Key="AppBarButtonStyleNoChevron" BasedOn="{StaticResource AniversaryUpdateAppBarButtonStyle}" TargetType="AppBarButton">
+        <Setter Property="LabelPosition" Value="Collapsed"/>
+        <Setter Property="Padding" Value="4, 0, 4, 0"></Setter>
+        <Setter Property="Width" Value="{ThemeResource MTCMediaButtonWidth}" />
+        <Setter Property="Height" Value="{ThemeResource MTCMediaButtonHeight}" />
+        <Setter Property="AllowFocusOnInteraction" Value="True" />
+    </Style>
+
     <DataTemplate x:Key="GenericCategoryDataTemplate">
         <Grid HorizontalAlignment="Stretch" Margin="5">
             <Grid.ColumnDefinitions>

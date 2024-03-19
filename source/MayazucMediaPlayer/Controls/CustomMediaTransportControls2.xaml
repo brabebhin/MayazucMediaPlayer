@@ -38,29 +38,49 @@
 
         <Grid Grid.Row="1">
             <CommandBar HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed">
-                <AppBarButton Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
-                <AppBarButton Click="SkipBack_click">
+                <AppBarButton  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9E;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="PlayPauseButton" Icon="Play" Click="PlayPause_click"></AppBarButton>
-                <AppBarButton Click="SkipForward_click">
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  x:Name="PlayPauseButton" Icon="Play" Click="PlayPause_click"></AppBarButton>
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipForward_click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9D;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton Icon="Next" Click="SkipNext_click"></AppBarButton>
+                <AppBarButton Icon="Next"  Style='{StaticResource AppBarButtonStyleNoChevron}' Click="SkipNext_click"></AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
-                <AppBarButton Icon="Shuffle"></AppBarButton>
-                <AppBarButton Icon="RepeatAll"></AppBarButton>
+                
+                <local:RepeatRadioGroup Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="RepeatOptions" ToolTipService.ToolTip="Playback loop options"></local:RepeatRadioGroup>
+                <local:ShuffleRadioGroup Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="ShuffleOptions" ToolTipService.ToolTip="Playback shuffle options"></local:ShuffleRadioGroup>
+
                 <AppBarSeparator></AppBarSeparator>
-                <AppBarButton Icon="ClosedCaption"></AppBarButton>
-                <AppBarButton Icon="Audio"></AppBarButton>
-                <AppBarButton Icon="Video"></AppBarButton>
+                <AppBarButton Icon="ClosedCaption"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <local:MTCSubtitlesSelectionControl x:Name="mtcSubtitlesControl"></local:MTCSubtitlesSelectionControl>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarButton  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Audio">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <local:AudioTrackSelectionDialog x:Name="mtcAudioTracks"></local:AudioTrackSelectionDialog>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarButton Icon="Video"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <local:VideoTrackSelectionDialog x:Name="mtcVideoTracks"></local:VideoTrackSelectionDialog>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
-                <AppBarButton x:Name="FullScreenButton" Icon="FullScreen" Label="Fullscreen toggle" Click="GoFullScreen_click"></AppBarButton>
-                <AppBarButton Icon="Setting" Label="Settings"></AppBarButton>
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  x:Name="FullScreenButton" Icon="FullScreen" Label="Fullscreen toggle" Click="GoFullScreen_click"></AppBarButton>
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings"></AppBarButton>
             </CommandBar>
         </Grid>
     </Grid>

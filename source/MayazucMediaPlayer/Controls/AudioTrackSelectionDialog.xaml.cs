@@ -1,28 +1,39 @@
-﻿using CommunityToolkit.WinUI;
-using Microsoft.UI.Xaml.Controls;
-using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+using CommunityToolkit.WinUI;
+using Nito.AsyncEx;
 using Windows.Media.Core;
 using Windows.Media.Playback;
+using System.Threading.Tasks;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class VideoTrackSelectionDialog : UserControl
+    public sealed partial class AudioTrackSelectionDialog : UserControl
     {
         readonly AsyncLock trackLock = new AsyncLock();
         MediaPlaybackItem currentItem = null;
 
-        public VideoTrackSelectionDialog()
+        public AudioTrackSelectionDialog()
         {
             InitializeComponent();
         }
 
-        public async Task LoadVideoTracksAsync(MediaPlaybackItem item)
+        public async Task LoadAudioTracksAsync(MediaPlaybackItem item)
         {
             using (await trackLock.LockAsync())
             {
@@ -30,14 +41,14 @@ namespace MayazucMediaPlayer.Controls
                 {
                     if (currentItem != null)
                     {
-                        currentItem.VideoTracks.SelectedIndexChanged -= VideoTracks_SelectedIndexChanged;
+                        currentItem.VideoTracks.SelectedIndexChanged -= AudioTracks_SelectedIndexChanged;
                         currentItem.VideoTracksChanged -= CurrentItem_VideoTracksChanged;
                     }
                     currentItem = item;
 
                     ProcessPlaybackItem(item);
 
-                    currentItem.VideoTracks.SelectedIndexChanged += VideoTracks_SelectedIndexChanged;
+                    currentItem.VideoTracks.SelectedIndexChanged += AudioTracks_SelectedIndexChanged;
                     currentItem.VideoTracksChanged += CurrentItem_VideoTracksChanged;
                 }
             }
@@ -45,18 +56,18 @@ namespace MayazucMediaPlayer.Controls
 
         private void ProcessPlaybackItem(MediaPlaybackItem item)
         {
-            lsvVideoStreams.SelectionChanged -= LsvVideoStreams_SelectionChanged;
-            HashSet<VideoStreamInfoWrapper> items = new HashSet<VideoStreamInfoWrapper>();
+            lsvAudioStreams.SelectionChanged -= LsvVideoStreams_SelectionChanged;
+            HashSet<AudioStreamInfoWrapper> items = new HashSet<AudioStreamInfoWrapper>();
 
-            for (int i = 0; i < item.VideoTracks.Count; i++)
+            for (int i = 0; i < item.AudioTracks.Count; i++)
             {
-                var ms = item.VideoTracks[i];
-                items.Add(new VideoStreamInfoWrapper(ms, i + 1));
+                var ms = item.AudioTracks[i];
+                items.Add(new AudioStreamInfoWrapper(ms, i + 1));
             }
-            lsvVideoStreams.ItemsSource = items;
-            lsvVideoStreams.SelectedIndex = item.VideoTracks.SelectedIndex;
+            lsvAudioStreams.ItemsSource = items;
+            lsvAudioStreams.SelectedIndex = item.AudioTracks.SelectedIndex;
 
-            lsvVideoStreams.SelectionChanged += LsvVideoStreams_SelectionChanged;
+            lsvAudioStreams.SelectionChanged += LsvVideoStreams_SelectionChanged;
         }
 
         private async void LsvVideoStreams_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -65,8 +76,8 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (currentItem != null)
                 {
-                    if (lsvVideoStreams.SelectedIndex >= 0)
-                        currentItem.VideoTracks.SelectedIndex = lsvVideoStreams.SelectedIndex;
+                    if (lsvAudioStreams.SelectedIndex >= 0)
+                        currentItem.VideoTracks.SelectedIndex = lsvAudioStreams.SelectedIndex;
                 }
             }
         }
@@ -83,20 +94,20 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private async void VideoTracks_SelectedIndexChanged(ISingleSelectMediaTrackList sender, object args)
+        private async void AudioTracks_SelectedIndexChanged(ISingleSelectMediaTrackList sender, object args)
         {
             using (await trackLock.LockAsync())
             {
-                await DispatcherQueue.EnqueueAsync(() => { lsvVideoStreams.SelectedIndex = sender.SelectedIndex; });
+                await DispatcherQueue.EnqueueAsync(() => { lsvAudioStreams.SelectedIndex = sender.SelectedIndex; });
             }
         }
 
-        internal class VideoStreamInfoWrapper
+        internal class AudioStreamInfoWrapper
         {
-            readonly VideoTrack track;
+            readonly AudioTrack track;
             readonly int ordinal = 0;
 
-            public VideoStreamInfoWrapper(VideoTrack ms, int ord)
+            public AudioStreamInfoWrapper(AudioTrack ms, int ord)
             {
                 track = ms;
                 ordinal = ord;
@@ -104,8 +115,8 @@ namespace MayazucMediaPlayer.Controls
 
             public override bool Equals(object? obj)
             {
-                return obj is VideoStreamInfoWrapper wrapper &&
-                       EqualityComparer<VideoTrack>.Default.Equals(track, wrapper.track) &&
+                return obj is AudioStreamInfoWrapper wrapper &&
+                       EqualityComparer<AudioTrack>.Default.Equals(track, wrapper.track) &&
                        ordinal == wrapper.ordinal;
             }
 
@@ -123,7 +134,7 @@ namespace MayazucMediaPlayer.Controls
                 }
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    name = $"Video stream {ordinal}";
+                    name = $"Audio stream {ordinal}";
                 }
 
                 return name;

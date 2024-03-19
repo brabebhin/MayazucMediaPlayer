@@ -34,13 +34,37 @@ namespace MayazucMediaPlayer.Controls
         SymbolIcon PlayIcon = new SymbolIcon(Symbol.Play);
         SymbolIcon PauseIcon = new SymbolIcon(Symbol.Pause);
         bool userInteractsWithSeekbar = false;
+        private AsyncLock mediaOpenedLock = new AsyncLock();
+
         public CustomMediaTransportControls2()
         {
             InitializeComponent();
             StateUpdateTimer = DispatcherQueue.CreateTimer();
             StateUpdateTimer.Interval = TimeSpan.FromSeconds(0.5);
             StateUpdateTimer.Tick += StateUpdateTimer_Tick;
+
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
+
+
             StateUpdateTimer.Start();
+        }
+
+        private async void Current_MediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        {
+            using (await mediaOpenedLock.LockAsync())
+            {
+                if (args.Reason == MediaOpenedEventReason.MediaPlaybackListItemChanged)
+                {
+                    var mds = args.EventData.ExtraData.MediaPlayerItemSource;
+
+                    await DispatcherQueue.EnqueueAsync(async () =>
+                    {
+                        await mtcSubtitlesControl.LoadMediaPlaybackItem(args.EventData.PlaybackItem);
+                        await mtcVideoTracks.LoadVideoTracksAsync(args.EventData.PlaybackItem);
+                        await mtcAudioTracks.LoadAudioTracksAsync(args.EventData.PlaybackItem);
+                    });
+                }
+            }
         }
 
         private async void StateUpdateTimer_Tick(DispatcherQueueTimer sender, object args)

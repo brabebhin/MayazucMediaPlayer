@@ -74,7 +74,7 @@ namespace MayazucMediaPlayer.Controls
             DataContext = this;
         }
 
-        public async void LoadMediaPlaybackItem(MediaPlaybackItem item)
+        public async Task LoadMediaPlaybackItem(MediaPlaybackItem item)
         {
             using (await lockSync.LockAsync())
             {
