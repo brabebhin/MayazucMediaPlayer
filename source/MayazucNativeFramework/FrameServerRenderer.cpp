@@ -33,6 +33,9 @@ namespace winrt::MayazucNativeFramework::implementation
 				|| (win2dImageSource.Size().Height != targetImage.Height()))
 			{
 				win2dImageSource = CanvasImageSource(canvasDevice, (int)targetImage.Width(), (int)targetImage.Height(), 96);
+			}
+			if (targetImage.Source()!= win2dImageSource)
+			{
 				targetImage.Source(win2dImageSource);
 			}
 

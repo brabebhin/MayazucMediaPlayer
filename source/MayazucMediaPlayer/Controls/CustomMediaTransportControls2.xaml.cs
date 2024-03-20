@@ -11,6 +11,7 @@ using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
 using MayazucMediaPlayer.UserInput;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -22,6 +23,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Media.Playback;
+using Windows.System.Threading;
 using Windows.UI.ViewManagement;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -39,12 +41,14 @@ namespace MayazucMediaPlayer.Controls
         public CustomMediaTransportControls2()
         {
             InitializeComponent();
+
+            FullScreenButton.Icon = FullScreenIcon();
+            
             StateUpdateTimer = DispatcherQueue.CreateTimer();
             StateUpdateTimer.Interval = TimeSpan.FromSeconds(0.5);
             StateUpdateTimer.Tick += StateUpdateTimer_Tick;
 
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
-
 
             StateUpdateTimer.Start();
         }
@@ -77,6 +81,7 @@ namespace MayazucMediaPlayer.Controls
             if (AppState.Current.MediaServiceConnector.IsPlaying())
             {
                 PlayPauseButton.Icon = PauseIcon;
+
             }
             else PlayPauseButton.Icon = PlayIcon;
             var playbackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
@@ -115,9 +120,23 @@ namespace MayazucMediaPlayer.Controls
             await AppState.Current.MediaServiceConnector.SkipNext();
         }
 
-        private void GoFullScreen_click(object sender, RoutedEventArgs e)
+        private async void GoFullScreen_click(object sender, RoutedEventArgs e)
         {
+            //new FontIcon { FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets") , Glyph = "\uE73F" };
+            bool shouldFullScreen = !MainWindowingService.Instance.IsInFullScreenMode();
+            await MainWindowingService.Instance.RequestFullScreenMode(shouldFullScreen);
 
+            FullScreenButton.Icon = (shouldFullScreen ? ExitFullScreenIcon() : FullScreenIcon());
+        }
+
+        private FontIcon FullScreenIcon()
+        {
+            return new FontIcon { FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE740" };
+        }
+
+        private FontIcon ExitFullScreenIcon()
+        {
+            return new FontIcon { FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE73F" };
         }
     }
 }

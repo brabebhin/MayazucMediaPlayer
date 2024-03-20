@@ -2,6 +2,7 @@ using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucNativeFramework;
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -19,6 +20,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Playback;
 using Windows.Storage;
+using Windows.System.Threading;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,6 +29,9 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class MediaPlayerRenderingElement2 : UserControl
     {
+        readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
+        ThreadPoolTimer? _fullscreenCursorTimer;
+
         SubtitleRenderer NativeSubtitleRenderer
         {
             get;
@@ -62,9 +67,63 @@ namespace MayazucMediaPlayer.Controls
         public MediaPlayerRenderingElement2()
         {
             this.InitializeComponent();
+            hiddenCursor.Dispose();
             this.SizeChanged += MediaPlayerRenderingElement_SizeChanged;
             AppState.Current.MediaServiceConnector.VideoEffectsConfiguration.ConfigurationChanged += EffectConfiguration_ConfigurationChanged;
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
+            AppState.Current.MediaServiceConnector.CurrentPlaybackSession.PlaybackStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
+            this.ManipulationStarted += MediaPlayerRenderingElement2_ManipulationStarted;
+            this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
+        }
+
+        private void MediaPlayerRenderingElement2_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            ShowMouseShowTransportControls();
+        }
+
+        private void MediaPlayerRenderingElement2_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
+        {
+            ShowMouseShowTransportControls();
+        }
+
+        private void CurrentPlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
+        {
+            DispatcherQueue.TryEnqueue((() =>
+            {
+                if (sender.PlaybackState == MediaPlaybackState.Playing)
+                {
+                    StartMouseTransportControlHideTimer();
+                }
+                else
+                {
+                    ShowMouseShowTransportControls();
+                }
+            }));
+        }
+
+        private void HideMouseHideTransportControls(ThreadPoolTimer timer)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                ProtectedCursor = hiddenCursor;
+                this.MediaTransportControls.Visibility = Visibility.Collapsed;
+            });
+        }
+
+        private void StartMouseTransportControlHideTimer()
+        {
+            _fullscreenCursorTimer?.Cancel();
+            _fullscreenCursorTimer = ThreadPoolTimer.CreateTimer(HideMouseHideTransportControls, TimeSpan.FromSeconds(5));
+        }
+
+        private void ShowMouseShowTransportControls()
+        {
+            this.ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
+            this.MediaTransportControls.Visibility = Visibility.Visible;
+            if (AppState.Current.MediaServiceConnector.IsPlaying())
+            {
+                StartMouseTransportControlHideTimer();
+            }
         }
 
         private void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)

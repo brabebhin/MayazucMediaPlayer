@@ -14,6 +14,10 @@
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives" 
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     mc:Ignorable="d">
+    <!--<UserControl.Resources>
+        <FontIcon x:Key="ExitFullscreenSymbol"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE73F;" />
+        <FontIcon x:Key="FullscreenSymbol"      FontFamily="Segoe MDL2 Assets" Glyph="&#xE740;" />
+    </UserControl.Resources>-->
 
     <Grid x:Name="RootGrid" Margin="8" Background="{ThemeResource SystemAltLowColor}">
         <Grid.RowDefinitions>
@@ -79,7 +83,9 @@
                     </AppBarButton.Flyout>
                 </AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
-                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  x:Name="FullScreenButton" Icon="FullScreen" Label="Fullscreen toggle" Click="GoFullScreen_click"></AppBarButton>
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
+                    
+                </AppBarButton>
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings"></AppBarButton>
             </CommandBar>
         </Grid>

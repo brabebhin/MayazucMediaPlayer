@@ -40,6 +40,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
         }
 
         readonly AutoResetEvent _fullscreenTimerLock = new AutoResetEvent(true);
+
+
         ThreadPoolTimer? _fullscreenCursorTimer;
         readonly AsyncLock fullScreenLock = new AsyncLock();
         bool fullScreenBusy = false;
@@ -375,7 +377,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
             _fullscreenCursorTimer = ThreadPoolTimer.CreatePeriodicTimer(HideMouseCursor, TimeSpan.FromSeconds(6));
             System.Diagnostics.Debug.WriteLine("****STARTING HIDE CURSOR****");
-
         }
 
         private async void BackgroundAudioService_MediaPlayerElementFullScreenModeChanged(object? sender, bool e)
