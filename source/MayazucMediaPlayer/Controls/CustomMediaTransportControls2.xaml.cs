@@ -37,21 +37,51 @@ namespace MayazucMediaPlayer.Controls
         SymbolIcon PauseIcon = new SymbolIcon(Symbol.Pause);
         bool userInteractsWithSeekbar = false;
         private AsyncLock mediaOpenedLock = new AsyncLock();
+        private bool progressSliderManipulating;
 
         public CustomMediaTransportControls2()
         {
             InitializeComponent();
 
             FullScreenButton.Icon = FullScreenIcon();
-            
+
             StateUpdateTimer = DispatcherQueue.CreateTimer();
             StateUpdateTimer.Interval = TimeSpan.FromSeconds(0.5);
             StateUpdateTimer.Tick += StateUpdateTimer_Tick;
 
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
-
+            AppState.Current.MediaServiceConnector.CurrentPlaybackSession.PlaybackStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
             StateUpdateTimer.Start();
+
+            MediaProgressBar.AddHandler(Slider.PointerReleasedEvent, new PointerEventHandler(ProgressBarSeek), true);
+            MediaProgressBar.AddHandler(Slider.PointerPressedEvent, new PointerEventHandler(ProgressBarManipulation), true);
         }
+
+        private async void CurrentPlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
+        {
+            await DispatcherQueue.EnqueueAsync(async () =>
+            {
+                await UpdateState();
+            });
+        }
+
+
+        private void ProgressBarManipulation(object sender, PointerRoutedEventArgs e)
+        {
+            progressSliderManipulating = true;
+        }
+
+        private async void ProgressBarSeek(object sender, PointerRoutedEventArgs e)
+        {
+            var session = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
+            if (session != null)
+            {
+                var time = MediaPlaybackSeekbarUtil.GetDenormalizedValue(MediaProgressBar.Value, session.NaturalDuration);
+                await (AppState.Current.MediaServiceConnector.PlayerInstance).Seek(time, true);
+                progressSliderManipulating = false;
+            }
+        }
+
 
         private async void Current_MediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {

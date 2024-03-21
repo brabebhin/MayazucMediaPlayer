@@ -14,17 +14,14 @@
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives" 
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     mc:Ignorable="d">
-    <!--<UserControl.Resources>
-        <FontIcon x:Key="ExitFullscreenSymbol"  FontFamily="Segoe MDL2 Assets" Glyph="&#xE73F;" />
-        <FontIcon x:Key="FullscreenSymbol"      FontFamily="Segoe MDL2 Assets" Glyph="&#xE740;" />
-    </UserControl.Resources>-->
+
 
     <Grid x:Name="RootGrid" Margin="8" Background="{ThemeResource SystemAltLowColor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid x:Name="TimelineGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="8"></ColumnDefinition>
@@ -41,7 +38,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <CommandBar HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed">
+            <CommandBar x:Name="FullSizeControlBar" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed">
                 <AppBarButton  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
                     <AppBarButton.Icon>
@@ -56,7 +53,7 @@
                 </AppBarButton>
                 <AppBarButton Icon="Next"  Style='{StaticResource AppBarButtonStyleNoChevron}' Click="SkipNext_click"></AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
-                
+
                 <local:RepeatRadioGroup Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="RepeatOptions" ToolTipService.ToolTip="Playback loop options"></local:RepeatRadioGroup>
                 <local:ShuffleRadioGroup Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="ShuffleOptions" ToolTipService.ToolTip="Playback shuffle options"></local:ShuffleRadioGroup>
 
@@ -84,7 +81,7 @@
                 </AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
-                    
+
                 </AppBarButton>
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings"></AppBarButton>
             </CommandBar>

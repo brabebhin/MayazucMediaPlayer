@@ -78,7 +78,7 @@ namespace winrt::MayazucNativeFramework::implementation
 
 	bool SsaAssTextRenderer::PixelSnappingDisabled()
 	{
-		return true;
+		return false;
 	}
 
 	float3x2 SsaAssTextRenderer::Transform()
