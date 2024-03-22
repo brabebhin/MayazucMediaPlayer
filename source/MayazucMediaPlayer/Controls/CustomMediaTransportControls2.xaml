@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid x:Name="TimelineGrid">
+        <Grid x:Name="TimelineGrid"  Visibility="{Binding FullCommandBarButtonsVisibility}" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="8"></ColumnDefinition>
@@ -38,15 +38,15 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <CommandBar x:Name="FullSizeControlBar" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed">
-                <AppBarButton  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
-                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
+            <CommandBar x:Name="FullSizeControlBar" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed" IsDynamicOverflowEnabled="False">
+                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
+                <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9E;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  x:Name="PlayPauseButton" Icon="Play" Click="PlayPause_click"></AppBarButton>
-                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipForward_click">
+                <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}" Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipForward_click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9D;" />
                     </AppBarButton.Icon>
@@ -54,36 +54,36 @@
                 <AppBarButton Icon="Next"  Style='{StaticResource AppBarButtonStyleNoChevron}' Click="SkipNext_click"></AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
 
-                <local:RepeatRadioGroup Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="RepeatOptions" ToolTipService.ToolTip="Playback loop options"></local:RepeatRadioGroup>
-                <local:ShuffleRadioGroup Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="ShuffleOptions" ToolTipService.ToolTip="Playback shuffle options"></local:ShuffleRadioGroup>
+                <local:RepeatRadioGroup Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="RepeatOptions" ToolTipService.ToolTip="Playback loop options"></local:RepeatRadioGroup>
+                <local:ShuffleRadioGroup Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="ShuffleOptions" ToolTipService.ToolTip="Playback shuffle options"></local:ShuffleRadioGroup>
 
-                <AppBarSeparator></AppBarSeparator>
-                <AppBarButton Icon="ClosedCaption"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                <AppBarSeparator Visibility="{Binding FullCommandBarButtonsVisibility}" ></AppBarSeparator>
+                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Icon="ClosedCaption"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:MTCSubtitlesSelectionControl x:Name="mtcSubtitlesControl"></local:MTCSubtitlesSelectionControl>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Audio">
+                <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Audio">
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:AudioTrackSelectionDialog x:Name="mtcAudioTracks"></local:AudioTrackSelectionDialog>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Icon="Video"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Icon="Video"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:VideoTrackSelectionDialog x:Name="mtcVideoTracks"></local:VideoTrackSelectionDialog>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarSeparator></AppBarSeparator>
-                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
+                <AppBarSeparator Visibility="{Binding FullCommandBarButtonsVisibility}" ></AppBarSeparator>
+                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
 
                 </AppBarButton>
-                <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings"></AppBarButton>
+                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings"></AppBarButton>
             </CommandBar>
         </Grid>
     </Grid>

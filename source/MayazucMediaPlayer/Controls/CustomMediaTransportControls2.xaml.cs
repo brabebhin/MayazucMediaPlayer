@@ -59,7 +59,23 @@ namespace MayazucMediaPlayer.Controls
             MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += Instance_MediaPlayerElementFullScreenModeChanged;
 
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
+            DataContext = this;
+
+            this.SizeChanged += CustomMediaTransportControls2_SizeChanged;
         }
+
+        private void CustomMediaTransportControls2_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            FullCommandBarButtonsVisibility = e.NewSize.Width > 400 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public Visibility FullCommandBarButtonsVisibility
+        {
+            get => (Visibility)GetValue(FullCommandBarButtonsVisibilityProperty);
+            set => SetValue(FullCommandBarButtonsVisibilityProperty, value);
+        }
+
+        public static DependencyProperty FullCommandBarButtonsVisibilityProperty = DependencyProperty.Register(nameof(FullCommandBarButtonsVisibility), typeof(Visibility), typeof(CustomMediaTransportControls2), new PropertyMetadata(Visibility.Visible));
 
         private async void KeyboardInputManager_AcceleratorInvoked(object? sender, HotKeyId e)
         {

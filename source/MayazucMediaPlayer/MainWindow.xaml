@@ -30,7 +30,6 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="8"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-
                 <ColumnDefinition Width="100"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button BorderBrush="Transparent" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="NowPlayingSwitchButton" ToolTipService.ToolTip="Show now playing" Background="Transparent" Tapped="ShowHideNowPlaying" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
