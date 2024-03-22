@@ -67,21 +67,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         public IBackgroundPlayer PlayerInstance { get; private set; }
 
 
-        public event EventHandler<bool> MediaPlayerElementFullScreenModeChanged;
-        bool _isRenderingFullScreen = false;
-
-        public bool IsRenderingFullScreen
-        {
-            get
-            {
-                return _isRenderingFullScreen;
-            }
-            set
-            {
-                _isRenderingFullScreen = value;
-                MediaPlayerElementFullScreenModeChanged?.Invoke(null, _isRenderingFullScreen);
-            }
-        }
+     
 
         public event EventHandler<MediaPlayerCompactOverlayEventArgs> CompactOverlayRequest;
         public void NotifyViewMode(bool isFullPlayer, UserControl element)

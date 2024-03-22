@@ -27,9 +27,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="300"></ColumnDefinition>
+                <ColumnDefinition Width="8"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+
+                <ColumnDefinition Width="100"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button BorderBrush="Transparent" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="NowPlayingSwitchButton" ToolTipService.ToolTip="Show now playing" Background="Transparent" Tapped="ShowHideNowPlaying" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
                 <SymbolIcon x:Name="NowPlayingSwitchIcon" Symbol="MusicInfo"/>
@@ -67,11 +69,13 @@
                 </MenuBarItem>
 
             </MenuBar>
-
-            <Grid Grid.Column="2" x:Name="TitleBarGrid" Background="{Binding ElementName=PlayMenuItem, Path=Background}">
+            <Button BorderBrush="Transparent" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="OverayModeButton" ToolTipService.ToolTip="Show now playing" Background="Transparent" Tapped="EnterExitOverlayMode" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
+                <FontIcon FontFamily="Segoe MDL2 Assets" x:Name="OverayModeButtonIcon" Glyph="&#xEE49;"/>
+            </Button>
+            <Grid Grid.Column="4" x:Name="TitleBarGrid" Background="{Binding ElementName=PlayMenuItem, Path=Background}">
                 <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" TextWrapping="NoWrap" x:Name="CurrentViewTitle"/>
             </Grid>
-            <Border  Width="100" Grid.Column="4">
+            <Border  Width="100" Grid.Column="5">
             </Border>
         </Grid>
 

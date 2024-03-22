@@ -113,11 +113,11 @@ namespace winrt::MayazucNativeFramework::implementation
 			//move on to textCues
 			auto canvasTextFormat = CanvasTextFormat();
 			canvasTextFormat.HorizontalAlignment(CanvasHorizontalAlignment::Center);
-			canvasTextFormat.FontSize(24);
+			canvasTextFormat.FontSize(height * 0.05);
 
 			for (auto regionWithCues : timedTextCuesWithRegions)
 			{
-				//each region is a CanvasRenderTarget
+				//text can be drawn directly onto the base surface render target
 
 				auto region = regionWithCues.first;
 				auto absoluteExtent = TimedTextSizeRelativeToAbsolute(region.Extent(), width, height);
@@ -126,9 +126,6 @@ namespace winrt::MayazucNativeFramework::implementation
 
 				auto regionDrawPoint = TimedTextPointRelativeToAbsolute(region.Position(), width, height);
 
-				auto regionRenderTarget = CanvasRenderTarget(canvasDevice, regionW, regionH, 96);
-				auto regionRenderTargetDs = regionRenderTarget.CreateDrawingSession();
-				regionRenderTargetDs.Clear(Microsoft::UI::Colors::Transparent()); //this should be region.Background
 				//each region has a bunch of cues
 				auto cuesInRegion = regionWithCues.second;
 				for (int cueIndex = 0; cueIndex < cuesInRegion.size(); cueIndex++)
@@ -176,23 +173,15 @@ namespace winrt::MayazucNativeFramework::implementation
 							textLayout.SetFontWeight(startIndex, length, fontWeight);
 						}
 
-						auto lineGeometry = CanvasGeometry::CreateText(textLayout);
-						auto lineRenderHeight = (float)(renderingAvailableHeight - lineGeometry.ComputeBounds().Height - canvasTextFormat.FontSize());
+						auto lineRenderHeight = (float)(renderingAvailableHeight - textLayout.DrawBounds().Height - canvasTextFormat.FontSize());
 						if (lineRenderHeight <= 0) break;
 
-						auto textRenderer = winrt::make<SsaAssTextRenderer>(regionRenderTargetDs, textCue.CueStyle());
+						auto textRenderer = winrt::make<SsaAssTextRenderer>(renderSurfaceDrawingSession, textCue.CueStyle());
 						textLayout.DrawToTextRenderer(textRenderer, 0, lineRenderHeight);
 
 						renderingAvailableHeight = lineRenderHeight; //shrink the available space to render the next line on top of the current line
 					}
 				}
-
-				//done rendering all lines per region
-
-				//now it is time to draw the region to the main drawing surface
-				regionRenderTargetDs.Flush();
-				auto regionDestinationRectangle = Rect(Point(regionDrawPoint.X, regionDrawPoint.Y), Size(regionW, regionH));
-				subtitleOutputSpriteBatch.Draw(regionRenderTarget, regionDestinationRectangle);
 			}
 
 			subtitleOutputSpriteBatch.Close();

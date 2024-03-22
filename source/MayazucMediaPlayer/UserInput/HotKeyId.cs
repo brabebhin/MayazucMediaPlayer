@@ -7,5 +7,6 @@
         SkipPrevious,
         JumpBack,
         JumpForward,
+        ExitFullScreen,
     }
 }

@@ -19,6 +19,11 @@ namespace MayazucMediaPlayer.MediaPlayback
             return item != null && item.VideoTracks != null && item.VideoTracks.Count > 0;
         }
 
+        public static bool HasSubtitles(this MediaPlaybackItem item)
+        {
+            return item != null && item.TimedMetadataTracks != null && item.TimedMetadataTracks.Any(x => x.IsSubtitle());
+        }
+
         public static IReadOnlyList<AvEffectDefinition> GetEqualizerEffectDefinitions(EqualizerConfiguration configuration)
         {
             List<AvEffectDefinition> eqDefinitions = new List<AvEffectDefinition>();

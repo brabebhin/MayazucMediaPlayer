@@ -16,7 +16,7 @@
 
     <Grid x:Name="GridRoot">
         <Grid>
-            <local:NowPlayingBackgroundGrid Visibility="Collapsed"></local:NowPlayingBackgroundGrid>
+            <local:NowPlayingBackgroundGrid x:Name="MusicPlaybackBackgroundGrid"></local:NowPlayingBackgroundGrid>
         </Grid>
 
         <Grid  VerticalAlignment="Stretch" Grid.Row="1" x:Name="LayoutRoot">

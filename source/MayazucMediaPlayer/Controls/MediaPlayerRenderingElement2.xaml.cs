@@ -167,19 +167,23 @@ namespace MayazucMediaPlayer.Controls
 
         private void DrawSubtitles()
         {
-            SubtitleImage.Width = this.ActualWidth;
-            SubtitleImage.Height = this.ActualHeight - TransportControlsRow.ActualHeight;
+            if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
+            {
+                SubtitleImage.Width = this.ActualWidth;
+                var newH = this.ActualHeight - TransportControlsRow.ActualHeight;
+                SubtitleImage.Height = newH < 0 ? 0 : newH;
 
-            SubtitleImage.Visibility = Visibility.Visible;
-            SubtitleImage.Opacity = 1;
+                SubtitleImage.Visibility = Visibility.Visible;
+                SubtitleImage.Opacity = 1;
 
-            NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
+                NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
+            }
         }
 
         public ImageSource PosterSource
         {
-            get => FrameServerImage.Source;
-            set => FrameServerImage.Source = value;
+            get => PosterImageImage.Source;
+            set => PosterImageImage.Source = value;
         }
         public bool AreTransportControlsEnabled { get; internal set; }
         public bool IsFullWindow { get; internal set; }
@@ -214,7 +218,7 @@ namespace MayazucMediaPlayer.Controls
         {
             await DispatcherQueue.EnqueueAsync(async () =>
             {
-                DrawFrame(sender);
+                DrawVideoFrame(sender);
             });
         }
 
@@ -222,13 +226,16 @@ namespace MayazucMediaPlayer.Controls
         {
             if (WrappedMediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
                 if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
-                    DrawFrame(sender);
+                    DrawVideoFrame(sender);
         }
 
-        private void DrawFrame(MediaPlayer sender)
+
+
+        private void DrawVideoFrame(MediaPlayer sender)
         {
             try
             {
+                PosterImageImage.Visibility = Visibility.Collapsed;
                 FrameServerImage.Width = this.ActualWidth;
                 FrameServerImage.Height = this.ActualHeight;
 

@@ -46,17 +46,18 @@ namespace MayazucMediaPlayer
             this.HostWindow = HostWindow;
         }
 
-        public async Task RequestCompactOverlayMode(bool miniPlayer)
+        public async Task RequestAlwaysOnTopOverlayMode(bool shouldOverlayOnTop)
         {
-            await HostWindow.GoToCompactOverlayMode(miniPlayer);
+            await HostWindow.SetWindowOnTopOverlayMode(shouldOverlayOnTop);
         }
 
         public async Task RequestFullScreenMode(bool shouldFullScreen)
         {
             await HostWindow.GoToFullScreenMode(shouldFullScreen);
+            MediaPlayerElementFullScreenModeChanged?.Invoke(this, shouldFullScreen);
         }
 
-        public bool IsInCompactOverlayMode()
+        public bool IsAlwaysOnTopWindowOverlayMode()
         {
             return HostWindow.IsInCompactOverlayMode();
         }
@@ -77,6 +78,9 @@ namespace MayazucMediaPlayer
         {
             return HostWindow.ShowDialogAsync(element);
         }
+
+        public event EventHandler<bool> MediaPlayerElementFullScreenModeChanged;
+
     }
 
     /// <summary>
@@ -139,18 +143,6 @@ namespace MayazucMediaPlayer
             }
         }
 
-        public IRelayCommand ShowHideNowPlayingEqualizer
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand ExitFullScreenMode
-        {
-            get;
-            private set;
-        }
-
         public MainWindow()
         {
             MainWindowingService.InitializeInstanceAsync(this);
@@ -164,12 +156,14 @@ namespace MayazucMediaPlayer
 
             Title = "Mayazuc Media Player";
             RootFrame.ServiceProvider = ServiceProvider;
-            AppState.Current.MediaServiceConnector.MediaPlayerElementFullScreenModeChanged += BackgroundMediaService_MediaPlayerElementFullScreenModeChanged;
+            MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += BackgroundMediaService_MediaPlayerElementFullScreenModeChanged;
             PopupHelper.NotificationRequest += PopupHelper_NotificationRequest;
 
             PlaybackCommandsModel = new NowPlayingCommandBarViewModel(DispatcherQueue);
             RootFrame.AsyncNavigated += RootFrame_AsyncNavigated;
             SizeChanged += MCMediaCenterRootApplication_SizeChanged;
+
+            OverayModeButtonIcon.Glyph = !IsAlwaysOnTop ? EnterOverlayModeIcon : ExitOverlayModeIcon;
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
@@ -223,8 +217,6 @@ namespace MayazucMediaPlayer
         {
             await InitializeNowPlayingViewAsync();
 
-            InitMenuQuickActions();
-
             await FirstNavigate();
 
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
@@ -255,7 +247,6 @@ namespace MayazucMediaPlayer
         private async Task NowPlayingHomeTapped()
         {
             await MaximizeNowPlayingIfCollapsed();
-            NowPlayingPage.FadeInTransportControls();
         }
 
         private void MediaPlayerElementInstance_DoubleTapped(object? sender, DoubleTappedRoutedEventArgs e)
@@ -263,7 +254,6 @@ namespace MayazucMediaPlayer
             if (IsNowPlayingMaximized())
                 NowPlayingPage.MediaPlayerElementInstance.IsFullWindow = !NowPlayingPage.MediaPlayerElementInstance.IsFullWindow;
             else MaximizeNowPlaying();
-            NowPlayingPage.FadeInTransportControls();
         }
 
 
@@ -316,16 +306,6 @@ namespace MayazucMediaPlayer
             {
                 await AppState.Current.MediaServiceConnector.EnqueueNext(mediaDataSources);
             }
-        }
-
-        private void InitMenuQuickActions()
-        {
-            ShowHideNowPlayingEqualizer = new RelayCommand(() => { CheckNowPlayingSlitterSize(); });
-            ExitFullScreenMode = new RelayCommand(() =>
-            {
-                if (IsNowPlayingMaximized())
-                    AppState.Current.MediaServiceConnector.IsRenderingFullScreen = !AppState.Current.MediaServiceConnector.IsRenderingFullScreen;
-            });
         }
 
         private async Task FirstNavigate()
@@ -580,7 +560,7 @@ namespace MayazucMediaPlayer
             return Task.CompletedTask;
         }
 
-        internal Task GoToCompactOverlayMode(bool miniPlayer)
+        internal Task SetWindowOnTopOverlayMode(bool miniPlayer)
         {
             var appView = GetAppWindowForCurrentWindow();
             var mode = AppWindowPresenterKind.Default;
@@ -705,5 +685,15 @@ namespace MayazucMediaPlayer
         {
             await OpenPageOrNowPlaying(typeof(EQConfigurationManagementPage));
         }
+
+        private async void EnterExitOverlayMode(object sender, TappedRoutedEventArgs e)
+        {
+            var shouldOverlay = !MainWindowingService.Instance.IsAlwaysOnTopWindowOverlayMode();
+            await MainWindowingService.Instance.RequestAlwaysOnTopOverlayMode(shouldOverlay);
+            OverayModeButtonIcon.Glyph = shouldOverlay ? ExitOverlayModeIcon : EnterOverlayModeIcon;
+        }
+
+        private readonly string EnterOverlayModeIcon = "\uEE49";
+        private readonly string ExitOverlayModeIcon = "\uEE47";
     }
 }

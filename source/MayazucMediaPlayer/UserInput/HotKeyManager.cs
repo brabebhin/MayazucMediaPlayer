@@ -139,7 +139,8 @@ namespace MayazucMediaPlayer.UserInput
             bool shift = (Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Shift).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down));
             bool ctrl = (Microsoft.UI.Input.InputKeyboardSource.GetKeyStateForCurrentThread(Windows.System.VirtualKey.Control).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down));
 
-            string virtualKey = GetCharFromKey((uint)wParam, shift, false);
+            var virtualKey = GetCharFromKey((uint)wParam, shift, false);
+
             string modifier = "none";
             if (shift)
             {
@@ -208,6 +209,7 @@ namespace MayazucMediaPlayer.UserInput
             defaults.Add(new MayazucHotKey(new HotKeySettings("M", "none"), HotKeyId.JumpForward));
             defaults.Add(new MayazucHotKey(new HotKeySettings("M", "shift"), HotKeyId.SkipNext));
             defaults.Add(new MayazucHotKey(new HotKeySettings("B", "shift"), HotKeyId.SkipPrevious));
+            defaults.Add(new MayazucHotKey(new HotKeySettings("\u001b", "none"), HotKeyId.ExitFullScreen)); //ESC
 
             return defaults.AsReadOnly();
         }

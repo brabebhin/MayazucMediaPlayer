@@ -55,6 +55,47 @@ namespace MayazucMediaPlayer.Controls
 
             MediaProgressBar.AddHandler(Slider.PointerReleasedEvent, new PointerEventHandler(ProgressBarSeek), true);
             MediaProgressBar.AddHandler(Slider.PointerPressedEvent, new PointerEventHandler(ProgressBarManipulation), true);
+
+            MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += Instance_MediaPlayerElementFullScreenModeChanged;
+
+            AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
+        }
+
+        private async void KeyboardInputManager_AcceleratorInvoked(object? sender, HotKeyId e)
+        {
+            switch (e)
+            {
+                case HotKeyId.PlayPause:
+                    await AppState.Current.MediaServiceConnector.SendPlayPause();
+
+                    break;
+                case HotKeyId.SkipNext:
+                    await AppState.Current.MediaServiceConnector.SkipNext();
+
+                    break;
+                case HotKeyId.SkipPrevious:
+                    await AppState.Current.MediaServiceConnector.SkipPrevious();
+
+                    break;
+                case HotKeyId.JumpBack:
+                    await AppState.Current.MediaServiceConnector.SkipSecondsBack(Constants.JumpBackSeconds);
+
+                    break;
+                case HotKeyId.JumpForward:
+                    await AppState.Current.MediaServiceConnector.SkipSecondsForth(Constants.JumpAheadSeconds);
+
+                    break;
+
+                case HotKeyId.ExitFullScreen:
+                    await FullScreenAutoSwitch();
+
+                    break;
+            }
+        }
+
+        private void Instance_MediaPlayerElementFullScreenModeChanged(object? sender, bool e)
+        {
+            SetFullScreenButtonIcon(e);
         }
 
         private async void CurrentPlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
@@ -152,10 +193,18 @@ namespace MayazucMediaPlayer.Controls
 
         private async void GoFullScreen_click(object sender, RoutedEventArgs e)
         {
-            //new FontIcon { FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets") , Glyph = "\uE73F" };
+            await FullScreenAutoSwitch();
+        }
+
+        private async Task FullScreenAutoSwitch()
+        {
             bool shouldFullScreen = !MainWindowingService.Instance.IsInFullScreenMode();
             await MainWindowingService.Instance.RequestFullScreenMode(shouldFullScreen);
+            SetFullScreenButtonIcon(shouldFullScreen);
+        }
 
+        private void SetFullScreenButtonIcon(bool shouldFullScreen)
+        {
             FullScreenButton.Icon = (shouldFullScreen ? ExitFullScreenIcon() : FullScreenIcon());
         }
 

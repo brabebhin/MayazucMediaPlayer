@@ -25,7 +25,6 @@ namespace winrt::MayazucNativeFramework::implementation
 				if (subtitlesTarget)
 					subtitlesTarget.Close();
 				//TODO: deal with HDR
-				subtitlesTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
 				renderingTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
 			}
 			if (win2dImageSource == nullptr
@@ -45,8 +44,8 @@ namespace winrt::MayazucNativeFramework::implementation
 				CanvasDrawingSession videoDrawingSession = renderingTarget.CreateDrawingSession();
 				videoDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
 
-				CanvasDrawingSession subtitesDrawingSession = subtitlesTarget.CreateDrawingSession();
-				subtitesDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
+				/*CanvasDrawingSession subtitesDrawingSession = subtitlesTarget.CreateDrawingSession();
+				subtitesDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());*/
 
 
 				player.CopyFrameToVideoSurface(renderingTarget);

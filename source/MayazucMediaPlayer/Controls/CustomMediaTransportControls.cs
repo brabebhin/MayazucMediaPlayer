@@ -563,12 +563,12 @@ namespace MayazucMediaPlayer.Controls
                     break;
 
                 case PlaybackTapGestureMode.FullScreenOnly:
-                    execute = AppState.Current.MediaServiceConnector.IsRenderingFullScreen;
+                    execute = MainWindowingService.Instance.IsInFullScreenMode();
 
                     break;
                 case PlaybackTapGestureMode.NormalViewOnly:
 
-                    execute = !AppState.Current.MediaServiceConnector.IsRenderingFullScreen;
+                    execute = !MainWindowingService.Instance.IsInFullScreenMode();
 
                     break;
             }
@@ -585,7 +585,7 @@ namespace MayazucMediaPlayer.Controls
                 if (MiniPlayerToggle.IsChecked.Value)
                 {
                 }
-                await MainWindowingService.Instance.RequestCompactOverlayMode(MiniPlayerToggle.IsChecked.Value);
+                await MainWindowingService.Instance.RequestAlwaysOnTopOverlayMode(MiniPlayerToggle.IsChecked.Value);
             }
         }
 
