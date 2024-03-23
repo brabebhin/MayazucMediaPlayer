@@ -126,7 +126,7 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
 
@@ -148,6 +148,17 @@ namespace MayazucMediaPlayer.Controls
             }
 
             args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
+
+            await DispatcherQueue.EnqueueAsync(() =>
+            {
+                if (args.EventData.PlaybackItem != null)
+                {
+                    if (!args.EventData.PlaybackItem.IsVideo())
+                    {
+                        PosterImageImage.Visibility = Visibility.Visible;
+                    }
+                }
+            });
         }
 
         private void PlaybackItem_TimedMetadataTracksChanged(MediaPlaybackItem sender, IVectorChangedEventArgs args)

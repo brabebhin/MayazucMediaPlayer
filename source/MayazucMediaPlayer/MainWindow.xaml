@@ -68,7 +68,7 @@
                 </MenuBarItem>
 
             </MenuBar>
-            <Button BorderBrush="Transparent" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="OverayModeButton" ToolTipService.ToolTip="Show now playing" Background="Transparent" Tapped="EnterExitOverlayMode" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
+            <Button BorderBrush="Transparent" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="OverayModeButton" ToolTipService.ToolTip="Window overlay modes" Background="Transparent" Tapped="EnterExitOverlayMode" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
                 <FontIcon FontFamily="Segoe MDL2 Assets" x:Name="OverayModeButtonIcon" Glyph="&#xEE49;"/>
             </Button>
             <Grid Grid.Column="4" x:Name="TitleBarGrid" Background="{Binding ElementName=PlayMenuItem, Path=Background}">

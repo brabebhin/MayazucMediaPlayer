@@ -152,11 +152,5 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
 
         }
-
-        public override async Task<bool> GoBack()
-        {
-            return false;
-            //return await UIMediaTransportControls.GoBack();
-        }
     }
 }
