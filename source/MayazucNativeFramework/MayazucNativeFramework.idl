@@ -25,18 +25,16 @@ namespace MayazucNativeFramework
 		Boolean BlurEffect{ get; set; };
 	}
 
-	[default_interface]
 	runtimeclass FrameServerRenderer
 	{
-		FrameServerRenderer();
+		FrameServerRenderer(Microsoft.UI.Xaml.Controls.SwapChainPanel swapChainPannel);
 
 		[default_overload]
 		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.UI.Xaml.Controls.Image targetImage, VideoEffectProcessorConfiguration effectConfiguration);
 		
-		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.Graphics.Canvas.UI.Xaml.CanvasSwapChainPanel swapChainPannel, VideoEffectProcessorConfiguration effectConfiguration);
+		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.UI.Xaml.Controls.SwapChainPanel swapChainPannel, VideoEffectProcessorConfiguration effectConfiguration);
 
 		Windows.Foundation.IAsyncAction RenderMediaPlayerFrameToStreamAsync(Windows.Media.Playback.MediaPlayer player, VideoEffectProcessorConfiguration effectConfiguration, Windows.Storage.Streams.IRandomAccessStream outputStream);
-
 	}
 
 	[default_interface]

@@ -39,7 +39,7 @@ namespace MayazucMediaPlayer.Controls
             set;
         } = new SubtitleRenderer();
 
-        FrameServerRenderer renderer = new FrameServerRenderer();
+        FrameServerRenderer renderer;
 
         MediaPlayer _mediaPlayer;
 
@@ -75,6 +75,7 @@ namespace MayazucMediaPlayer.Controls
             AppState.Current.MediaServiceConnector.CurrentPlaybackSession.PlaybackStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
             this.ManipulationStarted += MediaPlayerRenderingElement2_ManipulationStarted;
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
+            renderer = new FrameServerRenderer(VideoSwapChain);
         }
 
         private void MediaPlayerRenderingElement2_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -286,7 +287,7 @@ namespace MayazucMediaPlayer.Controls
                         var file = await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
                         using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                         {
-                            await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
+                            //await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
                         }
 
                         PopupHelper.ShowInfoMessage($"Frame saved: {DateTime.Now.ToString("hh:mm:ss")}");

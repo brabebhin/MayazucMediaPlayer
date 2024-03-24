@@ -38,11 +38,11 @@ namespace MayazucMediaPlayer.Controls
     {
         bool useNativeSubtitleRenderer = true;
 
-        FrameServerRenderer renderer = new FrameServerRenderer();
+        //FrameServerRenderer renderer = new FrameServerRenderer();
         Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
 
         private EffectProcessor EffectRenderer = new EffectProcessor();
-        SubtitleRenderer nativeSubRenderer = new SubtitleRenderer();
+        //SubtitleRenderer nativeSubRenderer = new SubtitleRenderer();
         MediaPlayer _mediaPlayer;
 
         public MediaPlayer WrappedMediaPlayer
@@ -85,10 +85,7 @@ namespace MayazucMediaPlayer.Controls
             SubtitleImage.Visibility = Visibility.Visible;
             SubtitleImage.Opacity = 1;
 
-            if (useNativeSubtitleRenderer)
-                nativeSubRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
-            else subsRenderer.RenderSubtitlesToImage(SubtitleImage, AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, DispatcherQueue);
-        }
+                   }
 
         public ImageSource PosterSource
         {
@@ -206,7 +203,7 @@ namespace MayazucMediaPlayer.Controls
                 FrameServerImage.Visibility = Visibility.Visible;
                 FrameServerImage.Opacity = 1;
 
-                renderer.RenderMediaPlayerFrame(sender, FrameServerImage, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+                //renderer.RenderMediaPlayerFrame(sender, FrameServerImage, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
                 //DrawSubtitles();
 
             }
@@ -233,7 +230,7 @@ namespace MayazucMediaPlayer.Controls
                         var file = await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
                         using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                         {
-                            await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
+                            //await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
                         }
 
                         PopupHelper.ShowInfoMessage($"Frame saved: {DateTime.Now.ToString("hh:mm:ss")}");
