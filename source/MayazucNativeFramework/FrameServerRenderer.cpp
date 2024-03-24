@@ -55,7 +55,7 @@ namespace winrt::MayazucNativeFramework::implementation
 		}
 	}
 
-	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel const& swapChainPannel, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
+	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
 	{
 		try {
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
@@ -66,15 +66,15 @@ namespace winrt::MayazucNativeFramework::implementation
 			//still need to test HDR, and if the frame comes too early or too late. 
 			//the CanvasRenderTarget can also be cached so it is not recreated every frame
 
-			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != swapChainPannel.Width()) || (renderingTarget.Bounds().Height != swapChainPannel.Height()))
+			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != width) || (renderingTarget.Bounds().Height != height))
 			{
 				if (renderingTarget)
 					renderingTarget.Close();
 				if (subtitlesTarget)
 					subtitlesTarget.Close();
 				//TODO: deal with HDR
-				renderingTarget = CanvasRenderTarget(canvasDevice, (float)swapChainPannel.Width(), (float)swapChainPannel.Height(), 96);
-				canvasSwapChain.ResizeBuffers((float)swapChainPannel.Width(), (float)swapChainPannel.Height());
+				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi);
+				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, 2);
 			}			
 
 			{

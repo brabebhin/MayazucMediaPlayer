@@ -2,6 +2,7 @@ using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucNativeFramework;
+using Microsoft.Graphics.Canvas;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -258,11 +259,8 @@ namespace MayazucMediaPlayer.Controls
 
                 //if (FrameServerImage.ActualWidth == 0 || FrameServerImage.ActualHeight == 0) return;
                 if (VideoSwapChain.ActualWidth == 0 || VideoSwapChain.ActualHeight == 0) return;
-
-                VideoSwapChain.Visibility = Visibility.Visible;
                 VideoSwapChain.Opacity = 1;
-
-                renderer.RenderMediaPlayerFrame(sender, VideoSwapChain, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+                renderer.RenderMediaPlayerFrame(sender, (float)VideoSwapChain.ActualWidth, (float)VideoSwapChain.ActualHeight, 96f,  Windows.Graphics.DirectX.DirectXPixelFormat.B8G8R8A8UIntNormalized, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {
