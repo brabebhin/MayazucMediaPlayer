@@ -30,7 +30,10 @@ namespace MayazucNativeFramework
 	{
 		FrameServerRenderer();
 
+		[default_overload]
 		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.UI.Xaml.Controls.Image targetImage, VideoEffectProcessorConfiguration effectConfiguration);
+		
+		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.Graphics.Canvas.UI.Xaml.CanvasSwapChainPanel swapChainPannel, VideoEffectProcessorConfiguration effectConfiguration);
 
 		Windows.Foundation.IAsyncAction RenderMediaPlayerFrameToStreamAsync(Windows.Media.Playback.MediaPlayer player, VideoEffectProcessorConfiguration effectConfiguration, Windows.Storage.Streams.IRandomAccessStream outputStream);
 

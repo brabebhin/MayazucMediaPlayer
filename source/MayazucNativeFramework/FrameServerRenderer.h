@@ -19,7 +19,7 @@ namespace winrt::MayazucNativeFramework::implementation
 
     using namespace winrt::Windows::Foundation::Collections;
     using namespace winrt::Windows::Media::Effects;
-    using namespace winrt::Windows::Foundation::Collections;
+    using namespace winrt::Windows::Foundation;
     using namespace winrt::Windows::Media::MediaProperties;
 
     using namespace winrt::Microsoft::Graphics;
@@ -33,7 +33,8 @@ namespace winrt::MayazucNativeFramework::implementation
         }
 
         void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
-        winrt::Windows::Foundation::IAsyncAction RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream);
+        void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, winrt::Microsoft::Graphics::Canvas::UI::Xaml::CanvasSwapChainPanel const& swapChainPannel, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
+        IAsyncAction RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream);
 
     private:
         EffectProcessor effectsPrcessor;

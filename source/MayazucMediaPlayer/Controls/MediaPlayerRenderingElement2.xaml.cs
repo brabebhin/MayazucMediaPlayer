@@ -21,6 +21,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.System.Threading;
+using WinRT;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -247,15 +248,20 @@ namespace MayazucMediaPlayer.Controls
             try
             {
                 PosterImageImage.Visibility = Visibility.Collapsed;
-                FrameServerImage.Width = this.ActualWidth;
-                FrameServerImage.Height = this.ActualHeight;
+                FrameServerImage.Visibility = Visibility.Collapsed;
+                //FrameServerImage.Width = this.ActualWidth;
+                //FrameServerImage.Height = this.ActualHeight;
 
-                if (FrameServerImage.ActualWidth == 0 || FrameServerImage.ActualHeight == 0) return;
+                VideoSwapChain.Width = this.ActualWidth;
+                VideoSwapChain.Height = this.ActualHeight;
 
-                FrameServerImage.Visibility = Visibility.Visible;
-                FrameServerImage.Opacity = 1;
+                //if (FrameServerImage.ActualWidth == 0 || FrameServerImage.ActualHeight == 0) return;
+                if (VideoSwapChain.ActualWidth == 0 || VideoSwapChain.ActualHeight == 0) return;
 
-                renderer.RenderMediaPlayerFrame(sender, FrameServerImage, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+                VideoSwapChain.Visibility = Visibility.Visible;
+                VideoSwapChain.Opacity = 1;
+
+                renderer.RenderMediaPlayerFrame(sender, VideoSwapChain, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {

@@ -5,8 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d">
 
     <Grid>
@@ -15,6 +14,7 @@
             <RowDefinition x:Name="TransportControlsRow" Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" Stretch="None" VerticalAlignment="Stretch"  x:Name="FrameServerImage"></Image>
+        <SwapChainPanel x:Name="VideoSwapChain" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></SwapChainPanel>
         <Image HorizontalAlignment="Stretch" Stretch="None" VerticalAlignment="Stretch"  x:Name="SubtitleImage"></Image>
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
         <Grid x:Name="TransportControlsContainer" Grid.Row="1">

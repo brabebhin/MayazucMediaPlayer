@@ -63,11 +63,16 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             else
             {
-                await DispatcherQueue.EnqueueAsync(() =>
-                {
-                    MediaPlayerElementInstance.PosterSource = new BitmapImage(new Uri(FontIconPaths.PlaceholderAlbumArt));
-                });
+                await SetDefaultPosterSource();
             }
+        }
+
+        private async Task SetDefaultPosterSource()
+        {
+            await DispatcherQueue.EnqueueAsync(() =>
+            {
+                MediaPlayerElementInstance.PosterSource = new BitmapImage(new Uri(FontIconPaths.PlaceholderAlbumArt));
+            });
         }
 
         private void unInitMediaPlayerElement()
@@ -134,8 +139,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 {
 
                     BitmapImage img = new BitmapImage();
-                    img.SetSource(await currentPlayer.SystemMediaTransportControls.DisplayUpdater.Thumbnail.OpenReadAsync());
                     img.ImageFailed += Img_ImageFailed;
+                    img.SetSource(await currentPlayer.SystemMediaTransportControls.DisplayUpdater.Thumbnail.OpenReadAsync());
                     MediaPlayerElementInstance.PosterSource = img;
 
                     MusicPlaybackBackgroundGrid.Visibility = Visibility.Visible;
@@ -148,9 +153,9 @@ namespace MayazucMediaPlayer.NowPlayingViews
             await SetPosterSourceFromStoredData();
         }
 
-        private void Img_ImageFailed(object? sender, ExceptionRoutedEventArgs e)
+        private async void Img_ImageFailed(object? sender, ExceptionRoutedEventArgs e)
         {
-
+            await SetDefaultPosterSource();
         }
     }
 }

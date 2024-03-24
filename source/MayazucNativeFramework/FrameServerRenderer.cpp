@@ -43,18 +43,45 @@ namespace winrt::MayazucNativeFramework::implementation
 				CanvasDrawingSession outputDrawingSession = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				CanvasDrawingSession videoDrawingSession = renderingTarget.CreateDrawingSession();
 				videoDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
-
-				/*CanvasDrawingSession subtitesDrawingSession = subtitlesTarget.CreateDrawingSession();
-				subtitesDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());*/
-
-
 				player.CopyFrameToVideoSurface(renderingTarget);
 				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
-
-				//player.RenderSubtitlesToSurface(subtitlesTarget);
-				//outputDrawingSession.DrawImage(subtitlesTarget);
 				outputDrawingSession.Flush();
+			}
+		}
+		catch (...)
+		{
 
+		}
+	}
+
+	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, winrt::Microsoft::Graphics::Canvas::UI::Xaml::CanvasSwapChainPanel const& swapChainPannel, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
+	{
+		try {
+			auto canvasDevice = CanvasDevice::GetSharedDevice();
+			effectsPrcessor.EffectConfiguration = effectConfiguration;
+
+			//it appears the entire rendering can be done with a CanvasRenderTarget
+			//still need to test HDR, and if the frame comes too early or too late. 
+			//the CanvasRenderTarget can also be cached so it is not recreated every frame
+
+			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != swapChainPannel.Width()) || (renderingTarget.Bounds().Height != swapChainPannel.Height()))
+			{
+				if (renderingTarget)
+					renderingTarget.Close();
+				if (subtitlesTarget)
+					subtitlesTarget.Close();
+				//TODO: deal with HDR
+				renderingTarget = CanvasRenderTarget(canvasDevice, (float)swapChainPannel.Width(), (float)swapChainPannel.Height(), 96);
+				swapChainPannel.SwapChain().ResizeBuffers((float)swapChainPannel.Width(), (float)swapChainPannel.Height());
+			}			
+
+			{
+				auto lock = canvasDevice.Lock();
+				CanvasDrawingSession outputDrawingSession = swapChainPannel.SwapChain().CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
+				player.CopyFrameToVideoSurface(renderingTarget);
+				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
+				outputDrawingSession.Flush();
+				swapChainPannel.SwapChain().Present();
 			}
 		}
 		catch (...)
