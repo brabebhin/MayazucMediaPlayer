@@ -61,11 +61,6 @@ namespace winrt::MayazucNativeFramework::implementation
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
 			effectsPrcessor.EffectConfiguration = effectConfiguration;
 
-			
-			//it appears the entire rendering can be done with a CanvasRenderTarget
-			//still need to test HDR, and if the frame comes too early or too late. 
-			//the CanvasRenderTarget can also be cached so it is not recreated every frame
-
 			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != width) || (renderingTarget.Bounds().Height != height))
 			{
 				if (renderingTarget)

@@ -254,13 +254,37 @@ namespace MayazucMediaPlayer.Controls
                 //FrameServerImage.Width = this.ActualWidth;
                 //FrameServerImage.Height = this.ActualHeight;
 
-                VideoSwapChain.Width = this.ActualWidth;
-                VideoSwapChain.Height = this.ActualHeight;
+
 
                 //if (FrameServerImage.ActualWidth == 0 || FrameServerImage.ActualHeight == 0) return;
-                if (VideoSwapChain.ActualWidth == 0 || VideoSwapChain.ActualHeight == 0) return;
+                if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
                 VideoSwapChain.Opacity = 1;
-                renderer.RenderMediaPlayerFrame(sender, (float)VideoSwapChain.ActualWidth, (float)VideoSwapChain.ActualHeight, 96f,  Windows.Graphics.DirectX.DirectXPixelFormat.B8G8R8A8UIntNormalized, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+
+                var currentPlaybackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
+                var ar = (float)currentPlaybackSession.NaturalVideoWidth / currentPlaybackSession.NaturalVideoHeight;
+
+                var width = 0f;
+                var height = 0f;
+
+                if (currentPlaybackSession.NaturalVideoHeight > currentPlaybackSession.NaturalVideoWidth)
+                {
+                    height = (float)this.ActualHeight;
+                    width = height * ar;
+                }
+                else if (currentPlaybackSession.NaturalVideoHeight == currentPlaybackSession.NaturalVideoWidth)
+                {
+                    height = width = (float)this.ActualWidth * ar;
+                }
+                else
+                {
+                    width = (float)this.ActualWidth;
+                    height = (float)this.ActualHeight / ar;
+                }
+
+                VideoSwapChain.Width = width;
+                VideoSwapChain.Height = height;
+
+                renderer.RenderMediaPlayerFrame(sender, (float)width, (float)height, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {
