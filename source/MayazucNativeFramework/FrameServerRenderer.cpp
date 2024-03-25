@@ -5,8 +5,6 @@
 
 namespace winrt::MayazucNativeFramework::implementation
 {
-
-
 	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player,
 		winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage,
 		winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
@@ -34,7 +32,7 @@ namespace winrt::MayazucNativeFramework::implementation
 			{
 				win2dImageSource = CanvasImageSource(canvasDevice, (int)targetImage.Width(), (int)targetImage.Height(), 96);
 			}
-			if (targetImage.Source()!= win2dImageSource)
+			if (targetImage.Source() != win2dImageSource)
 			{
 				targetImage.Source(win2dImageSource);
 			}
@@ -60,6 +58,10 @@ namespace winrt::MayazucNativeFramework::implementation
 		try {
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
 			effectsPrcessor.EffectConfiguration = effectConfiguration;
+			if (canvasSwapChain.Device().IsDeviceLost())
+			{
+				AllocResources(this->swapChainPannel, width, height, dpi);
+			}
 
 			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != width) || (renderingTarget.Bounds().Height != height))
 			{
@@ -70,7 +72,11 @@ namespace winrt::MayazucNativeFramework::implementation
 				//TODO: deal with HDR
 				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi);
 				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, 2);
-			}			
+			}
+			if (canvasSwapChain.Format() != pixelFormat)
+			{
+				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, 2);
+			}
 
 			{
 				auto lock = canvasDevice.Lock();
@@ -92,7 +98,7 @@ namespace winrt::MayazucNativeFramework::implementation
 		winrt::apartment_context caller; // Capture calling context.
 
 		CanvasDevice canvasDevice = CanvasDevice::GetSharedDevice();
-		
+
 		//TODO: deal with HDR
 		auto frameServerDest = SoftwareBitmap(BitmapPixelFormat::Bgra8, player.PlaybackSession().NaturalVideoWidth(), player.PlaybackSession().NaturalVideoHeight(), BitmapAlphaMode::Ignore);
 		auto canvasImageSource = Microsoft::Graphics::Canvas::CanvasRenderTarget(canvasDevice, player.PlaybackSession().NaturalVideoWidth(), player.PlaybackSession().NaturalVideoHeight(), 96);

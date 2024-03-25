@@ -183,8 +183,8 @@ namespace MayazucMediaPlayer.Controls
         {
             if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
             {
-                SubtitleImage.Width = this.ActualWidth;
-                var newH = this.ActualHeight - TransportControlsRow.ActualHeight;
+                SubtitleImage.Width = VideoSwapChain.ActualWidth;
+                var newH = VideoSwapChain.ActualHeight - TransportControlsRow.ActualHeight;
                 SubtitleImage.Height = newH < 0 ? 0 : newH;
 
                 SubtitleImage.Visibility = Visibility.Visible;
@@ -251,12 +251,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 PosterImageImage.Visibility = Visibility.Collapsed;
                 FrameServerImage.Visibility = Visibility.Collapsed;
-                //FrameServerImage.Width = this.ActualWidth;
-                //FrameServerImage.Height = this.ActualHeight;
-
-
-
-                //if (FrameServerImage.ActualWidth == 0 || FrameServerImage.ActualHeight == 0) return;
+               
                 if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
                 VideoSwapChain.Opacity = 1;
 

@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" Stretch="None" VerticalAlignment="Stretch"  x:Name="FrameServerImage"></Image>
         <SwapChainPanel x:Name="VideoSwapChain"  Grid.RowSpan="2"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
-        <Image HorizontalAlignment="Stretch" Stretch="None" VerticalAlignment="Stretch"  x:Name="SubtitleImage"></Image>
+        <Image x:Name="SubtitleImage" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
         <Grid x:Name="TransportControlsContainer" Grid.Row="1">
             <local:CustomMediaTransportControls2 x:Name="MediaTransportControls"></local:CustomMediaTransportControls2>
