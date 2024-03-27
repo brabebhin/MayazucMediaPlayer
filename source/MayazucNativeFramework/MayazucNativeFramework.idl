@@ -29,9 +29,6 @@ namespace MayazucNativeFramework
 	{
 		FrameServerRenderer(Microsoft.UI.Xaml.Controls.SwapChainPanel swapChainPannel);
 
-		[default_overload]
-		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Microsoft.UI.Xaml.Controls.Image targetImage, VideoEffectProcessorConfiguration effectConfiguration);
-		
 		void RenderMediaPlayerFrame(Windows.Media.Playback.MediaPlayer player, Single width, Single height, Single dpi, Windows.Graphics.DirectX.DirectXPixelFormat pixelFormat, VideoEffectProcessorConfiguration effectConfiguration);
 
 		Windows.Foundation.IAsyncAction RenderMediaPlayerFrameToStreamAsync(Windows.Media.Playback.MediaPlayer player, VideoEffectProcessorConfiguration effectConfiguration, Windows.Storage.Streams.IRandomAccessStream outputStream);
@@ -40,8 +37,8 @@ namespace MayazucNativeFramework
 	[default_interface]
 	runtimeclass SubtitleRenderer
 	{
-		SubtitleRenderer();
+		SubtitleRenderer(Microsoft.UI.Xaml.Controls.SwapChainPanel swapChainPannel);
 
-		void RenderSubtitlesToFrame(Windows.Media.Playback.MediaPlaybackItem playbackItem, Microsoft.UI.Xaml.Controls.Image targetImage);
+		void RenderSubtitlesToFrame(Windows.Media.Playback.MediaPlaybackItem playbackItem, Single width, Single height, Single dpi, Windows.Graphics.DirectX.DirectXPixelFormat pixelFormat);
 	}
 }

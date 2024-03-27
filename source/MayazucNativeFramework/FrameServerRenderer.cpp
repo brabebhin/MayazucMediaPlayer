@@ -5,54 +5,6 @@
 
 namespace winrt::MayazucNativeFramework::implementation
 {
-	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player,
-		winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage,
-		winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
-	{
-		try {
-			auto canvasDevice = CanvasDevice::GetSharedDevice();
-			effectsPrcessor.EffectConfiguration = effectConfiguration;
-
-			//it appears the entire rendering can be done with a CanvasRenderTarget
-			//still need to test HDR, and if the frame comes too early or too late. 
-			//the CanvasRenderTarget can also be cached so it is not recreated every frame
-
-			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != targetImage.Width()) || (renderingTarget.Bounds().Height != targetImage.Height()))
-			{
-				if (renderingTarget)
-					renderingTarget.Close();
-				if (subtitlesTarget)
-					subtitlesTarget.Close();
-				//TODO: deal with HDR
-				renderingTarget = CanvasRenderTarget(canvasDevice, (float)targetImage.Width(), (float)targetImage.Height(), 96);
-			}
-			if (win2dImageSource == nullptr
-				|| (win2dImageSource.Size().Width != targetImage.Width())
-				|| (win2dImageSource.Size().Height != targetImage.Height()))
-			{
-				win2dImageSource = CanvasImageSource(canvasDevice, (int)targetImage.Width(), (int)targetImage.Height(), 96);
-			}
-			if (targetImage.Source() != win2dImageSource)
-			{
-				targetImage.Source(win2dImageSource);
-			}
-
-			{
-				auto lock = canvasDevice.Lock();
-				CanvasDrawingSession outputDrawingSession = win2dImageSource.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
-				CanvasDrawingSession videoDrawingSession = renderingTarget.CreateDrawingSession();
-				videoDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
-				player.CopyFrameToVideoSurface(renderingTarget);
-				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
-				outputDrawingSession.Flush();
-			}
-		}
-		catch (...)
-		{
-
-		}
-	}
-
 	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
 	{
 		try {
@@ -60,20 +12,18 @@ namespace winrt::MayazucNativeFramework::implementation
 			effectsPrcessor.EffectConfiguration = effectConfiguration;
 			if (canvasSwapChain.Device().IsDeviceLost())
 			{
-				AllocResources(this->swapChainPannel, width, height, dpi);
+				SwapChainAllocResources(this->swapChainPannel, width, height, dpi, pixelFormat, SubtitleSwapChainBufferCount, canvasSwapChain);
 			}
 
 			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != width) || (renderingTarget.Bounds().Height != height))
 			{
 				if (renderingTarget)
 					renderingTarget.Close();
-				if (subtitlesTarget)
-					subtitlesTarget.Close();
+				
 				//TODO: deal with HDR
 				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi);
-				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, 2);
 			}
-			if (canvasSwapChain.Format() != pixelFormat)
+			if (canvasSwapChain.Format() != pixelFormat || canvasSwapChain.Size().Width != width || canvasSwapChain.Size().Height != height || canvasSwapChain.Dpi() != dpi)
 			{
 				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, 2);
 			}

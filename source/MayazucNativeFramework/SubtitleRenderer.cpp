@@ -18,13 +18,13 @@ namespace winrt::MayazucNativeFramework::implementation
 	using namespace winrt::Microsoft::UI;
 	using namespace std;
 
-	void SubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage)
+	void SubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat)
 	{
-		float width = (float)targetImage.Width();
-		float height = (float)targetImage.Height();
-
 		vector<ImageCue> imageCuesToRender;
 		unordered_map<TimedTextRegion, vector<TimedTextCue>> timedTextCuesWithRegions;
+
+		if (width == 0 || height == 0)
+			return;
 
 		for (int i = 0; playbackItem && i < playbackItem.TimedMetadataTracks().Size(); i++)
 		{
@@ -81,6 +81,16 @@ namespace winrt::MayazucNativeFramework::implementation
 		}
 
 		auto canvasDevice = CanvasDevice::GetSharedDevice();
+		if (canvasSwapChain.Device().IsDeviceLost())
+		{
+			SwapChainAllocResources(this->swapChainPannel, width, height, dpi, pixelFormat, SubtitleSwapChainBufferCount, canvasSwapChain);
+		}
+
+		if (canvasSwapChain.Format() != pixelFormat || canvasSwapChain.Size().Width != width || canvasSwapChain.Size().Height != height || canvasSwapChain.Dpi() != dpi)
+		{
+			canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, SubtitleSwapChainBufferCount);
+		}
+
 		if (!renderTargetSurface || renderTargetSurface.SizeInPixels().Width != width || renderTargetSurface.SizeInPixels().Height != height)
 		{
 			renderTargetSurface = CanvasRenderTarget(canvasDevice, width, height, 96);
@@ -189,15 +199,18 @@ namespace winrt::MayazucNativeFramework::implementation
 			if (!targetImageSource || targetImageSource.SizeInPixels().Width != width || targetImageSource.SizeInPixels().Height != height)
 			{
 				targetImageSource = CanvasImageSource(canvasDevice, width, height, 96);
-				targetImage.Source(targetImageSource);
+				//targetImage.Source(targetImageSource);
 			}
 			{
-				auto finalSurfaceDS = targetImageSource.CreateDrawingSession(Colors::Transparent());
-				finalSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
-				finalSurfaceDS.DrawImage(renderTargetSurface);
+				auto swapChainDrawingSession = canvasSwapChain.CreateDrawingSession(Colors::Transparent());
+				swapChainDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
+				swapChainDrawingSession.DrawImage(renderTargetSurface);
+				swapChainDrawingSession.Flush();
+				canvasSwapChain.Present();
 			}
 		}
 	}
+
 }
 
 

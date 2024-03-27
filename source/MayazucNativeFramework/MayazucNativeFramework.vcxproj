@@ -117,6 +117,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="SsaAssTextRenderer.h" />
     <ClInclude Include="SubtitleRenderer.h" />
+    <ClInclude Include="SwapChainPanelHelper.h" />
     <ClInclude Include="VideoEffectProcessorConfiguration.h" />
   </ItemGroup>
   <ItemGroup>

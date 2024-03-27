@@ -42,3 +42,5 @@
 #include <winrt/Windows.Media.h>
 #include <winrt/Microsoft.Graphics.Canvas.Brushes.h>
 #include <map>
+
+#define SubtitleSwapChainBufferCount 2

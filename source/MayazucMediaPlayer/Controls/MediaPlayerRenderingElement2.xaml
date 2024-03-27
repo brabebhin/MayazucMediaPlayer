@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d">
 
     <Grid>
@@ -13,9 +14,9 @@
             <RowDefinition></RowDefinition>
             <RowDefinition x:Name="TransportControlsRow" Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" Stretch="None" VerticalAlignment="Stretch"  x:Name="FrameServerImage"></Image>
         <SwapChainPanel x:Name="VideoSwapChain"  Grid.RowSpan="2"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
-        <Image x:Name="SubtitleImage" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+        <SwapChainPanel x:Name="SubtitleSwapChain"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
+
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
         <Grid x:Name="TransportControlsContainer" Grid.Row="1">
             <local:CustomMediaTransportControls2 x:Name="MediaTransportControls"></local:CustomMediaTransportControls2>

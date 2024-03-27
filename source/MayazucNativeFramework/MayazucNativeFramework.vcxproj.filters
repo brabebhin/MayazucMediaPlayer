@@ -24,6 +24,7 @@
     <ClInclude Include="FrameServerRenderer.h" />
     <ClInclude Include="SubtitleRenderer.h" />
     <ClInclude Include="SsaAssTextRenderer.h" />
+    <ClInclude Include="SwapChainPanelHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MayazucNativeFramework.idl" />

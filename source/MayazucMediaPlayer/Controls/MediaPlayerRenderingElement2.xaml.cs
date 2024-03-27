@@ -38,7 +38,7 @@ namespace MayazucMediaPlayer.Controls
         {
             get;
             set;
-        } = new SubtitleRenderer();
+        }
 
         FrameServerRenderer renderer;
 
@@ -77,6 +77,7 @@ namespace MayazucMediaPlayer.Controls
             this.ManipulationStarted += MediaPlayerRenderingElement2_ManipulationStarted;
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
             renderer = new FrameServerRenderer(VideoSwapChain);
+            NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
         }
 
         private void MediaPlayerRenderingElement2_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -159,6 +160,7 @@ namespace MayazucMediaPlayer.Controls
                     if (!args.EventData.PlaybackItem.IsVideo())
                     {
                         PosterImageImage.Visibility = Visibility.Visible;
+                        VideoSwapChain.Visibility = Visibility.Collapsed;
                     }
                 }
             });
@@ -183,14 +185,21 @@ namespace MayazucMediaPlayer.Controls
         {
             if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
             {
-                SubtitleImage.Width = VideoSwapChain.ActualWidth;
-                var newH = VideoSwapChain.ActualHeight - TransportControlsRow.ActualHeight;
-                SubtitleImage.Height = newH < 0 ? 0 : newH;
+                try
+                {
+                    SubtitleSwapChain.Width = VideoSwapChain.ActualWidth;
+                    var newH = VideoSwapChain.ActualHeight - TransportControlsRow.ActualHeight;
+                    SubtitleSwapChain.Height = newH < 0 ? 0 : newH;
 
-                SubtitleImage.Visibility = Visibility.Visible;
-                SubtitleImage.Opacity = 1;
+                    SubtitleSwapChain.Visibility = Visibility.Visible;
+                    SubtitleSwapChain.Opacity = 1;
 
-                NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, SubtitleImage);
+                    NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (float)SubtitleSwapChain.ActualWidth, (float)SubtitleSwapChain.ActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                }
+                catch
+                {
+
+                }
             }
         }
 
@@ -250,18 +259,19 @@ namespace MayazucMediaPlayer.Controls
             try
             {
                 PosterImageImage.Visibility = Visibility.Collapsed;
-                FrameServerImage.Visibility = Visibility.Collapsed;
-               
+                VideoSwapChain.Visibility = Visibility.Visible;
+
                 if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
                 VideoSwapChain.Opacity = 1;
 
                 var currentPlaybackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
                 var ar = (float)currentPlaybackSession.NaturalVideoWidth / currentPlaybackSession.NaturalVideoHeight;
+                var windowAR = this.ActualWidth / this.ActualHeight;
 
                 var width = 0f;
                 var height = 0f;
 
-                if (currentPlaybackSession.NaturalVideoHeight > currentPlaybackSession.NaturalVideoWidth)
+                if (currentPlaybackSession.NaturalVideoHeight != currentPlaybackSession.NaturalVideoWidth)
                 {
                     height = (float)this.ActualHeight;
                     width = height * ar;
@@ -270,11 +280,11 @@ namespace MayazucMediaPlayer.Controls
                 {
                     height = width = (float)this.ActualWidth * ar;
                 }
-                else
-                {
-                    width = (float)this.ActualWidth;
-                    height = (float)this.ActualHeight / ar;
-                }
+                //else
+                //{
+                //    width = (float)this.ActualWidth;
+                //    height = (float)this.ActualWidth / ar;
+                //}
 
                 VideoSwapChain.Width = width;
                 VideoSwapChain.Height = height;

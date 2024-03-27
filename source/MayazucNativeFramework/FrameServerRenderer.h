@@ -14,6 +14,7 @@
 #include <winrt/Windows.UI.h>
 #include <dxgi1_2.h>
 #include <microsoft.ui.xaml.media.dxinterop.h>
+#include "SwapChainPanelHelper.h"
 
 namespace winrt::MayazucNativeFramework::implementation
 {
@@ -39,31 +40,16 @@ namespace winrt::MayazucNativeFramework::implementation
     {
         FrameServerRenderer(winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel const& swapChainPannel)
         {
-            AllocResources(swapChainPannel, 800, 480, 96);
-        }
-
-        void AllocResources(const winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel& swapChainPannel, float width, float height, float dpi)
-        {
-            canvasSwapChain = CanvasSwapChain(CanvasDevice::GetSharedDevice(), width, height, dpi);
-            com_ptr<abi::ICanvasResourceWrapperNative> nativeDeviceWrapper = canvasSwapChain.as<abi::ICanvasResourceWrapperNative>();
-            com_ptr<IDXGISwapChain1> pNativeSwapChain{ nullptr };
-            check_hresult(nativeDeviceWrapper->GetNativeResource(nullptr, 0.0f, guid_of<IDXGISwapChain1>(), pNativeSwapChain.put_void()));
-
-            auto nativeSwapChainPanel = swapChainPannel.as< ISwapChainPanelNative>();
-            nativeSwapChainPanel->SetSwapChain(pNativeSwapChain.get());
-
+            SwapChainAllocResources(swapChainPannel, 800, 480, 96, winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized, SubtitleSwapChainBufferCount, canvasSwapChain);
             this->swapChainPannel = swapChainPannel;
         }
 
-        void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, winrt::Microsoft::UI::Xaml::Controls::Image const& targetImage, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
         void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
         IAsyncAction RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream);
 
     private:
         EffectProcessor effectsPrcessor;
-        winrt::Microsoft::Graphics::Canvas::UI::Xaml::CanvasImageSource win2dImageSource = { nullptr };
         winrt::Microsoft::Graphics::Canvas::CanvasRenderTarget renderingTarget = { nullptr };
-        winrt::Microsoft::Graphics::Canvas::CanvasRenderTarget subtitlesTarget = { nullptr };
         winrt::Microsoft::Graphics::Canvas::CanvasSwapChain canvasSwapChain = { nullptr };
         winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel swapChainPannel = { nullptr };
 
