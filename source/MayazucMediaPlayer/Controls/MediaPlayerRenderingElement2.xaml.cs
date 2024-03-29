@@ -181,20 +181,21 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private void DrawSubtitles()
+        private void DrawSubtitles(Size? requestedSize)
         {
             if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
             {
                 try
                 {
-                    SubtitleSwapChain.Width = VideoSwapChain.ActualWidth;
-                    var newH = VideoSwapChain.ActualHeight - TransportControlsRow.ActualHeight;
-                    SubtitleSwapChain.Height = newH < 0 ? 0 : newH;
+                    var thisActualWidth = requestedSize.HasValue ? requestedSize.Value.Width : VideoSwapChain.ActualWidth;
+                    var thisActualHeight = (requestedSize.HasValue ? requestedSize.Value.Height : VideoSwapChain.Height) - TransportControlsRow.ActualHeight;
+                    SubtitleSwapChain.Height = thisActualHeight < 0 ? 0 : thisActualHeight;
+                    SubtitleSwapChain.Width = thisActualWidth;
 
                     SubtitleSwapChain.Visibility = Visibility.Visible;
                     SubtitleSwapChain.Opacity = 1;
 
-                    NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (float)SubtitleSwapChain.ActualWidth, (float)SubtitleSwapChain.ActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                    NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (float)thisActualWidth, (float)thisActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
                 }
                 catch
                 {
@@ -215,7 +216,7 @@ namespace MayazucMediaPlayer.Controls
         {
             await DispatcherQueue.EnqueueAsync(async () =>
             {
-                DrawSubtitles();
+                DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
             });
         }
 
@@ -223,7 +224,7 @@ namespace MayazucMediaPlayer.Controls
         {
             await DispatcherQueue.EnqueueAsync(new Action(() =>
             {
-                RedrawPaused(WrappedMediaPlayer);
+                RedrawPaused(WrappedMediaPlayer, new Size(this.ActualWidth, this.ActualHeight));
             }));
         }
 
@@ -231,9 +232,9 @@ namespace MayazucMediaPlayer.Controls
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                RedrawPaused(WrappedMediaPlayer);
+                RedrawPaused(WrappedMediaPlayer, e.NewSize);
 
-                DrawSubtitles();
+                DrawSubtitles(e.NewSize);
             });
         }
 
@@ -241,23 +242,26 @@ namespace MayazucMediaPlayer.Controls
         {
             await DispatcherQueue.EnqueueAsync(async () =>
             {
-                DrawVideoFrame(sender);
+                DrawVideoFrame(sender, new Size(this.ActualWidth, this.ActualHeight));
             });
         }
 
-        private void RedrawPaused(MediaPlayer sender)
+        private void RedrawPaused(MediaPlayer sender, Size? requestedSize)
         {
             if (WrappedMediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
                 if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
-                    DrawVideoFrame(sender);
+                    DrawVideoFrame(sender, requestedSize);
         }
 
 
 
-        private void DrawVideoFrame(MediaPlayer sender)
+        private void DrawVideoFrame(MediaPlayer sender, Size? requestedSize)
         {
             try
             {
+                var thisActualHeight = requestedSize.HasValue ? requestedSize.Value.Height : this.ActualHeight;
+                var thisActualWidth = requestedSize.HasValue ? requestedSize.Value.Width : this.ActualWidth;
+
                 PosterImageImage.Visibility = Visibility.Collapsed;
                 VideoSwapChain.Visibility = Visibility.Visible;
 
@@ -266,19 +270,18 @@ namespace MayazucMediaPlayer.Controls
 
                 var currentPlaybackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
                 var ar = (float)currentPlaybackSession.NaturalVideoWidth / currentPlaybackSession.NaturalVideoHeight;
-                var windowAR = this.ActualWidth / this.ActualHeight;
 
                 var width = 0f;
                 var height = 0f;
 
                 if (currentPlaybackSession.NaturalVideoHeight != currentPlaybackSession.NaturalVideoWidth)
                 {
-                    height = (float)this.ActualHeight;
+                    height = (float)thisActualHeight;
                     width = height * ar;
                 }
                 else if (currentPlaybackSession.NaturalVideoHeight == currentPlaybackSession.NaturalVideoWidth)
                 {
-                    height = width = (float)this.ActualWidth * ar;
+                    height = width = (float)thisActualWidth * ar;
                 }
                 //else
                 //{
