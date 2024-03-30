@@ -139,7 +139,7 @@ namespace MayazucMediaPlayer.Controls
             switch (e)
             {
                 case HotKeyId.PlayPause:
-                    await AppState.Current.MediaServiceConnector.SendPlayPause();
+                    await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
 
                     break;
                 case HotKeyId.SkipNext:
@@ -601,7 +601,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void PlayPauseButton_Tapped(object? sender, TappedRoutedEventArgs e)
         {
-            await AppState.Current.MediaServiceConnector.SendPlayPause();
+            await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
         }
 
         public void SetMediaPlayer(MediaPlayer player)

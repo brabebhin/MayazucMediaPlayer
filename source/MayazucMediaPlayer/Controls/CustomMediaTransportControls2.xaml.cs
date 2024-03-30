@@ -82,7 +82,7 @@ namespace MayazucMediaPlayer.Controls
             switch (e)
             {
                 case HotKeyId.PlayPause:
-                    await AppState.Current.MediaServiceConnector.SendPlayPause();
+                    await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
 
                     break;
                 case HotKeyId.SkipNext:
@@ -194,7 +194,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void PlayPause_click(object sender, RoutedEventArgs e)
         {
-            await AppState.Current.MediaServiceConnector.SendPlayPause();
+            await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
         }
 
         private async void SkipForward_click(object sender, RoutedEventArgs e)
@@ -212,7 +212,7 @@ namespace MayazucMediaPlayer.Controls
             await FullScreenAutoSwitch();
         }
 
-        private async Task FullScreenAutoSwitch()
+        public async Task FullScreenAutoSwitch()
         {
             bool shouldFullScreen = !MainWindowingService.Instance.IsInFullScreenMode();
             await MainWindowingService.Instance.RequestFullScreenMode(shouldFullScreen);

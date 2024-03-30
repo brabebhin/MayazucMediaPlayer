@@ -171,7 +171,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             await (PlayerInstance).SkipToIndex(index);
         }
 
-        public async Task SendPlayPause()
+        public async Task PlayPauseAutoSwitch()
         {
             await (PlayerInstance).PlayPauseAsync();
         }

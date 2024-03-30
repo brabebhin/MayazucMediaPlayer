@@ -7,7 +7,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    IsDoubleTapEnabled="True"
+    Tapped="HandlePlaybackAreaOverlayCommands"
+    DoubleTapped="GoFullScreen_doubleTapped">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,7 +21,7 @@
         <SwapChainPanel x:Name="SubtitleSwapChain"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
 
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
-        <Grid x:Name="TransportControlsContainer" Grid.Row="1">
+        <Grid x:Name="TransportControlsContainer" Tapped="PreventDoubleTapped" DoubleTapped="PreventDoubleTapped" Grid.Row="1">
             <local:CustomMediaTransportControls2 x:Name="MediaTransportControls"></local:CustomMediaTransportControls2>
         </Grid>
     </Grid>

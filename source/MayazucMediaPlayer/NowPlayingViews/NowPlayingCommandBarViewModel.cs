@@ -91,7 +91,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 return;
             }
 
-            await AppState.Current.MediaServiceConnector.SendPlayPause();
+            await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
         }
 
         private void ChangeRepeatMode()

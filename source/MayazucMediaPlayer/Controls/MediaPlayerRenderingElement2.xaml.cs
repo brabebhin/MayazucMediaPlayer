@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
+using MayazucMediaPlayer.Settings;
 using MayazucNativeFramework;
 using Microsoft.Graphics.Canvas;
 using Microsoft.UI.Input;
@@ -187,6 +188,8 @@ namespace MayazucMediaPlayer.Controls
             {
                 try
                 {
+                    if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
+
                     var thisActualWidth = requestedSize.HasValue ? requestedSize.Value.Width : VideoSwapChain.ActualWidth;
                     var thisActualHeight = (requestedSize.HasValue ? requestedSize.Value.Height : VideoSwapChain.Height) - TransportControlsRow.ActualHeight;
                     SubtitleSwapChain.Height = thisActualHeight < 0 ? 0 : thisActualHeight;
@@ -209,7 +212,6 @@ namespace MayazucMediaPlayer.Controls
             get => PosterImageImage.Source;
             set => PosterImageImage.Source = value;
         }
-        public bool AreTransportControlsEnabled { get; internal set; }
         public bool IsFullWindow { get; internal set; }
 
         private async void UpdateSubtitles(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
@@ -259,13 +261,14 @@ namespace MayazucMediaPlayer.Controls
         {
             try
             {
+                if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
+
                 var thisActualHeight = requestedSize.HasValue ? requestedSize.Value.Height : this.ActualHeight;
                 var thisActualWidth = requestedSize.HasValue ? requestedSize.Value.Width : this.ActualWidth;
 
                 PosterImageImage.Visibility = Visibility.Collapsed;
                 VideoSwapChain.Visibility = Visibility.Visible;
 
-                if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
                 VideoSwapChain.Opacity = 1;
 
                 var currentPlaybackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
@@ -328,6 +331,41 @@ namespace MayazucMediaPlayer.Controls
 
                 }
             }
+        }
+
+        private async void GoFullScreen_doubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            await this.MediaTransportControls.FullScreenAutoSwitch();
+        }
+
+        private void PreventDoubleTapped(object sender, TappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void PreventDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private async void HandlePlaybackAreaOverlayCommands(object sender, TappedRoutedEventArgs e)
+        {
+            bool canHandle = false;
+            switch (SettingsWrapper.PlaybackTapGestureMode)
+            {
+                case PlaybackTapGestureMode.Always:
+                    canHandle = true;
+                    break;
+                case PlaybackTapGestureMode.NormalViewOnly:
+                    canHandle = !MainWindowingService.Instance.IsInFullScreenMode();
+                    break;
+                case PlaybackTapGestureMode.FullScreenOnly:
+                    canHandle = MainWindowingService.Instance.IsInFullScreenMode();
+                    break;
+            }
+
+            if (canHandle)
+                await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
         }
     }
 }

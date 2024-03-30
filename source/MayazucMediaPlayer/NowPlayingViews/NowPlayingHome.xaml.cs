@@ -44,8 +44,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
         private void InitMediaPlayerElement()
         {
             MediaPlayerElementInstance.WrappedMediaPlayer = AppState.Current.MediaServiceConnector.CurrentPlayer;
-
-            MediaPlayerElementInstance.AreTransportControlsEnabled = true;
         }
 
         private async Task SetPosterSourceFromStoredData()
@@ -137,7 +135,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             {
                 try
                 {
-
                     BitmapImage img = new BitmapImage();
                     img.ImageFailed += Img_ImageFailed;
                     img.SetSource(await currentPlayer.SystemMediaTransportControls.DisplayUpdater.Thumbnail.OpenReadAsync());

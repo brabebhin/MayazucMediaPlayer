@@ -102,7 +102,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void Resume_click(object? sender, TappedRoutedEventArgs e)
         {
-            await AppState.Current.MediaServiceConnector.SendPlayPause();
+            await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
 
             Visibility = Visibility.Collapsed;
             e.Handled = true;
