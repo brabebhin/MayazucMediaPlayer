@@ -79,6 +79,7 @@ namespace MayazucMediaPlayer.Controls
             using (await lockSync.LockAsync())
             {
                 CurrentWrappedPlaybackItem = item;
+                minimumSubtitleDurationDialogInstance.SetAdapter(item.GetExtradata().SubtitleLengthAdapter);
                 ProcessPlaybackItem(item);
             }
         }

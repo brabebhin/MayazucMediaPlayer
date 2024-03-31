@@ -15,7 +15,7 @@ using Windows.Storage;
 
 namespace MayazucMediaPlayer.MediaPlayback
 {
-    public class SubtitleManager
+    public class SubtitleSourceManager
     {
         private readonly AsyncLock operationLock = new AsyncLock();
         readonly TimedMetadataTrackPresentationMode defaultPresentationMode = Constants.DefaultSubtitlePresentationMode;
@@ -25,7 +25,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             private set;
         }
 
-        public SubtitleManager(MediaPlaybackItem item)
+        public SubtitleSourceManager(MediaPlaybackItem item)
         {
             PlaybackItem = item;
         }

@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Remove" Click="DecreaseSlider"></AppBarButton>
-            <Slider x:Name="SliderInstance" Minimum="0" Grid.Column="1" Maximum="5" Width="{ThemeResource MTCHorizontalVolumeSliderWidth}" TickFrequency="0.25" TickPlacement="BottomRight" SnapsTo="Ticks" Value="{Binding MinimumDuration, Mode=TwoWay}">
+            <Slider x:Name="SliderInstance" Minimum="0" Grid.Column="1" Maximum="5" Width="{ThemeResource MTCHorizontalVolumeSliderWidth}" TickFrequency="0.25" TickPlacement="None" SnapsTo="Ticks" Value="{Binding MinimumDuration, Mode=TwoWay}">
                 <Slider.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ElementName=SliderInstance, Path=Value}"></TextBlock>

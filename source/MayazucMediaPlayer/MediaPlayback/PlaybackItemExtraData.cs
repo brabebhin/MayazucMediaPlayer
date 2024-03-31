@@ -1,4 +1,5 @@
 ﻿using FFmpegInteropX;
+using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Services.MediaSources;
 using System;
 using Windows.Media.Playback;
@@ -35,7 +36,13 @@ namespace MayazucMediaPlayer.MediaPlayback
         }
 
 
-        public SubtitleManager SubtitleService
+        public SubtitleSourceManager SubtitleService
+        {
+            get;
+            private set;
+        }
+
+        public LocalFileMinimumSubtitleLengthAdapter SubtitleLengthAdapter
         {
             get;
             private set;
@@ -63,12 +70,13 @@ namespace MayazucMediaPlayer.MediaPlayback
         public PlaybackItemExtraData(FFmpegMediaSource interopMss,
             MediaPlaybackItemUIInformation playbackDataStreamInfo,
             IMediaPlayerItemSource mediaPlayerItemSource,
-            SubtitleManager subsManager)
+            SubtitleSourceManager subsManager)
         {
             MediaPlayerItemSource = mediaPlayerItemSource;
             FFmpegMediaSource = interopMss ?? throw new ArgumentNullException(nameof(interopMss));
             PlaybackDataStreamInfo = playbackDataStreamInfo ?? throw new ArgumentNullException(nameof(playbackDataStreamInfo));
             SubtitleService = subsManager;
+            SubtitleLengthAdapter = new LocalFileMinimumSubtitleLengthAdapter(interopMss.Configuration);
         }
 
         private void Dispose(bool disposing)
@@ -127,7 +135,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             FFmpegMediaSource interopMss,
             MediaPlaybackItemUIInformation playbackDataStreamInfo)
         {
-            var subsManager = new SubtitleManager(item);
+            var subsManager = new SubtitleSourceManager(item);
             var extradata = new PlaybackItemExtraData(interopMss, playbackDataStreamInfo, currentDataStorage, subsManager);
             item.StoreExtradata(extradata);
             return extradata;

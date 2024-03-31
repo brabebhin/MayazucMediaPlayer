@@ -62,9 +62,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             return eqDefinitions.AsReadOnly();
         }
 
-
-
-
         /// <summary>
         /// returns the TimedMetadataTracks from the given ffmpeginteropMss
         /// </summary>
