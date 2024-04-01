@@ -34,6 +34,7 @@
 		<None Remove="Controls\MediaPlayerRenderingElement.xaml" />
 		<None Remove="Controls\MediaPlayerRenderingElement2.xaml" />
 		<None Remove="Controls\SettingsItemsListView.xaml" />
+		<None Remove="Controls\VolumeControlBar.xaml" />
 		<None Remove="Help\Licenses\bzip2.txt" />
 		<None Remove="Help\Licenses\CueSharp.txt" />
 		<None Remove="Help\Licenses\ffmpeg.txt" />
@@ -154,6 +155,12 @@
 		<ProjectReference Include="..\FFmpegInterop\FFmpegInteropX.vcxproj" />
 		<ProjectReference Include="..\MayazucNativeFramework\MayazucNativeFramework.vcxproj" />
 		<ProjectReference Include="..\Shell.Shell\Shell.Shell.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\VolumeControlBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>

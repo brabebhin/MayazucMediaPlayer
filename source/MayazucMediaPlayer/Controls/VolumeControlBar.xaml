@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="MayazucMediaPlayer.Controls.VolumeControlBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MayazucMediaPlayer.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <StackPanel>
+        <TextBlock HorizontalAlignment="Center" Text="Volume" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+        <StackPanel Orientation="Horizontal">
+            <AppBarButton x:Name="MuteUnmuteButton" Tapped="MuteUnmuteButton_click" Style="{StaticResource AniversaryUpdateAppBarButtonStyle}" Icon="Volume"></AppBarButton>
+            <Slider x:Name="VolumeControlSlider"  Width="200" Maximum="100" Minimum="0" TickFrequency="1" VerticalAlignment="Center"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

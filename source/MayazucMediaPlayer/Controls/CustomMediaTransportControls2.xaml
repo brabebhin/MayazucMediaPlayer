@@ -83,7 +83,15 @@
                 <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
 
                 </AppBarButton>
-                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings"></AppBarButton>
+                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <local:VolumeControlBar x:Name="VolumeControlBarInstance"></local:VolumeControlBar>
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
             </CommandBar>
         </Grid>
     </Grid>

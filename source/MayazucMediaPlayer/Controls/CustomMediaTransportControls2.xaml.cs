@@ -62,6 +62,8 @@ namespace MayazucMediaPlayer.Controls
             DataContext = this;
 
             this.SizeChanged += CustomMediaTransportControls2_SizeChanged;
+
+            VolumeControlBarInstance.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
         }
 
         private void CustomMediaTransportControls2_SizeChanged(object sender, SizeChangedEventArgs e)
