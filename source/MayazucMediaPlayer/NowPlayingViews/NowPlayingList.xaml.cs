@@ -34,7 +34,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             {
                 return _NowPlayingHomeViewModel;
             }
-            internal set
+            private set
             {
                 if (_NowPlayingHomeViewModel != value)
                 {
@@ -43,7 +43,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
                         _NowPlayingHomeViewModel.NavigationRequest -= SignalNavigationRequest;
                         _NowPlayingHomeViewModel.ClearSelectionRequest -= NowPlayingHomeViewModelInstance_ClearSelectionRequest;
                         _NowPlayingHomeViewModel.GetSelectedItemsRequest -= NowPlayingHomeViewModelInstance_GetSelectedItemsRequest;
-
                     }
 
                     _NowPlayingHomeViewModel = value;
@@ -172,7 +171,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
         }
 
-        public async void SkipToItem(object? sender, ItemClickEventArgs e)
+        private async void SkipToItem(object? sender, ItemClickEventArgs e)
         {
             if (NowPlayingListView.CanReorderItems || NowPlayingHomeViewModelInstance.SelectionMode != ListViewSelectionMode.None)
             {
@@ -191,7 +190,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             await NowPlayingHomeViewModelInstance.RemoveItemsFromPlaybackAsync(new MediaPlayerItemSourceUIWrapper[] { mds });
         }
 
-        public async void GoToFileProperties_tapped(object? sender, RoutedEventArgs e)
+        private async void GoToFileProperties_tapped(object? sender, RoutedEventArgs e)
         {
             try
             {

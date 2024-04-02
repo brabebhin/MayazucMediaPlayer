@@ -38,11 +38,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             AudioEffectsUI.PerformCleanUp();
         }
 
-        internal async Task HandleMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
-        {
-        }
-
-        public override async Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        protected override async Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             await AudioEffectsUI.HandleMediaOpened(sender, args);
         }

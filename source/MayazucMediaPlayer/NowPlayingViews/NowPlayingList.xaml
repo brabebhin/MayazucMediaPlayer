@@ -43,8 +43,6 @@
                         </AppBarToggleButton.Icon>
                     </AppBarToggleButton>
 
-                    <AppBarButton ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding ShuffleRequestClickCommand}" CommandParameter="{Binding ElementName=npShuffleButton}" Icon="Shuffle" x:Name="npShuffleButton" IsEnabled="{Binding NpShuffleButton}" Label="Shuffle"/>
-
                     <AppBarToggleButton IsChecked="{Binding SelectButtonChecked, Mode=TwoWay}" IsEnabled="{Binding SelectButtonEnabled}"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding SelectRequestCommand}" CommandParameter="{Binding ElementName=npSelect}"  x:Name="npSelect"  Label="Select...">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE71D;"></FontIcon>
@@ -55,9 +53,10 @@
 
                     <AppBarButton IsEnabled="{Binding RemoveSelectedButtonEnabled}"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Command="{Binding RemoveCommand}"  Icon="Remove"  CommandParameter="{Binding ElementName=npRemoveFromPlayBackButton}"  x:Name="npRemoveFromPlayBackButton"  Label="Remove selected"/>
 
-                    <AppBarSeparator></AppBarSeparator>
-
-                    <AppBarButton IsEnabled="{Binding ClearQueueButtonEnabled}" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Clear queue" Command="{Binding ClearPlaybackQueueCommand}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{Binding ElementName=npStopPlaybackQueue}"/>
+                    <CommandBar.SecondaryCommands>
+                        <AppBarButton ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding ShuffleRequestClickCommand}" CommandParameter="{Binding ElementName=npShuffleButton}" Icon="Shuffle" x:Name="npShuffleButton" IsEnabled="{Binding NpShuffleButton}" Label="Shuffle"/>
+                        <AppBarButton IsEnabled="{Binding ClearQueueButtonEnabled}" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Clear queue" Command="{Binding ClearPlaybackQueueCommand}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{Binding ElementName=npStopPlaybackQueue}"/>
+                    </CommandBar.SecondaryCommands>
                 </CommandBar>
 
             </Grid>

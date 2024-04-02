@@ -13,7 +13,11 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives" 
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
+    xmlns:converters="using:MayazucMediaPlayer.Converters"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:MediaPlayerPositionThumbToolTipValueConverter x:Key="TimestampPositionConverter"></converters:MediaPlayerPositionThumbToolTipValueConverter>
+    </UserControl.Resources>
 
 
     <Grid x:Name="RootGrid" Margin="8" Background="{ThemeResource SystemAltLowColor}">
@@ -31,14 +35,23 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="000:00:00" VerticalAlignment="Center" x:Name="MediaPositionTextBlock"/>
-            <Slider Maximum="100" Minimum="0" Grid.Column="2" x:Name="MediaProgressBar">
+            <Slider Maximum="100" ThumbToolTipValueConverter="{StaticResource TimestampPositionConverter}" Minimum="0" Grid.Column="2" x:Name="MediaProgressBar">
 
             </Slider>
             <TextBlock Grid.Column="4" Text="000:00:00" x:Name="MediaDurationTextBlock" VerticalAlignment="Center"/>
         </Grid>
 
         <Grid Grid.Row="1">
-            <CommandBar x:Name="FullSizeControlBar" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed" IsDynamicOverflowEnabled="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <ContentPresenter Visibility="{Binding FullCommandBarButtonsVisibility}" x:Name="LeftContentPresenter"></ContentPresenter>
+            <ContentPresenter Visibility="{Binding FullCommandBarButtonsVisibility}" x:Name="RightContentPresenter" Grid.Column="2"></ContentPresenter>
+
+            <CommandBar Grid.Column="1" x:Name="FullSizeControlBar" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed" IsDynamicOverflowEnabled="False">
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
                 <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
                     <AppBarButton.Icon>

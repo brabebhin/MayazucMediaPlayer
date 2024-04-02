@@ -28,30 +28,11 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public AudioEnhancementsPageViewModel Model { get; set; }
 
-        public double AudioSliderHeight
-        {
-            get => (double)GetValue(AudioSliderHeightProperty);
-            set => SetValue(AudioSliderHeightProperty, value);
-        }
-
-        public static DependencyProperty AudioSliderHeightProperty = DependencyProperty.Register(nameof(AudioSliderHeight), typeof(double), typeof(AudioEnhancementsPage), new PropertyMetadata(250));
-        
         public AudioEnhancementsPage()
         {
             InitializeComponent();
-            this.lsvBands.SizeChanged += LsvBands_SizeChanged;
         }
-
-        private void LsvBands_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var comptuedSize = 100d;
-            if(e.NewSize.Height > 250)
-            {
-                comptuedSize = e.NewSize.Height * 0.8;
-            }
-            AudioSliderHeight = comptuedSize;
-        }
-
+      
         private void CbSavedPresets_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (cbSavedPresets.SelectedIndex != -1)
@@ -139,7 +120,7 @@ namespace MayazucMediaPlayer.AudioEffects
                     {
                         timer.Cancel();
                     }
-                   
+
                     if (ObserveUserActionEvent)
                     {
                         cbSavedPresets.SelectedIndex = -1;

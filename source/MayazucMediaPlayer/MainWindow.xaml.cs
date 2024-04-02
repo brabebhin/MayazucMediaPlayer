@@ -695,5 +695,6 @@ namespace MayazucMediaPlayer
 
         private readonly string EnterOverlayModeIcon = "\uEE49";
         private readonly string ExitOverlayModeIcon = "\uEE47";
+
     }
 }

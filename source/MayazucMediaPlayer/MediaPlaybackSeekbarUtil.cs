@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer
 {
-    public class MediaPlaybackSeekbarUtil
+    public static class MediaPlaybackSeekbarUtil
     {
         public const int MaximumSliderValue = 100;
 
@@ -28,6 +28,11 @@ namespace MayazucMediaPlayer
 
             var totalSeconds = normalized * naturalDuration.TotalSeconds / MaximumSliderValue;
             return double.IsNaN(totalSeconds) ? TimeSpan.Zero : TimeSpan.FromSeconds(totalSeconds);
+        }
+
+        public static string FormatTimespan(this TimeSpan timespan)
+        {
+            return timespan.ToString("hh':'mm':'ss");
         }
     }
 }

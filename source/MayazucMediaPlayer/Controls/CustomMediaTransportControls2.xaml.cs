@@ -35,9 +35,13 @@ namespace MayazucMediaPlayer.Controls
         DispatcherQueueTimer StateUpdateTimer;
         SymbolIcon PlayIcon = new SymbolIcon(Symbol.Play);
         SymbolIcon PauseIcon = new SymbolIcon(Symbol.Pause);
-        bool userInteractsWithSeekbar = false;
         private AsyncLock mediaOpenedLock = new AsyncLock();
         private bool progressSliderManipulating;
+
+        public bool UserInteracting()
+        {
+            return progressSliderManipulating;
+        }
 
         public CustomMediaTransportControls2()
         {
@@ -175,10 +179,10 @@ namespace MayazucMediaPlayer.Controls
             else PlayPauseButton.Icon = PlayIcon;
             var playbackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
 
-            MediaPositionTextBlock.Text = playbackSession.Position.ToString("hh':'mm':'ss");
-            MediaDurationTextBlock.Text = playbackSession.NaturalDuration.ToString("hh':'mm':'ss");
+            MediaPositionTextBlock.Text = playbackSession.Position.FormatTimespan();
+            MediaDurationTextBlock.Text = playbackSession.NaturalDuration.FormatTimespan();
 
-            if (!userInteractsWithSeekbar)
+            if (!progressSliderManipulating)
             {
                 MediaProgressBar.Value = AppState.Current.MediaServiceConnector.GetNormalizedPosition();
             }
@@ -234,6 +238,32 @@ namespace MayazucMediaPlayer.Controls
         private FontIcon ExitFullScreenIcon()
         {
             return new FontIcon { FontFamily = new Microsoft.UI.Xaml.Media.FontFamily("Segoe MDL2 Assets"), Glyph = "\uE73F" };
+        }
+
+        public static DependencyProperty LeftContentProperty = DependencyProperty.Register(nameof(LeftContent), typeof(object), typeof(CustomMediaTransportControls2), new PropertyMetadata(null, LeftContentChanged));
+
+        private static void LeftContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as CustomMediaTransportControls2).LeftContentPresenter.Content = e.NewValue;
+        }
+
+        public static DependencyProperty RightContentProperty = DependencyProperty.Register(nameof(RightContent), typeof(object), typeof(CustomMediaTransportControls2), new PropertyMetadata(null, RightContentChanged));
+
+        private static void RightContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as CustomMediaTransportControls2).RightContentPresenter.Content = e.NewValue;
+        }
+
+        public object LeftContent
+        {
+            get => GetValue(LeftContentProperty);
+            set => SetValue(LeftContentProperty, value);
+        }
+
+        public object RightContent
+        {
+            get => GetValue(RightContentProperty);
+            set => SetValue(RightContentProperty, value);
         }
     }
 }

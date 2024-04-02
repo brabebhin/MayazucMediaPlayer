@@ -117,17 +117,17 @@ namespace MayazucMediaPlayer
             await OnMediaStateChanged();
         }
 
-        public virtual Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        protected virtual Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task OnMediaEnded()
+        protected virtual Task OnMediaEnded()
         {
             return Task.CompletedTask;
         }
 
-        public virtual Task OnMediaStateChanged()
+        protected virtual Task OnMediaStateChanged()
         {
             return Task.CompletedTask;
         }

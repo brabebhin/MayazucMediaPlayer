@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
+using MayazucMediaPlayer.NowPlayingViews;
 using MayazucMediaPlayer.Settings;
 using MayazucNativeFramework;
 using Microsoft.Graphics.Canvas;
@@ -79,6 +80,7 @@ namespace MayazucMediaPlayer.Controls
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
             renderer = new FrameServerRenderer(VideoSwapChain);
             NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
+            _ = MediaEffectsFrame.NavigateAsync(typeof(MediaEffectsPage));
         }
 
         private void MediaPlayerRenderingElement2_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -110,8 +112,18 @@ namespace MayazucMediaPlayer.Controls
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                ProtectedCursor = hiddenCursor;
-                this.MediaTransportControls.Visibility = Visibility.Collapsed;
+                if (AppState.Current.MediaServiceConnector.IsPlaying() &&
+                !MediaTransportControls.UserInteracting()
+                && !MediaEffectsToggleButton.IsChecked.TrueOrDefault()
+                && !NowPlayingToggleButton.IsChecked.TrueOrDefault())
+                {
+                    ProtectedCursor = hiddenCursor;
+                    this.MediaTransportControls.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    StartMouseTransportControlHideTimer();
+                }
             });
         }
 
@@ -234,6 +246,9 @@ namespace MayazucMediaPlayer.Controls
         {
             DispatcherQueue.TryEnqueue(() =>
             {
+                NowPlayingListSplitView.OpenPaneLength = e.NewSize.Width / 2;
+                MediaEffectsSplitView.OpenPaneLength = e.NewSize.Width * 0.67;
+
                 RedrawPaused(WrappedMediaPlayer, e.NewSize);
 
                 DrawSubtitles(e.NewSize);

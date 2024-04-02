@@ -48,6 +48,7 @@
             <GridLength x:Key="CompactNowPlayingWidth">200</GridLength>
 
             <x:String x:Key="PlaylistIcon">&#xF57E;</x:String>
+            <converters:DoubleToStringThumbtipConverter x:Key="DoubleToStringThumbtipConverterInstance"></converters:DoubleToStringThumbtipConverter>
             <converters:BoolToPlaybackHighlightConverter x:Key="HighlightConverter"></converters:BoolToPlaybackHighlightConverter>
             <converters:VisibleWhenZeroConverter x:Key="VisibleWhenZeroConverter"></converters:VisibleWhenZeroConverter>
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibleConverterInstance"/>

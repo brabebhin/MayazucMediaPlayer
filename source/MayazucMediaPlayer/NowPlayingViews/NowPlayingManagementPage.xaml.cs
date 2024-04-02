@@ -25,7 +25,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             await NowPlayingInstance.LoadState(CurrentPlaybackItem);
         }
 
-        public override Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        protected override Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             return NowPlayingInstance.OnMediaOpened(sender, args);
         }

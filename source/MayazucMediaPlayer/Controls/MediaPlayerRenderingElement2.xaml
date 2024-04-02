@@ -6,7 +6,7 @@
     xmlns:local="using:MayazucMediaPlayer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml" xmlns:nowplayingviews="using:MayazucMediaPlayer.NowPlayingViews" xmlns:navigation="using:MayazucMediaPlayer.Navigation"
     mc:Ignorable="d"
     IsDoubleTapEnabled="True"
     Tapped="HandlePlaybackAreaOverlayCommands"
@@ -17,12 +17,37 @@
             <RowDefinition></RowDefinition>
             <RowDefinition x:Name="TransportControlsRow" Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        
         <SwapChainPanel x:Name="VideoSwapChain"  Grid.RowSpan="2"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
-        <SwapChainPanel x:Name="SubtitleSwapChain"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
-
         <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
+
+        <SplitView x:Name="NowPlayingListSplitView" IsPaneOpen="{Binding ElementName=NowPlayingToggleButton, Path=IsChecked, Mode=TwoWay}" LightDismissOverlayMode="Off">
+            <SplitView.Pane>
+                <nowplayingviews:NowPlayingList></nowplayingviews:NowPlayingList>
+            </SplitView.Pane>
+            <SplitView x:Name="MediaEffectsSplitView"  PanePlacement="Right" IsPaneOpen="{Binding ElementName=MediaEffectsToggleButton, Path=IsChecked, Mode=TwoWay}"  LightDismissOverlayMode="Off">
+                <SplitView.Pane>
+                    <navigation:DependencyInjectionFrame x:Name="MediaEffectsFrame">
+                        
+                    </navigation:DependencyInjectionFrame>
+                </SplitView.Pane>
+                <SwapChainPanel x:Name="SubtitleSwapChain"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
+            </SplitView>
+        </SplitView>
+
         <Grid x:Name="TransportControlsContainer" Tapped="PreventDoubleTapped" DoubleTapped="PreventDoubleTapped" Grid.Row="1">
-            <local:CustomMediaTransportControls2 x:Name="MediaTransportControls"></local:CustomMediaTransportControls2>
+            <local:CustomMediaTransportControls2 x:Name="MediaTransportControls">
+                <local:CustomMediaTransportControls2.LeftContent>
+                    <AppBarToggleButton x:Name="NowPlayingToggleButton" Style='{StaticResource ContentHighlightedAppBarToggleButton}'  Icon="List"></AppBarToggleButton>
+                </local:CustomMediaTransportControls2.LeftContent>
+                <local:CustomMediaTransportControls2.RightContent>
+                    <AppBarToggleButton x:Name="MediaEffectsToggleButton" Style='{StaticResource ContentHighlightedAppBarToggleButton}'>
+                        <AppBarToggleButton.Icon>
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9E9;" />
+                        </AppBarToggleButton.Icon>
+                    </AppBarToggleButton>
+                </local:CustomMediaTransportControls2.RightContent>
+            </local:CustomMediaTransportControls2>
         </Grid>
     </Grid>
 </UserControl>

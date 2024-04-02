@@ -26,7 +26,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="3*"></RowDefinition>
-                <RowDefinition Height="120"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Grid Margin="2" VerticalAlignment="Bottom">
@@ -46,7 +45,7 @@
                         <CommandBar.Content>
                             <ToggleSwitch Grid.Row="0" Margin="20, 4, 4, 4" ToolTipService.ToolTip="Switch equalizer on or off"  x:Name="KillSwitch" OnContent="Equalized on" OffContent="Equalizer off"></ToggleSwitch>
                         </CommandBar.Content>
-                        
+
                         <AppBarToggleButton   ToolTipService.ToolTip="Auto change presets based on audio genre"  Label="Auto preset management"     Grid.Column="1" IsChecked="{Binding AutomaticPresetManagement, Mode=TwoWay}" x:Name="AdvancedPresetsSwitch">
                             <AppBarToggleButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9F9;" />
@@ -62,13 +61,13 @@
             </Grid>
 
             <GridView 
-                ItemsSource="{Binding FrequencyBands}" 
-                SelectionMode ="None"                 
+                SelectionMode="None"
+                 ItemsSource="{Binding FrequencyBands}"
                 x:Name="lsvBands" 
-                VerticalAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
-                HorizontalAlignment="Center"
-                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                HorizontalAlignment="Stretch"
+                ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                ScrollViewer.IsHorizontalScrollChainingEnabled="True"
+                ScrollViewer.IsHorizontalRailEnabled="True"
                 ScrollViewer.HorizontalScrollMode="Enabled"
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 ScrollViewer.VerticalScrollMode="Disabled"
@@ -79,23 +78,32 @@
                         <Setter Property="VerticalAlignment" Value="Stretch"/>
                     </Style>
                 </GridView.ItemContainerStyle>
-               
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal"></ItemsStackPanel>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid  Margin="6, 0, 6, 0" VerticalAlignment="Stretch">
+                        <Grid Margin="0, 0, 8, 0" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="48"></RowDefinition>
                             </Grid.RowDefinitions>
-                            
+
                             <StackPanel>
                                 <TextBlock HorizontalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"  Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="2" Grid.Row="0" Text="{Binding FrequencyDisplay}"></TextBlock>
                                 <TextBlock HorizontalAlignment="Center" Text="+12" VerticalAlignment="Bottom"  Style="{ThemeResource BodyTextBlockStyle}"  />
                                 <TextBlock Grid.Row="1"   Style="{ThemeResource BodyTextBlockStyle}"   HorizontalAlignment="Center" Text="{Binding FrequencyAmplification}" Margin="5, 0, 5, 0"></TextBlock>
                             </StackPanel>
-                            
-                            <Slider Orientation="Vertical"  Height="{Binding ElementName=rootBase, Path=AudioSliderHeight}"  VerticalAlignment="Stretch" IsEnabled="{Binding IsEnabled}" Grid.Row="1" x:Name="sliderBand" SnapsTo="Ticks" TickFrequency="1"  Minimum="-12" Maximum="12" ValueChanged="PrepNotifyEqualizerReset" Value="{Binding FrequencyAmplification, Mode=TwoWay}">
+
+                            <Slider Orientation="Vertical"
+                                    VerticalAlignment="Stretch" 
+                                    IsEnabled="{Binding IsEnabled}" Grid.Row="1" x:Name="sliderBand" 
+                                    SnapsTo="Ticks" TickFrequency="1"  Minimum="-12" Maximum="12" ValueChanged="PrepNotifyEqualizerReset"
+                                    Value="{Binding FrequencyAmplification, Mode=TwoWay}">
                                 <Slider.Header>
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -112,7 +120,7 @@
                                     </Grid>
                                 </Slider.Header>
                             </Slider>
-                            
+
                             <TextBlock Text="-12" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.Row="2"  Style="{ThemeResource BodyTextBlockStyle}"  />
 
                         </Grid>
@@ -120,7 +128,7 @@
                 </GridView.ItemTemplate>
             </GridView>
 
-            <audioeffects:AdvancedAudioSettingsPage HorizontalContentAlignment="Center" Grid.Row="2"></audioeffects:AdvancedAudioSettingsPage>
+            <!--<audioeffects:AdvancedAudioSettingsPage HorizontalContentAlignment="Center" Grid.Row="2"></audioeffects:AdvancedAudioSettingsPage>-->
         </Grid>
     </SplitView>
 

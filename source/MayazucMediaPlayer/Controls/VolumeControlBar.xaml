@@ -10,7 +10,7 @@
     <StackPanel>
         <TextBlock HorizontalAlignment="Center" Text="Volume" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
         <StackPanel Orientation="Horizontal">
-            <AppBarButton x:Name="MuteUnmuteButton" Tapped="MuteUnmuteButton_click" Style="{StaticResource AniversaryUpdateAppBarButtonStyle}" Icon="Volume"></AppBarButton>
+            <AppBarButton x:Name="MuteUnmuteButton" Tapped="MuteUnmuteButton_click" Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Volume"></AppBarButton>
             <Slider x:Name="VolumeControlSlider"  Width="200" Maximum="100" Minimum="0" TickFrequency="1" VerticalAlignment="Center"/>
         </StackPanel>
     </StackPanel>

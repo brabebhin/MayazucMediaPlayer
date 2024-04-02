@@ -96,7 +96,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             NotifyExternalNavigationRequest(sender, e);
         }
 
-        public async override Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        protected async override Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             await DispatcherQueue.EnqueueAsync(() =>
             {

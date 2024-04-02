@@ -55,16 +55,16 @@
 
                 </MenuBarItem>
 
-                <MenuBarItem Title="Queue" Tapped="GoToQueueManagement">
+                <MenuBarItem Title="Queue" Visibility="Collapsed" Tapped="GoToQueueManagement">
                 </MenuBarItem>
 
-                <MenuBarItem Title="Media effects" Tapped="GoToMediaEffects">
+                <MenuBarItem Title="Media effects" Visibility="Collapsed"  Tapped="GoToMediaEffects">
                 </MenuBarItem>
 
-                <MenuBarItem   Title="Tools" Tag="Settings">
-                    <MenuFlyoutItem   Text="Settings" Tag="Settings" Click="GoToSomeScreen"/>
-                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                    <MenuFlyoutItem   Text="Equalizer configurations" Tag="MusicLibrary" Click="GoToMediaEqualizerConfigs"/>
+                <MenuBarItem   Title="Settings"  Tag="Settings" Tapped="GoToSomeScreen">
+                </MenuBarItem>
+                <MenuBarItem  Title="Equalizer configurations" Tag="MusicLibrary" Tapped="GoToMediaEqualizerConfigs">
+                    
                 </MenuBarItem>
 
             </MenuBar>

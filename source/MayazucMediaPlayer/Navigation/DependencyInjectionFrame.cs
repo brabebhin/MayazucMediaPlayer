@@ -109,8 +109,6 @@ namespace MayazucMediaPlayer.Navigation
             return page;
         }
 
-
-
         private bool ShouldNavigatePage()
         {
             return Content == null || AllowsNestedNavigation;

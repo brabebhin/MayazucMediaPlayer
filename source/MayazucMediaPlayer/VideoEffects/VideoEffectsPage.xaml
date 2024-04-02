@@ -57,7 +57,15 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <Slider IsEnabled="{Binding Enabled, Mode=TwoWay}" Grid.Column="1" Value="{Binding EffectPropertyValue, Mode=TwoWay}" Minimum="{Binding EffectPropertyMinimum}" SnapsTo="Ticks" Maximum="{Binding EffectPropertyMaximum}" TickFrequency="{Binding Resolution}">
+                            <Slider IsEnabled="{Binding Enabled, Mode=TwoWay}" 
+                                    Grid.Column="1" 
+                                    Value="{Binding EffectPropertyValue, Mode=TwoWay}" 
+                                    Minimum="{Binding EffectPropertyMinimum}"
+                                    SnapsTo="Ticks" 
+                                    ThumbToolTipValueConverter="{StaticResource DoubleToStringThumbtipConverterInstance}"
+                                    Maximum="{Binding EffectPropertyMaximum}" 
+                                    TickFrequency="{Binding Resolution}">
+                                
                                 <Slider.Header>
                                     <Grid HorizontalAlignment="Stretch">
                                         <Grid.RowDefinitions>
