@@ -7,11 +7,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <StackPanel>
-        <TextBlock HorizontalAlignment="Center" Text="Volume" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-        <StackPanel Orientation="Horizontal">
+    <Grid HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Center" Grid.Row="0"  Margin="2" Text="Volume" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <AppBarButton x:Name="MuteUnmuteButton" Tapped="MuteUnmuteButton_click" Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Volume"></AppBarButton>
-            <Slider x:Name="VolumeControlSlider"  Width="200" Maximum="100" Minimum="0" TickFrequency="1" VerticalAlignment="Center"/>
-        </StackPanel>
-    </StackPanel>
+            <Slider x:Name="VolumeControlSlider" Grid.Column="1" HorizontalAlignment="Stretch" Maximum="100" Minimum="0" TickFrequency="1" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
 </UserControl>

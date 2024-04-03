@@ -13,7 +13,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives" 
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
-    xmlns:converters="using:MayazucMediaPlayer.Converters"
+    xmlns:converters="using:MayazucMediaPlayer.Converters" xmlns:audioeffects="using:MayazucMediaPlayer.AudioEffects"
     mc:Ignorable="d">
     <UserControl.Resources>
         <converters:MediaPlayerPositionThumbToolTipValueConverter x:Key="TimestampPositionConverter"></converters:MediaPlayerPositionThumbToolTipValueConverter>
@@ -99,9 +99,12 @@
                 <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings">
                     <AppBarButton.Flyout>
                         <Flyout>
-                            <StackPanel>
-                                <local:VolumeControlBar x:Name="VolumeControlBarInstance"></local:VolumeControlBar>
-                            </StackPanel>
+                            <ScrollViewer>
+                                <StackPanel HorizontalAlignment="Stretch">
+                                    <local:VolumeControlBar HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="VolumeControlBarInstance"></local:VolumeControlBar>
+                                    <audioeffects:AdvancedAudioSettingsPage></audioeffects:AdvancedAudioSettingsPage>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>

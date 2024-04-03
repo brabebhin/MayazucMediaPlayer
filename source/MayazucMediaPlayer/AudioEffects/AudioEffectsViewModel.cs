@@ -62,23 +62,25 @@ namespace MayazucMediaPlayer.AudioEffects
         }
 
 
-        public void LoadDefaultEffects()
+        private void LoadDefaultEffects()
         {
             Effects.Clear();
             Effects.Add(new AudioEffect("echoInstruments", EffectTypes.aecho)
             {
-                DisplayTitle = "2x tools",
+                DisplayTitle = "Instruments",
                 GetSlimConfigurationString = () => { return "0.8:0.88:60:0.4"; }
             });
-            Effects.Add(new AudioEffect("echoRobot", EffectTypes.aecho)
-            {
-                DisplayTitle = "Robo",
-                GetSlimConfigurationString = () => { return "0.8:0.88:6:0.4"; }
-            });
+   
             Effects.Add(new AudioEffect("echoMountain", EffectTypes.aecho)
             {
-                DisplayTitle = "Open air",
+                DisplayTitle = "Mountains",
                 GetSlimConfigurationString = () => { return "0.8:0.9:1000:0.3"; }
+            });
+
+            Effects.Add(new AudioEffect("echoRobot", EffectTypes.aecho)
+            {
+                DisplayTitle = "Robotic",
+                GetSlimConfigurationString = () => { return "0.8:0.88:6:0.4"; }
             });
         }
     }

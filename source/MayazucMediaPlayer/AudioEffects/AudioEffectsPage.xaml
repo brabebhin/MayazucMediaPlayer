@@ -13,33 +13,42 @@
 
 
     <Grid  x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>       
+        </Grid.RowDefinitions>
+        <TextBlock Grid.ColumnSpan="2" Text="Audio effects" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{ThemeResource BodyStrongTextBlockStyle}"  Margin="6"/>
 
-        <GridView ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Grid.Row="1"  SelectionMode="None"  ItemsSource="{Binding Effects}" x:Name="lsvAudioEffects">
+        <AppBarButton Grid.Row="1" Style="{StaticResource AppBarButtonStyleNoChevron}" VerticalAlignment="Center" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Clear" Command="{Binding ResetEffectsCommand}" Label="Clear effects"/>
 
-            <GridView.Header>
-                <StackPanel>
-                    <CommandBar VerticalContentAlignment="Center" DefaultLabelPosition="Right">
-                        <CommandBar.Content>
-                            <TextBlock Text="Audio effects" VerticalAlignment="Bottom" Style="{ThemeResource BodyTextBlockStyle}"/>
-                        </CommandBar.Content>
-                        <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Clear" Command="{Binding ResetEffectsCommand}" Label="Clear effects"/>
-                    </CommandBar>
-                </StackPanel>
-
-            </GridView.Header>
+        <GridView ScrollViewer.HorizontalScrollMode="Enabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  ScrollViewer.VerticalScrollMode="Disabled" 
+                  Grid.Column="1" 
+                  Grid.Row="1"
+                  Width="310"
+                  SelectionMode="None" 
+                  ItemsSource="{Binding Effects}" 
+                  x:Name="lsvAudioEffects">
+            <GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                    <Setter Property="Width" Value="98"/>
+                </Style>
+            </GridView.ItemContainerStyle>
+         
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <CheckBox Command="{Binding DataContext.SaveEffectsCommand, ElementName=LayoutRoot}" IsChecked="{Binding IsEnabled, Mode=TwoWay}">
+                        <ToggleButton Command="{Binding DataContext.SaveEffectsCommand, ElementName=LayoutRoot}" IsChecked="{Binding IsEnabled, Mode=TwoWay}">
                             <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding DisplayTitle}" Grid.Column="1"/>
-                        </CheckBox>
+                        </ToggleButton>
                     </Grid>
                 </DataTemplate>
             </GridView.ItemTemplate>

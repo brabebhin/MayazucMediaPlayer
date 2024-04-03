@@ -12,16 +12,22 @@
     mc:Ignorable="d">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition  Width="2*"></ColumnDefinition>
-            <ColumnDefinition  Width="2"></ColumnDefinition>
-            <ColumnDefinition  Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="2" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Center" Margin="6" Grid.ColumnSpan="3" Grid.Row="0" Text="Audio balance" Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="0" />
+
+            <AppBarButton Grid.Row="1" VerticalAlignment="Bottom" Style="{StaticResource AppBarButtonStyleNoChevron}" Grid.Column="0" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Icon="Refresh" Label="Reset" Command="{Binding SetBalanceToZeroCommand}"/>
 
             <Slider Grid.Column="1" 
                     HorizontalAlignment="Stretch" 
@@ -32,6 +38,7 @@
                     Maximum="1" 
                     TickFrequency="0.01" 
                     SnapsTo="Ticks"  
+                    Grid.Row="1"
                     Value="{Binding AudioBalanceValue, Mode=TwoWay}" >
                 <Slider.Header>
                     <Grid>
@@ -44,13 +51,6 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <CommandBar VerticalContentAlignment="Center" DefaultLabelPosition="Right" Grid.ColumnSpan="3">
-                            <CommandBar.Content>
-                                <TextBlock  Margin="5"  Grid.Row="0" Text="Audio balance" Style="{ThemeResource BodyTextBlockStyle}" Grid.Column="0" Grid.ColumnSpan="2"/>
-                            </CommandBar.Content>
-                            <AppBarButton VerticalAlignment="Bottom" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Grid.Column="0" Icon="Refresh" Label="Reset" Command="{Binding SetBalanceToZeroCommand}"/>
-                        </CommandBar>
-
                         <TextBlock  Margin="5" Grid.Row="1" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Left" Text="L" />
                         <TextBlock  Text="{Binding ElementName=AudioBalanceSlider, Path=Value, Mode=TwoWay}" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" />
                         <TextBlock  Margin="5"  Grid.Row="1" Style="{ThemeResource BodyTextBlockStyle}"  HorizontalAlignment="Right" Text="R" Grid.Column="2"/>
@@ -59,10 +59,8 @@
             </Slider>
         </Grid>
 
-        <ScrollViewer HorizontalContentAlignment="Center" Grid.Column="0">
-            <StackPanel HorizontalAlignment="Left" Margin="2">
-                <audioeffects:AudioEffectsPage x:Name="pageAudioEffects"></audioeffects:AudioEffectsPage>
-            </StackPanel>
+        <ScrollViewer HorizontalContentAlignment="Center" Grid.Row="1">
+            <audioeffects:AudioEffectsPage x:Name="pageAudioEffects"></audioeffects:AudioEffectsPage>
         </ScrollViewer>
     </Grid>
 </controls:BaseUserControl>
