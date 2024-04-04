@@ -128,16 +128,15 @@ namespace MayazucMediaPlayer.Controls
             public override string ToString()
             {
                 var name = track.Label;
-                if (string.IsNullOrWhiteSpace(name))
+                var encodingProperties = track.GetEncodingProperties();
+                var encodingInfo = $"{encodingProperties.SampleRate} Hz, {encodingProperties.ChannelCount} Channels, {encodingProperties.Bitrate} bits/s";
+                
+                if(string.IsNullOrEmpty(name))
                 {
-                    name = track.Name;
-                }
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    name = $"Audio stream {ordinal}";
+                    name = $"Track {ordinal}";
                 }
 
-                return name;
+                return $"{name} : {encodingInfo}";
             }
         }
     }

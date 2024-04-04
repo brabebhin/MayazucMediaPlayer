@@ -36,11 +36,10 @@ namespace MayazucMediaPlayer.Controls
         SymbolIcon PlayIcon = new SymbolIcon(Symbol.Play);
         SymbolIcon PauseIcon = new SymbolIcon(Symbol.Pause);
         private AsyncLock mediaOpenedLock = new AsyncLock();
-        private bool progressSliderManipulating;
 
         public bool UserInteracting()
         {
-            return progressSliderManipulating;
+            return MediaTimelineControls.IsUserManipulating();
         }
 
         public CustomMediaTransportControls2()
@@ -56,9 +55,6 @@ namespace MayazucMediaPlayer.Controls
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
             AppState.Current.MediaServiceConnector.CurrentPlaybackSession.PlaybackStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
             StateUpdateTimer.Start();
-
-            MediaProgressBar.AddHandler(Slider.PointerReleasedEvent, new PointerEventHandler(ProgressBarSeek), true);
-            MediaProgressBar.AddHandler(Slider.PointerPressedEvent, new PointerEventHandler(ProgressBarManipulation), true);
 
             MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += Instance_MediaPlayerElementFullScreenModeChanged;
 
@@ -128,24 +124,6 @@ namespace MayazucMediaPlayer.Controls
             });
         }
 
-
-        private void ProgressBarManipulation(object sender, PointerRoutedEventArgs e)
-        {
-            progressSliderManipulating = true;
-        }
-
-        private async void ProgressBarSeek(object sender, PointerRoutedEventArgs e)
-        {
-            var session = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
-            if (session != null)
-            {
-                var time = MediaPlaybackSeekbarUtil.GetDenormalizedValue(MediaProgressBar.Value, session.NaturalDuration);
-                await (AppState.Current.MediaServiceConnector.PlayerInstance).Seek(time, true);
-                progressSliderManipulating = false;
-            }
-        }
-
-
         private async void Current_MediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             using (await mediaOpenedLock.LockAsync())
@@ -159,6 +137,7 @@ namespace MayazucMediaPlayer.Controls
                         await mtcSubtitlesControl.LoadMediaPlaybackItem(args.EventData.PlaybackItem);
                         await mtcVideoTracks.LoadVideoTracksAsync(args.EventData.PlaybackItem);
                         await mtcAudioTracks.LoadAudioTracksAsync(args.EventData.PlaybackItem);
+                        ChaptersControlInstance.LoadMediaPlaybackItem(args.EventData.PlaybackItem);
                     });
                 }
             }
@@ -179,14 +158,10 @@ namespace MayazucMediaPlayer.Controls
             else PlayPauseButton.Icon = PlayIcon;
             var playbackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
 
-            MediaPositionTextBlock.Text = playbackSession.Position.FormatTimespan();
-            MediaDurationTextBlock.Text = playbackSession.NaturalDuration.FormatTimespan();
-
-            if (!progressSliderManipulating)
-            {
-                MediaProgressBar.Value = AppState.Current.MediaServiceConnector.GetNormalizedPosition();
-            }
+            MediaTimelineControls.UpdateState(playbackSession);
         }
+
+
 
         private async void GoToPrevious_click(object sender, RoutedEventArgs e)
         {

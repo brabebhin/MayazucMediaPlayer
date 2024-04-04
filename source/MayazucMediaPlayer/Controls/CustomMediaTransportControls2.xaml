@@ -15,10 +15,6 @@
     xmlns:triggers="using:CommunityToolkit.WinUI.UI.Triggers"
     xmlns:converters="using:MayazucMediaPlayer.Converters" xmlns:audioeffects="using:MayazucMediaPlayer.AudioEffects"
     mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:MediaPlayerPositionThumbToolTipValueConverter x:Key="TimestampPositionConverter"></converters:MediaPlayerPositionThumbToolTipValueConverter>
-    </UserControl.Resources>
-
 
     <Grid x:Name="RootGrid" Margin="8" Background="{ThemeResource SystemAltLowColor}">
         <Grid.RowDefinitions>
@@ -26,19 +22,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid x:Name="TimelineGrid"  Visibility="{Binding FullCommandBarButtonsVisibility}" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="8"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition Width="8"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Text="000:00:00" VerticalAlignment="Center" x:Name="MediaPositionTextBlock"/>
-            <Slider Maximum="100" ThumbToolTipValueConverter="{StaticResource TimestampPositionConverter}" Minimum="0" Grid.Column="2" x:Name="MediaProgressBar">
-
-            </Slider>
-            <TextBlock Grid.Column="4" Text="000:00:00" x:Name="MediaDurationTextBlock" VerticalAlignment="Center"/>
+            <local:MediaProgressBarSlider x:Name="MediaTimelineControls"></local:MediaProgressBarSlider>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -89,6 +73,16 @@
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:VideoTrackSelectionDialog x:Name="mtcVideoTracks"></local:VideoTrackSelectionDialog>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}" Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                    <AppBarButton.Icon>
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8A4;" />
+                    </AppBarButton.Icon>
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <local:ChapterSelectionControl x:Name="ChaptersControlInstance"></local:ChapterSelectionControl>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>

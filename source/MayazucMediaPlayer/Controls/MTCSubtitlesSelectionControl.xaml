@@ -15,7 +15,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel>
-            <TextBlock Text="Subtitles + CC" Margin="2" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Left"/>
+            <TextBlock Text="Subtitles + CC" Margin="2" Style="{ThemeResource CaptionTextBlockStyle}" HorizontalAlignment="Center"/>
             <TextBlock Text="Manage subtitles for current media" Margin="1, 2, 1, 2" HorizontalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"/>
             <local:MinimumSubtitleDurationControl x:Name="minimumSubtitleDurationDialogInstance"></local:MinimumSubtitleDurationControl>
             <StackPanel Orientation="Horizontal">

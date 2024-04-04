@@ -48,6 +48,8 @@
             <GridLength x:Key="CompactNowPlayingWidth">200</GridLength>
 
             <x:String x:Key="PlaylistIcon">&#xF57E;</x:String>
+            <converters:TimespanToStringConverter x:Name="TimespanToStringConverterInstance"></converters:TimespanToStringConverter>
+            <converters:MediaPlayerPositionThumbToolTipValueConverter x:Key="TimestampPositionConverter"></converters:MediaPlayerPositionThumbToolTipValueConverter>
             <converters:DoubleToStringThumbtipConverter x:Key="DoubleToStringThumbtipConverterInstance"></converters:DoubleToStringThumbtipConverter>
             <converters:BoolToPlaybackHighlightConverter x:Key="HighlightConverter"></converters:BoolToPlaybackHighlightConverter>
             <converters:VisibleWhenZeroConverter x:Key="VisibleWhenZeroConverter"></converters:VisibleWhenZeroConverter>

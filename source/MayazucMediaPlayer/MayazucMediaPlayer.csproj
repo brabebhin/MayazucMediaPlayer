@@ -29,10 +29,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Controls\AudioTrackSelectionDialog.xaml" />
+		<None Remove="Controls\ChapterSelectionControl.xaml" />
 		<None Remove="Controls\CustomMediaTransportControls2.xaml" />
 		<None Remove="Controls\GenericContentControl.xaml" />
 		<None Remove="Controls\MediaPlayerRenderingElement.xaml" />
 		<None Remove="Controls\MediaPlayerRenderingElement2.xaml" />
+		<None Remove="Controls\MediaProgressBarSlider.xaml" />
 		<None Remove="Controls\SettingsItemsListView.xaml" />
 		<None Remove="Controls\VolumeControlBar.xaml" />
 		<None Remove="Help\Licenses\bzip2.txt" />
@@ -155,6 +157,18 @@
 		<ProjectReference Include="..\FFmpegInterop\FFmpegInteropX.vcxproj" />
 		<ProjectReference Include="..\MayazucNativeFramework\MayazucNativeFramework.vcxproj" />
 		<ProjectReference Include="..\Shell.Shell\Shell.Shell.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\ChapterSelectionControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\MediaProgressBarSlider.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>

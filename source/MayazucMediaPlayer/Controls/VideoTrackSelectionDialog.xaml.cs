@@ -117,16 +117,15 @@ namespace MayazucMediaPlayer.Controls
             public override string ToString()
             {
                 var name = track.Label;
-                if (string.IsNullOrWhiteSpace(name))
+                var encodingProperties = track.GetEncodingProperties();
+                var encodingInfo = $"{encodingProperties.Width} x {encodingProperties.Height}";
+
+                if (string.IsNullOrEmpty(name))
                 {
-                    name = track.Name;
-                }
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    name = $"Video stream {ordinal}";
+                    name = $"Video track {ordinal}";
                 }
 
-                return name;
+                return $"{name} : {encodingInfo}";
             }
         }
     }

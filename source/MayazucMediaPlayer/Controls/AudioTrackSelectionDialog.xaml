@@ -13,6 +13,8 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
+        <TextBlock Text="Audio tracks" HorizontalAlignment="Center" Style="{ThemeResource CaptionTextBlockStyle}"/>
+
         <ListView Grid.Row="1" Margin="2" x:Name="lsvAudioStreams" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
