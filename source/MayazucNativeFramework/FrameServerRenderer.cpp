@@ -21,20 +21,19 @@ namespace winrt::MayazucNativeFramework::implementation
 					renderingTarget.Close();
 				
 				//TODO: deal with HDR
-				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi);
+				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi, pixelFormat, CanvasAlphaMode::Premultiplied);
 			}
 			if (canvasSwapChain.Format() != pixelFormat || canvasSwapChain.Size().Width != width || canvasSwapChain.Size().Height != height || canvasSwapChain.Dpi() != dpi)
 			{
-				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, 2);
+				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, SubtitleSwapChainBufferCount);
 			}
 
 			{
-				auto lock = canvasDevice.Lock();
 				CanvasDrawingSession outputDrawingSession = canvasSwapChain.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.CopyFrameToVideoSurface(renderingTarget);
 				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
-				outputDrawingSession.Flush();
-				canvasSwapChain.Present();
+				outputDrawingSession.Flush();				
+				canvasSwapChain.Present(0);
 			}
 		}
 		catch (...)

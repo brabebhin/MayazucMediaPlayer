@@ -93,7 +93,7 @@ namespace winrt::MayazucNativeFramework::implementation
 
 		if (!renderTargetSurface || renderTargetSurface.SizeInPixels().Width != width || renderTargetSurface.SizeInPixels().Height != height)
 		{
-			renderTargetSurface = CanvasRenderTarget(canvasDevice, width, height, 96);
+			renderTargetSurface = CanvasRenderTarget(canvasDevice, width, height, 96, pixelFormat, CanvasAlphaMode::Premultiplied);
 		}
 		{
 			//this is the directx surface we will be rendering all subtitles onto.
@@ -206,7 +206,7 @@ namespace winrt::MayazucNativeFramework::implementation
 				swapChainDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
 				swapChainDrawingSession.DrawImage(renderTargetSurface);
 				swapChainDrawingSession.Flush();
-				canvasSwapChain.Present();
+				canvasSwapChain.Present(0);
 			}
 		}
 	}

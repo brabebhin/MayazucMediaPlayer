@@ -226,9 +226,9 @@ namespace MayazucMediaPlayer.Controls
         }
         public bool IsFullWindow { get; internal set; }
 
-        private async void UpdateSubtitles(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
+        private void UpdateSubtitles(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
         {
-            await DispatcherQueue.EnqueueAsync(async () =>
+            DispatcherQueue.TryEnqueue(async () =>
             {
                 DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
             });
@@ -255,9 +255,9 @@ namespace MayazucMediaPlayer.Controls
             });
         }
 
-        private async void VideoFameAvailanle(MediaPlayer sender, object args)
+        private void VideoFameAvailanle(MediaPlayer sender, object args)
         {
-            await DispatcherQueue.EnqueueAsync(async () =>
+            DispatcherQueue.TryEnqueue(async () =>
             {
                 DrawVideoFrame(sender, new Size(this.ActualWidth, this.ActualHeight));
             });
@@ -309,7 +309,6 @@ namespace MayazucMediaPlayer.Controls
 
                 VideoSwapChain.Width = width;
                 VideoSwapChain.Height = height;
-
                 renderer.RenderMediaPlayerFrame(sender, (float)width, (float)height, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
