@@ -6,7 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class MinimumSubtitleDurationControl : UserControl, IContentSettingsItem
+    public sealed partial class MinimumSubtitleDurationControl : BaseUserControl, IContentSettingsItem
     {
         public MinimumSubtitleDurationControl()
         {

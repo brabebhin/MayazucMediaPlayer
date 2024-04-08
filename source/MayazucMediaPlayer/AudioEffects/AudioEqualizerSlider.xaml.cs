@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MayazucMediaPlayer.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 
@@ -6,7 +7,7 @@ using System.ComponentModel;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public sealed partial class AudioEqualizerSlider : UserControl, INotifyPropertyChanged
+    public sealed partial class AudioEqualizerSlider : BaseUserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         public bool DirectBinding

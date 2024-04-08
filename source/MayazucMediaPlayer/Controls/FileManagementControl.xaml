@@ -1,8 +1,8 @@
-﻿<UserControl
+﻿<controls:BaseUserControl
     x:Class="MayazucMediaPlayer.Controls.FileManagementControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mcConrols="using:MayazucMediaPlayer.Controls"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -219,7 +219,7 @@
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
-            <mcConrols:SearchBar  Visibility="{Binding IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{Binding CanSearch}" SearchView="{Binding FilterCollectionView}"></mcConrols:SearchBar>
+            <controls:SearchBar  Visibility="{Binding IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{Binding CanSearch}" SearchView="{Binding FilterCollectionView}"></controls:SearchBar>
         </Grid>
         <ListView  
                     ItemsSource="{Binding FilterCollectionView}"
@@ -250,4 +250,4 @@
         </ListView>
     </Grid>
 
-</UserControl>
+</controls:BaseUserControl>

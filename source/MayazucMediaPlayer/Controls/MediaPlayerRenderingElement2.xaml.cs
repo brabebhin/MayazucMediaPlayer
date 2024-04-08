@@ -31,7 +31,7 @@ using WinRT;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class MediaPlayerRenderingElement2 : UserControl
+    public sealed partial class MediaPlayerRenderingElement2 : BaseUserControl
     {
         readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         ThreadPoolTimer? _fullscreenCursorTimer;

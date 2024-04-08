@@ -24,7 +24,7 @@ using Windows.Storage.Pickers.Provider;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class MTCSubtitlesSelectionControl : UserControl
+    public sealed partial class MTCSubtitlesSelectionControl : BaseUserControl
     {
 
         private readonly AsyncLock lockSync = new AsyncLock();

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI;
+using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaPlayback;
 using Microsoft.UI.Xaml;
@@ -10,7 +11,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public sealed partial class NowPlayingCurrentMediaInfoControl : UserControl
+    public sealed partial class NowPlayingCurrentMediaInfoControl : BaseUserControl
     {
         public NowPlayingList NowPlayingInstance
         {

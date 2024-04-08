@@ -15,7 +15,7 @@ namespace MayazucMediaPlayer.Controls
     /// 
     /// Should probably be replaced at some point in the future, if WinUI 3 comes up with a suitable alternative.
     /// </summary>
-    public sealed partial class GenericContentControl : UserControl, IContentDialogService
+    public sealed partial class GenericContentControl : BaseUserControl, IContentDialogService
     {
         TaskCompletionSource<ContentDialogServiceResult>? currentAsyncDialogOperation = default(TaskCompletionSource<ContentDialogServiceResult>);
         public GenericContentControl()

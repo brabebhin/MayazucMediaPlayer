@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class ResumePlaybackControl : UserControl
+    public sealed partial class ResumePlaybackControl : BaseUserControl
     {
         public bool IsDismissed { get; private set; }
         bool firstLoaded = false;

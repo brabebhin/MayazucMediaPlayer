@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MayazucMediaPlayer.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public sealed partial class AdvancedTrackMetadataSettingsControl : UserControl, IContentSettingsItem
+    public sealed partial class AdvancedTrackMetadataSettingsControl : BaseUserControl, IContentSettingsItem
     {
         public AdvancedTrackMetadataSettingsControl()
         {

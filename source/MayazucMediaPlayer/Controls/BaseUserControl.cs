@@ -6,9 +6,9 @@ using System.ComponentModel;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public class BaseUserControl : UserControl, INotifyPropertyChanged
+    public class BaseUserControl : UserControl, INotifyPropertyChanged, IDisposable
     {
-        public DispatcherQueue DispatcherQueue { get; private set; }
+        private bool disposedValue;
 
         public IServiceProvider ServiceProvider
         {
@@ -20,7 +20,6 @@ namespace MayazucMediaPlayer.Controls
 
         public BaseUserControl()
         {
-            DispatcherQueue = DispatcherQueue.GetForCurrentThread();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -39,6 +38,40 @@ namespace MayazucMediaPlayer.Controls
             {
                 PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
             });
+        }
+
+        protected virtual void OnDispose(bool disposing)
+        {
+
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+                OnDispose(disposing);
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        ~BaseUserControl()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<controls:BaseUserControl
     xmlns:mcmediacentershared="using:MayazucMediaPlayer.NowPlayingViews"
     x:Class="MayazucMediaPlayer.Settings.ResetSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -19,4 +19,4 @@
         <Button  Click="ResetSettings" Margin="8"  Content="Reset settings" ToolTipService.ToolTip="Reset settings back to default values."/>
 
     </StackPanel>
-</UserControl>
+</controls:BaseUserControl>

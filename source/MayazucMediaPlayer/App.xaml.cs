@@ -133,6 +133,7 @@ namespace MayazucMediaPlayer
         }
 
 
+
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto, PreserveSig = true, SetLastError = false)]
         public static extern IntPtr GetActiveWindow();
 

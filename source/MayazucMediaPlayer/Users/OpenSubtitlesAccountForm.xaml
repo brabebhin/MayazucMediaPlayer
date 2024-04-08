@@ -1,4 +1,5 @@
-﻿<UserControl
+﻿<controls:BaseUserControl
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     
     x:Class="MayazucMediaPlayer.Users.OpenSubtitlesAccountForm"
   
@@ -62,4 +63,4 @@
 
 
     </Grid>
-</UserControl>
+</controls:BaseUserControl>

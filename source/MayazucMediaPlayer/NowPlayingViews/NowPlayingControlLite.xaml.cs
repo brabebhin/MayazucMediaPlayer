@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Services;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
@@ -8,7 +9,7 @@ using System;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public sealed partial class NowPlayingControlLite : UserControl
+    public sealed partial class NowPlayingControlLite : BaseUserControl
     {
         readonly AsyncLock mediaOpenedLock = new AsyncLock();
         readonly AsyncLock skipToIndexLock = new AsyncLock();

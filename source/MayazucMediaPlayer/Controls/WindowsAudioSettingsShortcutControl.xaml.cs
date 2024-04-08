@@ -6,7 +6,7 @@ using System;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class WindowsAudioSettingsShortcutControl : UserControl, IContentSettingsItem
+    public sealed partial class WindowsAudioSettingsShortcutControl : BaseUserControl, IContentSettingsItem
     {
         public WindowsAudioSettingsShortcutControl()
         {

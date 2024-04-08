@@ -20,7 +20,7 @@ using Microsoft.UI.Xaml.Shapes;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class MediaProgressBarSlider : UserControl
+    public sealed partial class MediaProgressBarSlider : BaseUserControl
     {
         private bool progressSliderManipulating = false;
 

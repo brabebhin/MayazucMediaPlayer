@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<local:BaseUserControl
     x:Class="MayazucMediaPlayer.Controls.MinimumSubtitleDurationControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -31,4 +31,4 @@
         </Grid>
         <CheckBox IsChecked="{Binding PreventOverlaps, Mode=TwoWay}" x:Name="cbPrevetOverlaps">Prevent overlaps</CheckBox>
     </StackPanel>
-</UserControl>
+</local:BaseUserControl>

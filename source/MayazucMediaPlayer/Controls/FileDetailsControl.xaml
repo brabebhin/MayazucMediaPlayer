@@ -9,8 +9,6 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <UserControl.Resources>
-    </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot" >
         <Grid.RowDefinitions>

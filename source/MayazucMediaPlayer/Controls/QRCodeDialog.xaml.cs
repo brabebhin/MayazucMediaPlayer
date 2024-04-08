@@ -6,7 +6,7 @@ using ZXing;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class QRCodeControl : UserControl
+    public sealed partial class QRCodeControl : BaseUserControl
     {
         public string QRMessage
         {

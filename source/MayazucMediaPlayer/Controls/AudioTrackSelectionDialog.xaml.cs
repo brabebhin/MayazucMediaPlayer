@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class AudioTrackSelectionDialog : UserControl
+    public sealed partial class AudioTrackSelectionDialog : BaseUserControl
     {
         readonly AsyncLock trackLock = new AsyncLock();
         MediaPlaybackItem currentItem = null;

@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<local:BaseUserControl
     x:Class="MayazucMediaPlayer.Controls.MediaPlayerRenderingElement"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -42,4 +42,4 @@
             </MediaPlayerElement.Style>
         </MediaPlayerElement>
     </Grid>
-</UserControl>
+</local:BaseUserControl>

@@ -21,7 +21,7 @@ using Windows.Media.Core;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class ChapterSelectionControl : UserControl
+    public sealed partial class ChapterSelectionControl : BaseUserControl
     {
         ObservableCollection<ChapterCue> chapters = new ObservableCollection<ChapterCue>();
         public ChapterSelectionControl()

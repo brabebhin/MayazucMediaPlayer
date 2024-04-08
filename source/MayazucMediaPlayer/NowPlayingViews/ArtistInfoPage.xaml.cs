@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.FileSystemViews;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaPlayback;
 using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
@@ -9,7 +10,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public sealed partial class ArtistInfoPage : UserControl
+    public sealed partial class ArtistInfoPage : BaseUserControl
     {
         readonly AsyncLock expanderMediaOpenedLock = new AsyncLock();
 

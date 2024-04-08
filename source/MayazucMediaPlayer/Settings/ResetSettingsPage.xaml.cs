@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Dialogs;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.Subtitles;
 using Microsoft.UI.Xaml;
@@ -13,7 +14,7 @@ namespace MayazucMediaPlayer.Settings
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ResetSettingsPage : UserControl, IContentSettingsItem
+    public sealed partial class ResetSettingsPage : BaseUserControl, IContentSettingsItem
     {
         readonly AsyncLock albumArtClearLock = new AsyncLock();
         readonly AsyncLock subtitlesClearLock = new AsyncLock();

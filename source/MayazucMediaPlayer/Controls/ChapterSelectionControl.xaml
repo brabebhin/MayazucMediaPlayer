@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<UserControl
+<local:BaseUserControl
     x:Class="MayazucMediaPlayer.Controls.ChapterSelectionControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -30,4 +30,4 @@
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
-</UserControl>
+</local:BaseUserControl>

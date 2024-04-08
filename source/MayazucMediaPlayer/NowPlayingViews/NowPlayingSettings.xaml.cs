@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Settings;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public sealed partial class NowPlayingSettings : UserControl
+    public sealed partial class NowPlayingSettings : BaseUserControl
     {
         public NowPlayingSettings()
         {

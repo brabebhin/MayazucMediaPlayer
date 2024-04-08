@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MayazucMediaPlayer.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -18,7 +19,7 @@ using Windows.Foundation.Collections;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public sealed partial class SubtitlesSettingsItem : UserControl, IContentSettingsItem
+    public sealed partial class SubtitlesSettingsItem : BaseUserControl, IContentSettingsItem
     {
         public SubtitlesSettingsItem()
         {

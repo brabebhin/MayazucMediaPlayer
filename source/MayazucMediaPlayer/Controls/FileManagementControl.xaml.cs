@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class FileManagementControl : UserControl
+    public sealed partial class FileManagementControl : BaseUserControl
     {
         public FileManagementControl()
         {

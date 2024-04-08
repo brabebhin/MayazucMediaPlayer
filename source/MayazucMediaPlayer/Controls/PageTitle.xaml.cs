@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class PageTitle : UserControl
+    public sealed partial class PageTitle : BaseUserControl
     {
         public PageTitle()
         {

@@ -30,7 +30,7 @@ using Windows.UI.ViewManagement;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class CustomMediaTransportControls2 : UserControl
+    public sealed partial class CustomMediaTransportControls2 : BaseUserControl, IDisposable
     {
         DispatcherQueueTimer StateUpdateTimer;
         SymbolIcon PlayIcon = new SymbolIcon(Symbol.Play);
@@ -223,6 +223,7 @@ namespace MayazucMediaPlayer.Controls
         }
 
         public static DependencyProperty RightContentProperty = DependencyProperty.Register(nameof(RightContent), typeof(object), typeof(CustomMediaTransportControls2), new PropertyMetadata(null, RightContentChanged));
+        private bool disposedValue;
 
         private static void RightContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -239,6 +240,35 @@ namespace MayazucMediaPlayer.Controls
         {
             get => GetValue(RightContentProperty);
             set => SetValue(RightContentProperty, value);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                StateUpdateTimer.Stop();
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        ~CustomMediaTransportControls2()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

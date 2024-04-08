@@ -4,7 +4,7 @@
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class WindowsNetworkSettingsControl : UserControl
+    public sealed partial class WindowsNetworkSettingsControl : BaseUserControl
     {
         public WindowsNetworkSettingsControl()
         {

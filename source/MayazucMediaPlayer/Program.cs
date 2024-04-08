@@ -29,6 +29,7 @@ namespace MayazucMediaPlayer
                     SynchronizationContext.SetSynchronizationContext(context);
                     new App();
                 });
+
             }
         }
 

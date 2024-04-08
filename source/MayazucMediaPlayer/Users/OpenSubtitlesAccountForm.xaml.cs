@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Settings;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -9,7 +10,7 @@ using Windows.Security.Credentials;
 
 namespace MayazucMediaPlayer.Users
 {
-    public sealed partial class OpenSubtitlesAccountForm : UserControl, IContentSettingsItem
+    public sealed partial class OpenSubtitlesAccountForm : BaseUserControl, IContentSettingsItem
     {
         public const string openSubtitleServiceName = "Open subtitles";
         UserLoginInformation Model;

@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using CommunityToolkit.WinUI;
+using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.LocalCache;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public sealed partial class NowPlayingBackgroundGrid : UserControl
+    public sealed partial class NowPlayingBackgroundGrid : BaseUserControl
     {
         readonly DispatcherQueueTimer timer = null;
 

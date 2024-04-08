@@ -46,6 +46,7 @@ namespace MayazucMediaPlayer
             this.HostWindow = HostWindow;
         }
 
+
         public async Task RequestAlwaysOnTopOverlayMode(bool shouldOverlayOnTop)
         {
             await HostWindow.SetWindowOnTopOverlayMode(shouldOverlayOnTop);
@@ -164,6 +165,13 @@ namespace MayazucMediaPlayer
             SizeChanged += MCMediaCenterRootApplication_SizeChanged;
 
             OverayModeButtonIcon.Glyph = !IsAlwaysOnTop ? EnterOverlayModeIcon : ExitOverlayModeIcon;
+            GetAppWindowForCurrentWindow().Closing += MainWindow_Closing;
+        }
+
+        private void MainWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+        {
+            RootFrame.Dispose();
+            NowPlayingPage.Dispose();
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)

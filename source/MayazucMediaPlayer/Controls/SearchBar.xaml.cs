@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class SearchBar : UserControl
+    public sealed partial class SearchBar : BaseUserControl
     {
         private readonly object lockObject = new object();
 

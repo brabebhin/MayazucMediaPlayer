@@ -20,7 +20,7 @@ using CommunityToolkit.WinUI;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class VolumeControlBar : UserControl
+    public sealed partial class VolumeControlBar : BaseUserControl
     {
         public MediaPlayer Player { get; private set; }
         private double volumeBeforeMute = 1.0d;
