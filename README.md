@@ -1,8 +1,9 @@
 # Mayazuc Media Player
 WinUI 3 based media player. This is an on-going development. 
 
-![image](https://github.com/brabebhin/MayazucMediaPlayer/assets/9284164/6ab55db9-1558-4798-95ea-5965b666f045)
-![image](https://github.com/brabebhin/MayazucMediaPlayer/assets/9284164/df93f60d-a3a5-492d-a145-0775cfcf43b9)
+
+![image](https://github.com/brabebhin/MayazucMediaPlayer/assets/9284164/61c12e4e-4b49-4110-b8a5-35d0d7c45c33)
+
 
 ## Build and Deploy
 There are currently no automated build binaries available. In order to use it you need to built it yourself:
