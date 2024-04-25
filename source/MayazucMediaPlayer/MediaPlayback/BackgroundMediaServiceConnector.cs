@@ -15,9 +15,6 @@ namespace MayazucMediaPlayer.MediaPlayback
     /// </summary>
     public class BackgroundMediaServiceConnector
     {
-        readonly AsyncLock playerInitLock = new AsyncLock();
-        private bool HasActviePlaybackSession { get; set; }
-
         public bool HasActivePlaybackSession()
         {
             return (CurrentPlaybackSession).PlaybackState != MediaPlaybackState.None;
@@ -28,13 +25,12 @@ namespace MayazucMediaPlayer.MediaPlayback
             return (CurrentPlaybackSession).PlaybackState == MediaPlaybackState.Playing;
         }
 
-        public void InitializeAsync(IServiceProvider services, IntPtr hwnd)
+        public void Initialize(IServiceProvider services, IntPtr hwnd)
         {
             if (PlayerInstance == null)
             {
                 PlayerInstance = (IBackgroundPlayer)services.GetService(typeof(IBackgroundPlayer));
-                PlayerInstance.InitializeAsync(hwnd);
-                HasActviePlaybackSession = true;
+                PlayerInstance.Initialize(hwnd);
             }
         }
 
@@ -64,10 +60,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
-        public IBackgroundPlayer PlayerInstance { get; private set; }
-
-
-     
+        public IBackgroundPlayer PlayerInstance { get; private set; }     
 
         public event EventHandler<MediaPlayerCompactOverlayEventArgs> CompactOverlayRequest;
         public void NotifyViewMode(bool isFullPlayer, UserControl element)
@@ -78,7 +71,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         public void NotifyAudioBalanceChanged(double value)
         {
             CurrentPlayer.AudioBalance = value;
-
         }
 
         public async Task NotifyResetFiltering(bool enabled)
@@ -276,7 +268,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         internal double GetNormalizedPosition()
         {
-            if (HasActviePlaybackSession && PlayerInstance.CurrentPlaybackItem != null && CurrentPlayer.PlaybackSession.NaturalDuration.TotalSeconds != 0)
+            if (HasActivePlaybackSession() && PlayerInstance.CurrentPlaybackItem != null && CurrentPlayer.PlaybackSession.NaturalDuration.TotalSeconds != 0)
             {
                 //100 -> naturalDuration
                 //x  --> position

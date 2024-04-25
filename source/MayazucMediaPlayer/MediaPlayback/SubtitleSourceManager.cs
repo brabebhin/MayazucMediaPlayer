@@ -84,7 +84,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
-        private async Task<FileInfo> GetSubtitleFileAsync(string filePath)
+        private async Task<FileInfo> GetExternalSubtitleFileAsync(string filePath)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                         List<Task<IStorageItem>> subLookupTasks = new List<Task<IStorageItem>>();
                         foreach (var ssf in SupportedFileFormats.SupportedSubtitleFormats)
                         {
-                            var fileEnum = parent.EnumerateFiles().FirstOrDefault(x => x.Extension.Equals(ssf, StringComparison.InvariantCultureIgnoreCase));
+                            var fileEnum = parent.EnumerateFiles($"{thisFileName}.*").FirstOrDefault(x => x.Extension.Equals(ssf, StringComparison.InvariantCultureIgnoreCase));
                             if (fileEnum != null)
                             {
                                 return fileEnum;
@@ -125,7 +125,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 {
                     if (SettingsWrapper.AutoDetectExternalSubtitle)
                     {
-                        var subFile = await GetSubtitleFileAsync(request.FullMediaLocation);
+                        var subFile = await GetExternalSubtitleFileAsync(request.FullMediaLocation);
                         if (subFile != null)
                         {
                             await ParseAndSetSubtitleInternal(subFile);
@@ -213,7 +213,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     if (externalTracks != null)
                     {
                         var index = CurrentPlaybackItem.TimedMetadataTracks.IndexOf(externalTracks.FirstOrDefault().SubtitleTrack);
-                        if (index != null)
+                        if (index != -1)
                         {
                             if (CurrentPlaybackItem.TimedMetadataTracks.Count > index)
                                 CurrentPlaybackItem.TimedMetadataTracks.SetPresentationMode((uint)index, defaultPresentationMode);

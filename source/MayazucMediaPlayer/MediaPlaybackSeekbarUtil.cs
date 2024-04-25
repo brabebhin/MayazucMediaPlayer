@@ -34,5 +34,10 @@ namespace MayazucMediaPlayer
         {
             return timespan.ToString("hh':'mm':'ss");
         }
+
+        public static string FileFormatTimespan(this TimeSpan timespan)
+        {
+            return timespan.ToString("hh'-'mm'-'ss");
+        }
     }
 }

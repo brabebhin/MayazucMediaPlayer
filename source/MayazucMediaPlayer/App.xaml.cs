@@ -149,7 +149,7 @@ namespace MayazucMediaPlayer
 
         private void InitBackgroundMediaPlayer(IntPtr hwnd)
         {
-            AppState.Current.MediaServiceConnector.InitializeAsync(ApplicationState.Services, hwnd);
+            AppState.Current.MediaServiceConnector.Initialize(ApplicationState.Services, hwnd);
         }
 
         private AppState ApplicationState

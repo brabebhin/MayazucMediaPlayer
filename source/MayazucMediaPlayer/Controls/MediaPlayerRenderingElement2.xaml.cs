@@ -3,6 +3,7 @@ using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.NowPlayingViews;
 using MayazucMediaPlayer.Settings;
+using MayazucMediaPlayer.UserInput;
 using MayazucNativeFramework;
 using Microsoft.Graphics.Canvas;
 using Microsoft.UI.Input;
@@ -75,12 +76,21 @@ namespace MayazucMediaPlayer.Controls
             this.SizeChanged += MediaPlayerRenderingElement_SizeChanged;
             AppState.Current.MediaServiceConnector.VideoEffectsConfiguration.ConfigurationChanged += EffectConfiguration_ConfigurationChanged;
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
-            AppState.Current.MediaServiceConnector.CurrentPlaybackSession.PlaybackStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
             this.ManipulationStarted += MediaPlayerRenderingElement2_ManipulationStarted;
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
             renderer = new FrameServerRenderer(VideoSwapChain);
             NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
             _ = MediaEffectsFrame.NavigateAsync(typeof(MediaEffectsPage));
+            AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
+        }
+
+        private async void KeyboardInputManager_AcceleratorInvoked(object? sender, HotKeyId e)
+        {
+            if (e == HotKeyId.SaveVideoFrame)
+            {
+                await SaveVideoFrameAsync();
+            }
         }
 
         private void MediaPlayerRenderingElement2_PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -93,11 +103,11 @@ namespace MayazucMediaPlayer.Controls
             ShowMouseShowTransportControls();
         }
 
-        private void CurrentPlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
+        private void CurrentPlaybackSession_PlaybackStateChanged(MediaPlayer sender, MediaPlaybackState state)
         {
             DispatcherQueue.TryEnqueue((() =>
             {
-                if (sender.PlaybackState == MediaPlaybackState.Playing)
+                if (state == MediaPlaybackState.Playing)
                 {
                     StartMouseTransportControlHideTimer();
                 }
@@ -316,9 +326,9 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        public async Task SaveVideoFrameAsync()
+        private async Task SaveVideoFrameAsync()
         {
-            if (AppState.Current.MediaServiceConnector.HasActivePlaybackSession())
+            if (AppState.Current.MediaServiceConnector.HasActivePlaybackSession() && AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
             {
                 try
                 {
@@ -329,12 +339,12 @@ namespace MayazucMediaPlayer.Controls
                     var sourceFile = new FileInfo(currentMediaData.MediaPath);
                     if (sourceFile != null && sourceFile.Exists)
                     {
-                        var name = $"{Path.GetFileNameWithoutExtension(sourceFile.Name)}-{session.Position.TotalSeconds}.png";
-                        var folder = await LocalCache.LocalFolders.GetSavedVideoFramesFolder();
+                        var name = $"{Path.GetFileNameWithoutExtension(sourceFile.Name)}-{session.Position.FileFormatTimespan()}.png";
+                        var folder = await LocalFolders.GetSavedVideoFramesFolder();
                         var file = await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
                         using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                         {
-                            //await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
+                            await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
                         }
 
                         PopupHelper.ShowInfoMessage($"Frame saved: {DateTime.Now.ToString("hh:mm:ss")}");

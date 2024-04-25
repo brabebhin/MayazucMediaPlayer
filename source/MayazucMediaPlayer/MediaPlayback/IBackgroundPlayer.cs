@@ -6,6 +6,7 @@ using MayazucMediaPlayer.Services.MediaSources;
 using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Media.Playback;
@@ -23,7 +24,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         FFmpegMediaSource FfmpegInteropInstance { get; }
 
         event TypedEventHandler<MediaPlayer, MediaOpenedEventArgs> OnMediaOpened;
-
+        event TypedEventHandler<MediaPlayer, MediaPlaybackState> OnStateChanged;
         event EventHandler<object> OnNullPlaybackItem;
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         /// Do initialization things
         /// </summary>
         /// <returns></returns>
-        void InitializeAsync(IntPtr hwnd);
+        void Initialize(IntPtr hwnd);
 
         /// <summary>
         /// Cross-concearn: disable given subtitles in playback item

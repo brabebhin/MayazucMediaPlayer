@@ -169,9 +169,12 @@ namespace MayazucMediaPlayer
         }
 
         private void MainWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
-        {
-            RootFrame.Dispose();
-            NowPlayingPage.Dispose();
+        {            
+            var children = WindowLayoutRoot.FindVisualChildrenDeep<Control>().Select(x => x as IDisposable);
+            foreach (var c in children)
+            {
+                c?.Dispose();
+            }
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)

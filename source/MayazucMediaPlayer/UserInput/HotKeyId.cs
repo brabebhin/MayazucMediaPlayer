@@ -8,5 +8,6 @@
         JumpBack,
         JumpForward,
         ExitFullScreen,
+        SaveVideoFrame,
     }
 }

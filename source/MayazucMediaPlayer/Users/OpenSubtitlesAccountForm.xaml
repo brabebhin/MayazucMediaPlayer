@@ -1,8 +1,6 @@
 ﻿<controls:BaseUserControl
-    xmlns:controls="using:MayazucMediaPlayer.Controls"
-    
-    x:Class="MayazucMediaPlayer.Users.OpenSubtitlesAccountForm"
-  
+    xmlns:controls="using:MayazucMediaPlayer.Controls"    
+    x:Class="MayazucMediaPlayer.Users.OpenSubtitlesAccountForm"  
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Users"

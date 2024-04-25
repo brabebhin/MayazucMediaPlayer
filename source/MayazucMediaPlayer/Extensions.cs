@@ -14,6 +14,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Gaming.Input;
 using Windows.Media.Core;
 using Windows.Storage;
 using Windows.UI;
@@ -699,6 +700,6 @@ namespace MayazucMediaPlayer
             return cng;
         }
 
-      
+
     }
 }

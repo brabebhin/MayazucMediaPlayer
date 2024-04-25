@@ -26,6 +26,7 @@ using Windows.UI.ViewManagement;
 
 namespace MayazucMediaPlayer.Controls
 {
+    [Obsolete]
     public sealed class CustomMediaTransportControls : MediaTransportControls, INotifyPropertyChanged, IDisposable
     {
         public event EventHandler<NavigationRequestEventArgs> ExternalNavigationRequest;

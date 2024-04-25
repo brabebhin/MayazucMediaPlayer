@@ -34,6 +34,7 @@ using MayazucMediaPlayer.Tests;
 
 namespace MayazucMediaPlayer.Controls
 {
+    [Obsolete]
     public sealed partial class MediaPlayerRenderingElement : BaseUserControl
     {
         bool useNativeSubtitleRenderer = true;

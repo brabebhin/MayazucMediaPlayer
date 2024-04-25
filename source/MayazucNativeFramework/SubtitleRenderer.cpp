@@ -196,11 +196,7 @@ namespace winrt::MayazucNativeFramework::implementation
 
 			subtitleOutputSpriteBatch.Close();
 			renderSurfaceDrawingSession.Flush();
-			if (!targetImageSource || targetImageSource.SizeInPixels().Width != width || targetImageSource.SizeInPixels().Height != height)
-			{
-				targetImageSource = CanvasImageSource(canvasDevice, width, height, 96);
-				//targetImage.Source(targetImageSource);
-			}
+		
 			{
 				auto swapChainDrawingSession = canvasSwapChain.CreateDrawingSession(Colors::Transparent());
 				swapChainDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());

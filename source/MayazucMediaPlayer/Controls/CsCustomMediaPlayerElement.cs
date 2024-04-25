@@ -12,6 +12,8 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.Controls
 {
+
+    [Obsolete("this doesn't work on winui 3")]
     public class CsCustomMediaPlayerElement : MediaPlayerElement, IDisposable
     {
         public MediaPlayerPresenter PlayerPresenter

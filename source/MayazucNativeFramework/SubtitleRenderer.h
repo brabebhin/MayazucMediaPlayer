@@ -7,7 +7,6 @@
 #include <winrt/Windows.Media.Playback.h>
 #include <winrt/Microsoft.UI.Xaml.Controls.h>
 #include <winrt/Microsoft.Graphics.Canvas.h> //This defines the C++/WinRT interfaces for the Win2D Windows Runtime Components
-#include <Microsoft.Graphics.Canvas.native.h> //This is for interop
 #include <d2d1_3.h>
 #include <winrt/Windows.UI.h>
 #include <dxgi1_2.h>
@@ -15,11 +14,7 @@
 #include "SwapChainPanelHelper.h"
 
 namespace winrt::MayazucNativeFramework::implementation
-{
-	namespace abi {
-		using namespace ABI::Microsoft::Graphics::Canvas;
-	}
-
+{	
 	using namespace winrt::Microsoft::Graphics;
 	using namespace winrt::Microsoft::Graphics::Canvas;
 	using namespace winrt::Microsoft::Graphics::Canvas::UI::Xaml;
@@ -43,22 +38,6 @@ namespace winrt::MayazucNativeFramework::implementation
 		{
 			SwapChainAllocResources(swapChainPannel, 800, 480, 96, winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized, SubtitleSwapChainBufferCount, canvasSwapChain);
 			this->swapChainPannel = swapChainPannel;
-		}
-
-		static void AllocResources(const winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel& swapChainPannel, 
-			float width, 
-			float height,
-			float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat,
-			int bufferCount,
-			CanvasSwapChain &canvasSwapChain)
-		{
-			canvasSwapChain = CanvasSwapChain(CanvasDevice::GetSharedDevice(), width, height, dpi, pixelFormat, bufferCount, CanvasAlphaMode::Premultiplied);
-			com_ptr<abi::ICanvasResourceWrapperNative> nativeDeviceWrapper = canvasSwapChain.as<abi::ICanvasResourceWrapperNative>();
-			com_ptr<IDXGISwapChain1> pNativeSwapChain{ nullptr };
-			check_hresult(nativeDeviceWrapper->GetNativeResource(nullptr, 0.0f, guid_of<IDXGISwapChain1>(), pNativeSwapChain.put_void()));
-
-			auto nativeSwapChainPanel = swapChainPannel.as< ISwapChainPanelNative>();
-			nativeSwapChainPanel->SetSwapChain(pNativeSwapChain.get());
 		}
 
 		void RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat);
@@ -93,7 +72,6 @@ namespace winrt::MayazucNativeFramework::implementation
 	private:
 		winrt::Microsoft::Graphics::Canvas::CanvasSwapChain canvasSwapChain = { nullptr };
 		winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel swapChainPannel = { nullptr };
-		Microsoft::Graphics::Canvas::UI::Xaml::CanvasImageSource targetImageSource = { nullptr };
 		Microsoft::Graphics::Canvas::CanvasRenderTarget renderTargetSurface = { nullptr };
 
 	};

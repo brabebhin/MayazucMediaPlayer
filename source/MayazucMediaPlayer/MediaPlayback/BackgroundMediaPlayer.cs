@@ -110,6 +110,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         }
 
         public event TypedEventHandler<MediaPlayer, MediaOpenedEventArgs> OnMediaOpened;
+        public event TypedEventHandler<MediaPlayer, MediaPlaybackState> OnStateChanged;
 
         internal FFmpegInteropItemBuilder ItemBuilder
         {
@@ -320,7 +321,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private void VideoEffectsConfiguration_ConfigurationChanged(object? sender, string e)
         {
-          
+
         }
 
         private async Task ReloadCurrentPlaybackItem(MediaPlaybackItem item)
@@ -1012,7 +1013,8 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         async void OnPlaybackStateChangedAsync(MediaPlaybackSession sender, object args)
         {
-            switch (CurrentPlayer.PlaybackSession.PlaybackState)
+            var state = sender.PlaybackState;
+            switch (state)
             {
                 case MediaPlaybackState.Buffering:
 
@@ -1042,6 +1044,10 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                     break;
             }
+            _ = commandDispatcher.EnqueueAsync(() =>
+            {
+                OnStateChanged?.Invoke(sender.MediaPlayer, state);
+            });
         }
 
         private bool PlaysVideo()
@@ -1313,7 +1319,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             });
         }
 
-        public void InitializeAsync(IntPtr hwnd)
+        public void Initialize(IntPtr hwnd)
         {
             InitPlayer(hwnd);
             PlaybackQueueService.FillData();

@@ -53,7 +53,7 @@ namespace MayazucMediaPlayer.Controls
             StateUpdateTimer.Tick += StateUpdateTimer_Tick;
 
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += Current_MediaOpened;
-            AppState.Current.MediaServiceConnector.CurrentPlaybackSession.PlaybackStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
             StateUpdateTimer.Start();
 
             MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += Instance_MediaPlayerElementFullScreenModeChanged;
@@ -116,7 +116,7 @@ namespace MayazucMediaPlayer.Controls
             SetFullScreenButtonIcon(e);
         }
 
-        private async void CurrentPlaybackSession_PlaybackStateChanged(MediaPlaybackSession sender, object args)
+        private async void CurrentPlaybackSession_PlaybackStateChanged(MediaPlayer sender, MediaPlaybackState args)
         {
             await DispatcherQueue.EnqueueAsync(async () =>
             {
@@ -250,6 +250,8 @@ namespace MayazucMediaPlayer.Controls
                 {
                     // TODO: dispose managed state (managed objects)
                 }
+                AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened -= Current_MediaOpened;
+                AppState.Current.MediaServiceConnector.PlayerInstance.OnStateChanged -= CurrentPlaybackSession_PlaybackStateChanged;
 
                 StateUpdateTimer.Stop();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
