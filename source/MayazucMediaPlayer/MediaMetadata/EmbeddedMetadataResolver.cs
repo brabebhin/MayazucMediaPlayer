@@ -30,6 +30,23 @@ namespace MayazucMediaPlayer.MediaMetadata
             return SavedThumbnailFile != AssetsPaths.PlaceholderAlbumArt;
         }
 
+        public ReadOnlyDictionary<string, string> JoinedMetadata()
+        {
+            Dictionary<string, string> returnValue = new Dictionary<string, string>
+            {
+                { nameof(Album), Album },
+                { nameof(Artist), Artist },
+                { nameof(Genre), Genre },
+                { nameof(Title), Title }
+            };
+            foreach (var additional in AdditionalMetadata)
+            {
+                returnValue.TryAdd(additional.Key, additional.Value);
+            }
+
+            return returnValue.AsReadOnly();
+        }
+
         public ReadOnlyDictionary<string, string> AdditionalMetadata { get; private set; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
 
         public EmbeddedMetadataResult(string album, string artist, string genre, string title, ReadOnlyDictionary<string, string> additionalMetadata)

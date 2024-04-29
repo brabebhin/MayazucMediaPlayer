@@ -818,6 +818,7 @@
     <x:Double x:Key="SliderOutsideTickBarThemeHeight">5</x:Double>
     <x:Double x:Key="SliderTrackThemeHeight">9</x:Double>
     <SolidColorBrush x:Key="SliderDisabledBorderThemeBrush" Color="Transparent"/>
+    
     <Style x:Key="WideSlider" TargetType="Slider">
         <Setter Property="Background" Value="{ThemeResource SliderTrackBackgroundThemeBrush}"/>
         <Setter Property="BorderBrush" Value="{ThemeResource SliderBorderThemeBrush}"/>

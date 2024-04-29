@@ -1,11 +1,13 @@
 ﻿using MayazucMediaPlayer.VideoEffects;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
+using System;
 using GrayscaleEffect = Microsoft.Graphics.Canvas.Effects.GrayscaleEffect;
 using TemperatureAndTintEffect = Microsoft.Graphics.Canvas.Effects.TemperatureAndTintEffect;
 
 namespace MayazucMediaPlayer.Controls
 {
+    [Obsolete("Replaced by native code")]
     public class EffectProcessor
     {
         ICanvasEffect CreateColorEffect(ICanvasImage source, float c, float b, float s)

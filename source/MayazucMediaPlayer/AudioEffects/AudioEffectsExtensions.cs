@@ -22,19 +22,11 @@ namespace MayazucMediaPlayer.AudioEffects
             if (!string.IsNullOrWhiteSpace(diag.Result))
             {
                 preset.PresetName = diag.Result;
-                var metadataDialog = new MetadataAsociationDialog();
-                metadataDialog.InitialPreset = preset;
-                await ContentDialogService.Instance.ShowAsync(metadataDialog);
-                if (metadataDialog.Results.Succeded)
-                {
-                    preset.MetadataAsociation = metadataDialog.Results.MetadataAsociation;
-                    preset.MetadataAssociationValue = metadataDialog.Results.MetadataAsociationValue;
 
-                    if (await SetAmplificationsAsync(preset, loadCurrentAmps, configuration))
-                    {
-                        return Result.Ok(preset);
-                        //lsvPresets.ScrollIntoView(preset);
-                    }
+                if (await SetAmplificationsAsync(preset, loadCurrentAmps, configuration))
+                {
+                    return Result.Ok(preset);
+                    //lsvPresets.ScrollIntoView(preset);
                 }
             }
 

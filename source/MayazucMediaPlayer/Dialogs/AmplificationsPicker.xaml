@@ -59,8 +59,6 @@
                                     <RowDefinition></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
-
-
                                 </Grid.RowDefinitions>
                                 <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="0, 0, 0, 2" HorizontalAlignment="Center" Text="{Binding FrequencyAmplification}"></TextBlock>
                                 <Slider MinHeight="350" SnapsTo="StepValues" Style="{StaticResource WideSlider}"  Orientation="Vertical" Grid.Row="1" Minimum="-12" Maximum="12" Value="{Binding FrequencyAmplification, Mode=TwoWay}"></Slider>

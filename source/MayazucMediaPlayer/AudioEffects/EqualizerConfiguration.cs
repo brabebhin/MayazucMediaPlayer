@@ -14,8 +14,8 @@ namespace MayazucMediaPlayer.AudioEffects
 {
     public class EqualizerConfiguration : ObservableObject
     {
-        public const string DefaultConfigurationName = "MC Media Center";
-
+        public const string DefaultConfigurationName = "Mayazuc Media Player";
+        private const string DefaultPresetName = "default";
 
         public event EventHandler Changed;
 
@@ -74,8 +74,8 @@ namespace MayazucMediaPlayer.AudioEffects
                 FrequencyDisplays += v.CutOffFrequency + " ";
             }
 
-            if (!Presets.Any(x => x.PresetName == "default"))
-                Presets.Add(new AudioEqualizerPreset("default", "", defaultFreq));
+            if (!Presets.Any(x => x.PresetName == DefaultPresetName))
+                Presets.Add(new AudioEqualizerPreset(DefaultPresetName, defaultFreq));
         }
 
 
@@ -93,33 +93,26 @@ namespace MayazucMediaPlayer.AudioEffects
             FrequencyDefinition def6 = new FrequencyDefinition(3500);
             FrequencyDefinition def7 = new FrequencyDefinition(7000);
 
-            FrequencyDefinitionCollection b = new FrequencyDefinitionCollection();
-            b.Add(def1);
-            b.Add(def2);
-            b.Add(def3);
-            b.Add(def4);
-            b.Add(def5);
-            b.Add(def6);
-            b.Add(def7);
+            FrequencyDefinitionCollection bands = [def1, def2, def3, def4, def5, def6, def7];
 
-            List<AudioEqualizerPreset> p = new List<AudioEqualizerPreset>();
+            List<AudioEqualizerPreset> presets = new List<AudioEqualizerPreset>();
 
-            p.Add(new AudioEqualizerPreset("Acoustic", "", new int[] { 4, 3, 0, 1, 2, 3, 2 }));
-            p.Add(new AudioEqualizerPreset("French Pop", "", new int[] { 4, 3, 2, 1, 2, 3, 2 }));
-            p.Add(new AudioEqualizerPreset("Bass boost", "", new int[] { 5, 3, 2, 1, 0, 0, 0 }));
-            p.Add(new AudioEqualizerPreset("Classical", "Classical", new int[] { 4, 2, 0, -1, 0, 2, 3 }));
-            p.Add(new AudioEqualizerPreset("Dance", "Dance", new int[] { 6, 5, 0, 2, 4, 4, 3 }));
-            p.Add(new AudioEqualizerPreset("Electronic", "Electronic", new int[] { 3, 1, -2, -1, 0, 0, 3 }));
-            p.Add(new AudioEqualizerPreset("Hip hop", "Hip hop", new int[] { 4, 1, 0, -1, 0, 0, 2 }));
-            p.Add(new AudioEqualizerPreset("Jazz", "Jazz", new int[] { 2, 1, 1, 0, 1, 1, 2 }));
-            p.Add(new AudioEqualizerPreset("Loudness", "", new int[] { 5, 0, -1, 0, -1, -2, 5 }));
-            p.Add(new AudioEqualizerPreset("Pop", "Pop", new int[] { -1, -1, 3, 3, 2, 0, -1 }));
-            p.Add(new AudioEqualizerPreset("Rock", "Rock", new int[] { 4, 2, 0, 0, 0, 2, 3 }));
-            p.Add(new AudioEqualizerPreset("Speech", "Speech", new int[] { -1, 0, 1, 3, 4, 4, 2 }));
-            p.Add(new AudioEqualizerPreset("Treble boost", "", new int[] { 0, 0, 0, 1, 2, 3, 5 }));
-            p.Add(new AudioEqualizerPreset("Vocal boost", "", new int[] { 0, 0, 2, 5, 2, 0, 0 }));
+            presets.Add(new AudioEqualizerPreset("Acoustic", new int[] { 4, 3, 0, 1, 2, 3, 2 }));
+            presets.Add(new AudioEqualizerPreset("French Pop", new int[] { 4, 3, 2, 1, 2, 3, 2 }));
+            presets.Add(new AudioEqualizerPreset("Bass boost", new int[] { 5, 3, 2, 1, 0, 0, 0 }));
+            presets.Add(new AudioEqualizerPreset("Classical", new int[] { 4, 2, 0, -1, 0, 2, 3 }));
+            presets.Add(new AudioEqualizerPreset("Dance", new int[] { 6, 5, 0, 2, 4, 4, 3 }));
+            presets.Add(new AudioEqualizerPreset("Electronic", new int[] { 3, 1, -2, -1, 0, 0, 3 }));
+            presets.Add(new AudioEqualizerPreset("Hip hop", new int[] { 4, 1, 0, -1, 0, 0, 2 }));
+            presets.Add(new AudioEqualizerPreset("Jazz", new int[] { 2, 1, 1, 0, 1, 1, 2 }));
+            presets.Add(new AudioEqualizerPreset("Loudness", new int[] { 5, 0, -1, 0, -1, -2, 5 }));
+            presets.Add(new AudioEqualizerPreset("Pop", new int[] { -1, -1, 3, 3, 2, 0, -1 }));
+            presets.Add(new AudioEqualizerPreset("Rock", new int[] { 4, 2, 0, 0, 0, 2, 3 }));
+            presets.Add(new AudioEqualizerPreset("Speech", new int[] { -1, 0, 1, 3, 4, 4, 2 }));
+            presets.Add(new AudioEqualizerPreset("Treble boost", new int[] { 0, 0, 0, 1, 2, 3, 5 }));
+            presets.Add(new AudioEqualizerPreset("Vocal boost", new int[] { 0, 0, 2, 5, 2, 0, 0 }));
 
-            return new EqualizerConfiguration(b, p, "MC Media Center");
+            return new EqualizerConfiguration(bands, presets, DefaultConfigurationName);
         }
 
         public void SetPresets(IEnumerable<AudioEqualizerPreset> p)

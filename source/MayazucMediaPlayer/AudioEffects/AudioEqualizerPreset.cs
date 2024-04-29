@@ -1,4 +1,5 @@
 ﻿using MayazucMediaPlayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.UI.Core;
@@ -7,8 +8,6 @@ namespace MayazucMediaPlayer.AudioEffects
     public class AudioEqualizerPreset : ObservableObject
     {
         string presetName;
-        int metadataAsociation;
-        string metadataAssociationValue;
 
         public string AmplificationsOverview
         {
@@ -53,43 +52,14 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
-        public string MetadataAssociationValue
-        {
-            set
-            {
-                metadataAssociationValue = value;
-                NotifyPropertyChanged("MetadataAssociationValue");
-            }
-            get
-            {
-                return metadataAssociationValue;
-            }
-        }
-
-        public int MetadataAsociation
-        {
-            set
-            {
-                metadataAsociation = value;
-                NotifyPropertyChanged("metadataAsociation");
-            }
-            get
-            {
-                return metadataAsociation;
-            }
-        }
-
-
         public AudioEqualizerPreset()
         {
         }
 
-        public AudioEqualizerPreset(string name, string _MetadataAssociationValue, IEnumerable<int> _frequencyValues)
+        public AudioEqualizerPreset(string name, IEnumerable<int> _frequencyValues)
         {
             PresetName = name;
             FrequencyValues = new List<int>();
-
-            MetadataAssociationValue = _MetadataAssociationValue;
 
             SetAmplifications(_frequencyValues);
         }
@@ -104,13 +74,11 @@ namespace MayazucMediaPlayer.AudioEffects
         }
 
 
+
         public bool Equals(AudioEqualizerPreset other)
         {
             bool result = true;
             result = result & other.PresetName == PresetName;
-            if (!result) return result;
-
-            result = result & other.MetadataAssociationValue == MetadataAssociationValue;
             if (!result) return result;
 
             result = result & other.FrequencyValues.Count == FrequencyValues.Count;
@@ -123,6 +91,11 @@ namespace MayazucMediaPlayer.AudioEffects
             }
 
             return result;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FrequencyValues, PresetName);
         }
     }
 }

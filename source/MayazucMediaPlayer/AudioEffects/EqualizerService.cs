@@ -39,12 +39,12 @@ namespace MayazucMediaPlayer.AudioEffects
             {
                 foreach (var eqConfig in DefaultPayload.EQConfigurations)
                 {
-                    if (eqConfig.Name == "MC Media Center")
+                    if (eqConfig.Name == EqualizerConfiguration.DefaultConfigurationName)
                     {
                         if (!eqConfig.CompareTo(EqualizerConfiguration.GetDefault(), false))
                         {
                             ///it used to be possible to edit this configuration, so check it out
-                            EqualizerConfigurations.Add(new EqualizerConfiguration(eqConfig.Bands, eqConfig.Presets, "MC Media Center edited"));
+                            EqualizerConfigurations.Add(new EqualizerConfiguration(eqConfig.Bands, eqConfig.Presets, $"{EqualizerConfiguration.DefaultConfigurationName} edited"));
                             EqualizerConfigurations.Add(EqualizerConfiguration.GetDefault());
                             fixNecessary = true;
                         }

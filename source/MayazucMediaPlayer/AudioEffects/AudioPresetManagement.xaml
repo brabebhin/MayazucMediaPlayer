@@ -7,7 +7,6 @@
     
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" 
     xmlns:controls1="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d">
 
@@ -47,21 +46,12 @@
                                 <MenuFlyoutItem IsEnabled="{Binding IsEnabled}"  Text="Delete preset" Click="DeletePreset_click"/>
                             </MenuFlyout>
                         </Grid.ContextFlyout>
-                        <Grid.RowDefinitions>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                            <RowDefinition></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <StackPanel Margin="0, 2, 0, 2"  HorizontalAlignment="Stretch"  Grid.Row="2">
+
+                        <StackPanel Margin="0, 2, 0, 8"  HorizontalAlignment="Stretch"  Grid.Row="2">
                             <TextBlock Grid.Row="0" Text="{Binding PresetName}"  Style="{ThemeResource SubheaderTextBlockStyle}" TextWrapping="WrapWholeWords" />
-
-                            <TextBlock  Margin="0, 2, 0, 2"   TextWrapping="WrapWholeWords" Style="{ThemeResource CaptionTextBlockStyle}" Text="Genre association value:"/>
-                            <TextBlock  Grid.Row="2" Text="{Binding MetadataAssociationValue}" Style="{ThemeResource BodyTextBlockStyle}">
-                            </TextBlock>
-                            <TextBlock Margin="0, 2, 0, 2"  TextWrapping="WrapWholeWords"  Style="{ThemeResource CaptionTextBlockStyle}" Text="Amplifications:"/>
-
-                            <TextBlock Text="{Binding AmplificationsOverview}" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                            <controls1:EqualizerPresetAmplificationsPreview  Height="130" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EqualizerPreset="{Binding}"></controls1:EqualizerPresetAmplificationsPreview>
                         </StackPanel>
+                        
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

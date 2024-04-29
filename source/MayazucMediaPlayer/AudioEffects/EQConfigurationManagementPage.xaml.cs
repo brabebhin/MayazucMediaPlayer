@@ -41,7 +41,10 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async void SomethingSelectedChanged(object? sender, SelectionChangedEventArgs e)
         {
-            await Model.EditEqualizerConfigurationPresetsCommand.ExecuteAsync(ConfigurationsPresenter.SelectedItem as EqualizerConfiguration);
+            if (ConfigurationsPresenter.SelectedItem != null)
+            {
+                await Model.EditEqualizerConfigurationPresetsCommand.ExecuteAsync(ConfigurationsPresenter.SelectedItem as EqualizerConfiguration);
+            }
         }
 
         private async void MakeSelectedDefault(object? sender, TappedRoutedEventArgs e)

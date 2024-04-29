@@ -156,5 +156,20 @@ namespace MayazucMediaPlayer
             if (value.HasValue) return value.Value;
             else return false;
         }
+
+        /// <summary>
+        /// Normalizes the value <paramref name="m"/> measured in the range rmin..rmax to the range tmin..tmax
+        /// </summary>
+        /// <param name="m">the value to normalize</param>
+        /// <param name="rmin">the lower end of the values that m can take</param>
+        /// <param name="rmax">the upper end of the values that m can take</param>
+        /// <param name="tmin">the lower end of the new range to normalize to</param>
+        /// <param name="tmax">the upper end of the new range to normalize to</param>
+        /// <returns></returns>
+        public static int NormalizeValue(int m, float rmin, float rmax, float tmin, float tmax)
+        {
+            var result = (tmax - tmin) * ((m - rmin) / (rmax - rmin)) + tmin;
+            return (int)Math.Floor(result);
+        }
     }
 }

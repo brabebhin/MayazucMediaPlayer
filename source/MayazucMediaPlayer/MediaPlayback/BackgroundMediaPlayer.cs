@@ -905,8 +905,9 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 var metadata = await currentPlaybackData.GetMetadataAsync();
                 var currentConfig = EqualizerService.GetCurrentEqualizerConfig();
-                StringComparer comparer = StringComparer.InvariantCultureIgnoreCase;
-                var targetPreset = currentConfig.Presets.FirstOrDefault(x => comparer.Equals(x.MetadataAssociationValue, metadata.Genre));
+                var metadataValues = metadata.JoinedMetadata().Values.ToList();
+                
+                var targetPreset = currentConfig.Presets.FirstOrDefault(x => metadataValues.Contains(x.PresetName, StringComparer.InvariantCultureIgnoreCase));
                 string presetName = "default";
 
                 if (targetPreset == null)
@@ -1570,11 +1571,11 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 List<AudioEqualizerPreset> presets = new List<AudioEqualizerPreset>(configuration.Presets);
                 presets.Add(preset);
-                configuration.SaveToFileAsync();
                 await DispatcherUiThread.EnqueueAsync(() =>
                 {
                     configuration.SetPresets(presets);
                 });
+                configuration.SaveToFileAsync();
             });
         }
 
