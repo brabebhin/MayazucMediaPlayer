@@ -12,7 +12,11 @@
     x:Name="RootPage">
     <UserControl.Resources>
         <DataTemplate x:Key="MusicItemDataTemplate">
-            <Grid Margin="2" BorderBrush="DarkGray" BorderThickness="0, 0, 0, 1">
+            <Grid Margin="2" CornerRadius="8"
+                    Padding="12"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Command="{Binding ElementName=RootPage, Path = DataContext.PlayFileCommand}" CommandParameter="{Binding}" Text="Play"/>
@@ -66,15 +70,14 @@
                     <TextBlock Text="{Binding DisplayName}" x:Name="tbFileName" Style="{ThemeResource BodyStrongTextBlockStyle}" />
                 </StackPanel>
                 <Grid Grid.Column="3">
-                    <TextBlock  ToolTipService.ToolTip="Artists" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{Binding Metadata.Artist, Converter={StaticResource VisibilityNullConverter}}" Text="{Binding Metadata.Artist}"/>
+                    <TextBlock  MaxLines="1"  ToolTipService.ToolTip="{Binding Metadata.Artist}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{Binding Metadata.Artist, Converter={StaticResource VisibilityNullConverter}}" Text="{Binding Metadata.Artist}"/>
                 </Grid>
                 <Grid Grid.Column="5">
-                    <TextBlock  ToolTipService.ToolTip="Album" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{Binding Metadata.Album, Converter={StaticResource VisibilityNullConverter}}" Text="{Binding Metadata.Album}"/>
+                    <TextBlock MaxLines="1"  ToolTipService.ToolTip="{Binding Metadata.Album}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{Binding Metadata.Album, Converter={StaticResource VisibilityNullConverter}}" Text="{Binding Metadata.Album}"/>
                 </Grid>
                 <Grid Grid.Column="7">
-                    <TextBlock ToolTipService.ToolTip="Genres" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap"  Visibility="{Binding Metadata.Genre, Converter={StaticResource VisibilityNullConverter}}" Text="{Binding Metadata.Genre}"/>
+                    <TextBlock MaxLines="1"  ToolTipService.ToolTip="{Binding Metadata.Genre}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap"  Visibility="{Binding Metadata.Genre, Converter={StaticResource VisibilityNullConverter}}" Text="{Binding Metadata.Genre}"/>
                 </Grid>
-                <TextBlock Text="{Binding Path}" Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.ColumnSpan="7" Grid.Column="0" Margin="0, 4, 0, 2" />
 
                 <Button Flyout="{StaticResource ItemMenuFlyout}" Background="Transparent" BorderBrush="Transparent" Grid.Row="0" Grid.Column="8" Grid.RowSpan="2">
                     <Button.Content>
@@ -85,7 +88,11 @@
         </DataTemplate>
 
         <DataTemplate x:Key="VideoPlaylistItemDataTemplate">
-            <Grid Margin="2"  BorderBrush="DarkGray" BorderThickness="0, 0, 0, 1">
+            <Grid Margin="2"  CornerRadius="8"
+                    Padding="12"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"> 
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Command="{Binding ElementName=RootPage, Path = DataContext.PlayFileCommand}" CommandParameter="{Binding}" Text="Play"/>
@@ -219,7 +226,7 @@
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
-            <controls:SearchBar  Visibility="{Binding IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{Binding CanSearch}" SearchView="{Binding FilterCollectionView}"></controls:SearchBar>
+            <controls:SearchBar  Visibility="{Binding IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{Binding CanSearch}" SearchView="{Binding FilterCollectionView}" Margin="16, 0, 16, 10"></controls:SearchBar>
         </Grid>
         <ListView  
                     ItemsSource="{Binding FilterCollectionView}"

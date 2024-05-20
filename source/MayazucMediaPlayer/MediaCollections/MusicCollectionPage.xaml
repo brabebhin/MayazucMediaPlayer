@@ -18,22 +18,7 @@
         </Grid.RowDefinitions>
    
         <StackPanel Grid.Row="0">
-            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="2" Text="Can't find your files? Add them to the music library"/>
 
-            <CommandBar Margin="2" DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Add folder to music library" Click="AddFolderToMusicLibrary">
-                    <AppBarButton.Icon>
-                        <SymbolIcon Symbol="Add" Foreground="CornflowerBlue"></SymbolIcon>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Refresh" Click="RefreshVideoLibrary">
-                    <AppBarButton.Icon>
-                        <SymbolIcon Symbol="Refresh"></SymbolIcon>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarSeparator></AppBarSeparator>
-                
-            </CommandBar>
         </StackPanel>
         <controls:FileManagementControl x:Name="fileManagementControl" Grid.Row="1" PlaceHolderText="This is where the music collection will show up. You can play files or create playlists"></controls:FileManagementControl>
     </Grid>

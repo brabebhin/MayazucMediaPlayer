@@ -19,40 +19,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
-            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="2" Text="Can't find your files? Add them to the video library"/>
-
-            <CommandBar Margin="2" DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Add folder to video library" Click="AddFolderToVideoLibrary">
-                    <AppBarButton.Icon>
-                        <SymbolIcon Symbol="Add" Foreground="CornflowerBlue"></SymbolIcon>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Refresh" Click="RefreshVideoLibrary">
-                    <AppBarButton.Icon>
-                        <SymbolIcon Symbol="Refresh"></SymbolIcon>
-                    </AppBarButton.Icon>
-                </AppBarButton>
-                <AppBarSeparator></AppBarSeparator>
-                <!--<AppBarButton Label="Artists"  ToolTipService.ToolTip="Artists"  Click="GoToCollectionCommand" CommandParameter="0" >
-                    <FontIcon  FontFamily="Segoe MDL2 Assets" Glyph="&#xE8CF;">
-                    </FontIcon>
-                </AppBarButton>
-
-                <AppBarButton  Label="Albums"   ToolTipService.ToolTip="Albums"   Click="GoToCollectionCommand" CommandParameter="1" >
-                    <FontIcon  FontFamily="Segoe MDL2 Assets" Glyph="&#xE958;">
-                    </FontIcon>
-                </AppBarButton>
-
-                <AppBarButton  Label="Genres"  ToolTipService.ToolTip="Genres"   Click="GoToCollectionCommand" CommandParameter="2" >
-                    <FontIcon  FontFamily="Segoe MDL2 Assets" Glyph="&#xE18A;">
-                    </FontIcon>
-                </AppBarButton>
-
-                <AppBarButton  Label="Songs"   ToolTipService.ToolTip="All songs"  Click="GoToCollectionCommand" CommandParameter="3" >
-                    <FontIcon  FontFamily="Segoe MDL2 Assets" Glyph="&#xE705;">
-                    </FontIcon>
-                </AppBarButton>-->
-            </CommandBar>
+   
         </StackPanel>
         <controls:FileManagementControl x:Name="fileManagementControl" Grid.Row="1" PlaceHolderText="This is where the music collection will show up. You can play files or create playlists"></controls:FileManagementControl>
     </Grid>
