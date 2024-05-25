@@ -20,6 +20,6 @@
         <StackPanel Grid.Row="0">
 
         </StackPanel>
-        <controls:FileManagementControl x:Name="fileManagementControl" Grid.Row="1" PlaceHolderText="This is where the music collection will show up. You can play files or create playlists"></controls:FileManagementControl>
+        <controls:FileManagementControl RefreshRequested="onRefreshRequested" x:Name="fileManagementControl" Grid.Row="1" PlaceHolderText="This is where the music collection will show up. You can play files or create playlists"></controls:FileManagementControl>
     </Grid>
 </base2:BasePage>

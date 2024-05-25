@@ -14,6 +14,8 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class FileManagementControl : BaseUserControl
     {
+        public event EventHandler RefreshRequested;
+
         public FileManagementControl()
         {
             InitializeComponent();
@@ -139,6 +141,11 @@ namespace MayazucMediaPlayer.Controls
         {
             var obj = (FileManagementControl)d;
             obj.ShowProgressRing = (bool)e.NewValue;
+        }
+
+        private void OnRefresh_click(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            RefreshRequested?.Invoke(this, new EventArgs());
         }
     }
 

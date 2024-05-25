@@ -19,11 +19,11 @@
         </Grid.RowDefinitions>
         
         <SwapChainPanel x:Name="VideoSwapChain"  Grid.RowSpan="2"  HorizontalAlignment="Center" VerticalAlignment="Center"></SwapChainPanel>
-        <Image HorizontalAlignment="Stretch" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
+        <Image HorizontalAlignment="Stretch" Margin="8" Grid.RowSpan="2" VerticalAlignment="Stretch" x:Name="PosterImageImage"/>
 
-        <SplitView x:Name="NowPlayingListSplitView" IsPaneOpen="{Binding ElementName=NowPlayingToggleButton, Path=IsChecked, Mode=TwoWay}" LightDismissOverlayMode="Off">
+        <SplitView x:Name="NowPlayingListSplitView" PaneBackground="#80000000" IsPaneOpen="{Binding ElementName=NowPlayingToggleButton, Path=IsChecked, Mode=TwoWay}" LightDismissOverlayMode="Off">
             <SplitView.Pane>
-                <nowplayingviews:NowPlayingList></nowplayingviews:NowPlayingList>
+                <nowplayingviews:NowPlayingList  Background="#80000000" ></nowplayingviews:NowPlayingList>
             </SplitView.Pane>
             <SplitView x:Name="MediaEffectsSplitView"  PanePlacement="Right" IsPaneOpen="{Binding ElementName=MediaEffectsToggleButton, Path=IsChecked, Mode=TwoWay}"  LightDismissOverlayMode="Off">
                 <SplitView.Pane>

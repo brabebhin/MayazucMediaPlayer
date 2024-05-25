@@ -83,7 +83,7 @@ namespace MayazucMediaPlayer.MediaCollections
             catch { }
         }
 
-        private async void RefreshVideoLibrary(object? sender, RoutedEventArgs e)
+        private async void onRefreshRequested(object sender, EventArgs e)
         {
             await RefreshMusicLibraryInternal();
         }
