@@ -7,6 +7,21 @@
     xmlns:videoEffects="using:MayazucMediaPlayer.VideoEffects"
     xmlns:converters="using:MayazucMediaPlayer.Converters">
 
+    <Style TargetType="Grid" x:Key="GridCardStyle">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
+    </Style>
+
+    <Style TargetType="StackPanel" x:Key="StackPanelCardStyle">
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+        <Setter Property="BorderBrush" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
+    </Style>
 
     <LinearGradientBrush StartPoint="0,0" x:Key="NowPlayingHighlightTrueBrush" EndPoint="1,2">
         <GradientStop Color="DeepPink" Offset="0.0" />

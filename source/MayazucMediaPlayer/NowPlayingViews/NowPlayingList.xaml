@@ -78,11 +78,7 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid  CornerRadius="8"
-                    Padding="12"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                            <Grid  Style="{StaticResource GridCardStyle}">
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"></RowDefinition>

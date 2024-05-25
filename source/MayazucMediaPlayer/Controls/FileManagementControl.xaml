@@ -12,11 +12,7 @@
     x:Name="RootPage">
     <UserControl.Resources>
         <DataTemplate x:Key="MusicItemDataTemplate">
-            <Grid Margin="2" CornerRadius="8"
-                    Padding="12"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+            <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Command="{Binding ElementName=RootPage, Path = DataContext.PlayFileCommand}" CommandParameter="{Binding}" Text="Play"/>
@@ -89,11 +85,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="VideoPlaylistItemDataTemplate">
-            <Grid Margin="2"  CornerRadius="8"
-                    Padding="12"
-                    BorderThickness="1"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"> 
+            <Grid Margin="2"  Style="{StaticResource GridCardStyle}"> 
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Command="{Binding ElementName=RootPage, Path = DataContext.PlayFileCommand}" CommandParameter="{Binding}" Text="Play"/>
