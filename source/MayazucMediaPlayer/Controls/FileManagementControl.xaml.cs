@@ -143,10 +143,26 @@ namespace MayazucMediaPlayer.Controls
             obj.ShowProgressRing = (bool)e.NewValue;
         }
 
+        public static DependencyProperty RefreshButtonVisibleProperty = DependencyProperty.Register(nameof(RefreshButtonVisible), typeof(Visibility), typeof(FileManagementControl), new PropertyMetadata((Visibility)Visibility.Collapsed, OnRefreshButtonVisibilityChanged));
+
+        private static void OnRefreshButtonVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var obj = (FileManagementControl)d;
+            obj.RefreshButtonVisible = (Visibility)e.NewValue;
+        }
+
+        public Visibility RefreshButtonVisible
+        {
+            get => btnViewRefresh.Visibility;
+            set => btnViewRefresh.Visibility = value;
+        }
+
         private void OnRefresh_click(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             RefreshRequested?.Invoke(this, new EventArgs());
         }
+
+
     }
 
     public class FileManagerDataTemplateSelector : DataTemplateSelector

@@ -22,14 +22,16 @@ namespace MayazucMediaPlayer
             bool isRedirect = DecideRedirection();
             if (!isRedirect)
             {
+                App? app = null;
                 Microsoft.UI.Xaml.Application.Start((p) =>
                 {
                     var context = new DispatcherQueueSynchronizationContext(
                         DispatcherQueue.GetForCurrentThread());
                     SynchronizationContext.SetSynchronizationContext(context);
-                    new App();
+                    app = new App();
                 });
 
+                app?.Dispose();
             }
         }
 

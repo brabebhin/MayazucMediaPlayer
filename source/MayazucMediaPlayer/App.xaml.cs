@@ -30,10 +30,12 @@ namespace MayazucMediaPlayer
         void Initialize([In] IntPtr hwnd);
     }
 
-    public class AppState
+    public class AppState: IDisposable
     {
         static readonly object lockState = new object();
         static AppState _current;
+        private bool disposedValue;
+
         public static AppState Current
         {
             get
@@ -113,13 +115,42 @@ namespace MayazucMediaPlayer
 
             return Services = serviceCollection.BuildServiceProvider();
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~AppState()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 
 
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, IDisposable
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -131,8 +162,6 @@ namespace MayazucMediaPlayer
             AppState.Current.ConfigureDependencyInjection(DispatcherQueue.GetForCurrentThread);
             SetupApplication();
         }
-
-
 
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto, PreserveSig = true, SetLastError = false)]
         public static extern IntPtr GetActiveWindow();
@@ -197,10 +226,11 @@ namespace MayazucMediaPlayer
             await m_window.FileActivate(args.Files, args.Verb);
         }
 
-        internal async Task LaunchActivateAsync(ILaunchActivatedEventArgs args)
+        internal Task LaunchActivateAsync(ILaunchActivatedEventArgs args)
         {
-
+            return Task.CompletedTask;
         }
+
 
         public XamlRoot CurrentXamlRoot()
         {
@@ -208,5 +238,37 @@ namespace MayazucMediaPlayer
         }
 
         private MainWindow m_window;
+        private bool disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    m_window?.Dispose();
+                    AppState.Current?.Dispose();
+                    // TODO: dispose managed state (managed objects)
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        ~App()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

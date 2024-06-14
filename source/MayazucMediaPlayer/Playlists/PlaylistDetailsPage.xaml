@@ -123,9 +123,7 @@
                             <Grid Width="32" Height="32" Background="{ThemeResource SystemControlBackgroundAltMediumBrush}">
 
                             </Grid>
-                            <SymbolIcon Symbol="{Binding MediaData.MediaDataTypeSymbol}">
-
-                            </SymbolIcon>
+                          
                             <Image Width="32" Height="32"  Source="{Binding ThumbnailImage}"></Image>
                         </Grid>
                         <StackPanel Grid.Column="1" Margin="2">

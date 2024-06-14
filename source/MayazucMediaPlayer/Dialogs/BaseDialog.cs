@@ -9,13 +9,10 @@ namespace MayazucMediaPlayer.Dialogs
     {
         public BaseDialog()
         {
-            if (APIContractUtilities.UniversalContract4)
-            {
-                DefaultStyleKey = typeof(BaseDialog);
-                PrimaryButtonStyle = (Style)App.CurrentInstance.Resources["DialogPrimaryButtonStyle"];
+            DefaultStyleKey = typeof(BaseDialog);
+            PrimaryButtonStyle = (Style)App.CurrentInstance.Resources["DialogPrimaryButtonStyle"];
 
-                SecondaryButtonStyle = (Style)App.CurrentInstance.Resources["DialogSecondaryButtonStyle"];
-            }
+            SecondaryButtonStyle = (Style)App.CurrentInstance.Resources["DialogSecondaryButtonStyle"];
             Loaded += McBaseDialog_Loaded;
             Unloaded += McBaseDialog_Unloaded;
             base.PrimaryButtonClick += McBaseDialog_PrimaryButtonClick;

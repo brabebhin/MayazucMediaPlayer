@@ -163,7 +163,7 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <AppBarButton Style="{StaticResource AppBarButtonStyleNoChevron}" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
+                <AppBarButton Style="{StaticResource AppBarButtonStyleNoChevron}" Visibility="Collapsed" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
                 </AppBarButton>
                 <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{Binding Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
 

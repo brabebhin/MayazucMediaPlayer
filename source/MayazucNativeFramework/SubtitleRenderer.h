@@ -14,7 +14,7 @@
 #include "SwapChainPanelHelper.h"
 
 namespace winrt::MayazucNativeFramework::implementation
-{	
+{
 	using namespace winrt::Microsoft::Graphics;
 	using namespace winrt::Microsoft::Graphics::Canvas;
 	using namespace winrt::Microsoft::Graphics::Canvas::UI::Xaml;
@@ -63,8 +63,8 @@ namespace winrt::MayazucNativeFramework::implementation
 			if (size.Unit == TimedTextUnit::Pixels) return size;
 
 			TimedTextSize returnValue = TimedTextSize();
-			returnValue.Width = size.Width * width / 100,
-				returnValue.Height = size.Height * height / 100;
+			returnValue.Width = size.Width * width / 100;
+			returnValue.Height = size.Height * height / 100;
 
 			return returnValue;
 		}
