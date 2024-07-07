@@ -31,7 +31,7 @@ namespace MayazucMediaPlayer
                     app = new App();
                 });
 
-                app?.Dispose();
+                //app?.Dispose();
             }
         }
 

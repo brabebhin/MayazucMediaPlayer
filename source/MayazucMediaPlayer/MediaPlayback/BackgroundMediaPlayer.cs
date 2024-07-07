@@ -14,6 +14,7 @@ using Microsoft.UI.Dispatching;
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -906,7 +907,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 var metadata = await currentPlaybackData.GetMetadataAsync();
                 var currentConfig = EqualizerService.GetCurrentEqualizerConfig();
                 var metadataValues = metadata.JoinedMetadata().Values.ToList();
-                
+
                 var targetPreset = currentConfig.Presets.FirstOrDefault(x => metadataValues.Contains(x.PresetName, StringComparer.InvariantCultureIgnoreCase));
                 string presetName = "default";
 
@@ -1585,7 +1586,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 return EqualizerService.GetCurrentEqualizerConfig();
             });
-            return (EqualizerConfiguration)result.Result;
+            return (EqualizerConfiguration)result.Result!;
         }
 
         public async Task AddEqualizerConfiguration(EqualizerConfiguration config)
@@ -1614,7 +1615,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 });
                 return EqualizerConfigurationDeletionResult.Success;
             });
-            return (EqualizerConfigurationDeletionResult)result.Result;
+            return (EqualizerConfigurationDeletionResult)result.Result!;
         }
 
         public Task DeletePresetFromConfiguration(EqualizerConfiguration configuration, AudioEqualizerPreset preset)
@@ -1674,6 +1675,24 @@ namespace MayazucMediaPlayer.MediaPlayback
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        public Task SetPlaybackSpeed(double v)
+        {
+            return commandDispatcher.EnqueueAsync(() =>
+            {
+                CurrentPlayer.PlaybackSession.PlaybackRate = v;
+            });
+        }
+
+        public async Task<double> GetPlaybackSpeed()
+        {
+            var result = await commandDispatcher.EnqueueAsync(() =>
+            {
+                return CurrentPlayer.PlaybackSession.PlaybackRate;
+            });
+
+            return (double)result.Result!;
         }
     }
 }

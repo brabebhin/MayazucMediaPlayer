@@ -62,7 +62,8 @@
             <converters:StreamInfoToStringConverter x:Key="StreamInfoConverter"></converters:StreamInfoToStringConverter>
             <converters:SelectionModeToBoolean x:Key="selectionModeToBoolean"></converters:SelectionModeToBoolean>
             <common:DataTemplatePicker x:Key="SettingsItemsTemplateSelector"></common:DataTemplatePicker>
-
+            <converters:MediaPlaybackSpeedSliderThumbConverter x:Key="MediaPlaybackSpeedSliderThumbConverter"></converters:MediaPlaybackSpeedSliderThumbConverter>
+            
             <DataTemplate x:Key="NavigationViewHeaderTemplate">
                 <muxc:NavigationViewItemHeader Content="{Binding Label}">
 

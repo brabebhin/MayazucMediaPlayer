@@ -36,6 +36,7 @@
 		<None Remove="Controls\MediaPlayerRenderingElement.xaml" />
 		<None Remove="Controls\MediaPlayerRenderingElement2.xaml" />
 		<None Remove="Controls\MediaProgressBarSlider.xaml" />
+		<None Remove="Controls\MTCPlaybackSpeedControl.xaml" />
 		<None Remove="Controls\SettingsItemsListView.xaml" />
 		<None Remove="Controls\VolumeControlBar.xaml" />
 		<None Remove="Help\Licenses\bzip2.txt" />
@@ -236,5 +237,13 @@
 		<Page Update="NowPlayingViews\NowPlayingManagementPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <CustomAdditionalCompileInputs Remove="Controls\MTCPlaybackSpeedControl.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Remove="Controls\MTCPlaybackSpeedControl.xaml" />
 	</ItemGroup>
 </Project>

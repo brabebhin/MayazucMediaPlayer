@@ -265,6 +265,8 @@ namespace MayazucMediaPlayer.MediaPlayback
         /// <param name="mediaData"></param>
         /// <returns></returns>
         Task SkipToQueueItem(IMediaPlayerItemSource mediaData);
+        Task SetPlaybackSpeed(double v);
+        Task<double> GetPlaybackSpeed();
     }
 
     public class NewQueueRequest

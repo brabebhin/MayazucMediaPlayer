@@ -94,9 +94,10 @@
                     <AppBarButton.Flyout>
                         <Flyout>
                             <ScrollViewer>
-                                <StackPanel HorizontalAlignment="Stretch">
+                                <StackPanel HorizontalAlignment="Stretch" Margin="24, 0, 24, 0">
                                     <local:VolumeControlBar HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="VolumeControlBarInstance"></local:VolumeControlBar>
                                     <audioeffects:AdvancedAudioSettingsPage></audioeffects:AdvancedAudioSettingsPage>
+                                    <local:MTCPlaybackSpeedControl></local:MTCPlaybackSpeedControl>
                                 </StackPanel>
                             </ScrollViewer>
                         </Flyout>

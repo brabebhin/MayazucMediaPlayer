@@ -206,7 +206,6 @@ namespace winrt::MayazucNativeFramework::implementation
 			}
 		}
 	}
-
 }
 
 
