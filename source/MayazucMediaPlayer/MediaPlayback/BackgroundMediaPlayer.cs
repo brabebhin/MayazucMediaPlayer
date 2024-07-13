@@ -267,7 +267,8 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                     if (hasVideo && unnaturalRate)
                     {
-                        await ReloadCurrentPlaybackItem(currentItem);
+                        //workaround for when not using frame server mode (winui3 ^<_>^)
+                        //await ReloadCurrentPlaybackItem(currentItem);
                     }
                     else
                     {
