@@ -36,7 +36,7 @@
         </SplitView>
 
         <Grid x:Name="TransportControlsContainer" Tapped="PreventDoubleTapped" DoubleTapped="PreventDoubleTapped" Grid.Row="1">
-            <local:CustomMediaTransportControls2 x:Name="MediaTransportControls">
+            <local:CustomMediaTransportControls2 x:Name="MediaTransportControlsInstance">
                 <local:CustomMediaTransportControls2.LeftContent>
                     <AppBarToggleButton x:Name="NowPlayingToggleButton" Style='{StaticResource ContentHighlightedAppBarToggleButton}'  Icon="List"></AppBarToggleButton>
                 </local:CustomMediaTransportControls2.LeftContent>

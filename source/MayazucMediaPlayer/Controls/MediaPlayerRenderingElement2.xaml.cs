@@ -36,6 +36,7 @@ namespace MayazucMediaPlayer.Controls
     {
         readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         ThreadPoolTimer? _fullscreenCursorTimer;
+        volatile bool isPointerOverTransportControls = false;
 
         SubtitleRenderer NativeSubtitleRenderer
         {
@@ -83,6 +84,22 @@ namespace MayazucMediaPlayer.Controls
             NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
             _ = MediaEffectsFrame.NavigateAsync(typeof(MediaEffectsPage));
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
+            MediaTransportControlsInstance.PointerEntered += MediaTransportControlsInstance_PointerEntered;
+            MediaTransportControlsInstance.PointerExited += MediaTransportControlsInstance_PointerExited;
+        }
+
+        private async void MediaTransportControlsInstance_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            await DispatcherQueue.EnqueueAsync(() => {
+                isPointerOverTransportControls = false;
+            });
+        }
+
+        private async void MediaTransportControlsInstance_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            await DispatcherQueue.EnqueueAsync(() => {
+                isPointerOverTransportControls = true;
+            });
         }
 
         private async void KeyboardInputManager_AcceleratorInvoked(object? sender, HotKeyId e)
@@ -122,13 +139,15 @@ namespace MayazucMediaPlayer.Controls
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                if (AppState.Current.MediaServiceConnector.IsPlaying() &&
-                !MediaTransportControls.UserInteracting()
+                if (AppState.Current.MediaServiceConnector.IsPlaying()
+                && !isPointerOverTransportControls 
+                && !MediaTransportControlsInstance.UserInteracting()
                 && !MediaEffectsToggleButton.IsChecked.TrueOrDefault()
-                && !NowPlayingToggleButton.IsChecked.TrueOrDefault())
+                && !NowPlayingToggleButton.IsChecked.TrueOrDefault()
+                )
                 {
                     ProtectedCursor = hiddenCursor;
-                    this.MediaTransportControls.Visibility = Visibility.Collapsed;
+                    this.MediaTransportControlsInstance.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
@@ -146,7 +165,7 @@ namespace MayazucMediaPlayer.Controls
         private void ShowMouseShowTransportControls()
         {
             this.ProtectedCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
-            this.MediaTransportControls.Visibility = Visibility.Visible;
+            this.MediaTransportControlsInstance.Visibility = Visibility.Visible;
             if (AppState.Current.MediaServiceConnector.IsPlaying())
             {
                 StartMouseTransportControlHideTimer();
@@ -359,7 +378,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void GoFullScreen_doubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            await this.MediaTransportControls.FullScreenAutoSwitch();
+            await this.MediaTransportControlsInstance.FullScreenAutoSwitch();
         }
 
         private void PreventDoubleTapped(object sender, TappedRoutedEventArgs e)
