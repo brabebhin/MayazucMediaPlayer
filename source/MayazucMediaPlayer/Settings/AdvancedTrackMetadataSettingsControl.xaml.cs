@@ -19,7 +19,7 @@ namespace MayazucMediaPlayer.Settings
                 new MetadataSourceOption(false, "Use folder hierarchy"),
             };
 
-            var metadataOptions = SettingsWrapper.MetadataOptionsUseDefault;
+            var metadataOptions = SettingsService.Instance.MetadataOptionsUseDefault;
 
             SetComboboxSourceInitialState(metadataOptions);
             MetadataSourceCombobox.SelectionChanged += MetadataSourceCombobox_SelectionChanged;
@@ -28,55 +28,55 @@ namespace MayazucMediaPlayer.Settings
             {
                 new MediaMetadataTagSourceOption("Artist / Album / {Title} (Itunes style)", ()=>
                 {
-                    SettingsWrapper.MetadataGenreIndex =0;
-                    SettingsWrapper.MetadataAlbumIndex =1;
-                    SettingsWrapper.MetadataArtistIndex =2;
+                    SettingsService.Instance.MetadataGenreIndex =0;
+                    SettingsService.Instance.MetadataAlbumIndex =1;
+                    SettingsService.Instance.MetadataArtistIndex =2;
 
                 }),
                 new MediaMetadataTagSourceOption("Artist / Genre / Album / {Title}", ()=>{
 
-                    SettingsWrapper.MetadataGenreIndex =2;
-                    SettingsWrapper.MetadataAlbumIndex =1;
-                    SettingsWrapper.MetadataArtistIndex =3;
+                    SettingsService.Instance.MetadataGenreIndex =2;
+                    SettingsService.Instance.MetadataAlbumIndex =1;
+                    SettingsService.Instance.MetadataArtistIndex =3;
 
                 }),
                 new MediaMetadataTagSourceOption("Artist / Album / Genre / {Title}", ()=>{
 
-                    SettingsWrapper.MetadataGenreIndex =1;
-                    SettingsWrapper.MetadataAlbumIndex =2;
-                    SettingsWrapper.MetadataArtistIndex =3;
+                    SettingsService.Instance.MetadataGenreIndex =1;
+                    SettingsService.Instance.MetadataAlbumIndex =2;
+                    SettingsService.Instance.MetadataArtistIndex =3;
 
                 }),
                 new MediaMetadataTagSourceOption("Album / Artist / {Title}", ()=>{
 
-                    SettingsWrapper.MetadataGenreIndex =0;
-                    SettingsWrapper.MetadataAlbumIndex =2;
-                    SettingsWrapper.MetadataArtistIndex =1;
+                    SettingsService.Instance.MetadataGenreIndex =0;
+                    SettingsService.Instance.MetadataAlbumIndex =2;
+                    SettingsService.Instance.MetadataArtistIndex =1;
 
                 }),
                 new MediaMetadataTagSourceOption("Genre / Artist / Album / {Title}", ()=>{
 
-                    SettingsWrapper.MetadataGenreIndex =3;
-                    SettingsWrapper.MetadataAlbumIndex =1;
-                    SettingsWrapper.MetadataArtistIndex =2;
+                    SettingsService.Instance.MetadataGenreIndex =3;
+                    SettingsService.Instance.MetadataAlbumIndex =1;
+                    SettingsService.Instance.MetadataArtistIndex =2;
                 }),
                 new MediaMetadataTagSourceOption("Genre / Album / Artist / {Title}", ()=>{
 
-                    SettingsWrapper.MetadataGenreIndex =3;
-                    SettingsWrapper.MetadataAlbumIndex =2;
-                    SettingsWrapper.MetadataArtistIndex =1;
+                    SettingsService.Instance.MetadataGenreIndex =3;
+                    SettingsService.Instance.MetadataAlbumIndex =2;
+                    SettingsService.Instance.MetadataArtistIndex =1;
                 }),
             };
 
             FolderHigerarchyTag.SelectionChanged += FolderHierachyTag_SelectionChanged;
-            FolderHigerarchyTag.SelectedIndex = SettingsWrapper.FolderHierarchyMetadataIndex;
+            FolderHigerarchyTag.SelectedIndex = SettingsService.Instance.FolderHierarchyMetadataIndex;
         }
 
         private void FolderHierachyTag_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selection = FolderHigerarchyTag.SelectedItem as MediaMetadataTagSourceOption;
             selection?.SetterCallback();
-            SettingsWrapper.FolderHierarchyMetadataIndex = FolderHigerarchyTag.SelectedIndex;
+            SettingsService.Instance.FolderHierarchyMetadataIndex = FolderHigerarchyTag.SelectedIndex;
         }
 
         private void SetComboboxSourceInitialState(bool metadataOptions)
@@ -89,7 +89,7 @@ namespace MayazucMediaPlayer.Settings
         {
             MetadataSourceCombobox.SelectionChanged -= MetadataSourceCombobox_SelectionChanged;
 
-            var metadataOptions = SettingsWrapper.MetadataOptionsUseDefault;
+            var metadataOptions = SettingsService.Instance.MetadataOptionsUseDefault;
             SetComboboxSourceInitialState(metadataOptions);
 
 
@@ -99,13 +99,13 @@ namespace MayazucMediaPlayer.Settings
 
         private void MetadataSourceCombobox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
-            SettingsWrapper.MetadataOptionsUseDefault = (MetadataSourceCombobox.SelectedItem as MetadataSourceOption).ExtractFromFiles;
+            SettingsService.Instance.MetadataOptionsUseDefault = (MetadataSourceCombobox.SelectedItem as MetadataSourceOption).ExtractFromFiles;
             CheckComboboxSourceState();
         }
 
         private void CheckComboboxSourceState()
         {
-            var metadataOptions = SettingsWrapper.MetadataOptionsUseDefault;
+            var metadataOptions = SettingsService.Instance.MetadataOptionsUseDefault;
             VisualStateManager.GoToState(this, metadataOptions ? "ExtratTagsFromFiles" : "UseFolderStructure", false);
         }
     }

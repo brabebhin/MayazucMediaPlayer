@@ -7,7 +7,7 @@ namespace MayazucMediaPlayer.Themes
     {
         public static ApplicationTheme? GetRequestedTheme()
         {
-            var themeIndex = SettingsWrapper.DefaultUITheme;
+            var themeIndex = SettingsService.Instance.DefaultUITheme;
             switch (themeIndex)
             {
                 default:

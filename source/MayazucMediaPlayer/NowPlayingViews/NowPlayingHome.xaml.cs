@@ -54,7 +54,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             {
                 await DispatcherQueue.EnqueueAsync(async () =>
                 {
-                    var resumePosition = SettingsWrapper.PlayerResumePosition;
+                    var resumePosition = SettingsService.Instance.PlayerResumePosition;
                     var thumbnail = await currentMds.Value.MediaData.GetThumbnailAtPositionAsync(TimeSpan.FromTicks(resumePosition));
                     MediaPlayerElementInstance.PosterSource = thumbnail.MediaThumbnailData;
                 });

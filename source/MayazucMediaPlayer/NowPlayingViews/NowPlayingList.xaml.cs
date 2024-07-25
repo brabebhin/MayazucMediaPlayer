@@ -209,7 +209,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         private async Task AddSingleItemToPlaylist(IMediaPlayerItemSource mds)
         {
             var ok = await PlaylistHelpers.AddItemsToPlaylistAsync(new IMediaPlayerItemSource[] { mds }, NowPlayingHomeViewModelInstance.PlaylistsService.Playlists);
-            if (ok.OK && SettingsWrapper.ShowConfirmationMessages)
+            if (ok.OK && SettingsService.Instance.ShowConfirmationMessages)
             {
                 PopupHelper.ShowInfoMessage($"Added {mds.Title} to {ok.Playlist.Title}", "Success!");
             }

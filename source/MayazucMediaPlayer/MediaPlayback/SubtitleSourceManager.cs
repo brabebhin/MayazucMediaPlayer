@@ -123,7 +123,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                 try
                 {
-                    if (SettingsWrapper.AutoDetectExternalSubtitle)
+                    if (SettingsService.Instance.AutoDetectExternalSubtitle)
                     {
                         var subFile = await GetExternalSubtitleFileAsync(request.FullMediaLocation);
                         if (subFile != null)
@@ -133,13 +133,13 @@ namespace MayazucMediaPlayer.MediaPlayback
                         else
                         {
                             //we have no external subtitle file, look for an internal one.
-                            if (SettingsWrapper.AutoloadInternalSubtitle)
+                            if (SettingsService.Instance.AutoloadInternalSubtitle)
                             {
                                 await LookupInternalSubtitle(PlaybackItem);
                             }
                         }
                     }
-                    else if (SettingsWrapper.AutoloadInternalSubtitle)
+                    else if (SettingsService.Instance.AutoloadInternalSubtitle)
                     {
                         await LookupInternalSubtitle(PlaybackItem);
                     }
@@ -167,7 +167,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 for (index = 0; index < subs.Count; index++)
                 {
-                    if (MediaHelperExtensions.CheckSubtitlelanguage(subs[index], SettingsWrapper.PreferredSubtitleLanguage.LanguageName))
+                    if (MediaHelperExtensions.CheckSubtitlelanguage(subs[index], SettingsService.Instance.PreferredSubtitleLanguage.LanguageName))
                     {
                         if (subsDictionary[subs[index]] == false)
                         {
@@ -207,8 +207,8 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                 if (extradata.FFmpegMediaSource != null)
                 {
-                    extradata.FFmpegMediaSource.Configuration.Subtitles.ExternalSubtitleEncoding = CharacterEncoding.AllEncodings[SettingsWrapper.FFmpegCharacterEncodingIndex];
-                    extradata.FFmpegMediaSource.Configuration.Subtitles.ExternalSubtitleAnsiEncoding = CharacterEncoding.AllEncodings[SettingsWrapper.FFmpegCharacterEncodingIndex];
+                    extradata.FFmpegMediaSource.Configuration.Subtitles.ExternalSubtitleEncoding = CharacterEncoding.AllEncodings[SettingsService.Instance.FFmpegCharacterEncodingIndex];
+                    extradata.FFmpegMediaSource.Configuration.Subtitles.ExternalSubtitleAnsiEncoding = CharacterEncoding.AllEncodings[SettingsService.Instance.FFmpegCharacterEncodingIndex];
                     var externalTracks = await extradata.FFmpegMediaSource.AddExternalSubtitleAsync(stream, externalFile.Name);
                     if (externalTracks != null)
                     {

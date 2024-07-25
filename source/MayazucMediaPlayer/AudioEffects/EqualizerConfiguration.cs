@@ -124,7 +124,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public void SetDefault()
         {
-            SettingsWrapper.EqualizerConfiguration = Name;
+            SettingsService.Instance.EqualizerConfiguration = Name;
         }
 
         public bool CompareTo(EqualizerConfiguration other, bool includePresets)

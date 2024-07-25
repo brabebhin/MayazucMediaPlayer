@@ -6,6 +6,7 @@ using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.NowPlayingViews;
 using MayazucMediaPlayer.Playlists;
 using MayazucMediaPlayer.Services;
+using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
 using MayazucMediaPlayer.Themes;
 using MayazucMediaPlayer.UserInput;
@@ -63,7 +64,7 @@ namespace MayazucMediaPlayer
             }
         }
 
-        public IServiceProvider Services { get; private set; }
+        public ServiceProvider Services { get; private set; }
 
         public HotKeyManager KeyboardInputManager
         {
@@ -77,7 +78,7 @@ namespace MayazucMediaPlayer
 
         public MusicLibraryIndexingService MusicLibraryIndexService { get; private set; } = new MusicLibraryIndexingService();
 
-        public IServiceProvider ConfigureDependencyInjection(Func<DispatcherQueue> dispatcherQueueFactory)
+        public ServiceProvider ConfigureDependencyInjection(Func<DispatcherQueue> dispatcherQueueFactory)
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton<DispatcherQueue>((sp) =>
@@ -110,7 +111,6 @@ namespace MayazucMediaPlayer
 
             serviceCollection.AddSingleton<HotKeyManager>();
 
-
             ContentDialogService.Initialize();
 
             return Services = serviceCollection.BuildServiceProvider();
@@ -124,7 +124,7 @@ namespace MayazucMediaPlayer
                 {
                     // TODO: dispose managed state (managed objects)
                 }
-
+                Services.Dispose();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
@@ -132,11 +132,11 @@ namespace MayazucMediaPlayer
         }
 
         // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~AppState()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+        ~AppState()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: false);
+        }
 
         public void Dispose()
         {
@@ -159,8 +159,14 @@ namespace MayazucMediaPlayer
         public App()
         {
             InitializeComponent();
+            UnhandledException += App_UnhandledException;
             AppState.Current.ConfigureDependencyInjection(DispatcherQueue.GetForCurrentThread);
             SetupApplication();
+        }
+
+        private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            SettingsService.Instance.SaveSettings();
         }
 
         [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto, PreserveSig = true, SetLastError = false)]
@@ -246,10 +252,10 @@ namespace MayazucMediaPlayer
             {
                 if (disposing)
                 {
-                    m_window?.Dispose();
-                    AppState.Current?.Dispose();
+                    //m_window?.Dispose();
                     // TODO: dispose managed state (managed objects)
                 }
+                AppState.Current?.Dispose();
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null

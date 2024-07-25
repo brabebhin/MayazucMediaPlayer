@@ -22,6 +22,7 @@ using Microsoft.UI.Xaml.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Media.Playback;
@@ -81,7 +82,6 @@ namespace MayazucMediaPlayer
         }
 
         public event EventHandler<bool> MediaPlayerElementFullScreenModeChanged;
-
     }
 
     /// <summary>
@@ -147,7 +147,6 @@ namespace MayazucMediaPlayer
         public MainWindow()
         {
             MainWindowingService.InitializeInstanceAsync(this);
-
             InitializeComponent();
             MinHeight = 420;
             MinWidth = 860;

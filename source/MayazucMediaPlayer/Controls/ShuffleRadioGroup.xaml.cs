@@ -24,7 +24,7 @@ namespace MayazucMediaPlayer.Controls
             shuffleModes.Add(new ShuffleModeItem(Symbol.Switch, "Shuffle disabled", false));
             cbShuffleModes.ItemsSource = shuffleModes;
             cbShuffleModes.SelectionChanged += CbShuffleModes_SelectionChanged;
-            SettingsWrapper.ShuffleModeChanged += SettingsWrapper_ShuffleModeChanged;
+            SettingsService.Instance.ShuffleModeChanged += SettingsWrapper_ShuffleModeChanged;
             LoadState();
         }
 
@@ -46,7 +46,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void ShuffleRadioGroup_Unloaded(object? sender, RoutedEventArgs e)
         {
-            SettingsWrapper.ShuffleModeChanged -= SettingsWrapper_ShuffleModeChanged;
+            SettingsService.Instance.ShuffleModeChanged -= SettingsWrapper_ShuffleModeChanged;
 
             Unloaded -= ShuffleRadioGroup_Unloaded;
         }
@@ -62,7 +62,7 @@ namespace MayazucMediaPlayer.Controls
 
             for (int i = 0; i < shuffleModes.Count; i++)
             {
-                if (shuffleModes[i].ShuffleEnabled == SettingsWrapper.ShuffleMode)
+                if (shuffleModes[i].ShuffleEnabled == SettingsService.Instance.ShuffleMode)
                 {
                     cbShuffleModes.SelectedIndex = i;
                     break;

@@ -68,7 +68,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public EqualizerConfiguration GetCurrentEqualizerConfig()
         {
-            var currentConfigurationName = SettingsWrapper.EqualizerConfiguration;
+            var currentConfigurationName = SettingsService.Instance.EqualizerConfiguration;
             var target = EqualizerConfigurations.FirstOrDefault(x => x.Name == currentConfigurationName);
             if (target == null)
             {
@@ -81,11 +81,11 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             get
             {
-                return SettingsWrapper.SelectedEqualizerPreset;
+                return SettingsService.Instance.SelectedEqualizerPreset;
             }
             set
             {
-                SettingsWrapper.SelectedEqualizerPreset = value;
+                SettingsService.Instance.SelectedEqualizerPreset = value;
                 NotifyPropertyChanged(nameof(CurrentPresetName));
             }
         }
@@ -94,11 +94,11 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             get
             {
-                return SettingsWrapper.AutomaticPresetManagement;
+                return SettingsService.Instance.AutomaticPresetManagement;
             }
             set
             {
-                SettingsWrapper.AutomaticPresetManagement = value;
+                SettingsService.Instance.AutomaticPresetManagement = value;
                 NotifyPropertyChanged(nameof(AutomaticPresetManagement));
             }
         }

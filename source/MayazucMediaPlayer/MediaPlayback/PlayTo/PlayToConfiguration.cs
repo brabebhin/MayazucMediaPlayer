@@ -8,7 +8,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
         {
             get
             {
-                return SettingsWrapper.NetworkInstanceName;
+                return SettingsService.Instance.NetworkInstanceName;
             }
         }
 

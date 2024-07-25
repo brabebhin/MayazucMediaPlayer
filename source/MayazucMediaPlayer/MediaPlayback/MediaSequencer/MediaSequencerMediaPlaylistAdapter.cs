@@ -190,7 +190,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         {
             using (IsBusy.SetBusy())
             {
-                var nextItem = await GetNextItem(SettingsWrapper.PlaybackIndex, userAction, incrementIndex);
+                var nextItem = await GetNextItem(SettingsService.Instance.PlaybackIndex, userAction, incrementIndex);
 
                 return await Start(nextItem);
             }

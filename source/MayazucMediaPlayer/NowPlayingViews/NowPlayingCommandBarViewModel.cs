@@ -96,27 +96,27 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private void ChangeRepeatMode()
         {
-            var isRepeating = SettingsWrapper.RepeatMode;
+            var isRepeating = SettingsService.Instance.RepeatMode;
             switch (isRepeating)
             {
                 case Constants.RepeatOne:
-                    SettingsWrapper.RepeatMode = Constants.RepeatNone;
+                    SettingsService.Instance.RepeatMode = Constants.RepeatNone;
 
                     break;
                 case Constants.RepeatNone:
 
-                    SettingsWrapper.RepeatMode = Constants.RepeatAll;
+                    SettingsService.Instance.RepeatMode = Constants.RepeatAll;
 
                     break;
                 case Constants.RepeatAll:
 
-                    SettingsWrapper.RepeatMode = Constants.RepeatOne;
+                    SettingsService.Instance.RepeatMode = Constants.RepeatOne;
 
                     break;
 
                 default:
 
-                    SettingsWrapper.RepeatMode = Constants.RepeatAll;
+                    SettingsService.Instance.RepeatMode = Constants.RepeatAll;
 
                     break;
 
@@ -125,15 +125,15 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private void ChangeSHuffletMode()
         {
-            var isShuffling = SettingsWrapper.ShuffleMode;
+            var isShuffling = SettingsService.Instance.ShuffleMode;
             if (isShuffling)
             {
-                SettingsWrapper.ShuffleMode = false;
+                SettingsService.Instance.ShuffleMode = false;
             }
             else
             {
 
-                SettingsWrapper.ShuffleMode = true;
+                SettingsService.Instance.ShuffleMode = true;
             }
         }
     }

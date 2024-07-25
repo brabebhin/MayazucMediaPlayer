@@ -49,11 +49,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsWrapper.AlbumArtFolderCoverName;
+                return SettingsService.Instance.AlbumArtFolderCoverName;
             }
             set
             {
-                SettingsWrapper.AlbumArtFolderCoverName = value;
+                SettingsService.Instance.AlbumArtFolderCoverName = value;
             }
         }
 
@@ -161,7 +161,7 @@ namespace MayazucMediaPlayer.Settings
                 }
             }
 
-            SettingsWrapper.AlbumArtFolderCoverName = s.folderCoverNames;
+            SettingsService.Instance.AlbumArtFolderCoverName = s.folderCoverNames;
             PopupHelper.ShowInfoMessage("Settings saved successfully.", "^_^");
 
         }

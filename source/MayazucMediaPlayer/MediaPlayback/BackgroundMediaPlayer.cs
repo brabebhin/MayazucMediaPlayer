@@ -197,13 +197,13 @@ namespace MayazucMediaPlayer.MediaPlayback
             CurrentPlayer = new MediaPlayer();
             VideoEffectsConfiguration.ConfigurationChanged += VideoEffectsConfiguration_ConfigurationChanged;
 
-            SettingsWrapper.RegisterSettingChangeCallback(nameof(SettingsWrapper.AutoPlayVideo),
-                SettingsWrapper.RegisterSettingChangeCallback(nameof(SettingsWrapper.AutoPlayMusic), async (s, e) =>
+            SettingsService.Instance.RegisterSettingChangeCallback(nameof(SettingsService.Instance.AutoPlayVideo),
+                SettingsService.Instance.RegisterSettingChangeCallback(nameof(SettingsService.Instance.AutoPlayMusic), async (s, e) =>
                 {
                     await AutoPlayChanged();
                 }));
 
-            SettingsWrapper.RegisterSettingChangeCallback(nameof(SettingsWrapper.PreventSubtitleOverlaps), (s, e) =>
+            SettingsService.Instance.RegisterSettingChangeCallback(nameof(SettingsService.Instance.PreventSubtitleOverlaps), (s, e) =>
             {
                 commandDispatcher.EnqueueAsync(() =>
                 {
@@ -211,7 +211,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     {
                         var instance = FfmpegInteropInstance;
                         if (instance != null)
-                            instance.Configuration.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsWrapper.PreventSubtitleOverlaps;
+                            instance.Configuration.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsService.Instance.PreventSubtitleOverlaps;
                     }
                     catch { }
                 });
@@ -222,7 +222,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             CurrentPlayer.IsLoopingEnabled = false;
             CurrentPlayer.AutoPlay = true;
             CurrentPlayer.IsMuted = false;
-            CurrentPlayer.AudioBalance = SettingsWrapper.AudioBalance;
+            CurrentPlayer.AudioBalance = SettingsService.Instance.AudioBalance;
             CurrentPlayer.PlaybackSession.PlaybackRateChanged += PlaybackSession_PlaybackRateChanged;
 
             controls = SystemMediaTransportControlsInterop.GetForWindow(hwnd);
@@ -236,7 +236,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             controls.ButtonPressed += Controls_ButtonPressed;
             controls.PlaybackPositionChangeRequested += Controls_PlaybackPositionChangeRequested;
 
-            if (SettingsWrapper.StopMusicOnTimerEnabled)
+            if (SettingsService.Instance.StopMusicOnTimerEnabled)
             {
                 RestartStopMusicOnTimerService();
             }
@@ -244,9 +244,9 @@ namespace MayazucMediaPlayer.MediaPlayback
             ItemBuilder = new FFmpegInteropItemBuilder(EqualizerService);
             PlaybackListAdapter = new MediaSequencerMediaPlaylistAdapter(PlaybackQueueService, ItemBuilder, CurrentPlayer, DispatcherUiThread, commandDispatcher, VideoEffectsConfiguration);
 
-            if (SettingsWrapper.PlayToEnabled) _ = StartDlnaSink();
+            if (SettingsService.Instance.PlayToEnabled) _ = StartDlnaSink();
 
-            SettingsWrapper.RegisterSettingChangeCallback(nameof(SettingsWrapper.PlayToEnabled), (s, e) =>
+            SettingsService.Instance.RegisterSettingChangeCallback(nameof(SettingsService.Instance.PlayToEnabled), (s, e) =>
             {
                 var value = (bool)s;
                 if (value)
@@ -275,7 +275,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                         await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: currentItem,
                             userAction: false,
                             changeIndex: true,
-                            currentIndex: SettingsWrapper.PlaybackIndex);
+                            currentIndex: SettingsService.Instance.PlaybackIndex);
                     }
                 }
 
@@ -318,7 +318,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         private void RestartStopMusicOnTimerService()
         {
             stopMusicOnTimerService = new StopMusicOnTimerService();
-            _ = stopMusicOnTimerService.StartService(SettingsWrapper.StopMusicOnTimerPosition);
+            _ = stopMusicOnTimerService.StartService(SettingsService.Instance.StopMusicOnTimerPosition);
         }
 
         private void VideoEffectsConfiguration_ConfigurationChanged(object? sender, string e)
@@ -356,8 +356,8 @@ namespace MayazucMediaPlayer.MediaPlayback
                  CurrentPlayer.Pause();
                  if (!CurrentPlaybackDataIsDlna())
                  {
-                     SettingsWrapper.ResumePositionDlnaIntrerupt = CurrentPlayer.PlaybackSession.Position.Ticks;
-                     SettingsWrapper.PlaybackIndexDlnaIntrerupt = SettingsWrapper.PlaybackIndex;
+                     SettingsService.Instance.ResumePositionDlnaIntrerupt = CurrentPlayer.PlaybackSession.Position.Ticks;
+                     SettingsService.Instance.PlaybackIndexDlnaIntrerupt = SettingsService.Instance.PlaybackIndex;
                  }
                  PlaybackListAdapter = e.PlaybackSource;
                  try
@@ -365,7 +365,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                      //ShiftTracks: false, userAction: true, incrementIndex: true, autoPlayTrack: true
                      if (CurrentPlayer.Source == null)
                      {
-                         if (!await PlaybackListAdapter.Start(SettingsWrapper.PlaybackIndex))
+                         if (!await PlaybackListAdapter.Start(SettingsService.Instance.PlaybackIndex))
                          {
                              throw new InvalidOperationException();
                          }
@@ -410,7 +410,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 stopMusicOnTimerService?.StopService();
 
-                if (SettingsWrapper.StopMusicOnTimerEnabled)
+                if (SettingsService.Instance.StopMusicOnTimerEnabled)
                 {
                     RestartStopMusicOnTimerService();
                 }
@@ -438,11 +438,11 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                 if (CanSeekToPosition(position, CurrentPlaybackItem))
                 {
-                    bool autoPlayAfterSeek = SettingsWrapper.StartPlaybackAfterSeek;
+                    bool autoPlayAfterSeek = SettingsService.Instance.StartPlaybackAfterSeek;
                     await AwaitForSeek(position);
                     if (autoPlayAfterSeek)
                     {
-                        SettingsWrapper.PlayerResumePosition = 0;
+                        SettingsService.Instance.PlayerResumePosition = 0;
                         CurrentPlayer.Play();
                     }
                 }
@@ -494,7 +494,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         /// <summary>
         /// Strategy: skip to given index
         /// 
-        /// The index to skip is set by SettingsWrapper.PlaybackIndex. We might want to fix that
+        /// The index to skip is set by SettingsWrapper.Instance.PlaybackIndex. We might want to fix that
         /// </summary>
         /// <returns></returns>
         private async Task SignalSkipToIndexInternal(bool autoPlay, int index)
@@ -504,8 +504,8 @@ namespace MayazucMediaPlayer.MediaPlayback
                 return;
             }
 
-            SettingsWrapper.PlaybackIndex = index;
-            SettingsWrapper.PlayerResumePosition = 0;
+            SettingsService.Instance.PlaybackIndex = index;
+            SettingsService.Instance.PlayerResumePosition = 0;
 
             try
             {
@@ -513,7 +513,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 {
                     var eventData = await WaitForItemChangedOrFail(async () =>
                     {
-                        if (!await PlaybackListAdapter.Start(SettingsWrapper.PlaybackIndex))
+                        if (!await PlaybackListAdapter.Start(SettingsService.Instance.PlaybackIndex))
                         {
                             throw new InvalidOperationException();
                         }
@@ -557,7 +557,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 return;
             }
 
-            SettingsWrapper.PlayerResumePosition = 0;
+            SettingsService.Instance.PlayerResumePosition = 0;
 
             var speedFactor = CurrentPlayer.PlaybackSession.PlaybackRate;
             if (speedFactor < 1)
@@ -567,7 +567,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
             if (await PlaybackListAdapter.CanGoBack() && CurrentPlayer.PlaybackSession.Position.Ticks < TimeSpan.FromSeconds(5 * speedFactor).Ticks)
             {
-                var currentIndex = SettingsWrapper.PlaybackIndex;
+                var currentIndex = SettingsService.Instance.PlaybackIndex;
                 var skipIndex = currentIndex == 0 ? PlaybackQueueService.NowPlayingBackStore.Count - 1 : currentIndex - 1;
                 await SignalSkipToIndexInternal(true, skipIndex);
             }
@@ -598,7 +598,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 {
                     if (CurrentPlayer.Source == null)
                     {
-                        if (!await PlaybackListAdapter.Start(SettingsWrapper.PlaybackIndex))
+                        if (!await PlaybackListAdapter.Start(SettingsService.Instance.PlaybackIndex))
                         {
                             throw new InvalidOperationException();
                         }
@@ -669,7 +669,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private async Task ReloadCurrentItem()
         {
-            await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: false, currentIndex: SettingsWrapper.PlaybackIndex);
+            await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: false, currentIndex: SettingsService.Instance.PlaybackIndex);
             await PlaybackListAdapter.MoveToNextItem(CurrentItem: CurrentPlaybackItem, userAction: true, changeIndex: false);
         }
 
@@ -701,11 +701,11 @@ namespace MayazucMediaPlayer.MediaPlayback
 
             CurrentPlayer.Pause();
 
-            SettingsWrapper.PlayerResumePosition = 0;
+            SettingsService.Instance.PlayerResumePosition = 0;
 
-            if (SettingsWrapper.RepeatMode == Constants.RepeatOne)
+            if (SettingsService.Instance.RepeatMode == Constants.RepeatOne)
             {
-                await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsWrapper.PlaybackIndex);
+                await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsService.Instance.PlaybackIndex);
             }
             try
             {
@@ -714,7 +714,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     //true true true true               
                     if (CurrentPlayer.Source == null)
                     {
-                        if (!await PlaybackListAdapter.Start(SettingsWrapper.PlaybackIndex))
+                        if (!await PlaybackListAdapter.Start(SettingsService.Instance.PlaybackIndex))
                         {
                             throw new InvalidOperationException();
                         }
@@ -768,8 +768,8 @@ namespace MayazucMediaPlayer.MediaPlayback
                 if (forceStart)
                 {
                     ResumeRequest request = new ResumeRequest();
-                    request.StartTime = SettingsWrapper.PlayerResumePosition;
-                    request.StartIndex = SettingsWrapper.PlaybackIndex;
+                    request.StartTime = SettingsService.Instance.PlayerResumePosition;
+                    request.StartIndex = SettingsService.Instance.PlaybackIndex;
                     await ResumeAsyncInternal(request, true);
                 }
             }
@@ -781,7 +781,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 try
                 {
-                    SettingsWrapper.PlayerResumePosition = CurrentPlayer.PlaybackSession.Position.Ticks;
+                    SettingsService.Instance.PlayerResumePosition = CurrentPlayer.PlaybackSession.Position.Ticks;
                     CurrentPlayer.Pause();
                     CurrentPlayer.Source = null;
                     DestroySource();
@@ -812,7 +812,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private async Task HandleMediaOpened(MediaPlayer sender, MayazucCurrentMediaPlaybackItemChangedEventArgs args)
         {
-            if (!SettingsWrapper.KeepPlaybackRateBetweenTracks && CurrentPlayer.PlaybackSession != null)
+            if (!SettingsService.Instance.KeepPlaybackRateBetweenTracks && CurrentPlayer.PlaybackSession != null)
             {
                 CurrentPlayer.PlaybackSession.PlaybackRate = 1;
             }
@@ -820,7 +820,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             if (newItem != null)
             {
                 var extraProperties = newItem.GetExtradata();
-                SettingsWrapper.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(extraProperties.MediaPlayerItemSource);
+                SettingsService.Instance.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(extraProperties.MediaPlayerItemSource);
                 var ffmpegInteropInstance = extraProperties.FFmpegMediaSource;
                 if (ffmpegInteropInstance != null)
                 {
@@ -833,7 +833,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 CurrentPlaybackData = currentPlaybackData;
                 await HandleMetadataChanged(args.MediaPlaybackListAdapter, newItem, currentPlaybackData);
 
-                SettingsWrapper.PlayerResumePosition = 0;
+                SettingsService.Instance.PlayerResumePosition = 0;
 
                 var eventData = new NewMediaPlaybackItemOpenedEventArgs(null, newItem, extraProperties);
                 var payload = new MediaOpenedEventArgs(MediaOpenedEventReason.MediaPlaybackListItemChanged, eventData);
@@ -855,16 +855,16 @@ namespace MayazucMediaPlayer.MediaPlayback
             RestoreAdaptiveEqualization();
             await SetAdaptiveEqualization(currentPlaybackData);
 
-            SignalResetFilteringInternal(SettingsWrapper.EqualizerEnabled, MediaPlaybackListAdapter);
+            SignalResetFilteringInternal(SettingsService.Instance.EqualizerEnabled, MediaPlaybackListAdapter);
             controls.DisplayUpdater.CopyPropertiesFrom(currentMediaPlaybackItem);
             controls.DisplayUpdater.Update();
         }
 
         private void HandleForcedSubtitles(MediaPlaybackItem e, FFmpegMediaSource FfmpegInteropInstance)
         {
-            if (SettingsWrapper.AutoloadForcedSubtitles)
+            if (SettingsService.Instance.AutoloadForcedSubtitles)
             {
-                var language = SettingsWrapper.PreferredSubtitleLanguage.LanguageName;
+                var language = SettingsService.Instance.PreferredSubtitleLanguage.LanguageName;
                 for (int i = 0; i < FfmpegInteropInstance.SubtitleStreams.Count; i++)
                 {
                     var subStream = FfmpegInteropInstance.SubtitleStreams[i];
@@ -902,7 +902,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         private async Task SetAdaptiveEqualization(IMediaPlayerItemSource currentPlaybackData)
         {
             GetCurrentEqualizerValues();
-            var useAdaptive = SettingsWrapper.AutomaticPresetManagement;
+            var useAdaptive = SettingsService.Instance.AutomaticPresetManagement;
             if (useAdaptive)
             {
                 var metadata = await currentPlaybackData.GetMetadataAsync();
@@ -928,13 +928,13 @@ namespace MayazucMediaPlayer.MediaPlayback
                     }
                 }
 
-                SettingsWrapper.SelectedEqualizerPreset = presetName;
+                SettingsService.Instance.SelectedEqualizerPreset = presetName;
             }
         }
 
         void RestoreAdaptiveEqualization()
         {
-            var useAdaptive = SettingsWrapper.AutomaticPresetManagement;
+            var useAdaptive = SettingsService.Instance.AutomaticPresetManagement;
             bool canRestore = true;
             var currentConfig = EqualizerService.GetCurrentEqualizerConfig();
             if (savedAdaptiveValues == null) return;
@@ -959,7 +959,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     }
                 }
 
-                SettingsWrapper.SelectedEqualizerPreset = currentPresetName;
+                SettingsService.Instance.SelectedEqualizerPreset = currentPresetName;
             }
         }
 
@@ -967,10 +967,10 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             if (userAction == false)
             {
-                if (SettingsWrapper.StopMusicOnTimerEnabled)
+                if (SettingsService.Instance.StopMusicOnTimerEnabled)
                 {
                     var dtNow = DateTime.Now.TimeOfDay;
-                    var stopPosition = SettingsWrapper.StopMusicOnTimerPosition;
+                    var stopPosition = SettingsService.Instance.StopMusicOnTimerPosition;
                     if (dtNow > stopPosition && dtNow < stopPosition.Add(TimeSpan.FromSeconds(25)))
                     {
                         return true;
@@ -1095,7 +1095,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     return;
                 }
 
-                await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: userAction, changeIndex: true, currentIndex: SettingsWrapper.PlaybackIndex);
+                await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: userAction, changeIndex: true, currentIndex: SettingsService.Instance.PlaybackIndex);
 
             });
         }
@@ -1168,7 +1168,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     await PlayToRecieverInstance.DisposeAsync();
                     PlayToRecieverInstance.SourceReady -= PlayToRecieverInstance_SourceReady;
                     PlayToRecieverInstance = null;
-                    SettingsWrapper.PlayToEnabled = false;
+                    SettingsService.Instance.PlayToEnabled = false;
                 }
             }
         }
@@ -1185,12 +1185,12 @@ namespace MayazucMediaPlayer.MediaPlayback
                 //check if operation is valid
                 if (CurrentPlaybackDataIsDlna())
                 {
-                    SettingsWrapper.PlayerResumePosition = SettingsWrapper.ResumePositionDlnaIntrerupt;
-                    SettingsWrapper.PlaybackIndex = SettingsWrapper.PlaybackIndexDlnaIntrerupt;
+                    SettingsService.Instance.PlayerResumePosition = SettingsService.Instance.ResumePositionDlnaIntrerupt;
+                    SettingsService.Instance.PlaybackIndex = SettingsService.Instance.PlaybackIndexDlnaIntrerupt;
 
                     var request = new ResumeRequest();
-                    request.StartIndex = SettingsWrapper.PlaybackIndexDlnaIntrerupt;
-                    request.StartTime = SettingsWrapper.ResumePositionDlnaIntrerupt;
+                    request.StartIndex = SettingsService.Instance.PlaybackIndexDlnaIntrerupt;
+                    request.StartTime = SettingsService.Instance.ResumePositionDlnaIntrerupt;
 
                     DestroySource();
                     await PlaybackQueueService.LoadNowPlaying();
@@ -1254,7 +1254,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 return;
             }
 
-            SettingsWrapper.PlaybackIndex = request.StartIndex;
+            SettingsService.Instance.PlaybackIndex = request.StartIndex;
 
             var eventData = await WaitForItemChangedOrFail(async () =>
             {
@@ -1274,7 +1274,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 }
                 else
                 {
-                    if (!await PlaybackListAdapter.Start(SettingsWrapper.PlaybackIndex))
+                    if (!await PlaybackListAdapter.Start(SettingsService.Instance.PlaybackIndex))
                     {
                         throw new InvalidOperationException();
                     }
@@ -1360,13 +1360,13 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             return commandDispatcher.EnqueueAsync(async () =>
             {
-                var oldIndex = SettingsWrapper.PlaybackIndex;
+                var oldIndex = SettingsService.Instance.PlaybackIndex;
 
                 await DispatcherUiThread.EnqueueAsync(async () =>
                 {
                     var newIndex = await PlaybackQueueService.RandomizeNowPlayingAsync(oldIndex);
 
-                    SettingsWrapper.PlaybackIndex = newIndex;
+                    SettingsService.Instance.PlaybackIndex = newIndex;
 
                 });
 
@@ -1406,13 +1406,13 @@ namespace MayazucMediaPlayer.MediaPlayback
                 // there is already a playback queue
                 var toAdd = FilesToAdd.ToArray();
                 await PlaybackQueueService.AddToNowPlayingAsync(toAdd, index);
-                var signalReload = SettingsWrapper.PlaybackIndex == PlaybackQueueService.NowPlayingBackStore.Count - 1;
+                var signalReload = SettingsService.Instance.PlaybackIndex == PlaybackQueueService.NowPlayingBackStore.Count - 1;
 
                 if (signalReload)
                 {
-                    if (SettingsWrapper.RepeatMode != Constants.RepeatOne)
+                    if (SettingsService.Instance.RepeatMode != Constants.RepeatOne)
                     {
-                        await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsWrapper.PlaybackIndex);
+                        await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsService.Instance.PlaybackIndex);
                     }
                 }
             }
@@ -1422,13 +1422,13 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             return commandDispatcher.EnqueueAsync(async () =>
             {
-                var currentIndex = SettingsWrapper.PlaybackIndex;
+                var currentIndex = SettingsService.Instance.PlaybackIndex;
                 var playbackSize = PlaybackQueueService.NowPlayingBackStore.Count;
                 int startIndex = PlaybackSequenceService.AddToNowPlayingAtTheEnd;
                 if (currentIndex >= 0 || currentIndex < playbackSize - 1)
                     startIndex = currentIndex + 1;
                 await AddToNowPlayingInternal(FilesToAdd, startIndex);
-                await _playbackSource.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsWrapper.PlaybackIndex);
+                await _playbackSource.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsService.Instance.PlaybackIndex);
 
                 if (CurrentPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.None)
                     await SignalSkipNextInternal();
@@ -1448,7 +1448,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             //add files to now playing in back model
             var toAdd = FilesToAdd.ToArray();
 
-            SettingsWrapper.PlaybackIndex = 0;
+            SettingsService.Instance.PlaybackIndex = 0;
 
             await PlaybackQueueService.EnqueueNewPlaylistAsync(toAdd.ToArray());
         }
@@ -1458,7 +1458,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             return commandDispatcher.EnqueueAsync(async () =>
             {
                 var index = PlaybackQueueService.NowPlayingBackStore.IndexOf(mds);
-                bool isPlaying = index == SettingsWrapper.PlaybackIndex;
+                bool isPlaying = index == SettingsService.Instance.PlaybackIndex;
                 var count = PlaybackQueueService.NowPlayingBackStore.Count;
                 var newIndex = index - 1;
                 if (newIndex < 0)
@@ -1467,7 +1467,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 }
                 //if (isPlaying)
                 //{
-                //    SettingsWrapper.PlaybackIndex = newIndex;
+                //    SettingsWrapper.Instance.PlaybackIndex = newIndex;
                 //}
 
                 await PlaybackQueueService.SwitchItemInPlaybackQueue(index, newIndex);
@@ -1483,9 +1483,9 @@ namespace MayazucMediaPlayer.MediaPlayback
                 return;
             }
             // Ensure the stored playback index is the playback index of the current media data
-            SettingsWrapper.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(CurrentPlaybackData);
+            SettingsService.Instance.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(CurrentPlaybackData);
 
-            await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsWrapper.PlaybackIndex);
+            await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsService.Instance.PlaybackIndex);
         }
         public Task StartPlaybackFromIndexAndPosition(IEnumerable<IMediaPlayerItemSource> FilesToAdd, int index, long position)
         {
@@ -1508,9 +1508,9 @@ namespace MayazucMediaPlayer.MediaPlayback
             await ResetToLocalPlaybackAdapter();
             //notify people that the playback type changed to local
 
-            SettingsWrapper.PlayerResumePosition = position;
-            SettingsWrapper.PlaybackIndex = index;
-            SettingsWrapper.PlayerResumePath = FilesToAdd.ElementAt(index).MediaPath;
+            SettingsService.Instance.PlayerResumePosition = position;
+            SettingsService.Instance.PlaybackIndex = index;
+            SettingsService.Instance.PlayerResumePath = FilesToAdd.ElementAt(index).MediaPath;
             ResumeRequest request = new ResumeRequest();
             request.StartIndex = index;
             request.StartTime = position;
@@ -1528,11 +1528,11 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                 if (t != null)
                 {
-                    SettingsWrapper.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(t);
+                    SettingsService.Instance.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(t);
                 }
                 else
                 {
-                    //PlaybackQueueService.NowPlayingBackStore[SettingsWrapper.PlaybackIndex].MediaData.IsInPlayback = true;
+                    //PlaybackQueueService.NowPlayingBackStore[SettingsWrapper.Instance.PlaybackIndex].MediaData.IsInPlayback = true;
                 }
 
                 await HandleNowPlayingShuffle();
@@ -1544,12 +1544,12 @@ namespace MayazucMediaPlayer.MediaPlayback
             return commandDispatcher.EnqueueAsync(async () =>
             {
                 var index = PlaybackQueueService.NowPlayingBackStore.IndexOf(mds);
-                bool isPlaying = index == SettingsWrapper.PlaybackIndex;
+                bool isPlaying = index == SettingsService.Instance.PlaybackIndex;
                 var count = PlaybackQueueService.NowPlayingBackStore.Count;
                 var newIndex = (index + 1) % count;
                 //if (isPlaying)
                 //{
-                //    SettingsWrapper.PlaybackIndex = newIndex;
+                //    SettingsWrapper.Instance.PlaybackIndex = newIndex;
                 //}
 
                 await PlaybackQueueService.SwitchItemInPlaybackQueue(index, newIndex);

@@ -38,13 +38,13 @@ namespace MayazucMediaPlayer.AudioEffects
             if (cbSavedPresets.SelectedIndex != -1)
             {
                 AudioEqualizerPreset selectedPreset = cbSavedPresets.SelectedItem as AudioEqualizerPreset;
-                SettingsWrapper.SelectedEqualizerPreset = (cbSavedPresets.SelectedItem as AudioEqualizerPreset).PresetName;
+                SettingsService.Instance.SelectedEqualizerPreset = (cbSavedPresets.SelectedItem as AudioEqualizerPreset).PresetName;
                 SetSelectedPreset(selectedPreset, false);
                 changePreset = false;
             }
             else
             {
-                SettingsWrapper.SelectedEqualizerPreset = "custom";
+                SettingsService.Instance.SelectedEqualizerPreset = "custom";
             }
         }
 
@@ -55,7 +55,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async void handler(ThreadPoolTimer timer)
         {
-            await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsWrapper.EqualizerEnabled);
+            await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsService.Instance.EqualizerEnabled);
             if (!changePreset)
             {
                 changePreset = true;
@@ -75,7 +75,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
             DataContext = Model;
 
-            KillSwitch.IsOn = SettingsWrapper.EqualizerEnabled;
+            KillSwitch.IsOn = SettingsService.Instance.EqualizerEnabled;
             KillSwitch.Toggled += KillSwitchToggle;
 
             Model.LoadState();
@@ -91,7 +91,7 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             await DispatcherQueue.EnqueueAsync(() =>
             {
-                var presetName = SettingsWrapper.SelectedEqualizerPreset;
+                var presetName = SettingsService.Instance.SelectedEqualizerPreset;
                 var saved = Model.AvailablePresets.FirstOrDefault
                     (x => x.PresetName == presetName);
                 if (saved != null)
@@ -124,7 +124,7 @@ namespace MayazucMediaPlayer.AudioEffects
                     if (ObserveUserActionEvent)
                     {
                         cbSavedPresets.SelectedIndex = -1;
-                        SettingsWrapper.SelectedEqualizerPreset = "custom";
+                        SettingsService.Instance.SelectedEqualizerPreset = "custom";
                     }
 
                     timer = ThreadPoolTimer.CreateTimer(handler, TimeSpan.FromSeconds(equalizerResetDelay));
@@ -134,7 +134,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async void KillSwitchToggle(object? sender, RoutedEventArgs e)
         {
-            SettingsWrapper.EqualizerEnabled = KillSwitch.IsOn;
+            SettingsService.Instance.EqualizerEnabled = KillSwitch.IsOn;
             Model.EnableContexts(KillSwitch.IsOn);
             if (!KillSwitch.IsOn)
             {

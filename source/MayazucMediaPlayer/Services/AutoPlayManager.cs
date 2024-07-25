@@ -40,7 +40,7 @@ namespace MayazucMediaPlayer.Services
         {
             get
             {
-                if (SettingsWrapper.AutoPlayMusic || SettingsWrapper.AutoPlayVideo)
+                if (SettingsService.Instance.AutoPlayMusic || SettingsService.Instance.AutoPlayVideo)
                 {
                     return CurrentAutoPlayFolder != null;
                 }
@@ -72,7 +72,7 @@ namespace MayazucMediaPlayer.Services
 
                     LoadedFile = file;
                     var parentFolder = file.Directory;
-                    bool aMusic = SettingsWrapper.AutoPlayMusic, aVideo = SettingsWrapper.AutoPlayVideo;
+                    bool aMusic = SettingsService.Instance.AutoPlayMusic, aVideo = SettingsService.Instance.AutoPlayVideo;
                     if (parentFolder != null)
                     {
                         //create 2 file queries, one for the files in the auto play queue

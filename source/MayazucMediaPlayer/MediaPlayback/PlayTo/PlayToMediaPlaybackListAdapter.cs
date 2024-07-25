@@ -159,7 +159,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
 
         private async void CurrentPlayer_MediaOpened(MediaPlayer sender, object args)
         {
-            SettingsWrapper.PlaybackIndex = 0;
+            SettingsService.Instance.PlaybackIndex = 0;
             await PlaybackServiceInstance.EnqueueNewPlaylistAsync(new IMediaPlayerItemSource[] { CurrentPlaybackItem?.GetExtradata().MediaPlayerItemSource });
             CurrentPlaybackItemChanged?.Invoke(sender, new MayazucCurrentMediaPlaybackItemChangedEventArgs(CurrentPlaybackItem, MediaPlaybackItemChangedReason.InitialItem, this));
         }

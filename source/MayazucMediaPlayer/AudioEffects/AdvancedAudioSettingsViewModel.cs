@@ -31,11 +31,11 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             get
             {
-                return SettingsWrapper.AudioBalance;
+                return SettingsService.Instance.AudioBalance;
             }
             set
             {
-                SettingsWrapper.AudioBalance = value;
+                SettingsService.Instance.AudioBalance = value;
                 NotifyPropertyChanged(nameof(AudioBalanceValue));
                 AppState.Current.MediaServiceConnector.NotifyAudioBalanceChanged(value);
             }

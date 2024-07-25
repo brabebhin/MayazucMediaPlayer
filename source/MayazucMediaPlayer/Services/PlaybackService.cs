@@ -53,7 +53,7 @@ namespace MayazucMediaPlayer.Services
 
         public async Task HandleMediaOpened(Windows.Media.Playback.MediaPlayer sender, MediaOpenedEventArgs args)
         {
-            var index = SettingsWrapper.PlaybackIndex;
+            var index = SettingsService.Instance.PlaybackIndex;
 
             if (args.Reason == MediaOpenedEventReason.MediaPlaybackListItemChanged)
             {
@@ -84,7 +84,7 @@ namespace MayazucMediaPlayer.Services
             }
             else
             {
-                var index = SettingsWrapper.PlaybackIndex;
+                var index = SettingsService.Instance.PlaybackIndex;
 
                 var storedCount = NowPlayingBackStore.Count;
 

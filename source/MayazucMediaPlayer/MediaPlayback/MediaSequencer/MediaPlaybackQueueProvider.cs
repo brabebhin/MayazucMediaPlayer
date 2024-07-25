@@ -30,7 +30,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             var newIndex = currentIndx;
             if (incrementIndex)
             {
-                AutoRepeatMode = SettingsWrapper.RepeatMode;
+                AutoRepeatMode = SettingsService.Instance.RepeatMode;
                 var repeatMode = GetRepeatMode(AutoRepeatMode);
                 var strategy = new NextMediaStrategyKey(userAction, Shuffle, repeatMode);
                 newIndex = await nextIndexStrategies[strategy].Invoke(currentIndx);

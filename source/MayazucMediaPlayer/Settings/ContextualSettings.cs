@@ -21,7 +21,7 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Automatically clear the file picker view when queuing files"
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.AutoClearFilePicker))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoClearFilePicker))
             {
                 Description = "Auto clear file selection view",
             });
@@ -31,7 +31,7 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Use only cached album art in file + folder, music and video pages. Disabling this option may reduce performance."
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.OnlyUseCacheInFilePicker))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.OnlyUseCacheInFilePicker))
             {
                 Description = "Only use album art cache for files views",
             });
@@ -50,12 +50,12 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Automatically enqueue the next music or video file in the last track's folder"
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.AutoPlayMusic))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoPlayMusic))
             {
                 Description = "Auto play music",
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.AutoPlayVideo))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoPlayVideo))
             {
                 Description = "Auto play video",
             });
@@ -71,7 +71,7 @@ namespace MayazucMediaPlayer.Settings
 
             SettingsItemGroup items = new SettingsItemGroup(groupImage: FontIconPaths.PlaybackControlImagePath, groupName: Title)
             {
-                new TimePickerWithCheckBox(nameof(SettingsWrapper.StopMusicOnTimerEnabled), nameof(SettingsWrapper.StopMusicOnTimerPosition))
+                new TimePickerWithCheckBox(nameof(SettingsService.Instance.StopMusicOnTimerEnabled), nameof(SettingsService.Instance.StopMusicOnTimerPosition))
                 {
                     Description = "Stop playback at a specific time",
                     TimePickerDescription = "Execution may drift if the application is in the background"
@@ -82,7 +82,7 @@ namespace MayazucMediaPlayer.Settings
                     TextDescription = "Configure the behaviour of taps & clicks on the playback area of the now playing view"
                 },
 
-                new ComboboxWithHeader<string>(nameof(SettingsWrapper.PlaybackTapGestureModeRaw), "Always", "Never", "Fullscreen only", "Normal view only")
+                new ComboboxWithHeader<string>(nameof(SettingsService.Instance.PlaybackTapGestureModeRaw), "Always", "Never", "Fullscreen only", "Normal view only")
                 {
                     ComboboxHeader = "Tap to play/resume playback",
                 },
@@ -93,18 +93,18 @@ namespace MayazucMediaPlayer.Settings
                 },
 
 
-                new CheckBoxItem( nameof(SettingsWrapper.StartPlaybackAfterSeek))
+                new CheckBoxItem( nameof(SettingsService.Instance.StartPlaybackAfterSeek))
                 {
                     Description = "Automatically start / resume playback when seeking",
                 },
 
 
-                new CheckBoxItem(nameof(SettingsWrapper.KeepPlaybackRateBetweenTracks))
+                new CheckBoxItem(nameof(SettingsService.Instance.KeepPlaybackRateBetweenTracks))
                 {
                     Description = "Maintain playback rate when changing tracks",
                 },
 
-                new CheckBoxItem(nameof(SettingsWrapper.PlayToEnabled))
+                new CheckBoxItem(nameof(SettingsService.Instance.PlayToEnabled))
                 {
                     Description = "DLNA sink",
                 }
@@ -115,12 +115,12 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Automatically enqueue the next music or video file in the last track's folder"
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.AutoPlayMusic))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoPlayMusic))
             {
                 Description = "Auto play music",
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.AutoPlayVideo))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoPlayVideo))
             {
                 Description = "Auto play video",
             });
@@ -142,7 +142,7 @@ namespace MayazucMediaPlayer.Settings
                     SystemSettingsLink = "ms-settings:easeofaccess-closedcaptioning"
                 },
 
-                new ComboboxWithHeader<string>(CharacterEncoding.AllEncodings.Select(x => GetEncodingName(x)), nameof(SettingsWrapper.FFmpegCharacterEncodingIndex))
+                new ComboboxWithHeader<string>(CharacterEncoding.AllEncodings.Select(x => GetEncodingName(x)), nameof(SettingsService.Instance.FFmpegCharacterEncodingIndex))
                 {
                     ImagePath = FontIconPaths.EncodingsGroupImage,
                     ComboboxHeader = "Subtitle encoding for ASCII text."
@@ -158,17 +158,17 @@ namespace MayazucMediaPlayer.Settings
                     TextDescription = "Forced subtitles are usually subtitles which present translations or other capitons inside movies"
                 },
 
-                new CheckBoxItem(nameof(SettingsWrapper.AutoloadForcedSubtitles))
+                new CheckBoxItem(nameof(SettingsService.Instance.AutoloadForcedSubtitles))
                 {
                     Description = "Auto-load forced subtitles.",
                 },
 
-                new CheckBoxItem(nameof(SettingsWrapper.AutoDetectExternalSubtitle))
+                new CheckBoxItem(nameof(SettingsService.Instance.AutoDetectExternalSubtitle))
                 {
                     Description = "Auto-detect local (external) subtitle.",
                 },
 
-                new CheckBoxItem(nameof(SettingsWrapper.AutoloadInternalSubtitle))
+                new CheckBoxItem(nameof(SettingsService.Instance.AutoloadInternalSubtitle))
                 {
                     Description = "Auto-detect embedded (internal) subtitle if languages match.",
                 },
@@ -191,7 +191,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 new ContentSettingsItem(new OpenSubtitlesAccountForm()),
 
-                new ComboboxWithHeader<LanguageCode>(LanguageCodesService.Codes, nameof(SettingsWrapper.PreferredSubtitleLanguageIndex))
+                new ComboboxWithHeader<LanguageCode>(LanguageCodesService.Codes, nameof(SettingsService.Instance.PreferredSubtitleLanguageIndex))
                 {
                     ImagePath = FontIconPaths.SubtitlesEncodings,
                     DefaultValue = LanguageCodesService.GetDefaultLanguageIndex(),
@@ -218,13 +218,13 @@ namespace MayazucMediaPlayer.Settings
         {
             SettingsItemGroup items = new SettingsItemGroup(groupImage: FontIconPaths.UIThemesGroup, groupName: "UI General");
 
-            items.Add(new ComboboxWithHeader<string>(nameof(SettingsWrapper.DefaultUITheme), "System default", "Dark", "Light")
+            items.Add(new ComboboxWithHeader<string>(nameof(SettingsService.Instance.DefaultUITheme), "System default", "Dark", "Light")
             {
                 ComboboxHeader = "UI theme. Requires restart to take full effect",
             });
 
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.ShowConfirmationMessages))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.ShowConfirmationMessages))
             {
                 Description = "Show confirmation messages for some common operations. Error messages will still show even if this setting is disabled"
             });
@@ -240,7 +240,7 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Video decoder mode. Choose between automatic hardware-software switch, force software decoding or using system decoders"
             });
 
-            items.Add(new ComboboxWithHeader<string>(FFmpegVideoModeInterop.DecoderModeNames, nameof(SettingsWrapper.VideoDecoderMode))
+            items.Add(new ComboboxWithHeader<string>(FFmpegVideoModeInterop.DecoderModeNames, nameof(SettingsService.Instance.VideoDecoderMode))
             {
                 ComboboxHeader = "Video decoder mode"
             });
@@ -250,17 +250,17 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Modifying the settings below may improve performance and quality for some files when using software decoder."
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.VideoOutputAllowIyuv))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.VideoOutputAllowIyuv))
             {
                 Description = "Allow IYUV software decoder output",
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.VideoOutputAllow10bit))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.VideoOutputAllow10bit))
             {
                 Description = "Allow 10bit software decoder output",
             });
 
-            items.Add(new CheckBoxItem(nameof(SettingsWrapper.VideoOutputAllowBgra8))
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.VideoOutputAllowBgra8))
             {
                 Description = "Allow BGRA8 software decoder output",
             });
@@ -282,7 +282,7 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "External covers must be in same folder, share same file name and formats must be png or jpg. "
             });
 
-            items.Add(new ComboBoxWithTextBlockAndButton(nameof(SettingsWrapper.AlbumArtOptionIndex), "Extract from files", "Use file covers (same name as file)", "Folder covers")
+            items.Add(new ComboBoxWithTextBlockAndButton(nameof(SettingsService.Instance.AlbumArtOptionIndex), "Extract from files", "Use file covers (same name as file)", "Folder covers")
             {
                 ComboboxHeader = "File metadata source",
                 DefaultValue = 0,

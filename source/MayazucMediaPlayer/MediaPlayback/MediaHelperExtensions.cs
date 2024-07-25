@@ -107,17 +107,17 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             MediaSourceConfig config = new MediaSourceConfig();
 
-            config.Video.VideoOutputAllow10bit = SettingsWrapper.VideoOutputAllow10bit;
-            config.Video.VideoOutputAllowBgra8 = SettingsWrapper.VideoOutputAllowBgra8;
-            config.Video.VideoOutputAllowIyuv = SettingsWrapper.VideoOutputAllowIyuv;
+            config.Video.VideoOutputAllow10bit = SettingsService.Instance.VideoOutputAllow10bit;
+            config.Video.VideoOutputAllowBgra8 = SettingsService.Instance.VideoOutputAllowBgra8;
+            config.Video.VideoOutputAllowIyuv = SettingsService.Instance.VideoOutputAllowIyuv;
             config.General.FastSeek = true;
             config.General.MaxSupportedPlaybackRate = 4;
-            config.Audio.DownmixAudioStreamsToStereo = SettingsWrapper.StereoDownMix;
-            config.Video.VideoDecoderMode = FFmpegVideoModeInterop.DecoderModeMap[SettingsWrapper.VideoDecoderMode];
-            config.Subtitles.ExternalSubtitleAnsiEncoding = CharacterEncoding.AllEncodings[SettingsWrapper.FFmpegCharacterEncodingIndex];
+            config.Audio.DownmixAudioStreamsToStereo = SettingsService.Instance.StereoDownMix;
+            config.Video.VideoDecoderMode = FFmpegVideoModeInterop.DecoderModeMap[SettingsService.Instance.VideoDecoderMode];
+            config.Subtitles.ExternalSubtitleAnsiEncoding = CharacterEncoding.AllEncodings[SettingsService.Instance.FFmpegCharacterEncodingIndex];
             config.Subtitles.AutoSelectForcedSubtitles = false;
-            config.Subtitles.MinimumSubtitleDuration = TimeSpan.FromSeconds(SettingsWrapper.MinimumSubtitleDuration);
-            config.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsWrapper.PreventSubtitleOverlaps;
+            config.Subtitles.MinimumSubtitleDuration = TimeSpan.FromSeconds(SettingsService.Instance.MinimumSubtitleDuration);
+            config.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsService.Instance.PreventSubtitleOverlaps;
             //TimedTextStyle configStyle = config.Subtitles.SubtitleStyle;
             //configStyle.OutlineColor = Microsoft.UI.Colors.Blue;
             //configStyle.OutlineRadius = new TimedTextDouble(80, TimedTextUnit.Percentage);

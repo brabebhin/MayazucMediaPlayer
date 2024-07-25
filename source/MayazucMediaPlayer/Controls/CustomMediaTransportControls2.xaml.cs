@@ -64,6 +64,14 @@ namespace MayazucMediaPlayer.Controls
             this.SizeChanged += CustomMediaTransportControls2_SizeChanged;
 
             VolumeControlBarInstance.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
+
+            Program.OnApplicationClosing += Program_OnApplicationClosing;
+        }
+
+        private void Program_OnApplicationClosing(object? sender, EventArgs e)
+        {
+            StateUpdateTimer.Stop();
+            Program.OnApplicationClosing -= Program_OnApplicationClosing;
         }
 
         private void CustomMediaTransportControls2_SizeChanged(object sender, SizeChangedEventArgs e)

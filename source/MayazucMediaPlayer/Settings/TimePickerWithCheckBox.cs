@@ -11,7 +11,7 @@ namespace MayazucMediaPlayer.Settings
         {
             TimePickerStorePropertyName = storedPropertyName;
             settingPropertyChanged = new Action<object, string>(SettingsWrapper_SettingChanged);
-            SettingsWrapper.RegisterSettingChangeCallback(TimePickerStorePropertyName, settingPropertyChanged);
+            SettingsService.Instance.RegisterSettingChangeCallback(TimePickerStorePropertyName, settingPropertyChanged);
         }
 
         private void SettingsWrapper_SettingChanged(object? sender, string e)
@@ -39,11 +39,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return (TimeSpan)SettingsWrapper.GetProperty(TimePickerStorePropertyName);
+                return (TimeSpan)SettingsService.Instance.GetProperty(TimePickerStorePropertyName);
             }
             set
             {
-                SettingsWrapper.SetProperty(TimePickerStorePropertyName, (TimeSpan)value, this);
+                SettingsService.Instance.SetProperty(TimePickerStorePropertyName, (TimeSpan)value, this);
                 NotifyPropertyChanged(nameof(SelectedTime));
             }
         }

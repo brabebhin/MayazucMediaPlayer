@@ -184,8 +184,8 @@ namespace MayazucMediaPlayer.Services
             //the index was inside the existing collection, return true
             if (index < Count) return new HasIndexResult(IndexResult.Cached);
 
-            var aMusic = SettingsWrapper.AutoPlayMusic;
-            var aVideo = SettingsWrapper.AutoPlayVideo;
+            var aMusic = SettingsService.Instance.AutoPlayMusic;
+            var aVideo = SettingsService.Instance.AutoPlayVideo;
 
             //auto play only works if requested index is just 1 outside the count
             if ((aMusic || aVideo) && index == Count)

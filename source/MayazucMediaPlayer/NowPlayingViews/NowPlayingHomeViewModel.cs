@@ -504,9 +504,9 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 await GlobalProgressBarUtilities.ShowProgressBar("Please wait");
 
                 await (AppState.Current.MediaServiceConnector.PlayerInstance).RandomizeNowPlayingQueue();
-                //var oldIndex = SettingsWrapper.PlaybackIndex;
+                //var oldIndex = SettingsWrapper.Instance.PlaybackIndex;
                 //var newIndex = Models.NowPlaying.RandomizeMusicDataStorage(oldIndex);
-                //SettingsWrapper.PlaybackIndex = newIndex;
+                //SettingsWrapper.Instance.PlaybackIndex = newIndex;
 
                 await GlobalProgressBarUtilities.HideProgressBar();
                 //AppState.Current.MediaServiceConnector.SendNewNowPlaying(Models.NowPlaying.Select(x => x.MediaData).ToArray());

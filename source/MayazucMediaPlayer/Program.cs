@@ -1,6 +1,8 @@
-﻿using Microsoft.UI.Dispatching;
+﻿using MayazucMediaPlayer.Settings;
+using Microsoft.UI.Dispatching;
 using Microsoft.Windows.AppLifecycle;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
@@ -10,6 +12,7 @@ namespace MayazucMediaPlayer
     public static class Program
     {
         const string SingleInstanceKey = "B9BA688B46CC431B93D07B9D48468C18";
+        internal static event EventHandler<EventArgs> OnApplicationClosing;
 
         // Replaces the standard App.g.i.cs.
         // Note: We can't declare Main to be async because in a WinUI app
@@ -20,6 +23,8 @@ namespace MayazucMediaPlayer
             WinRT.ComWrappersSupport.InitializeComWrappers();
 
             bool isRedirect = DecideRedirection();
+            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             if (!isRedirect)
             {
                 App? app = null;
@@ -30,11 +35,20 @@ namespace MayazucMediaPlayer
                     SynchronizationContext.SetSynchronizationContext(context);
                     app = new App();
                 });
-
-                //app?.Dispose();
+                OnApplicationClosing?.Invoke(null, new EventArgs());
+                SettingsService.Instance.SaveSettings();
+                app?.Dispose();
             }
         }
 
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            try
+            {
+                SettingsService.Instance.SaveSettings();
+            }
+            catch { }
+        }
 
         private static async void OnActivated(object? sender, AppActivationArguments args)
         {
@@ -78,7 +92,7 @@ namespace MayazucMediaPlayer
         // wait method to wait for the redirection to complete.
         public static void RedirectActivationTo(
             AppActivationArguments args, AppInstance keyInstance)
-        {           
+        {
             var redirectSemaphore = new Semaphore(0, 1);
             Task.Run(() =>
             {

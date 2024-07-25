@@ -26,7 +26,7 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return propertyValue = SettingsWrapper.GetProperty(SettingsWrapperPropertyName);
+                return propertyValue = SettingsService.Instance.GetProperty(SettingsWrapperPropertyName);
             }
             set
             {
@@ -85,7 +85,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 _settingsWrapperPropertyName = value;
                 NotifyPropertyChanged(nameof(SettingsChangedCallback));
-                callback = SettingsWrapper.RegisterSettingChangeCallback(_settingsWrapperPropertyName, (s, e) =>
+                callback = SettingsService.Instance.RegisterSettingChangeCallback(_settingsWrapperPropertyName, (s, e) =>
                 {
                     RecheckValue();
                 });
@@ -94,7 +94,7 @@ namespace MayazucMediaPlayer.Settings
 
         private void SetValue()
         {
-            SettingsWrapper.SetProperty(SettingsWrapperPropertyName, propertyValue, this);
+            SettingsService.Instance.SetProperty(SettingsWrapperPropertyName, propertyValue, this);
         }
 
         Visibility elementVisible = Visibility.Visible;
@@ -139,7 +139,7 @@ namespace MayazucMediaPlayer.Settings
                     // TODO: dispose managed state (managed objects)
                 }
                 if (_settingsWrapperPropertyName != null && callback != null)
-                    SettingsWrapper.UnregisterSettingChangeCallback(_settingsWrapperPropertyName, callback);
+                    SettingsService.Instance.UnregisterSettingChangeCallback(_settingsWrapperPropertyName, callback);
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;

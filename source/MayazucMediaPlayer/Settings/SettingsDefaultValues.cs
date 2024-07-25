@@ -8,12 +8,12 @@ namespace MayazucMediaPlayer.Settings
     {
         public static void RestoreSettingsDefaults()
         {
-            var properties = typeof(SettingsWrapper).GetProperties();
+            var properties = typeof(SettingsService).GetProperties();
             foreach (var v in properties)
             {
                 var attribute = SettingDefaultValueAttribute.GetDefaultValue(v);
                 if (attribute != null)
-                    v.SetValue(null, attribute.DefaultValue);
+                    v.SetValue(SettingsService.Instance, attribute.DefaultValue);
             }
         }
 
@@ -22,7 +22,7 @@ namespace MayazucMediaPlayer.Settings
         /// </summary>
         internal static void TestDefaultAttributesCorrectness()
         {
-            var properties = typeof(SettingsWrapper).GetProperties();
+            var properties = typeof(SettingsService).GetProperties();
             foreach (var v in properties)
             {
                 var value = v.GetValue(null);

@@ -40,7 +40,7 @@ namespace MayazucMediaPlayer.AudioEffects
                 {
                     x.DisableEffect();
                 }
-                await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsWrapper.EqualizerEnabled);
+                await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsService.Instance.EqualizerEnabled);
             });
             SaveEffectsCommand = new AsyncRelayCommand(async () =>
             {
@@ -56,7 +56,7 @@ namespace MayazucMediaPlayer.AudioEffects
                     }
                 }
 
-                await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsWrapper.EqualizerEnabled);
+                await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsService.Instance.EqualizerEnabled);
 
             });
         }

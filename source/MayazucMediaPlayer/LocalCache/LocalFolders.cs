@@ -222,5 +222,20 @@ namespace MayazucMediaPlayer.LocalCache
                 return resultsProvider.Get<FileInfo>(Key);
             }
         }
+
+        internal static FileInfo GetDefaultSettingsFilePath()
+        {
+            const string Key = "GetDefaultSettingsFilePath";
+            using (lockProvider.GetLock(Key).Lock())
+            {
+                if (!resultsProvider.HasKey(Key))
+                {
+                    var file = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "settings.json"));
+                    if (!file.Exists) file.Create().Dispose();
+                    resultsProvider.TryAdd(Key, file);
+                }
+                return resultsProvider.Get<FileInfo>(Key);
+            }
+        }
     }
 }

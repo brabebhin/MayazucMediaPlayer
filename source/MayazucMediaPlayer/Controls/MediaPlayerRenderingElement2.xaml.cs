@@ -394,7 +394,7 @@ namespace MayazucMediaPlayer.Controls
         private async void HandlePlaybackAreaOverlayCommands(object sender, TappedRoutedEventArgs e)
         {
             bool canHandle = false;
-            switch (SettingsWrapper.PlaybackTapGestureMode)
+            switch (SettingsService.Instance.PlaybackTapGestureMode)
             {
                 case PlaybackTapGestureMode.Always:
                     canHandle = true;

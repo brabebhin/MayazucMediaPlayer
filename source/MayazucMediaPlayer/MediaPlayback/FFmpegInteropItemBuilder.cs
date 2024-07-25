@@ -39,7 +39,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 {
                     ffmpegInterop.CreateMediaPlaybackItem();
 
-                    if (SettingsWrapper.EqualizerEnabled && EqualizerServiceInstance != null)
+                    if (SettingsService.Instance.EqualizerEnabled && EqualizerServiceInstance != null)
                     {
                         List<AvEffectDefinition> definitions = new List<AvEffectDefinition>(MediaHelperExtensions.GetEqualizerEffectDefinitions(EqualizerServiceInstance.GetCurrentEqualizerConfig()));
                         definitions.AddRange(MediaHelperExtensions.GetAdditionalEffectsDefinitions());

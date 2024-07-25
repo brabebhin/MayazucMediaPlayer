@@ -25,7 +25,7 @@ namespace MayazucMediaPlayer.Controls
             cbRepeatModes.ItemsSource = repeatModes;
             cbRepeatModes.SelectionChanged += CbRepeatModes_SelectionChanged;
 
-            SettingsWrapper.RepeatModeChanged += SettingsWrapper_RepeatModeChanged;
+            SettingsService.Instance.RepeatModeChanged += SettingsWrapper_RepeatModeChanged;
             LoadState();
         }
 
@@ -60,7 +60,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void RepeatRadioGroup_Unloaded(object? sender, RoutedEventArgs e)
         {
-            SettingsWrapper.RepeatModeChanged -= SettingsWrapper_RepeatModeChanged;      
+            SettingsService.Instance.RepeatModeChanged -= SettingsWrapper_RepeatModeChanged;      
 
             Unloaded -= RepeatRadioGroup_Unloaded;
         }
@@ -72,7 +72,7 @@ namespace MayazucMediaPlayer.Controls
 
             for (int i = 0; i < repeatModes.Count; i++)
             {
-                if (repeatModes[i].RepeatMode == SettingsWrapper.RepeatMode)
+                if (repeatModes[i].RepeatMode == SettingsService.Instance.RepeatMode)
                 {
                     cbRepeatModes.SelectedIndex = i;
                     this.Icon = new SymbolIcon(repeatModes[i].ModeSymbol);

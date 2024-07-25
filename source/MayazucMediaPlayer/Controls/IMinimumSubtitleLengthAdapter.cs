@@ -26,8 +26,8 @@ namespace MayazucMediaPlayer.Controls
 
         public LocalFileMinimumSubtitleLengthAdapter(MediaSourceConfig mediaStreamSourceConfig)
         {
-            MinimumDuration = SettingsWrapper.MinimumSubtitleDuration;
-            PreventOverlaps = SettingsWrapper.PreventSubtitleOverlaps;
+            MinimumDuration = SettingsService.Instance.MinimumSubtitleDuration;
+            PreventOverlaps = SettingsService.Instance.PreventSubtitleOverlaps;
             StreamSourceConfig = mediaStreamSourceConfig;
         }
 
@@ -74,19 +74,19 @@ namespace MayazucMediaPlayer.Controls
     {
         public double MinimumDuration
         {
-            get => SettingsWrapper.MinimumSubtitleDuration;
+            get => SettingsService.Instance.MinimumSubtitleDuration;
             set
             {
-                SettingsWrapper.MinimumSubtitleDuration = value;
+                SettingsService.Instance.MinimumSubtitleDuration = value;
                 NotifyPropertyChanged(nameof(MinimumDuration));
             }
         }
         public bool PreventOverlaps
         {
-            get => SettingsWrapper.PreventSubtitleOverlaps;
+            get => SettingsService.Instance.PreventSubtitleOverlaps;
             set
             {
-                SettingsWrapper.PreventSubtitleOverlaps = value;
+                SettingsService.Instance.PreventSubtitleOverlaps = value;
                 NotifyPropertyChanged(nameof(PreventOverlaps));
             }
         }

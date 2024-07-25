@@ -245,18 +245,18 @@ namespace MayazucMediaPlayer.MediaPlayback
                     desiredRepeatMode = tag; break;
                 default: throw new ArgumentException("invalid repeat mode");
             }
-            if (desiredRepeatMode != SettingsWrapper.RepeatMode)
+            if (desiredRepeatMode != SettingsService.Instance.RepeatMode)
             {
-                SettingsWrapper.RepeatMode = tag;
+                SettingsService.Instance.RepeatMode = tag;
                 await (PlayerInstance).RepeatModeChanged();
             }
         }
 
         public async Task SetShuffleMode(bool mode)
         {
-            if (SettingsWrapper.ShuffleMode != mode)
+            if (SettingsService.Instance.ShuffleMode != mode)
             {
-                SettingsWrapper.ShuffleMode = mode;
+                SettingsService.Instance.ShuffleMode = mode;
                 await (PlayerInstance).ShuffleModeChanged();
             }
         }

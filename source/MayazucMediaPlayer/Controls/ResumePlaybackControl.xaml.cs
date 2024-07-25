@@ -72,7 +72,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 await DispatcherQueue.EnqueueAsync(async () =>
                 {
-                    var resumePosition = SettingsWrapper.PlayerResumePosition;
+                    var resumePosition = SettingsService.Instance.PlayerResumePosition;
                     var thumbnail = await currentMds.Value.MediaData.GetThumbnailAtPositionAsync(TimeSpan.FromTicks(resumePosition));
                     ResumeThumbnail.Source = thumbnail.MediaThumbnailData;
 
@@ -110,7 +110,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void StartOver_click(object? sender, TappedRoutedEventArgs e)
         {
-            await AppState.Current.MediaServiceConnector.SkipToIndex(SettingsWrapper.PlaybackIndex);
+            await AppState.Current.MediaServiceConnector.SkipToIndex(SettingsService.Instance.PlaybackIndex);
 
             Visibility = Visibility.Collapsed;
             e.Handled = true;

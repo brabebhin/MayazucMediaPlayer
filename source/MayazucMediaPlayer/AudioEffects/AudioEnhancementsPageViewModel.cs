@@ -80,7 +80,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
             AvailablePresets = EQModels.GetCurrentEqualizerConfig().Presets;
             NotifyPropertyChanged(nameof(AvailablePresets));
-            var on = SettingsWrapper.EqualizerEnabled;
+            var on = SettingsService.Instance.EqualizerEnabled;
             EnableContexts(on);
         }
 

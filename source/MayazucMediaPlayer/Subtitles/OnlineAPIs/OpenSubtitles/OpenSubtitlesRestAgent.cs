@@ -176,7 +176,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
             var searchOptions = new NewSubtitleSearch()
             {
                 MovieHash = request.FileHash,
-                Languages = new List<string>() { SettingsWrapper.PreferredSubtitleLanguage.TwoLetterIsoCode },
+                Languages = new List<string>() { SettingsService.Instance.PreferredSubtitleLanguage.TwoLetterIsoCode },
                 Query = fileName
             };
 

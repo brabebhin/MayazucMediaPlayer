@@ -952,7 +952,7 @@ namespace MayazucMediaPlayer.FileSystemViews
                 });
                 using (await _activationLock.LockAsync())
                 {
-                    var cacheOnlyAa = SettingsWrapper.OnlyUseCacheInFilePicker;
+                    var cacheOnlyAa = SettingsService.Instance.OnlyUseCacheInFilePicker;
                     Items.AddRange(validItems);
                 }
             }
@@ -966,7 +966,7 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         private async Task ClearListWithUserOptions()
         {
-            if (SettingsWrapper.AutoClearFilePicker)
+            if (SettingsService.Instance.AutoClearFilePicker)
             {
                 using (await _activationLock.LockAsync())
                 {

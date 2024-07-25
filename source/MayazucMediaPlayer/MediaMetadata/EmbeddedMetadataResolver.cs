@@ -178,10 +178,10 @@ namespace MayazucMediaPlayer.MediaMetadata
             FileInfo fileToGetThMetadataFrom)
         {
             var fallbackTitle = fileToGetThMetadataFrom.FullName;
-            var albumIndex = SettingsWrapper.MetadataAlbumIndex;
-            var artistIndex = SettingsWrapper.MetadataArtistIndex;
-            var genreIndex = SettingsWrapper.MetadataGenreIndex;
-            var useDefault = SettingsWrapper.MetadataOptionsUseDefault;
+            var albumIndex = SettingsService.Instance.MetadataAlbumIndex;
+            var artistIndex = SettingsService.Instance.MetadataArtistIndex;
+            var genreIndex = SettingsService.Instance.MetadataGenreIndex;
+            var useDefault = SettingsService.Instance.MetadataOptionsUseDefault;
 
             List<string> pathFragments = fallbackTitle.Split(Path.DirectorySeparatorChar).Reverse().ToList();
 
