@@ -94,8 +94,12 @@ namespace MayazucMediaPlayer.Services.MediaSources
             PickedFile.File.Refresh();
             if (PickedFile.File.Exists)
             {
-                var grabber = await FrameGrabber.CreateFromStreamAsync(await PickedFile.File.OpenReadAsync());
-                return grabber;
+                try
+                {
+                    var grabber = await FrameGrabber.CreateFromStreamAsync(await PickedFile.File.OpenReadAsync());
+                    return grabber;
+                }
+                catch { }
             }
             return null;
         }

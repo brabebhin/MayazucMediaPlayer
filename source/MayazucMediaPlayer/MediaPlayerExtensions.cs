@@ -13,17 +13,17 @@ namespace MayazucMediaPlayer
 
             TypedEventHandler<MediaPlaybackSession, object> seekHandler = (s, e) =>
             {
-                SeekCompletedSignal.SetResult(true);
+                SeekCompletedSignal.TrySetResult(true);
             };
 
             TypedEventHandler<MediaPlayer, object> mediaChangedOrEndedHandler = (s, e) =>
             {
-                SeekCompletedSignal.SetResult(false);
+                SeekCompletedSignal.TrySetResult(false);
             };
 
             TypedEventHandler<MediaPlayer, MediaPlayerFailedEventArgs> mediaFailed = (s, e) =>
             {
-                SeekCompletedSignal.SetResult(false);
+                SeekCompletedSignal.TrySetResult(false);
             };
 
             CurrentPlayer.MediaOpened += mediaChangedOrEndedHandler;

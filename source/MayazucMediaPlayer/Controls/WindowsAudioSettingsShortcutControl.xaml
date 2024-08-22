@@ -12,7 +12,7 @@
     <StackPanel>
         <local:SettingsAppHyperlinkButton Tapped="kjh" NavigateUri="ms-settings:apps-volume">Change app audio output device</local:SettingsAppHyperlinkButton>
         <local:SettingsAppHyperlinkButton  NavigateUri="ms-settings:bluetooth">View Bluetooth, devices, cast</local:SettingsAppHyperlinkButton>
-        <local:SettingsAppHyperlinkButton  NavigateUri="ms-settings:sound">View generic sound settins</local:SettingsAppHyperlinkButton>
+        <local:SettingsAppHyperlinkButton  NavigateUri="ms-settings:sound">View generic sound settings</local:SettingsAppHyperlinkButton>
         <local:SettingsAppHyperlinkButton  NavigateUri="ms-settings:sound-devices">View sound devices</local:SettingsAppHyperlinkButton>
         <local:SettingsAppHyperlinkButton  NavigateUri="ms-settings:display">View display settings</local:SettingsAppHyperlinkButton>
         <local:SettingsAppHyperlinkButton  NavigateUri="ms-settings:display-advancedgraphics">Advanced graphics settings</local:SettingsAppHyperlinkButton>
