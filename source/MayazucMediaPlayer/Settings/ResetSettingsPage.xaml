@@ -11,10 +11,10 @@
     >
 
     <StackPanel>
-        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8" TextWrapping="WrapWholeWords" Text="Delete offline cached album art images, like album art extracted from files, and any metadata tags extracted from files and cached"/>
-        <Button  Click="ClearAlbumArtCache" Margin="8" Content="Clear metadata cache" ToolTipService.ToolTip="Delete offline cached album art images, like album art extracted from files, and any metadata tags extracted from files and cached."/>
-        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8"  TextWrapping="WrapWholeWords" Text="Delete offline cached subtitles that were downloaded from openSubtitles.org. If the app is allowed to run in background, this cache is cleared periodically."/>
-        <Button  Click="ClearSubtitleCache" Margin="8"  Content="Clear subtitle cache" ToolTipService.ToolTip="Delete offline cached subtitles that were downloaded from openSubtitles.org. If the app is allowed to run in background, this cache is cleared periodically."/>
+        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8" TextWrapping="WrapWholeWords" Text="Delete offline cached album art images, like album art extracted from files, and any metadata tags extracted from files."/>
+        <Button  Click="ClearAlbumArtCache" Margin="8" Content="Clear metadata cache" ToolTipService.ToolTip="Delete offline cached album art images, like album art extracted from files, and any metadata tags extracted from files."/>
+        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8"  TextWrapping="WrapWholeWords" Text="Delete offline cached subtitles that were downloaded from openSubtitles.org."/>
+        <Button  Click="ClearSubtitleCache" Margin="8"  Content="Clear subtitle cache" ToolTipService.ToolTip="Delete offline cached subtitles that were downloaded from openSubtitles.org."/>
         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="8"  TextWrapping="WrapWholeWords" Text="Reset settings back to default values."/>
         <Button  Click="ResetSettings" Margin="8"  Content="Reset settings" ToolTipService.ToolTip="Reset settings back to default values."/>
 
