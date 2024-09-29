@@ -15,6 +15,7 @@ using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Transcoding;
 using MayazucMediaPlayer.UserInput;
+using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -45,6 +46,14 @@ namespace MayazucMediaPlayer
         public MainWindowingService(MainWindow HostWindow)
         {
             this.HostWindow = HostWindow;
+        }
+
+        public WindowId Id
+        {
+            get
+            {
+                return HostWindow.AppWindow.Id;
+            }
         }
 
 

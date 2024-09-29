@@ -290,20 +290,27 @@ namespace MayazucMediaPlayer.Controls
             TrackInfoTitle.Text = string.IsNullOrWhiteSpace(metadata.Title) ? data.Title : metadata.Title;
 
             this.LoadFileEmbeddedStreams(playbackItem);
+            var mediaPath = data.MediaPath;
+
+            if (!string.IsNullOrWhiteSpace(mediaPath))
+            {
+                FileExtensionTextBlock.Text = Path.GetExtension(mediaPath);
+                FullPathTextBlock.Text = mediaPath;
+                FileNameTextBlock.Text = Path.GetFileName(mediaPath);
+            }
 
             if (!data.IsAvailable())
             {
-                FileExtensionTextBlock.Text = "";
-                FileNameTextBlock.Text = "File not available";
+                mediaNotAvailableStackPanel.Visibility = Visibility.Visible;
+                if (string.IsNullOrWhiteSpace(mediaPath))
+                {
+                    FileExtensionTextBlock.Text = "";
+                    FileNameTextBlock.Text = "Media not available";
+                }
                 return;
             }
             else
             {
-                var mediaPath = data.MediaPath;
-                FileExtensionTextBlock.Text = Path.GetExtension(mediaPath);
-                FullPathTextBlock.Text = mediaPath;
-                FileNameTextBlock.Text = Path.GetFileName(mediaPath);
-
                 await this.CheckFileAvailability();
             }
         }

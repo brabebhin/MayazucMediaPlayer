@@ -47,15 +47,17 @@ namespace MayazucMediaPlayer.MediaPlayback
         private MediaPlaybackItemUIInformation(FFmpegMediaSource ffmpegData,
             IMediaPlayerItemSource mediaData)
         {
-            Duration = ffmpegData.Duration;
-
-            _mediaMetadataTags = ffmpegData != null ? ffmpegData.MetadataTags : null;
             if (ffmpegData != null)
             {
-                subtitleStreams.AddRange(ffmpegData.SubtitleStreams.Select(x => new SubtitleStreamInfoWrapper(x)));
-                videoStreams.AddRange(ffmpegData.VideoStreams.Select(x => new VideoStreamInfoWrapper(x)));
-                audioStreams.AddRange(ffmpegData.AudioStreams.Select(x => new AudioStreamInfoWrapper(x)));
-                chapterStreams.AddRange(ffmpegData.ChapterInfos.Select(x => new ChapterStreamInfoWrapper(x)));
+                Duration = ffmpegData.Duration;
+                _mediaMetadataTags = ffmpegData != null ? ffmpegData.MetadataTags : null;
+                if (ffmpegData != null)
+                {
+                    subtitleStreams.AddRange(ffmpegData.SubtitleStreams.Select(x => new SubtitleStreamInfoWrapper(x)));
+                    videoStreams.AddRange(ffmpegData.VideoStreams.Select(x => new VideoStreamInfoWrapper(x)));
+                    audioStreams.AddRange(ffmpegData.AudioStreams.Select(x => new AudioStreamInfoWrapper(x)));
+                    chapterStreams.AddRange(ffmpegData.ChapterInfos.Select(x => new ChapterStreamInfoWrapper(x)));
+                }
             }
             MediaData = mediaData;
         }

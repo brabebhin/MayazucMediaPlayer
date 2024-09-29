@@ -16,6 +16,13 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel>
+            <StackPanel Margin="4" Orientation="Horizontal" x:Name="mediaNotAvailableStackPanel" Visibility="Collapsed">
+                <Viewbox>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Foreground="Red" Glyph="&#xE7BA;" />
+                </Viewbox>
+                <Border Width="16"/>
+                <TextBlock Text="Media is not available. Most likely the file was deleted or the path is not available anymore" TextWrapping="WrapWholeWords"/>
+            </StackPanel>
             <CommandBar Visibility="{Binding PlaybackCommandBarVisibility}" x:Name="MenuBar" HorizontalAlignment="Left" DefaultLabelPosition="Right" FlowDirection="LeftToRight" Background="Transparent"  Grid.Row="1">
                 <AppBarButton IsEnabled="False" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding PlayCommand}" CommandParameter="{Binding ElementName=fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
                 </AppBarButton>
@@ -39,10 +46,11 @@
                 <ScrollViewer>
                     <StackPanel>
 
+                    
+
                         <TextBlock   Text="File name" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"    Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="Wrap" x:Name="FileNameTextBlock" Margin="5" />
 
-                       
                         <TextBlock   Text="Full path" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"   Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" x:Name="FullPathTextBlock" Margin="5" />
 

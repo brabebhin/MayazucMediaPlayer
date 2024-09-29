@@ -6,6 +6,7 @@ using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.UserInput;
 using MayazucNativeFramework;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Display;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -22,6 +23,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.DirectX;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.System.Threading;
@@ -70,6 +72,9 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
+        private volatile bool windowSupportsHdr = false;
+        private DisplayInformation displayInformation;
+
         public MediaPlayerRenderingElement2()
         {
             this.InitializeComponent();
@@ -86,18 +91,45 @@ namespace MayazucMediaPlayer.Controls
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
             MediaTransportControlsInstance.PointerEntered += MediaTransportControlsInstance_PointerEntered;
             MediaTransportControlsInstance.PointerExited += MediaTransportControlsInstance_PointerExited;
+
+            displayInformation = DisplayInformation.CreateForWindowId(MainWindowingService.Instance.Id);
+            displayInformation.AdvancedColorInfoChanged += DisplayInformation_AdvancedColorInfoChanged;
+            CheckHdr(displayInformation);
+
+        }
+
+        protected override void OnDispose(bool disposing)
+        {
+            base.OnDispose(disposing);
+            displayInformation.AdvancedColorInfoChanged -= DisplayInformation_AdvancedColorInfoChanged;
+            displayInformation.Dispose();
+        }
+
+        private async void DisplayInformation_AdvancedColorInfoChanged(DisplayInformation sender, object args)
+        {
+            await DispatcherQueue.EnqueueAsync(() =>
+            {
+                CheckHdr(sender);
+            });
+        }
+
+        private void CheckHdr(DisplayInformation sender)
+        {
+            windowSupportsHdr = sender.GetAdvancedColorInfo().CurrentAdvancedColorKind == DisplayAdvancedColorKind.HighDynamicRange;
         }
 
         private async void MediaTransportControlsInstance_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            await DispatcherQueue.EnqueueAsync(() => {
+            await DispatcherQueue.EnqueueAsync(() =>
+            {
                 isPointerOverTransportControls = false;
             });
         }
 
         private async void MediaTransportControlsInstance_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            await DispatcherQueue.EnqueueAsync(() => {
+            await DispatcherQueue.EnqueueAsync(() =>
+            {
                 isPointerOverTransportControls = true;
             });
         }
@@ -140,7 +172,7 @@ namespace MayazucMediaPlayer.Controls
             DispatcherQueue.TryEnqueue(() =>
             {
                 if (AppState.Current.MediaServiceConnector.IsPlaying()
-                && !isPointerOverTransportControls 
+                && !isPointerOverTransportControls
                 && !MediaTransportControlsInstance.UserInteracting()
                 && !MediaEffectsToggleButton.IsChecked.TrueOrDefault()
                 && !NowPlayingToggleButton.IsChecked.TrueOrDefault()
@@ -338,11 +370,16 @@ namespace MayazucMediaPlayer.Controls
 
                 VideoSwapChain.Width = width;
                 VideoSwapChain.Height = height;
-                renderer.RenderMediaPlayerFrame(sender, (float)width, (float)height, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+                renderer.RenderMediaPlayerFrame(sender, (float)width, (float)height, 96f, GetPixelFormat(), AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {
             }
+        }
+
+        private DirectXPixelFormat GetPixelFormat()
+        {
+            return windowSupportsHdr ? DirectXPixelFormat.R16G16B16A16Float : Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized;
         }
 
         private async Task SaveVideoFrameAsync()
