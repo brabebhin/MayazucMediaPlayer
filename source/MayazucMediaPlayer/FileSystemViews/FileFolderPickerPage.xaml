@@ -6,7 +6,6 @@
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
     xmlns:cvt="using:MayazucMediaPlayer.Converters"
     xmlns:mcConrols="using:MayazucMediaPlayer.Controls"
-    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -24,21 +23,21 @@
         <StackPanel>
             <StackPanel x:Name="mainBar" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Files.."  x:Name="AddFilesButton" CommandParameter="{Binding ElementName=AddFilesButton}" Command="{Binding OpenFilesCommand}" >
+                    <mcConrols:AppBarButtonWithToolTip   Label="Files.."  x:Name="AddFilesButton" CommandParameter="{Binding ElementName=AddFilesButton}" Command="{Binding OpenFilesCommand}" >
                         <AppBarButton.Icon>
                             <SymbolIcon Symbol="OpenFile" Foreground="DodgerBlue"/>
                         </AppBarButton.Icon>
-                    </AppBarButton>
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Folder.."  x:Name="AddFolderButton" CommandParameter="{Binding ElementName=AddFolderButton}"  Command="{Binding OpenFoldersCommand}" >
+                    </mcConrols:AppBarButtonWithToolTip>
+                    <mcConrols:AppBarButtonWithToolTip   Label="Folder.."  x:Name="AddFolderButton" CommandParameter="{Binding ElementName=AddFolderButton}"  Command="{Binding OpenFoldersCommand}" >
                         <AppBarButton.Icon>
                             <FontIcon Foreground="CornflowerBlue" FontFamily="Segoe MDL2 Assets" Glyph="&#xEC51;" />
                         </AppBarButton.Icon>
-                    </AppBarButton>
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Folders hierarchy"  x:Name="AddDeepFolders" CommandParameter="{Binding ElementName=AddDeepFolders}" Command="{Binding AddDeepFoldersCommand}">
+                    </mcConrols:AppBarButtonWithToolTip>
+                    <mcConrols:AppBarButtonWithToolTip   Label="Folders hierarchy"  x:Name="AddDeepFolders" CommandParameter="{Binding ElementName=AddDeepFolders}" Command="{Binding AddDeepFoldersCommand}">
                         <AppBarButton.Icon>
                             <SymbolIcon Foreground="CadetBlue" Symbol="SyncFolder"/>
                         </AppBarButton.Icon>
-                    </AppBarButton>
+                    </mcConrols:AppBarButtonWithToolTip>
                 </CommandBar>
             </StackPanel>
         </StackPanel>

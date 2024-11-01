@@ -7,7 +7,7 @@
     
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d">
 
     <Grid Background="Transparent">
@@ -26,7 +26,7 @@
             <Grid Grid.Row="1">
 
                 <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="2">
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Add new preset" Icon="Add" x:Name="AddNewPreset" Command="{Binding AddNewPresetCommand}" CommandParameter="{Binding ElementName=AddNewPreset}"/>
+                    <controls:AppBarButtonWithToolTip   Label="Add new preset" Icon="Add" x:Name="AddNewPreset" Command="{Binding AddNewPresetCommand}" CommandParameter="{Binding ElementName=AddNewPreset}"/>
                 </CommandBar>
             </Grid>
         </Grid>
@@ -49,7 +49,7 @@
 
                         <StackPanel Margin="0, 2, 0, 8"  HorizontalAlignment="Stretch"  Grid.Row="2">
                             <TextBlock Grid.Row="0" Text="{Binding PresetName}"  Style="{ThemeResource SubheaderTextBlockStyle}" TextWrapping="WrapWholeWords" />
-                            <controls1:EqualizerPresetAmplificationsPreview  Height="130" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EqualizerPreset="{Binding}"></controls1:EqualizerPresetAmplificationsPreview>
+                            <controls:EqualizerPresetAmplificationsPreview  Height="130" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EqualizerPreset="{Binding}"></controls:EqualizerPresetAmplificationsPreview>
                         </StackPanel>
                         
                     </Grid>

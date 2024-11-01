@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -701,5 +702,26 @@ namespace MayazucMediaPlayer
         }
 
 
+    }
+
+    public static class IEnumerableExtensions
+    {
+        public static int IndexOf<T>(this IEnumerable<T> enumerable, T value, IEqualityComparer<T> comparer)
+        {
+            int currentIterationIndex = -1;
+            int actualIndex = -1;
+
+            foreach (var item in enumerable)
+            {
+                currentIterationIndex++;
+                if (comparer.Equals(item, value))
+                {
+                    actualIndex = currentIterationIndex;
+                    break;
+                }
+            }
+
+            return actualIndex;
+        }
     }
 }

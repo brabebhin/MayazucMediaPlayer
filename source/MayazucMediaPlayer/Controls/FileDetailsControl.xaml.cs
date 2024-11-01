@@ -249,7 +249,7 @@ namespace MayazucMediaPlayer.Controls
             var data = this.MediaData = playbackItem.MediaData;
             var metadata = await data.GetMetadataAsync();
             AddToPlaylistButton.IsEnabled = true;
-            lsvMetadataDisplay.ItemsSource = metadata.AdditionalMetadata;
+            lsvMetadataDisplay.ItemsSource = metadata.AdditionalMetadata.ToList();
             fdPlay.IsEnabled = true;
             fdEnqueue.IsEnabled = true;
             SkipToQueueItemButton.IsEnabled = true;
@@ -270,7 +270,6 @@ namespace MayazucMediaPlayer.Controls
                     stream.Dispose();
                 }
             }
-
 
             if (!string.IsNullOrEmpty(metadata.Album))
             {

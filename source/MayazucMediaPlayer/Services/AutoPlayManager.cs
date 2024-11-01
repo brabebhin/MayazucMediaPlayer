@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
+using Microsoft.WindowsAPICodePack.Shell;
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
@@ -98,8 +99,9 @@ namespace MayazucMediaPlayer.Services
                             flatFolderViewQuery.Add(f);
                         }
 
-                        var autoPlayQueryResult = parentFolder.GetFiles(autoPlayViewQuery);
-                        var flatFolderQueryResult = parentFolder.GetFiles(flatFolderViewQuery);
+                        var autoPlayQueryResult = parentFolder.EnumerateFiles(autoPlayViewQuery);
+                        var flatFolderQueryResult = parentFolder.EnumerateFiles(flatFolderViewQuery);
+                       
                         //var files = await result.GetFilesAsync(3, 1);
                         //var fileIndex = await result.FindStartIndexAsync(files.FirstOrDefault());
 
@@ -140,7 +142,7 @@ namespace MayazucMediaPlayer.Services
                 return Result.Ok((await nextFile.GetMediaPlayerItemSources()).FirstOrDefault());
             }
 
-            return null;
+            return await Task.FromResult(Result.Fail("Not enough data"));
         }
 
         public async Task<bool> AddNextFileToNowPlaying(FileInfo file)
@@ -197,13 +199,13 @@ namespace MayazucMediaPlayer.Services
                 private set;
             }
 
-            private ImmutableList<FileInfo> AutoPlayView
+            private IEnumerable<FileInfo> AutoPlayView
             {
                 get;
                 set;
             }
 
-            private ImmutableList<FileInfo> FolderView
+            private IEnumerable<FileInfo> FolderView
             {
                 get;
                 set;
@@ -241,9 +243,9 @@ namespace MayazucMediaPlayer.Services
                 return Task.FromResult(FolderView.ElementAtOrDefault(index));
             }
 
-            public AutoPlayStorageFileQueryResultQueue(int count,
-                ImmutableList<FileInfo> queryResult,
-                ImmutableList<FileInfo> folderView,
+            private AutoPlayStorageFileQueryResultQueue(int count,
+                IEnumerable<FileInfo> queryResult,
+                IEnumerable<FileInfo> folderView,
                 bool autoPlayMusic,
                 bool autoPlayVideo)
             {
@@ -254,9 +256,9 @@ namespace MayazucMediaPlayer.Services
                 AutoPlayVideo = autoPlayVideo;
             }
 
-            public static async Task<AutoPlayStorageFileQueryResultQueue> Create(ImmutableList<FileInfo> result, ImmutableList<FileInfo> flatFolderQueryResult, bool aVideo, bool aMusic)
+            public static Task<AutoPlayStorageFileQueryResultQueue> Create(IEnumerable<FileInfo> result, IEnumerable<FileInfo> flatFolderQueryResult, bool aVideo, bool aMusic)
             {
-                return new AutoPlayStorageFileQueryResultQueue(result.Count, result, flatFolderQueryResult, aMusic, aVideo);
+                return Task.FromResult(new AutoPlayStorageFileQueryResultQueue(result.Count(), result, flatFolderQueryResult, aMusic, aVideo));
             }
         }
     }

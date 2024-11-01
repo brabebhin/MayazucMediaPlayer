@@ -1,4 +1,4 @@
-﻿<controls1:BaseUserControl
+﻿<controls:BaseUserControl
     xmlns:mcmediacentershared2="using:MayazucMediaPlayer"
     xmlns:mcmediacentershared="using:MayazucMediaPlayer.NowPlayingViews"
     x:Class="MayazucMediaPlayer.AudioEffects.AudioEffectsPage"
@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:MayazucMediaPlayer.AudioEffects.ViewModels"
-    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d">
 
 
@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.ColumnSpan="2" Text="Audio effects" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{ThemeResource BodyStrongTextBlockStyle}"  Margin="6"/>
 
-        <AppBarButton Grid.Row="1" Style="{StaticResource AppBarButtonStyleNoChevron}" VerticalAlignment="Center" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Clear" Command="{Binding ResetEffectsCommand}" Label="Clear effects"/>
+        <controls:AppBarButtonWithToolTip Grid.Row="1" Style="{StaticResource AppBarButtonStyleNoChevron}" VerticalAlignment="Center"  Icon="Clear" Command="{Binding ResetEffectsCommand}" Label="Clear effects"/>
 
         <GridView ScrollViewer.HorizontalScrollMode="Enabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -54,4 +54,4 @@
             </GridView.ItemTemplate>
         </GridView>
     </Grid>
-</controls1:BaseUserControl>
+</controls:BaseUserControl>

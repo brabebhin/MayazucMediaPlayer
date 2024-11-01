@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d"
     Title="Audio effects management"
     IsPrimaryButtonEnabled="True"
@@ -21,8 +20,7 @@
         <StackPanel  >
             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="You must save changes before effects are applied. Audio effects only work if equalizer is turned on." TextWrapping="WrapWholeWords"/>
             <StackPanel Orientation="Horizontal">
-
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Cancel" Command="{Binding ResetEffectsCommand}" Label="Disable all effects"/>
+                <controls:AppBarButtonWithToolTip   Icon="Cancel" Command="{Binding ResetEffectsCommand}" Label="Disable all effects"/>
             </StackPanel>
         </StackPanel>
         <ListView Grid.Row="1"  SelectionMode="None"  ItemsSource="{Binding Effects}" x:Name="lsvAudioEffects">

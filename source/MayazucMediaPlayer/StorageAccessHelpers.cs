@@ -39,7 +39,7 @@ namespace MayazucMediaPlayer
             }
         }
 
-        public static IEnumerable<FileInfo> GetFiles(this DirectoryInfo folder, IEnumerable<string> extensions)
+        public static IEnumerable<FileInfo> EnumerateFiles(this DirectoryInfo folder, IEnumerable<string> extensions)
         {
             return folder.EnumerateFiles().Where(x => extensions.Contains(x.Extension.ToLowerInvariant()));
         }

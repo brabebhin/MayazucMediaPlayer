@@ -3,6 +3,7 @@ using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace MayazucMediaPlayer.Controls
             InitializeComponent();
             Unloaded += ShuffleRadioGroup_Unloaded;
 
-            shuffleModes.Add(new ShuffleModeItem(Symbol.Shuffle, "Shuffle tracks", true));
-            shuffleModes.Add(new ShuffleModeItem(Symbol.Switch, "Shuffle disabled", false));
+            shuffleModes.Add(new ShuffleModeItem(Symbol.Shuffle, "Shuffle tracks", true, new SolidColorBrush(Microsoft.UI.Colors.White)));
+            shuffleModes.Add(new ShuffleModeItem(Symbol.Shuffle, "Shuffle disabled", false, new SolidColorBrush(Microsoft.UI.Colors.DarkGray)));
             cbShuffleModes.ItemsSource = shuffleModes;
             cbShuffleModes.SelectionChanged += CbShuffleModes_SelectionChanged;
             SettingsService.Instance.ShuffleModeChanged += SettingsWrapper_ShuffleModeChanged;
@@ -97,11 +98,18 @@ namespace MayazucMediaPlayer.Controls
                 private set;
             }
 
-            public ShuffleModeItem(Symbol modeSymbol, string modeText, bool shuffleMode)
+            public SolidColorBrush ShuffleOnOffColor
+            {
+                get;
+                private set;
+            }
+
+            public ShuffleModeItem(Symbol modeSymbol, string modeText, bool shuffleMode, SolidColorBrush shuffleOnOffColor)
             {
                 ModeSymbol = modeSymbol;
                 ModeText = modeText ?? throw new ArgumentNullException(nameof(modeText));
                 ShuffleEnabled = shuffleMode;
+                ShuffleOnOffColor = shuffleOnOffColor;
             }
 
             public async Task SetShuffleMode()

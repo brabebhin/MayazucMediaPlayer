@@ -10,7 +10,7 @@
     d:DesignWidth="400">
 
     <AppBarButton.Icon>
-        <SymbolIcon Symbol="{Binding ElementName=cbShuffleModes, Path=SelectedItem.ModeSymbol}"></SymbolIcon>
+        <SymbolIcon Symbol="{Binding ElementName=cbShuffleModes, Path=SelectedItem.ModeSymbol}" Foreground="{Binding ElementName=cbShuffleModes, Path=SelectedItem.ShuffleOnOffColor}"></SymbolIcon>
     </AppBarButton.Icon>
     <AppBarButton.Flyout>
         <Flyout>
@@ -18,7 +18,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel ToolTipService.ToolTip="{Binding ModeText}" Orientation="Horizontal">
-                            <SymbolIcon Symbol="{Binding ModeSymbol}"/>
+                            <SymbolIcon Symbol="Shuffle" Foreground ="{Binding ShuffleOnOffColor}"/>
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ModeText}" Margin="10,0,0,0" Visibility="{Binding ElementName=cbShuffleModes, Path=IsDropDownOpen, Converter={StaticResource BooleanToVisibleConverterInstance}, UpdateSourceTrigger=PropertyChanged}"/>
                         </StackPanel>
                     </DataTemplate>

@@ -1,4 +1,4 @@
-﻿<controls1:BaseUserControl
+﻿<controls:BaseUserControl
     x:Class="MayazucMediaPlayer.Playlists.PlaylistDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,7 +8,7 @@
     
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d" >
     
     <Grid Background="Transparent" Grid.Row="1" x:Name="ContentRoot">
@@ -69,31 +69,31 @@
                 </StackPanel>
 
                 <CommandBar IsEnabled="{Binding Files.Count, Converter={StaticResource BooleanCountConverter}}" HorizontalAlignment="Left" Background="Transparent" DefaultLabelPosition="Right"  Grid.Row="2" Grid.ColumnSpan="2">
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="PlayButton" Command="{Binding PlayButtonCommand}" CommandParameter="{Binding ElementName=PlayButton}" Label="Play" Icon="Play" />
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="EnqueueButton" Command="{Binding EnqueueButtonCommand}" CommandParameter="{Binding ElementName=EnqueueButton}" Label="Enqueue">
+                    <controls:AppBarButtonWithToolTip   x:Name="PlayButton" Command="{Binding PlayButtonCommand}" CommandParameter="{Binding ElementName=PlayButton}" Label="Play" Icon="Play" />
+                    <controls:AppBarButtonWithToolTip    x:Name="EnqueueButton" Command="{Binding EnqueueButtonCommand}" CommandParameter="{Binding ElementName=EnqueueButton}" Label="Enqueue">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
-                    </AppBarButton>
+                    </controls:AppBarButtonWithToolTip>
 
-                    <AppBarToggleButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding ChangeSongOrderRequestCommand}" CommandParameter="{Binding ElementName=npChangeSongButton}" x:Name="npChangeSongButton" IsEnabled="{Binding NpChangeSongButton}" IsChecked="{Binding IsChangingOrder}" Label="Reorder">
+                    <controls:AppBarToggleButtonWithToolTip     Command="{Binding ChangeSongOrderRequestCommand}" CommandParameter="{Binding ElementName=npChangeSongButton}" x:Name="npChangeSongButton" IsEnabled="{Binding NpChangeSongButton}" IsChecked="{Binding IsChangingOrder}" Label="Reorder">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE1ED;"></FontIcon>
                         </AppBarToggleButton.Icon>
-                    </AppBarToggleButton>
+                    </controls:AppBarToggleButtonWithToolTip>
 
-                    <AppBarToggleButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  x:Name="SelectButton" IsEnabled="{Binding SelectButtonIsEnabled}" Command="{Binding SelectButtonCommand}" CommandParameter="{Binding ElementName=SelectButton}"  Label="Select">
+                    <controls:AppBarToggleButtonWithToolTip    x:Name="SelectButton" IsEnabled="{Binding SelectButtonIsEnabled}" Command="{Binding SelectButtonCommand}" CommandParameter="{Binding ElementName=SelectButton}"  Label="Select">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE71D;">
 
                             </FontIcon>
                         </AppBarToggleButton.Icon>
-                    </AppBarToggleButton>
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" IsEnabled="{Binding RenameIsEnabled}" x:Name="RenameButton" Command="{Binding RenamePlaylistCommand}" CommandParameter="{Binding ElementName=RenameButton}" Icon="Rename" Label="Rename"/>
+                    </controls:AppBarToggleButtonWithToolTip>
+                    <AppBarButton   IsEnabled="{Binding RenameIsEnabled}" x:Name="RenameButton" Command="{Binding RenamePlaylistCommand}" CommandParameter="{Binding ElementName=RenameButton}" Icon="Rename" Label="Rename"/>
 
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="AddToPlaylistButton"  Command="{Binding AddToPlaylistButtonCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Label="Add to playlist" Icon="Add"/>
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="Delete" IsEnabled="{Binding DeleteIsEnabled}" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=Delete}" Icon="Delete" Label="Delete" />
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" x:Name="RemoveSelected" IsEnabled="{Binding RemoveSelectedIsEnabled}" Command="{Binding RemoveSelectedCommand}" CommandParameter="{Binding ElementName=RemoveSelected}" Icon="Remove" Label="Remove selected"  />
+                    <controls:AppBarButtonWithToolTip    x:Name="AddToPlaylistButton"  Command="{Binding AddToPlaylistButtonCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Label="Add to playlist" Icon="Add"/>
+                    <controls:AppBarButtonWithToolTip    x:Name="Delete" IsEnabled="{Binding DeleteIsEnabled}" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=Delete}" Icon="Delete" Label="Delete" />
+                    <controls:AppBarButtonWithToolTip    x:Name="RemoveSelected" IsEnabled="{Binding RemoveSelectedIsEnabled}" Command="{Binding RemoveSelectedCommand}" CommandParameter="{Binding ElementName=RemoveSelected}" Icon="Remove" Label="Remove selected"  />
 
                 </CommandBar>
             </Grid>
@@ -135,4 +135,4 @@
         </ListView>
 
     </Grid>
-</controls1:BaseUserControl>
+</controls:BaseUserControl>

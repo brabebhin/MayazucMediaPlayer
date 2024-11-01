@@ -33,29 +33,29 @@
                     <mcConrols:SearchBar x:Name="mcSearchbar" SearchView="{Binding NowPlayingCollectionViewSource}" IsEnabled="{Binding CanSearch}" Grid.Row="1" Margin="12, 2, 12, 2"></mcConrols:SearchBar>
                 </Grid>
                 <CommandBar IsEnabled="{Binding NowPlayingCommandBarEnabled}" Grid.Row="2"  HorizontalAlignment="Left"  x:Name="CommandBarus">
-                    <AppBarButton IsEnabled="{Binding SaveButtonEnabled}" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding SaveNowPlayingAsPlaylistCommand}" CommandParameter="{Binding ElementName=npSaveAsPlayList}"  x:Name="npSaveAsPlayList"  Icon="Save" Label="Save"/>
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding SaveButtonEnabled}"  Command="{Binding SaveNowPlayingAsPlaylistCommand}" CommandParameter="{Binding ElementName=npSaveAsPlayList}"  x:Name="npSaveAsPlayList"  Icon="Save" Label="Save"/>
 
-                    <AppBarButton  IsEnabled="{Binding AddToPlaylistButtonEnabled}"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Click="AddToPlaylist" Icon="Add" x:Name="npAddToPlaylist" Label="Add to playlist"/>
+                    <mcConrols:AppBarButtonWithToolTip  IsEnabled="{Binding AddToPlaylistButtonEnabled}"   Click="AddToPlaylist" Icon="Add" x:Name="npAddToPlaylist" Label="Add to playlist"/>
 
-                    <AppBarToggleButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding ChangeSongOrderRequestCommand}" CommandParameter="{Binding ElementName=npChangeSongButton}" x:Name="npChangeSongButton" IsEnabled="{Binding NpChangeSongButton}" IsChecked="{Binding IsChangingOrder}" Label="Reorder">
+                    <mcConrols:AppBarToggleButtonWithToolTip     Command="{Binding ChangeSongOrderRequestCommand}" CommandParameter="{Binding ElementName=npChangeSongButton}" x:Name="npChangeSongButton" IsEnabled="{Binding NpChangeSongButton}" IsChecked="{Binding IsChangingOrder}" Label="Reorder">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE1ED;"></FontIcon>
                         </AppBarToggleButton.Icon>
-                    </AppBarToggleButton>
+                    </mcConrols:AppBarToggleButtonWithToolTip>
 
-                    <AppBarToggleButton IsChecked="{Binding SelectButtonChecked, Mode=TwoWay}" IsEnabled="{Binding SelectButtonEnabled}"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding SelectRequestCommand}" CommandParameter="{Binding ElementName=npSelect}"  x:Name="npSelect"  Label="Select...">
+                    <mcConrols:AppBarToggleButtonWithToolTip IsChecked="{Binding SelectButtonChecked, Mode=TwoWay}" IsEnabled="{Binding SelectButtonEnabled}"     Command="{Binding SelectRequestCommand}" CommandParameter="{Binding ElementName=npSelect}"  x:Name="npSelect"  Label="Select...">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE71D;"></FontIcon>
                         </AppBarToggleButton.Icon>
-                    </AppBarToggleButton>
+                    </mcConrols:AppBarToggleButtonWithToolTip>
 
-                    <AppBarButton IsEnabled="{Binding UnselectButtonEnabled}"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Command="{Binding ClearSelectionCommand}"  CommandParameter="{Binding ElementName=npUnselectAllButton}"  Icon="ClearSelection" x:Name="npUnselectAllButton"  Label="Unselect all..."/>
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding UnselectButtonEnabled}"    Command="{Binding ClearSelectionCommand}"  CommandParameter="{Binding ElementName=npUnselectAllButton}"  Icon="ClearSelection" x:Name="npUnselectAllButton"  Label="Unselect all..."/>
 
-                    <AppBarButton IsEnabled="{Binding RemoveSelectedButtonEnabled}"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Command="{Binding RemoveCommand}"  Icon="Remove"  CommandParameter="{Binding ElementName=npRemoveFromPlayBackButton}"  x:Name="npRemoveFromPlayBackButton"  Label="Remove selected"/>
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding RemoveSelectedButtonEnabled}"    Command="{Binding RemoveCommand}"  Icon="Remove"  CommandParameter="{Binding ElementName=npRemoveFromPlayBackButton}"  x:Name="npRemoveFromPlayBackButton"  Label="Remove selected"/>
 
                     <CommandBar.SecondaryCommands>
-                        <AppBarButton ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"   Command="{Binding ShuffleRequestClickCommand}" CommandParameter="{Binding ElementName=npShuffleButton}" Icon="Shuffle" x:Name="npShuffleButton" IsEnabled="{Binding NpShuffleButton}" Label="Shuffle"/>
-                        <AppBarButton IsEnabled="{Binding ClearQueueButtonEnabled}" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Clear queue" Command="{Binding ClearPlaybackQueueCommand}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{Binding ElementName=npStopPlaybackQueue}"/>
+                        <mcConrols:AppBarButtonWithToolTip    Command="{Binding ShuffleRequestClickCommand}" CommandParameter="{Binding ElementName=npShuffleButton}" Icon="Shuffle" x:Name="npShuffleButton" IsEnabled="{Binding NpShuffleButton}" Label="Shuffle"/>
+                        <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding ClearQueueButtonEnabled}"  Label="Clear queue" Command="{Binding ClearPlaybackQueueCommand}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{Binding ElementName=npStopPlaybackQueue}"/>
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
 

@@ -451,6 +451,7 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         public PlaylistsService PlaylistsService { get; private set; }
 
+
         public FilePickerUiService(DispatcherQueue dp,
             PlaybackSequenceService m,
             PlaylistsService playlistsService) : base(dp, m)
@@ -945,7 +946,7 @@ namespace MayazucMediaPlayer.FileSystemViews
                         var ext = file.Extension.ToLowerInvariant();
                         if (SupportedFileFormats.AllSupportedFileFormats.Contains(ext))
                         {
-                            var x = new PickedFileItem(file);
+                            var x = new IMediaPlayerItemSourceProviderWithCommands(new PickedFileItem(file), this);
                             validItems.Add(x);
                         }
                     }
@@ -1191,8 +1192,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         }
 
         private async Task HandleCombinedStorageFileFolderActivation(IEnumerable<IStorageItem> _items)
-        {
-            var mruFiles = new List<IMediaPlayerItemSourceProvder>();
+        {            
             foreach (var item in _items)
             {
                 if (item is StorageFolder)
@@ -1208,10 +1208,6 @@ namespace MayazucMediaPlayer.FileSystemViews
                     await OpenFilesInternalAsync(new FileInfo[] { file.ToFileInfo() });
                 }
             }
-            if (mruFiles.Any())
-            {
-                Items.AddRange(mruFiles);
-            }
         }
 
         internal async Task PlayFile(IMediaPlayerItemSourceProvder file)
@@ -1225,6 +1221,5 @@ namespace MayazucMediaPlayer.FileSystemViews
         private ListViewReorderMode reorderMode = ListViewReorderMode.Disabled;
         private bool _CanReorderItems;
         private bool isChangingOrder;
-
     }
 }

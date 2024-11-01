@@ -49,62 +49,64 @@ namespace MayazucMediaPlayer.Dialogs
             profileName.MarkedForDeletion = !profileName.MarkedForDeletion;
         }
 
-        public class SavedColorProfileUIWrapper : ObservableObject
+        
+    }
+
+    public class SavedColorProfileUIWrapper : ObservableObject
+    {
+        public SavedColorProfile Data
         {
-            public SavedColorProfile Data
-            {
-                get;
-                private set;
-            }
+            get;
+            private set;
+        }
 
-            bool _markedForDeletion;
-            public bool MarkedForDeletion
+        bool _markedForDeletion;
+        public bool MarkedForDeletion
+        {
+            get => _markedForDeletion;
+            set
             {
-                get => _markedForDeletion;
-                set
+                _markedForDeletion = value;
+                if (_markedForDeletion)
                 {
-                    _markedForDeletion = value;
-                    if (_markedForDeletion)
-                    {
-                        ButtonIcon = Symbol.Refresh;
-                        TextDecoration = TextDecorations.Strikethrough;
-                    }
-                    else
-                    {
-                        ButtonIcon = Symbol.Delete;
-                        TextDecoration = TextDecorations.None;
-                    }
-
-                    NotifyPropertyChanged(nameof(MarkedForDeletion));
-                    NotifyPropertyChanged(nameof(ButtonIcon));
-                    NotifyPropertyChanged(nameof(TextDecoration));
-                    NotifyPropertyChanged(nameof(Title));
+                    ButtonIcon = Symbol.Refresh;
+                    TextDecoration = Windows.UI.Text.TextDecorations.Strikethrough;
                 }
+                else
+                {
+                    ButtonIcon = Symbol.Delete;
+                    TextDecoration = TextDecorations.None;
+                }
+
+                NotifyPropertyChanged(nameof(MarkedForDeletion));
+                NotifyPropertyChanged(nameof(ButtonIcon));
+                NotifyPropertyChanged(nameof(TextDecoration));
+                NotifyPropertyChanged(nameof(Title));
             }
+        }
 
-            public Symbol ButtonIcon
-            {
-                get;
-                private set;
-            } = Symbol.Delete;
+        public Symbol ButtonIcon
+        {
+            get;
+            private set;
+        } = Symbol.Delete;
 
-            public TextDecorations TextDecoration
-            {
-                get;
-                private set;
-            } = TextDecorations.None;
+        public TextDecorations TextDecoration
+        {
+            get;
+            private set;
+        } = TextDecorations.None;
 
-            public string Title
-            {
-                get;
-                private set;
-            }
+        public string Title
+        {
+            get;
+            private set;
+        }
 
-            public SavedColorProfileUIWrapper(SavedColorProfile data)
-            {
-                Data = data ?? throw new ArgumentNullException(nameof(data));
-                Title = data.Name;
-            }
+        public SavedColorProfileUIWrapper(SavedColorProfile data)
+        {
+            Data = data ?? throw new ArgumentNullException(nameof(data));
+            Title = data.Name;
         }
     }
 }

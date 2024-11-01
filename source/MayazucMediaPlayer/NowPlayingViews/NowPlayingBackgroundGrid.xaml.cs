@@ -48,6 +48,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 files.Randomize();
                 return files.Select(x => x.FullName).ToList();
             });
+
             var images = TopLeft.FindVisualChildrenDeep<Image>();
             images = images.Union(BottomRight.FindVisualChildrenDeep<Image>());
             images = images.Union(TopRight.FindVisualChildrenDeep<Image>());

@@ -24,20 +24,20 @@
                 <TextBlock Text="Media is not available. Most likely the file was deleted or the path is not available anymore" TextWrapping="WrapWholeWords"/>
             </StackPanel>
             <CommandBar Visibility="{Binding PlaybackCommandBarVisibility}" x:Name="MenuBar" HorizontalAlignment="Left" DefaultLabelPosition="Right" FlowDirection="LeftToRight" Background="Transparent"  Grid.Row="1">
-                <AppBarButton IsEnabled="False" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding PlayCommand}" CommandParameter="{Binding ElementName=fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
-                </AppBarButton>
-                <AppBarButton  IsEnabled="False"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding AddToNowPlayingCommand}" CommandParameter="{Binding ElementName=fdEnqueue}" x:Name="fdEnqueue" Label="Add to now playing">
+                <controls:AppBarButtonWithToolTip IsEnabled="False"  Command="{Binding PlayCommand}" CommandParameter="{Binding ElementName=fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
+                </controls:AppBarButtonWithToolTip>
+                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{Binding AddToNowPlayingCommand}" CommandParameter="{Binding ElementName=fdEnqueue}" x:Name="fdEnqueue" Label="Add to now playing">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                     </AppBarButton.Icon>
-                </AppBarButton>
+                </controls:AppBarButtonWithToolTip>
 
-                <AppBarButton  IsEnabled="False"  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding SaveToPlaylistCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Icon="Add" x:Name="AddToPlaylistButton" Label="Add to playlist"></AppBarButton>
-                <AppBarButton  Visibility="Visible"  IsEnabled="False"  ToolTipService.ToolTip="Plays the associated item in queue, enquing if necessary" Command="{Binding SkipToQueueItemCommand}" CommandParameter="{Binding ElementName=SkipToQueueItemButton}" x:Name="SkipToQueueItemButton" Label="Skip to queue item">
+                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{Binding SaveToPlaylistCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Icon="Add" x:Name="AddToPlaylistButton" Label="Add to playlist"></controls:AppBarButtonWithToolTip>
+                <controls:AppBarButtonWithToolTip  Visibility="Visible"  IsEnabled="False"  ToolTipService.ToolTip="Plays the associated item in queue, enquing if necessary" Command="{Binding SkipToQueueItemCommand}" CommandParameter="{Binding ElementName=SkipToQueueItemButton}" x:Name="SkipToQueueItemButton" Label="Skip to queue item">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE84E;" />
                     </AppBarButton.Icon>
-                </AppBarButton>
+                </controls:AppBarButtonWithToolTip>
             </CommandBar>
         </StackPanel>
 
@@ -321,7 +321,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
 
-                        <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Click="LoadViewPreviews_click" x:Name="LoadPreviewsButton" Icon="Video" Label="Load previews"/>
+                        <AppBarButton   Click="LoadViewPreviews_click" x:Name="LoadPreviewsButton" Icon="Video" Label="Load previews"/>
                     </StackPanel>
 
                     <GridView

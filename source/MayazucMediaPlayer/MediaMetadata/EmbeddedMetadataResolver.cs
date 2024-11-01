@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.MediaMetadata
 {
-    public class EmbeddedMetadataResult
+    public partial class EmbeddedMetadataResult
     {
         public string Album { get; private set; } = string.Empty;
 

@@ -39,13 +39,13 @@
                 </PasswordBox.Header>
             </PasswordBox>
             <CommandBar Margin="2" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Save" Label="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=notificationRoot}"></AppBarButton>
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=notificationRoot}"></AppBarButton>
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Label="Retrieve password" Command="{Binding LoadPassword}" CommandParameter="{Binding ElementName=notificationRoot}">
+                <controls:AppBarButtonWithToolTip   Icon="Save" Label="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=notificationRoot}"></controls:AppBarButtonWithToolTip>
+                <controls:AppBarButtonWithToolTip   Icon="Delete" Label="Delete" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=notificationRoot}"></controls:AppBarButtonWithToolTip>
+                <controls:AppBarButtonWithToolTip   Label="Retrieve password" Command="{Binding LoadPassword}" CommandParameter="{Binding ElementName=notificationRoot}">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xF78D;" />
                     </AppBarButton.Icon>
-                </AppBarButton>
+                </controls:AppBarButtonWithToolTip>
             </CommandBar>
             <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}" Margin="0, 2, 0, 0" Text="This application has no relationship with Open Subtitles, other than usings the site APIs. The links bellow are provided for convenice only" TextWrapping="WrapWholeWords"/>
             <toolkit:WrapPanel>

@@ -3,10 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local2="using:MayazucMediaPlayer"
-    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
-    
+    xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d">
 
     <!--TODO: Content should be placed within the following grid-->
@@ -19,7 +18,7 @@
 
         <StackPanel   >
             <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="2">
-                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding AddCommand}" CommandParameter="{Binding ElementName=CreateNewConfiguration}" Icon="Add" Label="New" x:Name="CreateNewConfiguration"></AppBarButton>
+                <controls:AppBarButtonWithToolTip   Command="{Binding AddCommand}" CommandParameter="{Binding ElementName=CreateNewConfiguration}" Icon="Add" Label="New" x:Name="CreateNewConfiguration"></controls:AppBarButtonWithToolTip>
             </CommandBar>
         </StackPanel>
         <SplitView Grid.Row="2" PaneBackground="Transparent" x:Name="masterDetailsRoot" VerticalAlignment="Stretch" PanePlacement="Left" DisplayMode="Inline" LightDismissOverlayMode="Off" IsPaneOpen="True">

@@ -6,7 +6,8 @@
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mcConrols="using:MayazucMediaPlayer.Controls"  xmlns:navigation="using:MayazucMediaPlayer.Navigation"
+    xmlns:mcConrols="using:MayazucMediaPlayer.Controls" 
+    xmlns:navigation="using:MayazucMediaPlayer.Navigation"
     mc:Ignorable="d"   x:Name="RootPage">
 
     <Grid Background="Transparent">
@@ -44,15 +45,15 @@
             <ColumnDefinition x:Name="gridColumnSecondaryView" Width="Auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left">
-            <AppBarToggleButton IsChecked="True" Visibility="Visible" x:Name="PlaylistsSplitViewButton">
+            <mcConrols:AppBarToggleButtonWithToolTip IsChecked="True" Visibility="Visible" x:Name="PlaylistsSplitViewButton">
                 <AppBarToggleButton.Icon>
                     <FontIcon FontFamily="HoloLens MDL2 Assets" Glyph="&#xE700;" />
                 </AppBarToggleButton.Icon>
-            </AppBarToggleButton>
+            </mcConrols:AppBarToggleButtonWithToolTip>
 
-            <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding CreateEmptyPlaylistCommand}" CommandParameter="{Binding ElementName=CreateEmptyPlaylist}"  x:Name="CreateEmptyPlaylist"  Label="Create playlist">
+            <mcConrols:AppBarButtonWithToolTip   Command="{Binding CreateEmptyPlaylistCommand}" CommandParameter="{Binding ElementName=CreateEmptyPlaylist}"  x:Name="CreateEmptyPlaylist"  Label="Create playlist">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="{StaticResource PlaylistIcon}" />
-            </AppBarButton>
+            </mcConrols:AppBarButtonWithToolTip>
         </CommandBar>
 
         <SplitView x:Name="PlaylistsManagerSplitView" PaneBackground="Transparent" LightDismissOverlayMode="Off" DisplayMode="Inline" Grid.Row="1" IsPaneOpen="{Binding ElementName=PlaylistsSplitViewButton, Mode=TwoWay,Path=IsChecked, FallbackValue=true}">
@@ -65,24 +66,24 @@
                     <Grid x:Name="MyHeaderGrid" Margin="0, 0, 0, 20">
                         <StackPanel Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="3">
-                                <AppBarToggleButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Command="{Binding SetSelectionModeCommand}" CommandParameter="{Binding ElementName=npSelect}" x:Name="npSelect" Label="Select">
+                                <mcConrols:AppBarToggleButtonWithToolTip    Command="{Binding SetSelectionModeCommand}" CommandParameter="{Binding ElementName=npSelect}" x:Name="npSelect" Label="Select">
                                     <AppBarToggleButton.Icon>
                                         <FontIcon Glyph="&#xE71D;"></FontIcon>
                                     </AppBarToggleButton.Icon>
-                                </AppBarToggleButton>
-                                <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding PlayCommand}" CommandParameter="{Binding ElementName=PlayButton}"  IsEnabled="{Binding PlayButtonIsEnabled}" x:Name="PlayButton" Icon="Play"  Label="Play selected"  />
+                                </mcConrols:AppBarToggleButtonWithToolTip>
+                                <AppBarButton   Command="{Binding PlayCommand}" CommandParameter="{Binding ElementName=PlayButton}"  IsEnabled="{Binding PlayButtonIsEnabled}" x:Name="PlayButton" Icon="Play"  Label="Play selected"  />
 
                                 <CommandBar.SecondaryCommands>
 
-                                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Command="{Binding AddToNowPlayingCommand}" CommandParameter="{Binding ElementName=EnqueueButton}" IsEnabled="{Binding EnqueueButtonIsEnabled}" x:Name="EnqueueButton" Label="Enqueue selected">
+                                    <mcConrols:AppBarButtonWithToolTip    Command="{Binding AddToNowPlayingCommand}" CommandParameter="{Binding ElementName=EnqueueButton}" IsEnabled="{Binding EnqueueButtonIsEnabled}" x:Name="EnqueueButton" Label="Enqueue selected">
                                         <AppBarButton.Icon>
                                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                                         </AppBarButton.Icon>
-                                    </AppBarButton>
+                                    </mcConrols:AppBarButtonWithToolTip>
 
-                                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" IsEnabled="{Binding AddToPlaylistButtonIsEnabled}" x:Name="AddToPlaylistButton" Command="{Binding SaveToExistingPlaylistCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Label="Add selected to playlist" Icon="Add"/>
+                                    <mcConrols:AppBarButtonWithToolTip   IsEnabled="{Binding AddToPlaylistButtonIsEnabled}" x:Name="AddToPlaylistButton" Command="{Binding SaveToExistingPlaylistCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Label="Add selected to playlist" Icon="Add"/>
 
-                                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Command="{Binding DeleteSelectedPlaylistsCommand}" CommandParameter="{Binding ElementName=DeleteButton}" IsEnabled="{Binding DeleteButtonIsEnabled}"  x:Name="DeleteButton" Icon="Delete"  Label="Delete selected"  />
+                                    <mcConrols:AppBarButtonWithToolTip   Command="{Binding DeleteSelectedPlaylistsCommand}" CommandParameter="{Binding ElementName=DeleteButton}" IsEnabled="{Binding DeleteButtonIsEnabled}"  x:Name="DeleteButton" Icon="Delete"  Label="Delete selected"  />
                                 </CommandBar.SecondaryCommands>
 
                             </CommandBar>

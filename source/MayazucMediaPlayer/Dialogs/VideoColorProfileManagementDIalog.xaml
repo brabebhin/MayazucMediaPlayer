@@ -3,34 +3,31 @@
     x:Class="MayazucMediaPlayer.Dialogs.VideoColorProfileManagementDIalog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:MCMediaCenter.Details"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d"
     Title="Manage video color profiles"
-  
     IsPrimaryButtonEnabled="True"
     PrimaryButtonText="OK"
-    
     IsSecondaryButtonEnabled="True"
     SecondaryButtonText="Cancel">
 
-
     <ListView x:Name="lsvItems" SelectionMode="None" >
         <ListView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="dialogs:SavedColorProfileUIWrapper">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextDecorations="{Binding TextDecoration}" FontSize="20" VerticalAlignment="Center" Text="{Binding Title}"/>
-                    <AppBarButton  ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}" Grid.Column="1"  Click="DeleteProfile">
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextDecorations="{x:Bind TextDecoration}" FontSize="20" VerticalAlignment="Center" Text="{x:Bind Title}"/>
+                    <controls:AppBarButtonWithToolTip   Grid.Column="1"  Click="DeleteProfile">
                         <AppBarButton.Icon>
-                            <SymbolIcon Symbol="{Binding ButtonIcon}"/>
+                            <SymbolIcon Symbol="{x:Bind ButtonIcon}"/>
                         </AppBarButton.Icon>
-                    </AppBarButton>
+                    </controls:AppBarButtonWithToolTip>
                 </Grid>
             </DataTemplate>
         </ListView.ItemTemplate>

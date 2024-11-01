@@ -1,5 +1,5 @@
-﻿<controls1:BaseUserControl
-    xmlns:controls1="using:MayazucMediaPlayer.Controls"
+﻿<controls:BaseUserControl
+    xmlns:controls="using:MayazucMediaPlayer.Controls"
     x:Class="MayazucMediaPlayer.VideoEffects.VideoEffectsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -90,7 +90,7 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Column="0" VerticalAlignment="Center" Text="{Binding EffectPropertyName}"/>
                                             <AppBarSeparator Grid.Column="1" ></AppBarSeparator>
-                                            <AppBarButton Height="48" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Grid.Column="2"  Icon="Refresh" Command="{Binding RestoreDefaultValue}"/>
+                                            <controls:AppBarButtonWithToolTip Height="48"   Grid.Column="2"  Icon="Refresh" Command="{Binding RestoreDefaultValue}"/>
                                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}"  Grid.Column="3"  VerticalAlignment="Center"  Text="{Binding EffectPropertyValue}"/>
                                         </Grid>
                                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="4" Text="{Binding EffectPropertyMaximum}"/>
@@ -103,4 +103,4 @@
             </ListView>
         </Grid>
     </SplitView>
-</controls1:BaseUserControl>
+</controls:BaseUserControl>

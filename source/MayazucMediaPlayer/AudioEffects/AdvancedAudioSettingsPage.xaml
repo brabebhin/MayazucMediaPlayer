@@ -27,7 +27,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock HorizontalAlignment="Center" Margin="6" Grid.ColumnSpan="3" Grid.Row="0" Text="Audio balance" Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="0" />
 
-            <AppBarButton Grid.Row="1" VerticalAlignment="Bottom" Style="{StaticResource AppBarButtonStyleNoChevron}" Grid.Column="0" ToolTipService.ToolTip="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Label}"  Icon="Refresh" Label="Reset" Command="{Binding SetBalanceToZeroCommand}"/>
+            <controls:AppBarButtonWithToolTip Grid.Row="1" VerticalAlignment="Bottom" Style="{StaticResource AppBarButtonStyleNoChevron}" Grid.Column="0"   Icon="Refresh" Label="Reset" Command="{Binding SetBalanceToZeroCommand}"/>
 
             <Slider Grid.Column="1" 
                     HorizontalAlignment="Stretch" 
