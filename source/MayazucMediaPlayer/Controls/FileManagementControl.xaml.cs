@@ -162,72 +162,72 @@ namespace MayazucMediaPlayer.Controls
             RefreshRequested?.Invoke(this, new EventArgs());
         }
 
-        private async void SingleItemPlayFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemPlayFileCommand(object sender, RoutedEventArgs e)
         {
             await DataService.PlaySingleFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemEnqueueFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemEnqueueFileCommand(object sender, RoutedEventArgs e)
         {
             await DataService.EnqueueSingleFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemPlayNextSingleFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemPlayNextSingleFileCommand(object sender, RoutedEventArgs e)
         {
             await DataService.PlayNextSingleFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemPlayStartingFromFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemPlayStartingFromFileCommand(object sender, RoutedEventArgs e)
         {
             await DataService.PlayStartingFromFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemAddFileToPlaylistCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemAddFileToPlaylistCommand(object sender, RoutedEventArgs e)
         {
             await DataService.AddSingleFileToPlaylistCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private void SingleItemRemoveSlidedItem(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void SingleItemRemoveSlidedItem(object sender, RoutedEventArgs e)
         {
             DataService.RemoveSlidedItem.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemGoToPropertiesCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemGoToPropertiesCommand(object sender, RoutedEventArgs e)
         {
             await DataService.GoToSingleItemPropertiesCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemCopyFileToFolder(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemCopyFileToFolder(object sender, RoutedEventArgs e)
         {
             await DataService.CopySingleFileToFolder.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private async void SingleItemCopyFileToClipboard(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private async void SingleItemCopyFileToClipboard(object sender, RoutedEventArgs e)
         {
             await DataService.CopyFileToClipboard.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private void SingleItemCopyFilePath(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void SingleItemCopyFilePath(object sender, RoutedEventArgs e)
         {
             DataService.SingleItemCopyFilePath.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private void SingleItemCopyFileName(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void SingleItemCopyFileName(object sender, RoutedEventArgs e)
         {
             DataService.SingleItemCopyFileName.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private void SingleItemCopyAlbum(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void SingleItemCopyAlbum(object sender, RoutedEventArgs e)
         {
             DataService.SingleItemCopyFileName.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private void SingleItemCopyArtist(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void SingleItemCopyArtist(object sender, RoutedEventArgs e)
         {
             DataService.SingleItemCopyArtist.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }
 
-        private void SingleItemCopyGenre(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private void SingleItemCopyGenre(object sender, RoutedEventArgs e)
         {
             DataService.SingleItemCopyGenre.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
         }

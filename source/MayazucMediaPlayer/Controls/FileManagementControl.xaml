@@ -14,29 +14,29 @@
             <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
-                        <MenuFlyoutItem Tapped="SingleItemPlayFileCommand"  Text="Play"/>
-                        <MenuFlyoutItem Tapped="SingleItemEnqueueFileCommand"  Text="Add to now playing"/>
-                        <MenuFlyoutItem Tapped="SingleItemPlayNextSingleFileCommand"  Text="Play next"/>
-                        <MenuFlyoutItem Tapped="SingleItemPlayStartingFromFileCommand"  Text="Play list starting here"/>
+                        <MenuFlyoutItem Click="SingleItemPlayFileCommand"  Text="Play"/>
+                        <MenuFlyoutItem Click="SingleItemEnqueueFileCommand"  Text="Add to now playing"/>
+                        <MenuFlyoutItem Click="SingleItemPlayNextSingleFileCommand"  Text="Play next"/>
+                        <MenuFlyoutItem Click="SingleItemPlayStartingFromFileCommand"  Text="Play list starting here"/>
 
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Tapped="SingleItemAddFileToPlaylistCommand"  Text="Add to playlist"/>
+                        <MenuFlyoutItem Click="SingleItemAddFileToPlaylistCommand"  Text="Add to playlist"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Tapped="SingleItemRemoveSlidedItem"  Text="Remove"/>
+                        <MenuFlyoutItem Click="SingleItemRemoveSlidedItem"  Text="Remove"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Tapped="SingleItemGoToPropertiesCommand"  Text="Properties"/>
+                        <MenuFlyoutItem Click="SingleItemGoToPropertiesCommand"  Text="Properties"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutSubItem Text="Copy">
                             <MenuFlyoutSubItem Text="File to">
-                                <MenuFlyoutItem Text="Folder.."  Tapped="SingleItemCopyFileToFolder"  ></MenuFlyoutItem>
-                                <MenuFlyoutItem Text="Clipboard" Tapped="SingleItemCopyFileToClipboard"  ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Folder.."  Click="SingleItemCopyFileToFolder"  ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Clipboard" Click="SingleItemCopyFileToClipboard"  ></MenuFlyoutItem>
                             </MenuFlyoutSubItem>
                             <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                            <MenuFlyoutItem Text="File path" Tapped="SingleItemCopyFilePath"  />
-                            <MenuFlyoutItem Text="File name" Tapped="SingleItemCopyFileName"  />
-                            <MenuFlyoutItem Text="Album name"  Tapped="SingleItemCopyAlbum" />
-                            <MenuFlyoutItem Text="Artist name"  Tapped="SingleItemCopyArtist" />
-                            <MenuFlyoutItem Text="Genre name"  Tapped="SingleItemCopyGenre" />
+                            <MenuFlyoutItem Text="File path" Click="SingleItemCopyFilePath"  />
+                            <MenuFlyoutItem Text="File name" Click="SingleItemCopyFileName"  />
+                            <MenuFlyoutItem Text="Album name"  Click="SingleItemCopyAlbum" />
+                            <MenuFlyoutItem Text="Artist name"  Click="SingleItemCopyArtist" />
+                            <MenuFlyoutItem Text="Genre name"  Click="SingleItemCopyGenre" />
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Grid.Resources>
@@ -84,24 +84,24 @@
             <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
-                        <MenuFlyoutItem Tapped="SingleItemPlayFileCommand"  Text="Play"/>
-                        <MenuFlyoutItem Tapped="SingleItemEnqueueFileCommand"  Text="Add to now playing"/>
-                        <MenuFlyoutItem Tapped="SingleItemPlayNextSingleFileCommand"  Text="Play next"/>
+                        <MenuFlyoutItem Click="SingleItemPlayFileCommand"  Text="Play"/>
+                        <MenuFlyoutItem Click="SingleItemEnqueueFileCommand"  Text="Add to now playing"/>
+                        <MenuFlyoutItem Click="SingleItemPlayNextSingleFileCommand"  Text="Play next"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Tapped="SingleItemAddFileToPlaylistCommand"  Text="Add to playlist"/>
+                        <MenuFlyoutItem Click="SingleItemAddFileToPlaylistCommand"  Text="Add to playlist"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Tapped="SingleItemRemoveSlidedItem"  Text="Remove"/>
+                        <MenuFlyoutItem Click="SingleItemRemoveSlidedItem"  Text="Remove"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Tapped="SingleItemGoToPropertiesCommand"  Text="Properties"/>
+                        <MenuFlyoutItem Click="SingleItemGoToPropertiesCommand"  Text="Properties"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutSubItem Text="Copy">
                             <MenuFlyoutSubItem Text="File to">
-                                <MenuFlyoutItem Text="Folder.."  Tapped="SingleItemCopyFileToFolder"  ></MenuFlyoutItem>
-                                <MenuFlyoutItem Text="Clipboard" Tapped="SingleItemCopyFileToClipboard"  ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Folder.."  Click="SingleItemCopyFileToFolder"  ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Clipboard" Click="SingleItemCopyFileToClipboard"  ></MenuFlyoutItem>
                             </MenuFlyoutSubItem>
                             <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                            <MenuFlyoutItem Text="File path" Tapped="SingleItemCopyFilePath"  />
-                            <MenuFlyoutItem Text="File name" Tapped="SingleItemCopyFileName"  />
+                            <MenuFlyoutItem Text="File path" Click="SingleItemCopyFilePath"  />
+                            <MenuFlyoutItem Text="File name" Click="SingleItemCopyFileName"  />
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Grid.Resources>
