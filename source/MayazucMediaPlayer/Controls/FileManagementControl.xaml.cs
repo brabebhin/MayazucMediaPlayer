@@ -24,18 +24,18 @@ namespace MayazucMediaPlayer.Controls
 
         public FileManagerDataTemplateSelector DataTemplateSelectorInstance { get; private set; }
 
-        public FilePickerUiService DataModel
+        public FileManagementService DataService
         {
             get; private set;
         }
 
         public void PerformCleanUp()
         {
-            if (DataModel != null)
+            if (DataService != null)
             {
-                DataModel.GetSelectedItemsRequest -= DataModel_GetSelectedItemsRequest;
+                DataService.GetSelectedItemsRequest -= DataModel_GetSelectedItemsRequest;
 
-                DataModel.SetSelectedItems -= DataModel_SetSelectedItems;
+                DataService.SetSelectedItems -= DataModel_SetSelectedItems;
             }
         }
 
@@ -45,7 +45,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (COntentPresenter.SelectedItems.Any())
                 {
-                    COntentPresenter.DeselectRange(new ItemIndexRange(0, (uint)DataModel.Items.Count));
+                    COntentPresenter.DeselectRange(new ItemIndexRange(0, (uint)DataService.Items.Count));
                 }
                 if (e != null)
                 {
@@ -68,17 +68,17 @@ namespace MayazucMediaPlayer.Controls
             COntentPresenter.SelectedItems.Clear();
         }
 
-        public Task LoadStateInternal(FilePickerUiService model)
+        public Task LoadStateInternal(FileManagementService model)
         {
-            if (DataModel == null)
+            if (DataService == null)
             {
-                DataModel = model;
-                DataContext = DataModel;
+                DataService = model;
+                DataContext = DataService;
                 mcSearchBar.Filter = (x) => { return ((IMediaPlayerItemSourceProvder)x).Path; };
 
-                DataModel.GetSelectedItemsRequest += DataModel_GetSelectedItemsRequest;
+                DataService.GetSelectedItemsRequest += DataModel_GetSelectedItemsRequest;
 
-                DataModel.SetSelectedItems += DataModel_SetSelectedItems;
+                DataService.SetSelectedItems += DataModel_SetSelectedItems;
             }
             return Task.CompletedTask;
         }
@@ -97,8 +97,8 @@ namespace MayazucMediaPlayer.Controls
         private async void PlayFile(object? sender, ItemClickEventArgs e)
         {
             var file = e.ClickedItem as IMediaPlayerItemSourceProvder;
-            if (DataModel != null)
-                await DataModel.PlayFile(file);
+            if (DataService != null)
+                await DataService.PlaySingleFileCommand.ExecuteAsync(file);
         }
 
         public string PlaceHolderText
@@ -162,7 +162,183 @@ namespace MayazucMediaPlayer.Controls
             RefreshRequested?.Invoke(this, new EventArgs());
         }
 
+        private async void SingleItemPlayFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.PlaySingleFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
 
+        private async void SingleItemEnqueueFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.EnqueueSingleFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void SingleItemPlayNextSingleFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.PlayNextSingleFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void SingleItemPlayStartingFromFileCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.PlayStartingFromFileCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void SingleItemAddFileToPlaylistCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddSingleFileToPlaylistCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private void SingleItemRemoveSlidedItem(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.RemoveSlidedItem.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void SingleItemGoToPropertiesCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.GoToSingleItemPropertiesCommand.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void SingleItemCopyFileToFolder(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.CopySingleFileToFolder.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void SingleItemCopyFileToClipboard(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.CopyFileToClipboard.ExecuteAsync(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private void SingleItemCopyFilePath(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SingleItemCopyFilePath.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private void SingleItemCopyFileName(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SingleItemCopyFileName.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private void SingleItemCopyAlbum(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SingleItemCopyFileName.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private void SingleItemCopyArtist(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SingleItemCopyArtist.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private void SingleItemCopyGenre(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SingleItemCopyGenre.Execute(sender.GetDataContextObject<IMediaPlayerItemSourceProvder>());
+        }
+
+        private async void FullCollectionPlayCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.PlayCommand.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionAddToNowPlayingCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddToNowPlayingCommand.ExecuteAsync(sender);
+        }
+
+        private void FullCollectionEnableSelection(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.EnableSelection.Execute(sender);
+        }
+
+        private async void FullCollectionSaveAsPlaylistCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.SaveAsPlaylistCommand.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionClearAllCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.ClearAllCommand.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionAddToExistingPlaylistCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddToExistingPlaylistCommand.ExecuteAsync(sender);
+        }
+
+        private void FullCollectionSelectAllCommandOnlyAudio(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SelectAllCommandOnlyAudio.Execute(sender);
+        }
+
+        private void FullCollectionSelectAllCommandOnlyVideo(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SelectAllCommandOnlyVideo.Execute(sender);
+        }
+
+        private void FullCollectionSelectAllCommandSelected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SelectAllCommandOnlyVideo.Execute(sender);
+        }
+
+        private void FullCollectionUnselectAllCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.UnselectAllCommand.Execute(sender);
+        }
+
+        private async void FullCollectionSaveAsPlaylistCommandOnlyMusic(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.SaveAsPlaylistCommandOnlyMusic.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionSaveAsPlaylistCommandOnlyVideo(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.SaveAsPlaylistCommandOnlyVideo.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionSaveAsPlaylistCommandOnlySelected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.SaveAsPlaylistCommandOnlySelected.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionSaveAsPlaylistCommandOnlyunselected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.SaveAsPlaylistCommandOnlyunselected.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionRemoveSelectedCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.RemoveSelectedCommand.ExecuteAsync(sender);
+
+        }
+
+        private async void FullCollectionRemoveOnlyMusicCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.RemoveOnlyMusicCommand.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionRemoveOnlyVideoCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.RemoveOnlyVideoCommand.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionAddToExistingPlaylistCommandOnlyVideo(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddToExistingPlaylistCommand.ExecuteAsync(sender);
+        }
+
+        private async void FullCollectionAddToExistingPlaylistCommandOnlyMusic(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddToExistingPlaylistCommandOnlyMusic.ExecuteAsync(sender);
+
+        }
+
+        private async void FullCollectionAddToExistingPlaylistCommandOnlySelected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddToExistingPlaylistCommandOnlySelected.ExecuteAsync(sender);
+
+        }
+
+        private async void FullCollectionAddToExistingPlaylistCommandOnlyUnselected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.AddToExistingPlaylistCommandOnlyUnselected.ExecuteAsync(sender);
+        }
     }
 
     public class FileManagerDataTemplateSelector : DataTemplateSelector

@@ -35,7 +35,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public class FilePickerUiService : MainViewModelBase
+    public class FileManagementService : MainViewModelBase
     {
         bool playButtonIsEnabled = false;
         bool _EnqueueButtonIsEnabled = false;
@@ -101,7 +101,6 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
         }
 
-
         bool fileFolderPickerBusy = false;
         public event EventHandler<IEnumerable<ItemIndexRange>> SetSelectedItems;
 
@@ -109,7 +108,6 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         readonly FileOpenPicker filePicker;
         readonly FolderPicker folderPicker;
-
 
         ListViewSelectionMode selectionMode = ListViewSelectionMode.None;
         public ListViewSelectionMode SelectionMode
@@ -162,25 +160,25 @@ namespace MayazucMediaPlayer.FileSystemViews
             private set;
         }
 
-        public IRelayCommand<object> PlayCommand
+        public IAsyncRelayCommand<object> PlayCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> PlayCommandOnlySelected
+        public IAsyncRelayCommand<object> PlayCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> PlayCommandOnlyMusicFiles
+        public IAsyncRelayCommand<object> PlayCommandOnlyMusicFiles
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> PlayCommandOnlyVideoFiles
+        public IAsyncRelayCommand<object> PlayCommandOnlyVideoFiles
         {
             get;
             private set;
@@ -216,159 +214,159 @@ namespace MayazucMediaPlayer.FileSystemViews
             private set;
         }
 
-        public IRelayCommand<object> AddToNowPlayingCommand
+        public IAsyncRelayCommand<object> AddToNowPlayingCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> PlayNextCommand
+        public IAsyncRelayCommand<object> PlayNextCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> PlayStartingFromFileCommand
+        public IAsyncRelayCommand<object> PlayStartingFromFileCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> PlayNextSingleFileCommand
+        public IAsyncRelayCommand<object> PlayNextSingleFileCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToNowPlayingCommandOnlySelected
+        public IAsyncRelayCommand<object> AddToNowPlayingCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToNowPlayingCommandOnlyAudio
+        public IAsyncRelayCommand<object> AddToNowPlayingCommandOnlyAudio
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToNowPlayingCommandOnlyVideo
+        public IAsyncRelayCommand<object> AddToNowPlayingCommandOnlyVideo
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> GoToPropertiesCommand
+        public IAsyncRelayCommand<object> GoToSingleItemPropertiesCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> SaveAsPlaylistCommand
+        public IAsyncRelayCommand<object> SaveAsPlaylistCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> SaveAsPlaylistCommandOnlyMusic
-        {
-            get;
-            private set;
-        }
-
-
-        public IRelayCommand<object> SaveAsPlaylistCommandOnlyVideo
+        public IAsyncRelayCommand<object> SaveAsPlaylistCommandOnlyMusic
         {
             get;
             private set;
         }
 
 
-        public IRelayCommand<object> SaveAsPlaylistCommandOnlySelected
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand<object> SaveAsPlaylistCommandOnlyunselected
+        public IAsyncRelayCommand<object> SaveAsPlaylistCommandOnlyVideo
         {
             get;
             private set;
         }
 
 
-        public IRelayCommand RemoveSelectedCommand
+        public IAsyncRelayCommand<object> SaveAsPlaylistCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public IRelayCommand RemoveOnlyMusicCommand
+        public IAsyncRelayCommand<object> SaveAsPlaylistCommandOnlyunselected
         {
             get;
             private set;
         }
 
-        public IRelayCommand RemoveOnlyVideoCommand
+
+        public IAsyncRelayCommand RemoveSelectedCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToExistingPlaylistCommand
+        public IAsyncRelayCommand RemoveOnlyMusicCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToExistingPlaylistCommandOnlyMusic
+        public IAsyncRelayCommand RemoveOnlyVideoCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToExistingPlaylistCommandOnlyVideo
+        public IAsyncRelayCommand<object> AddToExistingPlaylistCommand
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToExistingPlaylistCommandOnlySelected
+        public IAsyncRelayCommand<object> AddToExistingPlaylistCommandOnlyMusic
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> AddToExistingPlaylistCommandOnlyUnselected
+        public IAsyncRelayCommand<object> AddToExistingPlaylistCommandOnlyVideo
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> GoToNetworkPlaybackCommand
+        public IAsyncRelayCommand<object> AddToExistingPlaylistCommandOnlySelected
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> OpenFilesCommand
+        public IAsyncRelayCommand<object> AddToExistingPlaylistCommandOnlyUnselected
         {
             get;
             private set;
         }
 
-        public IRelayCommand<object> OpenFoldersCommand
+        public IAsyncRelayCommand<object> GoToNetworkPlaybackCommand
+        {
+            get;
+            private set;
+        }
+
+        public IAsyncRelayCommand<object> OpenFilesCommand
+        {
+            get;
+            private set;
+        }
+
+        public IAsyncRelayCommand<object> OpenFoldersCommand
         {
             get; private set;
 
         }
 
-        public IRelayCommand<object> ClearAllCommand
+        public IAsyncRelayCommand<object> ClearAllCommand
         {
             get; private set;
         }
 
-        public IRelayCommand<object> AddDeepFoldersCommand
+        public IAsyncRelayCommand<object> AddDeepFoldersCommand
         {
             get;
             private set;
@@ -382,17 +380,16 @@ namespace MayazucMediaPlayer.FileSystemViews
 
 
         public IRelayCommand<object> ChangeSongOrderRequestCommand { get; private set; }
-
-        public IRelayCommand<object> PlayFileCommand { get; private set; }
-        public IRelayCommand<object> EnqueueFileCommand { get; private set; }
-        public IRelayCommand<object> AddFileToPlaylistCommand { get; private set; }
-        public IRelayCommand<object> CopyFilePath { get; private set; }
-        public IRelayCommand<object> CopyFileName { get; private set; }
+        public IAsyncRelayCommand<object> PlaySingleFileCommand { get; private set; }
+        public IAsyncRelayCommand<object> EnqueueSingleFileCommand { get; private set; }
+        public IAsyncRelayCommand<object> AddSingleFileToPlaylistCommand { get; private set; }
+        public IRelayCommand<object> SingleItemCopyFilePath { get; private set; }
+        public IRelayCommand<object> SingleItemCopyFileName { get; private set; }
         public IRelayCommand<object> CopyAlbum { get; private set; }
-        public IRelayCommand<object> CopyArtist { get; private set; }
-        public IRelayCommand<object> CopyGenre { get; private set; }
-        public IRelayCommand<object> CopyFileToFolder { get; private set; }
-        public IRelayCommand<object> CopyFileToClipboard { get; private set; }
+        public IRelayCommand<object> SingleItemCopyArtist { get; private set; }
+        public IRelayCommand<object> SingleItemCopyGenre { get; private set; }
+        public IAsyncRelayCommand<object> CopySingleFileToFolder { get; private set; }
+        public IAsyncRelayCommand<object> CopyFileToClipboard { get; private set; }
 
         public bool PlayButtonIsEnabled
         {
@@ -452,7 +449,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         public PlaylistsService PlaylistsService { get; private set; }
 
 
-        public FilePickerUiService(DispatcherQueue dp,
+        public FileManagementService(DispatcherQueue dp,
             PlaybackSequenceService m,
             PlaylistsService playlistsService) : base(dp, m)
         {
@@ -524,20 +521,20 @@ namespace MayazucMediaPlayer.FileSystemViews
 
             ChangeSongOrderRequestCommand = new RelayCommand<object>(ChangeSongRequestCommandFunction);
 
-            PlayFileCommand = new AsyncRelayCommand<object>(PlaySingleFile);
-            EnqueueFileCommand = new AsyncRelayCommand<object>(EnqueueSingleFile);
-            AddFileToPlaylistCommand = new AsyncRelayCommand<object>(AddSingleFileToPlaylist);
+            PlaySingleFileCommand = new AsyncRelayCommand<object>(PlaySingleFile);
+            EnqueueSingleFileCommand = new AsyncRelayCommand<object>(EnqueueSingleFile);
+            AddSingleFileToPlaylistCommand = new AsyncRelayCommand<object>(AddSingleFileToPlaylist);
             PlayNextCommand = new AsyncRelayCommand<object>(AddToNowPlayingNext);
             PlayNextSingleFileCommand = new AsyncRelayCommand<object>(PlayNextSingleFile);
             PlayStartingFromFileCommand = new AsyncRelayCommand<object>(PlayStartingFromFile);
 
-            GoToPropertiesCommand = new AsyncRelayCommand<object>(GoToItemProperties);
+            GoToSingleItemPropertiesCommand = new AsyncRelayCommand<object>(GoToItemProperties);
 
-            CopyFileName = new RelayCommand<object>((obj) =>
+            SingleItemCopyFileName = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.DisplayName);
             });
-            CopyFilePath = new RelayCommand<object>((obj) =>
+            SingleItemCopyFilePath = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Path);
             });
@@ -545,16 +542,16 @@ namespace MayazucMediaPlayer.FileSystemViews
             {
                 CopyMetadata(obj, x => x.Metadata.Album);
             });
-            CopyArtist = new RelayCommand<object>((obj) =>
+            SingleItemCopyArtist = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Metadata.Artist);
             });
-            CopyGenre = new RelayCommand<object>((obj) =>
+            SingleItemCopyGenre = new RelayCommand<object>((obj) =>
             {
                 CopyMetadata(obj, x => x.Metadata.Genre);
             });
 
-            CopyFileToFolder = new AsyncRelayCommand<object>(CopyFileToFolderFunction);
+            CopySingleFileToFolder = new AsyncRelayCommand<object>(CopyFileToFolderFunction);
             CopyFileToClipboard = new AsyncRelayCommand<object>(CopyFileToClipboardFunction);
         }
 
@@ -946,7 +943,7 @@ namespace MayazucMediaPlayer.FileSystemViews
                         var ext = file.Extension.ToLowerInvariant();
                         if (SupportedFileFormats.AllSupportedFileFormats.Contains(ext))
                         {
-                            var x = new IMediaPlayerItemSourceProviderWithCommands(new PickedFileItem(file), this);
+                            var x = new PickedFileItem(file);
                             validItems.Add(x);
                         }
                     }
@@ -1192,7 +1189,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         }
 
         private async Task HandleCombinedStorageFileFolderActivation(IEnumerable<IStorageItem> _items)
-        {            
+        {
             foreach (var item in _items)
             {
                 if (item is StorageFolder)
@@ -1210,7 +1207,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
         }
 
-        internal async Task PlayFile(IMediaPlayerItemSourceProvder file)
+        private async Task PlayFile(IMediaPlayerItemSourceProvder file)
         {
             if (SelectionMode == ListViewSelectionMode.None && !CanReorderItems)
             {

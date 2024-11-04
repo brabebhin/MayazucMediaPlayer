@@ -9,18 +9,6 @@ namespace MayazucMediaPlayer.AudioEffects
 {
     public sealed partial class AudioEqualizerSlider : BaseUserControl, INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        public bool DirectBinding
-        {
-            get; set;
-        }
-
-        public string? FasTag
-        {
-            get;
-            set;
-        }
-
         string displayFreq = "0";
 
         public string DisplayFrequency
@@ -29,21 +17,17 @@ namespace MayazucMediaPlayer.AudioEffects
             {
                 return displayFreq;
             }
-
             set
             {
                 displayFreq = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("DisplayFrequency"));
+                NotifyPropertyChanged("DisplayFrequency");
             }
         }
 
         public AudioEqualizerSlider() : base()
         {
-            DirectBinding = true;
             InitializeComponent();
             Loaded += AudioEqualizerSlider_Loaded;
-
         }
 
         private void AudioEqualizerSlider_Loaded(object? sender, RoutedEventArgs e)

@@ -1,6 +1,4 @@
 ﻿<controls:BaseUserControl
-    xmlns:mcmediacentershared2="using:MayazucMediaPlayer"
-    xmlns:mcmediacentershared="using:MayazucMediaPlayer.NowPlayingViews"
     x:Class="MayazucMediaPlayer.AudioEffects.AudioEffectsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -23,7 +21,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.ColumnSpan="2" Text="Audio effects" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{ThemeResource BodyStrongTextBlockStyle}"  Margin="6"/>
 
-        <controls:AppBarButtonWithToolTip Grid.Row="1" Style="{StaticResource AppBarButtonStyleNoChevron}" VerticalAlignment="Center"  Icon="Clear" Command="{Binding ResetEffectsCommand}" Label="Clear effects"/>
+        <controls:AppBarButtonWithToolTip Grid.Row="1" Style="{StaticResource AppBarButtonStyleNoChevron}" VerticalAlignment="Center"  Icon="Clear" Tapped="DataServiceResetEffectsCommand" Label="Clear effects"/>
 
         <GridView ScrollViewer.HorizontalScrollMode="Enabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -33,7 +31,7 @@
                   Grid.Row="1"
                   Width="310"
                   SelectionMode="None" 
-                  ItemsSource="{Binding Effects}" 
+                  ItemsSource="{x:Bind DataService.Effects}" 
                   x:Name="lsvAudioEffects">
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
@@ -44,10 +42,10 @@
             </GridView.ItemContainerStyle>
          
             <GridView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:AudioEffect">
                     <Grid>
-                        <ToggleButton Command="{Binding DataContext.SaveEffectsCommand, ElementName=LayoutRoot}" IsChecked="{Binding IsEnabled, Mode=TwoWay}">
-                            <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding DisplayTitle}" Grid.Column="1"/>
+                        <ToggleButton Tapped="SaveEffectsCommand" IsChecked="{x:Bind IsEnabled, Mode=TwoWay}">
+                            <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{x:Bind DisplayTitle}" Grid.Column="1"/>
                         </ToggleButton>
                     </Grid>
                 </DataTemplate>

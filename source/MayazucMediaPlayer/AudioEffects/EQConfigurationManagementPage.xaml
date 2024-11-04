@@ -5,7 +5,7 @@
     xmlns:local2="using:MayazucMediaPlayer"
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:MayazucMediaPlayer.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:MayazucMediaPlayer.Controls" xmlns:audioeffects="using:MayazucMediaPlayer.AudioEffects"
     mc:Ignorable="d">
 
     <!--TODO: Content should be placed within the following grid-->
@@ -16,29 +16,30 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel   >
+        <StackPanel>
             <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="2">
-                <controls:AppBarButtonWithToolTip   Command="{Binding AddCommand}" CommandParameter="{Binding ElementName=CreateNewConfiguration}" Icon="Add" Label="New" x:Name="CreateNewConfiguration"></controls:AppBarButtonWithToolTip>
+                <controls:AppBarButtonWithToolTip  Tapped="DataServiceAddCommand" Icon="Add" Label="New" x:Name="CreateNewConfiguration"></controls:AppBarButtonWithToolTip>
             </CommandBar>
         </StackPanel>
         <SplitView Grid.Row="2" PaneBackground="Transparent" x:Name="masterDetailsRoot" VerticalAlignment="Stretch" PanePlacement="Left" DisplayMode="Inline" LightDismissOverlayMode="Off" IsPaneOpen="True">
             <SplitView.Pane>
-                <ListView  ItemsSource="{Binding Configurations}" SelectionMode="Single" SelectionChanged="SomethingSelectedChanged" x:Name="ConfigurationsPresenter">
+                <ListView  ItemsSource="{x:Bind DataService.Configurations}" SelectionMode="Single" SelectionChanged="SomethingSelectedChanged" x:Name="ConfigurationsPresenter">
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="audioeffects:EqualizerConfiguration">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0">
-                                    <TextBlock Text="{Binding Name}" Style="{ThemeResource CaptionTextBlockStyle}"/>
-                                    <TextBlock Text="{Binding FrequencyDisplays}" Margin="2" Style="{ThemeResource BodyTextBlockStyle}" />
+                                    <TextBlock Text="{x:Bind Name}" Style="{ThemeResource CaptionTextBlockStyle}"/>
+                                    <TextBlock Text="{x:Bind FrequencyDisplays}" Margin="2" Style="{ThemeResource BodyTextBlockStyle}" />
                                 </StackPanel>
                                 <CommandBar DefaultLabelPosition="Right" Background="Transparent" Grid.Column="1">
-                                    <AppBarButton Grid.Column="1" Tapped="MakeSelectedDefault"  Icon="PostUpdate" Command="{Binding ElementName=ContentRoot, Path=DataContext.EditEqualizerConfigurationPresetsCommand}" CommandParameter="{Binding}" Label="Set as active" ToolTipService.ToolTip="Set as active"/>
+                                    <controls:AppBarButtonWithToolTip Grid.Column="1" Tapped="MakeSelectedDefault"  Icon="PostUpdate" Label="Set as active" ToolTipService.ToolTip="Set as active"/>
+                                    <controls:AppBarButtonWithToolTip Icon="Edit"  Tapped="EditEqualizerConfigurationPresetsCommand" Label="Edit"></controls:AppBarButtonWithToolTip>
                                     <AppBarSeparator></AppBarSeparator>
-                                    <AppBarButton Grid.Column="1" IsEnabled="{Binding CanDelete}" Icon="Delete" Command="{Binding ElementName=ContentRoot, Path=DataContext.DeleteButtonCommand}" CommandParameter="{Binding}" Label="Delete configuration" ToolTipService.ToolTip="Delete configuration"/>
+                                    <controls:AppBarButtonWithToolTip Grid.Column="1" IsEnabled="{x:Bind CanDelete}" Icon="Delete" Tapped="DeleteButtonCommand" Label="Delete configuration" ToolTipService.ToolTip="Delete configuration"/>
                                 </CommandBar>
                             </Grid>
                         </DataTemplate>
@@ -46,7 +47,7 @@
                 </ListView>
             </SplitView.Pane>
             <Grid x:Name="EqualizerPresetsRoot">
-                <ContentPresenter Content="{Binding EqualizerPresetEditPage}">
+                <ContentPresenter Content="{x:Bind DataService.EqualizerPresetEditPage}">
 
                 </ContentPresenter>
             </Grid>

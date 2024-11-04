@@ -1,4 +1,5 @@
 ﻿using MayazucMediaPlayer.Controls;
+using System.Threading.Tasks;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -9,7 +10,7 @@ namespace MayazucMediaPlayer.AudioEffects
     /// </summary>
     public sealed partial class AudioEffectsPage : BaseUserControl
     {
-        public AudioEffectsViewModel EffectsModel
+        public AudioEffectsViewModel DataService
         {
             get;
             private set;
@@ -18,13 +19,23 @@ namespace MayazucMediaPlayer.AudioEffects
         public AudioEffectsPage()
         {
             InitializeComponent();
-            EffectsModel = new AudioEffectsViewModel(DispatcherQueue);
-            DataContext = EffectsModel;
+            DataService = new AudioEffectsViewModel(DispatcherQueue);
+            DataContext = DataService;
         }
 
         private void AudioEffectCheckedChanged(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            EffectsModel.SaveEffectsCommand.Execute(sender);
+            DataService.SaveEffectsCommand.Execute(sender);
+        }
+
+        private void DataServiceResetEffectsCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.ResetEffectsCommand.Execute(sender);
+        }
+
+        private async void SaveEffectsCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            await DataService.SaveEffectsCommand.ExecuteAsync(sender);
         }
     }
 }

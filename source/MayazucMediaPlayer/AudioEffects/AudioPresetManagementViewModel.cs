@@ -19,17 +19,17 @@ namespace MayazucMediaPlayer.AudioEffects
             private set;
         }
 
-        public IRelayCommand<object> AddNewPresetCommand
+        public IAsyncRelayCommand AddNewPresetCommand
         {
             get; private set;
         }
 
-        public IAsyncRelayCommand<object> EditAmplificationsCommand
+        public IAsyncRelayCommand<AudioEqualizerPreset> EditAmplificationsCommand
         {
             get; private set;
         }
 
-        public IAsyncRelayCommand<object> DeletePresetCommand
+        public IAsyncRelayCommand<AudioEqualizerPreset> DeletePresetCommand
         {
             get; private set;
         }
@@ -53,13 +53,13 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             ServiceProvider = serviceProvider;
             TargetEqualizerConfiguration = eqConfiguration;
-            AddNewPresetCommand = new AsyncRelayCommand<object>(AddNewPreset_tapped);
-            EditAmplificationsCommand = new AsyncRelayCommand<object>(EditAmplifications_click);
-            DeletePresetCommand = new AsyncRelayCommand<object>(DeletePreset_click);
+            AddNewPresetCommand = new AsyncRelayCommand(AddNewPreset_tapped);
+            EditAmplificationsCommand = new AsyncRelayCommand<AudioEqualizerPreset>(EditAmplifications_click);
+            DeletePresetCommand = new AsyncRelayCommand<AudioEqualizerPreset>(DeletePreset_click);
             SavedPresets = eqConfiguration.Presets;
         }
 
-        private async Task AddNewPreset_tapped(object? sender)
+        private async Task AddNewPreset_tapped()
         {
             var preset = await AudioEffectsExtensions.CreateNewPresetAsync(false, TargetEqualizerConfiguration);
             if (preset.IsSuccess)
@@ -69,15 +69,13 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
-        private async Task EditAmplifications_click(object? sender)
+        private async Task EditAmplifications_click(AudioEqualizerPreset? preset)
         {
-            var preset = (sender as FrameworkElement).DataContext as AudioEqualizerPreset;
             await preset.SetAmplificationsAsync(false, TargetEqualizerConfiguration);
         }
 
-        private async Task DeletePreset_click(object? sender)
+        private async Task DeletePreset_click(AudioEqualizerPreset? preset)
         {
-            var preset = (sender as FrameworkElement).DataContext as AudioEqualizerPreset;
             var playerInstance = ServiceProvider.GetService<IBackgroundPlayer>();
             await playerInstance.DeletePresetFromConfiguration(TargetEqualizerConfiguration, preset);
         }

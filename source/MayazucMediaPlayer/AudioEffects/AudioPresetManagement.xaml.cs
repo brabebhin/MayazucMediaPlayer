@@ -10,7 +10,7 @@ namespace MayazucMediaPlayer.AudioEffects
     public sealed partial class AudioPresetManagement : BasePage, IContentSettingsItem
     {
         public override string Title => "Equalizer preset management";
-        public AudioPresetManagementViewModel Model
+        public AudioPresetManagementViewModel DataService
         {
             get;
             private set;
@@ -24,8 +24,8 @@ namespace MayazucMediaPlayer.AudioEffects
         protected override Task OnInitializeStateAsync(object? parameter)
         {
             EqualizerConfiguration eqConfiguration = (EqualizerConfiguration)parameter;
-            Model = new AudioPresetManagementViewModel(DispatcherQueue, eqConfiguration, ServiceProvider);
-            DataContext = Model;
+            DataService = new AudioPresetManagementViewModel(DispatcherQueue, eqConfiguration, ServiceProvider);
+            DataContext = DataService;
             return base.OnInitializeStateAsync(parameter);
         }
 
@@ -36,17 +36,22 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async void EditAmplifications_click(object? sender, RoutedEventArgs e)
         {
-            await Model.EditAmplificationsCommand.ExecuteAsync(sender);
+            await DataService.EditAmplificationsCommand.ExecuteAsync(sender.GetDataContextObject<AudioEqualizerPreset>());
         }
 
         private async void DeletePreset_click(object? sender, RoutedEventArgs e)
         {
-            await Model.DeletePresetCommand.ExecuteAsync(sender);
+            await DataService.DeletePresetCommand.ExecuteAsync(sender.GetDataContextObject<AudioEqualizerPreset>());
         }
 
         public void RecheckValue()
         {
 
+        }
+
+        private void DataServiceAddNewPresetCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.AddNewPresetCommand.Execute(sender);
         }
     }
 }

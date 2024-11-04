@@ -17,7 +17,7 @@ namespace MayazucMediaPlayer.MediaCollections
     public sealed partial class VideoCollectionPage : BasePage
     {
         readonly VideoCollectionUiService Model;
-        readonly FilePickerUiService FileModel;
+        readonly FileManagementService FileModel;
         public override string Title => "Video collection";
 
         public VideoCollectionPage()
@@ -25,7 +25,7 @@ namespace MayazucMediaPlayer.MediaCollections
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Disabled;
             Model = new VideoCollectionUiService(DispatcherQueue);
-            FileModel = new FilePickerUiService(DispatcherQueue,
+            FileModel = new FileManagementService(DispatcherQueue,
                 base.ApplicationDataModels.PlaybackModel,
                 ServiceProvider.GetService<PlaylistsService>());
         }

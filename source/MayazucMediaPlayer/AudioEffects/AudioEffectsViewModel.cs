@@ -10,7 +10,6 @@ namespace MayazucMediaPlayer.AudioEffects
 {
     public sealed class AudioEffectsViewModel : ServiceBase
     {
-
         public AsyncRelayCommand SaveEffectsCommand
         {
             get;
@@ -70,7 +69,7 @@ namespace MayazucMediaPlayer.AudioEffects
                 DisplayTitle = "Instruments",
                 GetSlimConfigurationString = () => { return "0.8:0.88:60:0.4"; }
             });
-   
+
             Effects.Add(new AudioEffect("echoMountain", EffectTypes.aecho)
             {
                 DisplayTitle = "Mountains",

@@ -26,7 +26,7 @@ namespace MayazucMediaPlayer.AudioEffects
         bool changePreset = true;
         bool ObserveUserActionEvent = true;
 
-        public AudioEnhancementsPageViewModel Model { get; set; }
+        public AudioEnhancementsPageViewModel DataService { get; private set; }
 
         public AudioEnhancementsPage()
         {
@@ -64,21 +64,21 @@ namespace MayazucMediaPlayer.AudioEffects
             {
                 await DispatcherQueue.EnqueueAsync(() =>
                 {
-                    cbSavedPresets.SelectedIndex = Model.FindMatchingPresentIndex();
+                    cbSavedPresets.SelectedIndex = DataService.FindMatchingPresentIndex();
                 });
             }
         }
 
         public async void LoadStateInternal(AudioEnhancementsPageViewModel m)
         {
-            Model = m;
+            DataService = m;
 
-            DataContext = Model;
+            DataContext = DataService;
 
             KillSwitch.IsOn = SettingsService.Instance.EqualizerEnabled;
             KillSwitch.Toggled += KillSwitchToggle;
 
-            Model.LoadState();
+            DataService.LoadState();
 
             changePreset = false;
             await SetSelectedPreset();
@@ -92,7 +92,7 @@ namespace MayazucMediaPlayer.AudioEffects
             await DispatcherQueue.EnqueueAsync(() =>
             {
                 var presetName = SettingsService.Instance.SelectedEqualizerPreset;
-                var saved = Model.AvailablePresets.FirstOrDefault
+                var saved = DataService.AvailablePresets.FirstOrDefault
                     (x => x.PresetName == presetName);
                 if (saved != null)
                 {
@@ -135,10 +135,10 @@ namespace MayazucMediaPlayer.AudioEffects
         private async void KillSwitchToggle(object? sender, RoutedEventArgs e)
         {
             SettingsService.Instance.EqualizerEnabled = KillSwitch.IsOn;
-            Model.EnableContexts(KillSwitch.IsOn);
+            DataService.EnableContexts(KillSwitch.IsOn);
             if (!KillSwitch.IsOn)
             {
-                Model.ResetEqualizerSliders();
+                DataService.ResetEqualizerSliders();
             }
             await AppState.Current.MediaServiceConnector.NotifyResetFiltering(KillSwitch.IsOn);
 
@@ -153,7 +153,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
             for (int i = 0; i < selectedPreset.FrequencyValues.Count; i++)
             {
-                Model.FrequencyBands[i].FrequencyAmplification = selectedPreset.FrequencyValues[i];
+                DataService.FrequencyBands[i].FrequencyAmplification = selectedPreset.FrequencyValues[i];
             }
 
             if (preventReset)
@@ -169,6 +169,16 @@ namespace MayazucMediaPlayer.AudioEffects
                 timer?.Cancel();
                 timer = ThreadPoolTimer.CreateTimer(handler, TimeSpan.FromSeconds(equalizerResetDelay));
             }
+        }
+
+        private void DataServiceSavePresetButtonCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SavePresetButtonCommand.Execute(sender);
+        }
+
+        private void DataServiceResetButtonCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.ResetButtonCommand.Execute(sender);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace MayazucMediaPlayer.MediaCollections
         public override string Title => "Music collection";
 
         readonly MusicCollectionUiService Model;
-        readonly FilePickerUiService FileModel;
+        readonly FileManagementService FileModel;
 
         public MusicCollectionPage()
         {
@@ -29,7 +29,7 @@ namespace MayazucMediaPlayer.MediaCollections
             NavigationCacheMode = NavigationCacheMode.Disabled;
 
             Model = new MusicCollectionUiService(DispatcherQueue);
-            FileModel = new FilePickerUiService(DispatcherQueue,
+            FileModel = new FileManagementService(DispatcherQueue,
                 base.ApplicationDataModels.PlaybackModel,
                 ServiceProvider.GetService<PlaylistsService>());
 

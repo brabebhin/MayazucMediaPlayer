@@ -167,8 +167,8 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Slider HorizontalAlignment="Center" Value="{Binding Frequency, Mode=TwoWay}" SnapsTo="StepValues"  Minimum="-12" Maximum="12" x:Name="SliderValue" Orientation="Vertical"></Slider>
+        <Slider HorizontalAlignment="Center"  SnapsTo="StepValues"  Minimum="-12" Maximum="12" x:Name="SliderValue" Orientation="Vertical"></Slider>
 
-        <TextBlock  HorizontalAlignment="Center"  Grid.Row="2"  Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding DisplayFrequency}"/>
+        <TextBlock  HorizontalAlignment="Center"  Grid.Row="2"  Style="{ThemeResource BodyTextBlockStyle}"  Text="{x:Bind DisplayFrequency}"/>
     </Grid>
 </controls:BaseUserControl>

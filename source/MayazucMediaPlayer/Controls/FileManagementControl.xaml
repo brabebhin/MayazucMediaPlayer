@@ -8,35 +8,35 @@
     xmlns:filesystemviews="using:MayazucMediaPlayer.FileSystemViews"
     mc:Ignorable="d"
     x:Name="RootPage">
-    
+
     <UserControl.Resources>
-        <DataTemplate x:Key="MusicItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProviderWithCommands">
+        <DataTemplate x:Key="MusicItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProvder">
             <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
-                        <MenuFlyoutItem Command="{x:Bind Commands.PlayFileCommand}" CommandParameter="{Binding}" Text="Play"/>
-                        <MenuFlyoutItem Command="{x:Bind Commands.EnqueueFileCommand}" CommandParameter="{Binding}" Text="Add to now playing"/>
-                        <MenuFlyoutItem Command="{x:Bind Commands.PlayNextSingleFileCommand}" CommandParameter="{Binding}" Text="Play next"/>
-                        <MenuFlyoutItem Command="{x:Bind Commands.PlayStartingFromFileCommand}" CommandParameter="{Binding}" Text="Play list starting here"/>
+                        <MenuFlyoutItem Tapped="SingleItemPlayFileCommand"  Text="Play"/>
+                        <MenuFlyoutItem Tapped="SingleItemEnqueueFileCommand"  Text="Add to now playing"/>
+                        <MenuFlyoutItem Tapped="SingleItemPlayNextSingleFileCommand"  Text="Play next"/>
+                        <MenuFlyoutItem Tapped="SingleItemPlayStartingFromFileCommand"  Text="Play list starting here"/>
 
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Command="{x:Bind Commands.AddFileToPlaylistCommand}" CommandParameter="{Binding}" Text="Add to playlist"/>
+                        <MenuFlyoutItem Tapped="SingleItemAddFileToPlaylistCommand"  Text="Add to playlist"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Command="{x:Bind Commands.RemoveSlidedItem}" CommandParameter="{Binding}" Text="Remove"/>
+                        <MenuFlyoutItem Tapped="SingleItemRemoveSlidedItem"  Text="Remove"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Command="{x:Bind Commands.GoToPropertiesCommand}" CommandParameter="{Binding}" Text="Properties"/>
+                        <MenuFlyoutItem Tapped="SingleItemGoToPropertiesCommand"  Text="Properties"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutSubItem Text="Copy">
                             <MenuFlyoutSubItem Text="File to">
-                                <MenuFlyoutItem Text="Folder.."  Command="{x:Bind Commands.CopyFileToFolder}" CommandParameter="{Binding}" ></MenuFlyoutItem>
-                                <MenuFlyoutItem Text="Clipboard" Command="{x:Bind Commands.CopyFileToClipboard}" CommandParameter="{Binding}" ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Folder.."  Tapped="SingleItemCopyFileToFolder"  ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Clipboard" Tapped="SingleItemCopyFileToClipboard"  ></MenuFlyoutItem>
                             </MenuFlyoutSubItem>
                             <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                            <MenuFlyoutItem Text="File path" Command="{x:Bind Commands.CopyFilePath}" CommandParameter="{Binding}" />
-                            <MenuFlyoutItem Text="File name" Command="{x:Bind Commands.CopyFileName}" CommandParameter="{Binding}" />
-                            <MenuFlyoutItem Text="Album name"  Command="{x:Bind Commands.CopyAlbum}" CommandParameter="{Binding}"/>
-                            <MenuFlyoutItem Text="Artist name"  Command="{x:Bind Commands.CopyArtist}" CommandParameter="{Binding}"/>
-                            <MenuFlyoutItem Text="Genre name"  Command="{x:Bind Commands.CopyGenre}" CommandParameter="{Binding}"/>
+                            <MenuFlyoutItem Text="File path" Tapped="SingleItemCopyFilePath"  />
+                            <MenuFlyoutItem Text="File name" Tapped="SingleItemCopyFileName"  />
+                            <MenuFlyoutItem Text="Album name"  Tapped="SingleItemCopyAlbum" />
+                            <MenuFlyoutItem Text="Artist name"  Tapped="SingleItemCopyArtist" />
+                            <MenuFlyoutItem Text="Genre name"  Tapped="SingleItemCopyGenre" />
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Grid.Resources>
@@ -80,28 +80,28 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="VideoPlaylistItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProviderWithCommands">
+        <DataTemplate x:Key="VideoPlaylistItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProvder">
             <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
-                        <MenuFlyoutItem Command="{x:Bind Commands.PlayFileCommand}" CommandParameter="{Binding}" Text="Play"/>
-                        <MenuFlyoutItem Command="{x:Bind Commands.EnqueueFileCommand}" CommandParameter="{Binding}" Text="Add to now playing"/>
-                        <MenuFlyoutItem Command="{x:Bind Commands.PlayNextSingleFileCommand}" CommandParameter="{Binding}" Text="Play next"/>
+                        <MenuFlyoutItem Tapped="SingleItemPlayFileCommand"  Text="Play"/>
+                        <MenuFlyoutItem Tapped="SingleItemEnqueueFileCommand"  Text="Add to now playing"/>
+                        <MenuFlyoutItem Tapped="SingleItemPlayNextSingleFileCommand"  Text="Play next"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Command="{x:Bind Commands.AddFileToPlaylistCommand}" CommandParameter="{Binding}" Text="Add to playlist"/>
+                        <MenuFlyoutItem Tapped="SingleItemAddFileToPlaylistCommand"  Text="Add to playlist"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Command="{x:Bind Commands.RemoveSlidedItem}" CommandParameter="{Binding}" Text="Remove"/>
+                        <MenuFlyoutItem Tapped="SingleItemRemoveSlidedItem"  Text="Remove"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                        <MenuFlyoutItem Command="{x:Bind Commands.GoToPropertiesCommand}" CommandParameter="{Binding}" Text="Properties"/>
+                        <MenuFlyoutItem Tapped="SingleItemGoToPropertiesCommand"  Text="Properties"/>
                         <MenuFlyoutSeparator></MenuFlyoutSeparator>
                         <MenuFlyoutSubItem Text="Copy">
                             <MenuFlyoutSubItem Text="File to">
-                                <MenuFlyoutItem Text="Folder.."  Command="{x:Bind Commands.CopyFileToFolder}" CommandParameter="{Binding}" ></MenuFlyoutItem>
-                                <MenuFlyoutItem Text="Clipboard" Command="{x:Bind Commands.CopyFileToClipboard}" CommandParameter="{Binding}" ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Folder.."  Tapped="SingleItemCopyFileToFolder"  ></MenuFlyoutItem>
+                                <MenuFlyoutItem Text="Clipboard" Tapped="SingleItemCopyFileToClipboard"  ></MenuFlyoutItem>
                             </MenuFlyoutSubItem>
                             <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                            <MenuFlyoutItem Text="File path" Command="{x:Bind Commands.CopyFilePath}" CommandParameter="{Binding}" />
-                            <MenuFlyoutItem Text="File name" Command="{x:Bind Commands.CopyFileName}" CommandParameter="{Binding}" />
+                            <MenuFlyoutItem Text="File path" Tapped="SingleItemCopyFilePath"  />
+                            <MenuFlyoutItem Text="File name" Tapped="SingleItemCopyFileName"  />
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Grid.Resources>
@@ -143,15 +143,15 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <CommandBar  Visibility="{x:Bind DataModel.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=true, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind DataModel.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
-                <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrderResetButton"   IsEnabled="{x:Bind DataModel.IsReorderButtonEnabled}"  IsChecked="{x:Bind DataModel.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
+            <CommandBar  Visibility="{x:Bind DataService.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=true, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
+                <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrderResetButton"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled}"  IsChecked="{x:Bind DataService.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE1ED;"></FontIcon>
                     </AppBarToggleButton.Icon>
                 </controls:AppBarToggleButtonWithToolTip>
             </CommandBar>
 
-            <Grid  Visibility="{x:Bind DataModel.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}">
+            <Grid  Visibility="{x:Bind DataService.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -159,73 +159,73 @@
                 </Grid.ColumnDefinitions>
                 <controls:AppBarButtonWithToolTip Style="{StaticResource AppBarButtonStyleNoChevron}" Visibility="Collapsed" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
                 </controls:AppBarButtonWithToolTip>
-                <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind DataModel.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
+                <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
 
-                    <controls:AppBarButtonWithToolTip    Command="{x:Bind DataModel.PlayCommand}" CommandParameter="{Binding}" x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataModel.PlayButtonIsEnabled}" Visibility="{x:Bind DataModel.NotSelectingPlayButtonsVisibility}"/>
-                    <controls:AppBarButtonWithToolTip    Command="{x:Bind DataModel.AddToNowPlayingCommand}" CommandParameter="{Binding}" x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataModel.EnqueueButtonIsEnabled}" Visibility="{x:Bind DataModel.NotSelectingPlayButtonsVisibility}">
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility}"/>
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility}">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
                     </controls:AppBarButtonWithToolTip>
 
-                    <controls:AppBarButtonWithToolTip    Command="{x:Bind DataModel.PlayCommand}" CommandParameter="{Binding}" x:Name="PlayButtonSelected" Label="Play selected" Icon="Play" IsEnabled="{x:Bind DataModel.PlayButtonIsEnabled}"  Visibility="{x:Bind DataModel.SelectingPlayButtonsVisibility, FallbackValue=Collapsed}"/>
-                    <controls:AppBarButtonWithToolTip    Command="{x:Bind DataModel.AddToNowPlayingCommand}" CommandParameter="{Binding}" x:Name="EnqueueButtonSelected" Label="Enqueue selected" IsEnabled="{x:Bind DataModel.EnqueueButtonIsEnabled}" Visibility="{x:Bind DataModel.SelectingPlayButtonsVisibility, FallbackValue=Collapsed}">
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButtonSelected" Label="Play selected" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled}"  Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed}"/>
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButtonSelected" Label="Enqueue selected" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled}" Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed}">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
                     </controls:AppBarButtonWithToolTip>
 
-                    <controls:AppBarToggleButtonWithToolTip  IsChecked="{x:Bind DataModel.SelectionMode, Converter={StaticResource selectionModeToBoolean}}"  Command="{x:Bind DataModel.EnableSelection}" CommandParameter="{Binding}"    IsEnabled="{x:Bind DataModel.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
+                    <controls:AppBarToggleButtonWithToolTip  IsChecked="{x:Bind DataService.SelectionMode, Converter={StaticResource selectionModeToBoolean}}"  Tapped="FullCollectionEnableSelection"     IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
 
-                    <controls:AppBarButtonWithToolTip  Command="{x:Bind DataModel.SaveAsPlaylistCommand}" CommandParameter="{Binding}"   IsEnabled="{x:Bind DataModel.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Save" x:Name="SaveAsPlaylistButton" Icon="Save"/>
+                    <controls:AppBarButtonWithToolTip  Tapped="FullCollectionSaveAsPlaylistCommand"    IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Save" x:Name="SaveAsPlaylistButton" Icon="Save"/>
 
-                    <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataModel.IsReorderButtonEnabled}"  IsChecked="{x:Bind DataModel.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
+                    <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled}"  IsChecked="{x:Bind DataService.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE1ED;"></FontIcon>
                         </AppBarToggleButton.Icon>
                     </controls:AppBarToggleButtonWithToolTip>
 
 
-                    <controls:AppBarButtonWithToolTip x:Name="ClearButton" CommandParameter="{x:Bind ClearButton}" Command="{x:Bind DataModel.ClearAllCommand}"   Label="Remove all" Icon="Clear"   IsEnabled="{x:Bind DataModel.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}" />
+                    <controls:AppBarButtonWithToolTip x:Name="ClearButton" Tapped="FullCollectionClearAllCommand"   Label="Remove all" Icon="Clear"   IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}" />
 
-                    <AppBarButton  Command="{x:Bind DataModel.AddToExistingPlaylistCommand}"  CommandParameter="{Binding}"    IsEnabled="{x:Bind DataModel.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Add to playlist" Icon="Add"/>
+                    <AppBarButton  Tapped="FullCollectionAddToExistingPlaylistCommand"      IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Add to playlist" Icon="Add"/>
 
                     <CommandBar.SecondaryCommands>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.SelectAllCommandOnlyAudio}" CommandParameter="{Binding}" Label="Select music files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.SelectAllCommandOnlyVideo}" CommandParameter="{Binding}" Label="Select video files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.SelectAllCommandSelected}" CommandParameter="{Binding}" Label="Select all"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.UnselectAllCommand}" CommandParameter="{Binding}" Label="Unselect all"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandOnlyAudio"  Label="Select music files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandOnlyVideo"  Label="Select video files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandSelected"  Label="Select all"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionUnselectAllCommand"  Label="Unselect all"></controls:AppBarButtonWithToolTip>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.SaveAsPlaylistCommandOnlyMusic}" Label="Create playlist from music files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.SaveAsPlaylistCommandOnlyVideo}" Label="Create playlist from video files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnSaveAsPlaylistSelected"  Command="{x:Bind DataModel.SaveAsPlaylistCommandOnlySelected}" Label="Create only from selected files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.SaveAsPlaylistCommandOnlyunselected}" Label="Create playlist from unselected files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyMusic" Label="Create playlist from music files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyVideo" Label="Create playlist from video files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnSaveAsPlaylistSelected"  Tapped="FullCollectionSaveAsPlaylistCommandOnlySelected" Label="Create only from selected files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyunselected" Label="Create playlist from unselected files"></controls:AppBarButtonWithToolTip>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnRemoveSelected"  Command="{x:Bind DataModel.RemoveSelectedCommand}"  CommandParameter="{x:Bind}" Label="Remove selected"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.RemoveOnlyMusicCommand}"  CommandParameter="{Binding}" Label="Remove music files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.RemoveOnlyVideoCommand}"  CommandParameter="{Binding}" Label="Remove video files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnRemoveSelected"  Tapped="FullCollectionRemoveSelectedCommand"  CommandParameter="{x:Bind}" Label="Remove selected"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionRemoveOnlyMusicCommand"   Label="Remove music files"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionRemoveOnlyVideoCommand"   Label="Remove video files"></controls:AppBarButtonWithToolTip>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.AddToExistingPlaylistCommandOnlyMusic}" Label="Add music files to playlist"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.AddToExistingPlaylistCommandOnlyVideo}" Label="Add video files to playlist"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnAddToExistingPlaylist"  Command="{x:Bind DataModel.AddToExistingPlaylistCommandOnlySelected}" Label="Add selected files to playlist"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Command="{x:Bind DataModel.AddToExistingPlaylistCommandOnlyUnselected}" Label="Add unselected files to playlist"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionAddToExistingPlaylistCommandOnlyMusic" Label="Add music files to playlist"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionAddToExistingPlaylistCommandOnlyVideo" Label="Add video files to playlist"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnAddToExistingPlaylist"  Tapped="FullCollectionAddToExistingPlaylistCommandOnlySelected" Label="Add selected files to playlist"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionAddToExistingPlaylistCommandOnlyUnselected" Label="Add unselected files to playlist"></controls:AppBarButtonWithToolTip>
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
-            <controls:SearchBar  Visibility="{x:Bind DataModel.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{x:Bind DataModel.CanSearch}" SearchView="{x:Bind DataModel.FilterCollectionView}" Margin="16, 0, 16, 10"></controls:SearchBar>
+            <controls:SearchBar  Visibility="{x:Bind DataService.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{x:Bind DataService.CanSearch}" SearchView="{x:Bind DataService.FilterCollectionView}" Margin="16, 0, 16, 10"></controls:SearchBar>
         </Grid>
         <ListView  
-                    ItemsSource="{x:Bind DataModel.FilterCollectionView}"
-                    SelectionMode="{x:Bind DataModel.SelectionMode}"  
+                    ItemsSource="{x:Bind DataService.FilterCollectionView}"
+                    SelectionMode="{x:Bind DataService.SelectionMode}"  
                     SelectionChanged="SelectionChangedForListView"
                     Grid.Row="1"
                     AllowDrop="True"
                     IsItemClickEnabled="True"
                     ItemClick="PlayFile"
                     ItemTemplateSelector="{x:Bind DataTemplateSelectorInstance}"
-                    ReorderMode="{x:Bind DataModel.ReorderMode}"
-                    CanReorderItems="{x:Bind DataModel.CanReorderItems}"
-                    CanDragItems ="{x:Bind DataModel.CanReorderItems}"
+                    ReorderMode="{x:Bind DataService.ReorderMode}"
+                    CanReorderItems="{x:Bind DataService.CanReorderItems}"
+                    CanDragItems ="{x:Bind DataService.CanReorderItems}"
                     HorizontalContentAlignment="Left"
                     ShowsScrollingPlaceholders="True"
                     x:Name="COntentPresenter">
@@ -234,7 +234,7 @@
             </ListView.Header>
 
             <ListView.Footer>
-                <Grid Visibility="{x:Bind DataModel.Items.Count, Converter={StaticResource VisibleWhenZeroConverter}}">
+                <Grid Visibility="{x:Bind DataService.Items.Count, Converter={StaticResource VisibleWhenZeroConverter}}">
                     <StackPanel>
                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" x:Name="tbPlaceholder" Margin="2" TextWrapping="WrapWholeWords"  />
                     </StackPanel>

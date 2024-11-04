@@ -14,18 +14,18 @@ namespace MayazucMediaPlayer.AudioEffects
     {
         public override string Title => "Equalizer configurations";
 
-        public EQConfigurationManagementViewModel Model
+        public EQConfigurationService DataService
         {
             get;
-            set;
+            private set;
         }
 
         public EQConfigurationManagementPage()
         {
             InitializeComponent();
 
-            Model = new EQConfigurationManagementViewModel(ServiceProvider.GetService<EqualizerService>(), DispatcherQueue, ServiceProvider);
-            DataContext = Model;
+            DataService = new EQConfigurationService(ServiceProvider.GetService<EqualizerService>(), DispatcherQueue, ServiceProvider);
+            DataContext = DataService;
             SizeChanged += EQConfigurationManagementPage_SizeChanged;
         }
 
@@ -34,27 +34,37 @@ namespace MayazucMediaPlayer.AudioEffects
             masterDetailsRoot.OpenPaneLength = e.NewSize.Width / 2;
         }
 
-        private void Model_GetSelectedItems(object? sender, List<object> e)
-        {
-            e.AddRange(ConfigurationsPresenter.SelectedItems);
-        }
-
         private async void SomethingSelectedChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (ConfigurationsPresenter.SelectedItem != null)
             {
-                await Model.EditEqualizerConfigurationPresetsCommand.ExecuteAsync(ConfigurationsPresenter.SelectedItem as EqualizerConfiguration);
+                await DataService.EditEqualizerConfigurationPresetsCommand.ExecuteAsync((EqualizerConfiguration)ConfigurationsPresenter.SelectedItem);
             }
         }
 
         private async void MakeSelectedDefault(object? sender, TappedRoutedEventArgs e)
         {
-            await Model.SetDefaultPreset((sender as FrameworkElement).DataContext as EqualizerConfiguration);
+            await DataService.SetDefaultPreset((sender.GetDataContextObject<EqualizerConfiguration>()));
         }
 
         public void RecheckValue()
         {
+            // no-op
+        }
 
+        private async void DataServiceAddCommand(object sender, TappedRoutedEventArgs e)
+        {
+           await DataService.AddCommand.ExecuteAsync(sender.GetDataContextObject<EqualizerConfiguration>());
+        }
+
+        private async void EditEqualizerConfigurationPresetsCommand(object sender, TappedRoutedEventArgs e)
+        {
+            await DataService.EditEqualizerConfigurationPresetsCommand.ExecuteAsync(sender.GetDataContextObject<EqualizerConfiguration>());
+        }
+
+        private void DeleteButtonCommand(object sender, TappedRoutedEventArgs e)
+        {
+            DataService.DeleteButtonCommand.ExecuteAsync(sender.GetDataContextObject<EqualizerConfiguration>());
         }
     }
 }

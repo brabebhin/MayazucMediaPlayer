@@ -16,7 +16,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         public const string PlayNextCommandString = "PlayNext";
 
         public override string Title => "Play files + folders";
-        public FilePickerUiService DataModel
+        public FileManagementService DataModel
         {
             get; private set;
         }
@@ -42,7 +42,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         {
             if (DataModel == null)
             {
-                DataModel = new FilePickerUiService(DispatcherQueue,
+                DataModel = new FileManagementService(DispatcherQueue,
                     base.ApplicationDataModels.PlaybackModel,
                     ServiceProvider.GetService<PlaylistsService>());
                 await fileManagementControl.LoadStateInternal(DataModel);

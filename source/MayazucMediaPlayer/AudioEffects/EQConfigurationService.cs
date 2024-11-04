@@ -15,7 +15,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class EQConfigurationManagementViewModel : ServiceBase
+    public class EQConfigurationService : ServiceBase
     {
         public EqualizerService EQModels
         {
@@ -45,18 +45,18 @@ namespace MayazucMediaPlayer.AudioEffects
         }
 
 
-        public IRelayCommand<object> AddCommand
+        public IAsyncRelayCommand<object> AddCommand
         {
             get; private set;
         }
 
-        public IRelayCommand<object> DeleteButtonCommand
+        public IAsyncRelayCommand<EqualizerConfiguration> DeleteButtonCommand
         {
             get;
             private set;
         }
 
-        public IAsyncRelayCommand<object> EditEqualizerConfigurationPresetsCommand
+        public IAsyncRelayCommand<EqualizerConfiguration> EditEqualizerConfigurationPresetsCommand
         {
             get;
             private set;
@@ -68,7 +68,7 @@ namespace MayazucMediaPlayer.AudioEffects
             private set;
         }
 
-        public EQConfigurationManagementViewModel(EqualizerService eqm,
+        public EQConfigurationService(EqualizerService eqm,
             DispatcherQueue dp,
             IServiceProvider serviceProvider) : base(dp)
         {
@@ -76,14 +76,13 @@ namespace MayazucMediaPlayer.AudioEffects
             ServiceProvider = serviceProvider;
 
             AddCommand = new AsyncRelayCommand<object>(CreateNewConfiguration);
-            DeleteButtonCommand = new RelayCommand<object>(DeleteSelection);
-            EditEqualizerConfigurationPresetsCommand = new AsyncRelayCommand<object>(EditEqualizerConfigurationPresets);
+            DeleteButtonCommand = new AsyncRelayCommand<EqualizerConfiguration>(DeleteSelection);
+            EditEqualizerConfigurationPresetsCommand = new AsyncRelayCommand<EqualizerConfiguration>(EditEqualizerConfigurationPresets);
         }
 
-        private async Task EditEqualizerConfigurationPresets(object arg)
+        private async Task EditEqualizerConfigurationPresets(EqualizerConfiguration arg)
         {
-            EqualizerConfiguration config = arg as EqualizerConfiguration;
-            var editPage = await PageFactory.GetPage(typeof(AudioPresetManagement), config);
+            var editPage = await PageFactory.GetPage(typeof(AudioPresetManagement), arg);
             await editPage.InitializeStateAsync(arg);
             EqualizerPresetEditPage = editPage;
         }
@@ -126,19 +125,17 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
-        private async void DeleteSelection(object args)
+        private async Task DeleteSelection(EqualizerConfiguration args)
         {
-            var selectedConfiguration = args as EqualizerConfiguration;
             var player = ServiceProvider.GetService<IBackgroundPlayer>();
 
-            var deletionResult = await player.DeleteEqualizerConfiguration(selectedConfiguration);
+            var deletionResult = await player.DeleteEqualizerConfiguration(args);
             if (deletionResult != EqualizerConfigurationDeletionResult.Success)
             {
                 var message = "Cannot delete the currently active configuration.Set another configuration to active, then try again";
                 if (deletionResult != EqualizerConfigurationDeletionResult.FailedInUse)
                     message = "Could not delete configuration";
-                MessageDialog diag = new MessageDialog(message);
-                await diag.ShowAsync();
+                await MessageDialogService.Instance.ShowMessageDialogAsync(message);
             }
         }
 

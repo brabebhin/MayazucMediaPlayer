@@ -10,7 +10,7 @@ namespace MayazucMediaPlayer.AudioEffects
     /// </summary>
     public sealed partial class AdvancedAudioSettingsPage : BaseUserControl, IContentSettingsItem
     {
-        public AdvancedAudioSettingsViewModel Model
+        public AdvancedAudioSettingsViewModel DataService
         {
             get;
             private set;
@@ -19,16 +19,21 @@ namespace MayazucMediaPlayer.AudioEffects
         public AdvancedAudioSettingsPage()
         {
             InitializeComponent();
-            Model = new AdvancedAudioSettingsViewModel(DispatcherQueue);
-            DataContext = Model;
+            DataService = new AdvancedAudioSettingsViewModel(DispatcherQueue);
+            DataContext = DataService;
             DispatcherQueue.TryEnqueue(async () =>
             {
-                await Model.LoadAudioDevicesAsync();
+                await DataService.LoadAudioDevicesAsync();
             });
         }
 
         public void RecheckValue()
         {
+        }
+
+        private void DataServiceSetBalanceToZeroCommand(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            DataService.SetBalanceToZeroCommand.Execute(null);
         }
     }
 }
