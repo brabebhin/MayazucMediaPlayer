@@ -138,6 +138,8 @@ namespace MayazucMediaPlayer.Services
 
         public int IndexOfMediaData(IMediaPlayerItemSource other)
         {
+            if (other == null) return -1;
+
             for (int i = 0; i < Count; i++)
             {
                 if (other.ID.Equals(this[i].MediaData.ID) || other.MediaPath == this[i].MediaData.MediaPath)

@@ -28,7 +28,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         public event EventHandler<NavigationRequestEventArgs> OpenInDifferentFrame;
 
         NowPlayingHomeViewModel _NowPlayingHomeViewModel;
-        public NowPlayingHomeViewModel NowPlayingHomeViewModelInstance
+        public NowPlayingHomeViewModel DataService
         {
             get
             {
@@ -71,7 +71,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         public NowPlayingList()
         {
             InitializeComponent();
-            NowPlayingHomeViewModelInstance = AppState.Current.Services.GetService<NowPlayingHomeViewModel>();
+            DataService = AppState.Current.Services.GetService<NowPlayingHomeViewModel>();
         }
 
         private async void AddToPlaylist(object? sender, RoutedEventArgs e)
@@ -81,15 +81,15 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 (sender as Control)!.IsEnabled = false;
                 try
                 {
-                    if (NowPlayingHomeViewModelInstance.PlaybackServiceInstance.NowPlayingBackStore.Count == 0)
+                    if (DataService.PlaybackServiceInstance.NowPlayingBackStore.Count == 0)
                     {
                         return;
                     }
 
-                    var items = NowPlayingHomeViewModelInstance.PlaybackServiceInstance.NowPlayingBackStore.Cast<MediaPlayerItemSourceUIWrapper>().ToList();
+                    var items = DataService.PlaybackServiceInstance.NowPlayingBackStore.Cast<MediaPlayerItemSourceUIWrapper>().ToList();
 
                     PlaylistPicker picker = new PlaylistPicker();
-                    await picker.PickPlaylistAsync(NowPlayingHomeViewModelInstance.PlaylistsService.Playlists);
+                    await picker.PickPlaylistAsync(DataService.PlaylistsService.Playlists);
                     if (picker.SelectedPlaylist != null)
                     {
                         await picker.SelectedPlaylist.Add(items.Select(x => x.MediaData));
@@ -121,18 +121,17 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
             //ResetHighlighting();
 
-            NowPlayingHomeViewModelInstance.ClearSelectionRequest -= NowPlayingHomeViewModelInstance_ClearSelectionRequest;
-            NowPlayingHomeViewModelInstance.GetSelectedItemsRequest -= NowPlayingHomeViewModelInstance_GetSelectedItemsRequest;
+            DataService.ClearSelectionRequest -= NowPlayingHomeViewModelInstance_ClearSelectionRequest;
+            DataService.GetSelectedItemsRequest -= NowPlayingHomeViewModelInstance_GetSelectedItemsRequest;
         }
-
 
         protected override async Task OnInitializeStateAsync(object? parameter)
         {
-            DataContext = NowPlayingHomeViewModelInstance;
+            DataContext = DataService;
             NowPlayingListView.SelectionChanged += NowPlayingList_SelectionChanged;
             mcSearchbar.Filter = (x) => { return ((MediaPlayerItemSourceUIWrapper)x).MediaData.Title; };
 
-            var CurrentMusicData = (await NowPlayingHomeViewModelInstance.PlaybackServiceInstance.CurrentMediaMetadata());
+            var CurrentMusicData = (await DataService.PlaybackServiceInstance.CurrentMediaMetadata());
             //previouslyPlayedData = CurrentMusicData;
             if (CurrentMusicData.IsSuccess)
             {
@@ -160,26 +159,26 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
             void DisableSelectionButtons()
             {
-                NowPlayingHomeViewModelInstance.UnselectButtonEnabled = false;
-                NowPlayingHomeViewModelInstance.RemoveSelectedButtonEnabled = false;
+                DataService.UnselectButtonEnabled = false;
+                DataService.RemoveSelectedButtonEnabled = false;
             }
 
             void EnableSelectionButtons()
             {
-                NowPlayingHomeViewModelInstance.UnselectButtonEnabled = true;
-                NowPlayingHomeViewModelInstance.RemoveSelectedButtonEnabled = true;
+                DataService.UnselectButtonEnabled = true;
+                DataService.RemoveSelectedButtonEnabled = true;
             }
         }
 
         private async void SkipToItem(object? sender, ItemClickEventArgs e)
         {
-            if (NowPlayingListView.CanReorderItems || NowPlayingHomeViewModelInstance.SelectionMode != ListViewSelectionMode.None)
+            if (NowPlayingListView.CanReorderItems || DataService.SelectionMode != ListViewSelectionMode.None)
             {
                 return;
             }
 
             var t = e.ClickedItem as MediaPlayerItemSourceUIWrapper;
-            var index = NowPlayingHomeViewModelInstance.PlaybackServiceInstance.NowPlayingBackStore.IndexOf(t);
+            var index = DataService.PlaybackServiceInstance.NowPlayingBackStore.IndexOf(t);
             await AppState.Current.MediaServiceConnector.SkipToIndex(index);
         }
 
@@ -187,7 +186,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             var mds = (sender as FrameworkElement).GetDataContextObject<MediaPlayerItemSourceUIWrapper>();
 
-            await NowPlayingHomeViewModelInstance.RemoveItemsFromPlaybackAsync(new MediaPlayerItemSourceUIWrapper[] { mds });
+            await DataService.RemoveItemsFromPlaybackAsync(new MediaPlayerItemSourceUIWrapper[] { mds });
         }
 
         private async void GoToFileProperties_tapped(object? sender, RoutedEventArgs e)
@@ -208,7 +207,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private async Task AddSingleItemToPlaylist(IMediaPlayerItemSource mds)
         {
-            var ok = await PlaylistHelpers.AddItemsToPlaylistAsync(new IMediaPlayerItemSource[] { mds }, NowPlayingHomeViewModelInstance.PlaylistsService.Playlists);
+            var ok = await PlaylistHelpers.AddItemsToPlaylistAsync(new IMediaPlayerItemSource[] { mds }, DataService.PlaylistsService.Playlists);
             if (ok.OK && SettingsService.Instance.ShowConfirmationMessages)
             {
                 PopupHelper.ShowInfoMessage($"Added {mds.Title} to {ok.Playlist.Title}", "Success!");
@@ -223,7 +222,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             var mds = args.SwipeControl.GetDataContextObject<MediaPlayerItemSourceUIWrapper>();
             if (mds.MediaData.Persistent)
-                await NowPlayingHomeViewModelInstance.RemoveItemsFromPlaybackAsync(new MediaPlayerItemSourceUIWrapper[] { mds });
+                await DataService.RemoveItemsFromPlaybackAsync(new MediaPlayerItemSourceUIWrapper[] { mds });
         }
 
         private void MoveItemUp_Tapped(Microsoft.UI.Xaml.Controls.SwipeItem sender, Microsoft.UI.Xaml.Controls.SwipeItemInvokedEventArgs args)
@@ -268,6 +267,38 @@ namespace MayazucMediaPlayer.NowPlayingViews
         private void Failure_removeItem(object? sender, RoutedEventArgs e)
         {
             RemoveFromQueue_tapped(sender, e);
+        }
+
+        private void ShowSelectionCommandBar(object sender, RoutedEventArgs e)
+        {
+            CommandBarus.Visibility = Visibility.Collapsed;
+            ReorderCommandBar.Visibility = Visibility.Collapsed;
+            SelectionCommandBar.Visibility = Visibility.Visible;
+            DataService.SelectionMode = ListViewSelectionMode.Multiple;
+        }
+
+        private void HideSelectionCommandBar(object sender, RoutedEventArgs e)
+        {
+            CommandBarus.Visibility = Visibility.Visible;
+            ReorderCommandBar.Visibility = Visibility.Collapsed;
+            SelectionCommandBar.Visibility = Visibility.Collapsed;
+            DataService.SelectionMode = ListViewSelectionMode.Single;
+        }
+
+        private void ShowReorderCommandBar(object sender, RoutedEventArgs e)
+        {
+            CommandBarus.Visibility = Visibility.Collapsed;
+            ReorderCommandBar.Visibility = Visibility.Visible;
+            SelectionCommandBar.Visibility = Visibility.Collapsed;
+            DataService.SelectionMode = ListViewSelectionMode.Single;
+        }
+
+        private void HideReoderCommandBar(object sender, RoutedEventArgs e)
+        {
+            CommandBarus.Visibility = Visibility.Visible;
+            ReorderCommandBar.Visibility = Visibility.Collapsed;
+            SelectionCommandBar.Visibility = Visibility.Collapsed;
+            DataService.SelectionMode = ListViewSelectionMode.Single;
         }
     }
 }

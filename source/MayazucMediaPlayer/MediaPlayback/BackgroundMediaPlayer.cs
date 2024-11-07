@@ -1484,9 +1484,10 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
             // Ensure the stored playback index is the playback index of the current media data
             SettingsService.Instance.PlaybackIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(CurrentPlaybackData);
-
+            if (SettingsService.Instance.PlaybackIndex < 0) return;
             await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: true, currentIndex: SettingsService.Instance.PlaybackIndex);
         }
+
         public Task StartPlaybackFromIndexAndPosition(IEnumerable<IMediaPlayerItemSource> FilesToAdd, int index, long position)
         {
             return commandDispatcher.EnqueueAsync(async () =>
@@ -1524,7 +1525,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 var t = CurrentPlaybackItem?.GetExtradata()?.MediaPlayerItemSource;
 
                 var props = PlaybackQueueService.NowPlayingBackStore.Select(x => x.MediaData);
-                await PlaybackQueueService.EnqueueNewPlaylistAsync(props);
+                await PlaybackQueueService.EnqueueNewPlaylistAsync(props.ToList());
 
                 if (t != null)
                 {

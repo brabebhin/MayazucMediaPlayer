@@ -23,7 +23,7 @@
 
         <SplitView x:Name="NowPlayingListSplitView" PaneBackground="#80000000" IsPaneOpen="{Binding ElementName=NowPlayingToggleButton, Path=IsChecked, Mode=TwoWay}" LightDismissOverlayMode="Off">
             <SplitView.Pane>
-                <nowplayingviews:NowPlayingList  Background="#80000000" ></nowplayingviews:NowPlayingList>
+                <nowplayingviews:NowPlayingList x:Name="nowPlayingList" Background="#80000000" ></nowplayingviews:NowPlayingList>
             </SplitView.Pane>
             <SplitView x:Name="MediaEffectsSplitView"  PanePlacement="Right" IsPaneOpen="{Binding ElementName=MediaEffectsToggleButton, Path=IsChecked, Mode=TwoWay}"  LightDismissOverlayMode="Off">
                 <SplitView.Pane>

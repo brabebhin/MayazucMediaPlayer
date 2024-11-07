@@ -96,6 +96,7 @@ namespace MayazucMediaPlayer.Controls
             displayInformation.AdvancedColorInfoChanged += DisplayInformation_AdvancedColorInfoChanged;
             CheckHdr(displayInformation);
 
+            _ = nowPlayingList.InitializeStateAsync(null);
         }
 
         protected override void OnDispose(bool disposing)

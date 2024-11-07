@@ -42,6 +42,12 @@ namespace MayazucMediaPlayer.NowPlayingViews
         private bool _NowPlayingCommandBarEnabled = true;
         private bool _SelectButtonChecked = false;
 
+        public bool IsItemClickEnabled
+        {
+            get;
+            private set;
+        } = true;
+
         public bool SelectButtonChecked
         {
             get => _SelectButtonChecked;
@@ -323,7 +329,11 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 NpChangeSongButton = enableButtons;
                 CanReorderItems = false;
                 ContextMenuEnabled = enableButtons;
+                IsItemClickEnabled = enableButtons;
+
                 NotifyPropertyChanged(nameof(SelectionMode));
+                NotifyPropertyChanged(nameof(IsItemClickEnabled));
+
             }
         }
 
@@ -362,6 +372,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             AddToPlaylistButtonEnabled = value;
             SaveButtonEnabled = value;
             NpShuffleButton = value;
+            IsItemClickEnabled = value;
+            NotifyPropertyChanged(nameof(IsItemClickEnabled));
         }
 
         private void SetCanReorderModeAndNotify(bool value)
@@ -438,7 +450,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             {
                 NowPlayingCommandBarEnabled = false;
             }
-            
+
         }
 
         private async Task StopPlaybackAsync(object arg)
@@ -584,9 +596,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private async Task RemoveFromPlaybackRequestCommandFunction(object? sender)
         {
-            IsChangingOrder = true;
             await RemoveFromPlayback(sender);
-            IsChangingOrder = false;
         }
 
         public async Task RemoveFromPlayback(object? sender)

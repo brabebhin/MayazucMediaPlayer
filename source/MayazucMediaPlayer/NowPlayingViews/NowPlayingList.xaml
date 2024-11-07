@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winUI="using:Microsoft.UI.Xaml.Controls"
-    xmlns:mcConrols="using:MayazucMediaPlayer.Controls"
+    xmlns:mcConrols="using:MayazucMediaPlayer.Controls" xmlns:services="using:MayazucMediaPlayer.Services"
     mc:Ignorable="d">
 
     <Grid>
@@ -30,32 +30,49 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <mcConrols:SearchBar x:Name="mcSearchbar" SearchView="{Binding NowPlayingCollectionViewSource}" IsEnabled="{Binding CanSearch}" Grid.Row="1" Margin="12, 2, 12, 2"></mcConrols:SearchBar>
+                    <mcConrols:SearchBar x:Name="mcSearchbar" SearchView="{x:Bind DataService.NowPlayingCollectionViewSource, Mode=OneWay}" IsEnabled="{x:Bind DataService.CanSearch, Mode=OneWay}" Grid.Row="1" Margin="12, 2, 12, 2"></mcConrols:SearchBar>
                 </Grid>
-                <CommandBar IsEnabled="{Binding NowPlayingCommandBarEnabled}" Grid.Row="2"  HorizontalAlignment="Left"  x:Name="CommandBarus">
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding SaveButtonEnabled}"  Command="{Binding SaveNowPlayingAsPlaylistCommand}" CommandParameter="{Binding ElementName=npSaveAsPlayList}"  x:Name="npSaveAsPlayList"  Icon="Save" Label="Save"/>
 
-                    <mcConrols:AppBarButtonWithToolTip  IsEnabled="{Binding AddToPlaylistButtonEnabled}"   Click="AddToPlaylist" Icon="Add" x:Name="npAddToPlaylist" Label="Add to playlist"/>
-
-                    <mcConrols:AppBarToggleButtonWithToolTip     Command="{Binding ChangeSongOrderRequestCommand}" CommandParameter="{Binding ElementName=npChangeSongButton}" x:Name="npChangeSongButton" IsEnabled="{Binding NpChangeSongButton}" IsChecked="{Binding IsChangingOrder}" Label="Reorder">
-                        <AppBarToggleButton.Icon>
-                            <FontIcon Glyph="&#xE1ED;"></FontIcon>
-                        </AppBarToggleButton.Icon>
-                    </mcConrols:AppBarToggleButtonWithToolTip>
-
-                    <mcConrols:AppBarToggleButtonWithToolTip IsChecked="{Binding SelectButtonChecked, Mode=TwoWay}" IsEnabled="{Binding SelectButtonEnabled}"     Command="{Binding SelectRequestCommand}" CommandParameter="{Binding ElementName=npSelect}"  x:Name="npSelect"  Label="Select...">
+                <CommandBar x:Name="SelectionCommandBar" Visibility="Collapsed" Grid.Row="2" HorizontalAlignment="Left" >
+                    <mcConrols:AppBarToggleButtonWithToolTip IsChecked="{x:Bind npSelect.IsChecked, Mode=TwoWay}" Checked="ShowSelectionCommandBar" Unchecked="HideSelectionCommandBar" x:Name="npSelect2"  Label="Select...">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE71D;"></FontIcon>
                         </AppBarToggleButton.Icon>
                     </mcConrols:AppBarToggleButtonWithToolTip>
 
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding UnselectButtonEnabled}"    Command="{Binding ClearSelectionCommand}"  CommandParameter="{Binding ElementName=npUnselectAllButton}"  Icon="ClearSelection" x:Name="npUnselectAllButton"  Label="Unselect all..."/>
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.UnselectButtonEnabled, Mode=OneWay}"    Command="{x:Bind DataService.ClearSelectionCommand, Mode=OneWay}"  CommandParameter="{x:Bind npUnselectAllButton}"  Icon="ClearSelection" x:Name="npUnselectAllButton"  Label="Unselect all..."/>
 
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding RemoveSelectedButtonEnabled}"    Command="{Binding RemoveCommand}"  Icon="Remove"  CommandParameter="{Binding ElementName=npRemoveFromPlayBackButton}"  x:Name="npRemoveFromPlayBackButton"  Label="Remove selected"/>
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.RemoveSelectedButtonEnabled, Mode=OneWay}"    Command="{x:Bind DataService.RemoveCommand, Mode=OneWay}"  Icon="Remove"  CommandParameter="{x:Bind npRemoveFromPlayBackButton}"  x:Name="npRemoveFromPlayBackButton"  Label="Remove selected"/>
+
+                </CommandBar>
+                <CommandBar x:Name="ReorderCommandBar" Visibility="Collapsed" Grid.Row="2"  HorizontalAlignment="Left">
+                    <mcConrols:AppBarToggleButtonWithToolTip Command="{x:Bind DataService.ChangeSongOrderRequestCommand, Mode=OneWay}" CommandParameter="{x:Bind npChangeSongButton, Mode=OneWay}" x:Name="npChangeSongButton2" IsChecked="{x:Bind DataService.IsChangingOrder, Mode=OneWay}" Label="Reorder">
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE1ED;"></FontIcon>
+                        </AppBarToggleButton.Icon>
+                    </mcConrols:AppBarToggleButtonWithToolTip>
+                </CommandBar>
+                
+                <CommandBar IsEnabled="{x:Bind DataService.NowPlayingCommandBarEnabled, Mode=OneWay}" Grid.Row="2"  HorizontalAlignment="Left"  x:Name="CommandBarus">
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.SaveButtonEnabled, Mode=OneWay}"  Command="{x:Bind DataService.SaveNowPlayingAsPlaylistCommand, Mode=OneWay}" CommandParameter="{x:Bind npSaveAsPlayList}"  x:Name="npSaveAsPlayList"  Icon="Save" Label="Save"/>
+
+                    <mcConrols:AppBarButtonWithToolTip  IsEnabled="{x:Bind DataService.AddToPlaylistButtonEnabled, Mode=OneWay}"   Click="AddToPlaylist" Icon="Add" x:Name="npAddToPlaylist" Label="Add to playlist"/>
+
+                    <mcConrols:AppBarToggleButtonWithToolTip Checked="ShowReorderCommandBar" Unchecked="HideReoderCommandBar" Command="{x:Bind DataService.ChangeSongOrderRequestCommand, Mode=OneWay}" CommandParameter="{x:Bind npChangeSongButton, Mode=OneWay}" x:Name="npChangeSongButton" IsChecked="{x:Bind DataService.IsChangingOrder, Mode=OneWay}" Label="Reorder">
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE1ED;"></FontIcon>
+                        </AppBarToggleButton.Icon>
+                    </mcConrols:AppBarToggleButtonWithToolTip>
+
+                    <mcConrols:AppBarToggleButtonWithToolTip Checked="ShowSelectionCommandBar" Unchecked="HideSelectionCommandBar" x:Name="npSelect"  Label="Select...">
+                        <AppBarToggleButton.Icon>
+                            <FontIcon Glyph="&#xE71D;"></FontIcon>
+                        </AppBarToggleButton.Icon>
+                    </mcConrols:AppBarToggleButtonWithToolTip>
 
                     <CommandBar.SecondaryCommands>
-                        <mcConrols:AppBarButtonWithToolTip    Command="{Binding ShuffleRequestClickCommand}" CommandParameter="{Binding ElementName=npShuffleButton}" Icon="Shuffle" x:Name="npShuffleButton" IsEnabled="{Binding NpShuffleButton}" Label="Shuffle"/>
-                        <mcConrols:AppBarButtonWithToolTip IsEnabled="{Binding ClearQueueButtonEnabled}"  Label="Clear queue" Command="{Binding ClearPlaybackQueueCommand}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{Binding ElementName=npStopPlaybackQueue}"/>
+                        <mcConrols:AppBarButtonWithToolTip Command="{x:Bind DataService.ShuffleRequestClickCommand, Mode=OneWay}" CommandParameter="{x:Bind npShuffleButton, Mode=OneWay}" Icon="Shuffle" x:Name="npShuffleButton" Label="Shuffle"/>
+                        <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.ClearQueueButtonEnabled, Mode=OneWay}"  Label="Clear queue" Command="{x:Bind DataService.ClearPlaybackQueueCommand, Mode=OneWay}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{x:Bind npStopPlaybackQueue, Mode=OneWay}"/>
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
 
@@ -63,21 +80,21 @@
 
             <Grid Grid.Row="1" x:Name="ContentRoot">
                 <ListView AllowDrop="True"                
-                      ReorderMode="{Binding ReorderMode}"
-                      CanReorderItems="{Binding CanReorderItems}"
-                      CanDragItems ="{Binding CanReorderItems}"
+                      ReorderMode="{x:Bind DataService.ReorderMode, Mode=OneWay}"
+                      CanReorderItems="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
+                      CanDragItems ="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
                       HorizontalContentAlignment="Left"
-                      IsItemClickEnabled="{Binding CanReorderItems, Converter={StaticResource NegateBooleanConvreterInstance}}"
+                      IsItemClickEnabled="{x:Bind DataService.IsItemClickEnabled, Mode=OneWay}"
                       ItemClick="SkipToItem"
-                      ItemsSource="{Binding NowPlayingCollectionViewSource}"
+                      ItemsSource="{x:Bind DataService.NowPlayingCollectionViewSource, Mode=OneWay}"
                       Grid.Row="2" 
                       x:FieldModifier="public"
-                      SelectionMode="{Binding SelectionMode}"
+                      SelectionMode="{x:Bind DataService.SelectionMode, Mode=OneWay}"
                       x:Name="NowPlayingListView" 
                       Grid.ColumnSpan="2">
 
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="services:MediaPlayerItemSourceUIWrapper">
                             <Grid  Style="{StaticResource GridCardStyle}">
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
@@ -90,7 +107,7 @@
                                         <ColumnDefinition></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2"  Background="{Binding IsInPlayback, Converter={StaticResource NowPlayingBrushConverter}}"></Grid>
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2"  Background="{x:Bind IsInPlayback, Converter={StaticResource NowPlayingBrushConverter}, Mode=OneWay}"></Grid>
                                     
                                     <Grid Grid.Row="0" Margin="2" Grid.Column="1">
                                         <Grid>
@@ -105,7 +122,7 @@
                                                 </TextBlock>
                                             </Grid>
                                             <Grid  Grid.Column="2" HorizontalAlignment="Left">
-                                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding TrackNumber}" FontSize="16"  VerticalAlignment="Center">
+                                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind TrackNumber, Mode=OneWay}" FontSize="16"  VerticalAlignment="Center">
                                                 </TextBlock>
                                             </Grid>
                                         </Grid>
@@ -122,7 +139,7 @@
 
                                             <!--image grid-->
                                             <Grid Width="48" BorderThickness="2" x:Name="ColoredGrid"  Height="48" Grid.Column="1" VerticalAlignment="Top">
-                                                <Image Width="48" Height="48" Source="{Binding ThumbnailImage}"></Image>
+                                                <Image Width="48" Height="48" Source="{x:Bind ThumbnailImage, Mode=OneWay}"></Image>
                                             </Grid>
 
                                             <!--track title-->
@@ -133,25 +150,25 @@
                                                 </Grid.RowDefinitions>
                                                 <Grid Grid.Row="0" Grid.Column="1">
                                                     <StackPanel Margin="2" Grid.Column="1">
-                                                        <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  x:Name="tbFileName" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Title}">
+                                                        <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  x:Name="tbFileName" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneWay}">
                                                         </TextBlock>
                                                     </StackPanel>
                                                 </Grid>
                                             </Grid>
 
                                             <Grid  Grid.Column="3" HorizontalAlignment="Right" Margin="5, 0, 5, 0">
-                                                <Button BorderBrush="Transparent" Background="Transparent" IsEnabled="{Binding ElementName=ContentRoot, Path=DataContext.ContextMenuEnabled}" VerticalAlignment="Center">
+                                                <Button BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center">
                                                     <Button.Content>
                                                         <SymbolIcon Symbol="More"/>
                                                     </Button.Content>
                                                     <Button.Flyout>
                                                         <MenuFlyout>
-                                                            <MenuFlyoutItem  IsEnabled="{Binding MediaData.Persistent}" Text="Remove from queue" Click="RemoveFromQueue_tapped"/>
-                                                            <MenuFlyoutItem  IsEnabled="{Binding MediaData.Persistent}" Text="Add to playlist..." Click="AddSingleItemToPlaylist_Tapped"/>
-                                                            <MenuFlyoutItem  IsEnabled="{Binding MediaData.Persistent}" Text="Move up" Click="MoveItemUp_Tapped"/>
-                                                            <MenuFlyoutItem  IsEnabled="{Binding MediaData.Persistent}" Text="Move down" Click="MoveItemDown_Tapped"/>
+                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Remove from queue" Click="RemoveFromQueue_tapped"/>
+                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Add to playlist..." Click="AddSingleItemToPlaylist_Tapped"/>
+                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Move up" Click="MoveItemUp_Tapped"/>
+                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Move down" Click="MoveItemDown_Tapped"/>
                                                             <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                                                            <MenuFlyoutItem IsEnabled="{Binding MediaData.Persistent}" Text="Properties" Click="GoToFileProperties_tapped"/>
+                                                            <MenuFlyoutItem IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Properties" Click="GoToFileProperties_tapped"/>
                                                         </MenuFlyout>
                                                     </Button.Flyout>
                                                 </Button>
@@ -163,7 +180,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                     <ListView.Footer>
-                        <Grid Visibility="{Binding ElementName=NowPlayingListView, Path=ItemsSource.Count, Converter={StaticResource VisibleWhenZeroConverter}}">
+                        <Grid Visibility="{x:Bind Converters.VisibleWhenZeroConverter(DataService.NowPlayingCollectionViewSource.Count, x:False), Mode=OneWay}">
                             <StackPanel>
                                 <TextBlock FontSize="20" Margin="2" TextWrapping="WrapWholeWords" Text="This is where the playback queue will show up."  Style="{ThemeResource BodyTextBlockStyle}" />
                             </StackPanel>
