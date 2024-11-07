@@ -9,6 +9,6 @@
     x:Name="baseUC"
     mc:Ignorable="d">
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <Image x:Name="QRimage" Width="{Binding QRCodeWidth, ElementName=baseUC}" Height="{Binding QRCodeHeight, ElementName=baseUC}" HorizontalAlignment="Left"/>
+        <Image x:Name="QRimage" Width="{x:Bind QRCodeWidth, Mode=OneWay}" Height="{x:Bind QRCodeHeight, Mode=OneWay}" HorizontalAlignment="Left"/>
     </StackPanel>
 </controls:BaseUserControl>

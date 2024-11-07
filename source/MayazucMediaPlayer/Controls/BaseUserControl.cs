@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI;
+using MayazucMediaPlayer.Converters;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -73,5 +74,10 @@ namespace MayazucMediaPlayer.Controls
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        public ConverterLocator Converters { get; private set; } = new ConverterLocator();
+
+        public bool DirectBindBack(bool value) => value;
+
     }
 }

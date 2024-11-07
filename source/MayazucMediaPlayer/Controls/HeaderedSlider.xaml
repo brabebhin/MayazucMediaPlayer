@@ -11,7 +11,7 @@
 
     <Slider.Header>
         <Grid>
-            <TextBlock Margin="2" Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding Value}"/>
+            <TextBlock Margin="2" Style="{ThemeResource BodyTextBlockStyle}"  Text="{x:Bind Value, Mode=OneWay}"/>
         </Grid>
     </Slider.Header>
 </Slider>

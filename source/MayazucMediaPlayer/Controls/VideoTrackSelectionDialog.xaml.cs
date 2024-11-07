@@ -46,12 +46,12 @@ namespace MayazucMediaPlayer.Controls
         private void ProcessPlaybackItem(MediaPlaybackItem item)
         {
             lsvVideoStreams.SelectionChanged -= LsvVideoStreams_SelectionChanged;
-            HashSet<VideoStreamInfoWrapper> items = new HashSet<VideoStreamInfoWrapper>();
+            HashSet<VideoStreamPickerWrapper> items = new HashSet<VideoStreamPickerWrapper>();
 
             for (int i = 0; i < item.VideoTracks.Count; i++)
             {
                 var ms = item.VideoTracks[i];
-                items.Add(new VideoStreamInfoWrapper(ms, i + 1));
+                items.Add(new VideoStreamPickerWrapper(ms, i + 1));
             }
             lsvVideoStreams.ItemsSource = items;
             lsvVideoStreams.SelectedIndex = item.VideoTracks.SelectedIndex;
@@ -90,43 +90,51 @@ namespace MayazucMediaPlayer.Controls
                 await DispatcherQueue.EnqueueAsync(() => { lsvVideoStreams.SelectedIndex = sender.SelectedIndex; });
             }
         }
+    }
 
-        internal class VideoStreamInfoWrapper
+    public class VideoStreamPickerWrapper
+    {
+        readonly VideoTrack track;
+        readonly int ordinal = 0;
+
+        public VideoStreamPickerWrapper(VideoTrack ms, int ord)
         {
-            readonly VideoTrack track;
-            readonly int ordinal = 0;
+            track = ms;
+            ordinal = ord;
+        }
 
-            public VideoStreamInfoWrapper(VideoTrack ms, int ord)
+        public override bool Equals(object? obj)
+        {
+            return obj is VideoStreamPickerWrapper wrapper &&
+                   EqualityComparer<VideoTrack>.Default.Equals(track, wrapper.track) &&
+                   ordinal == wrapper.ordinal;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(track, ordinal);
+        }
+
+        public string FormatString
+        {
+            get
             {
-                track = ms;
-                ordinal = ord;
+               return ToString();
+            }
+        }
+
+        public override string ToString()
+        {
+            var name = track.Label;
+            var encodingProperties = track.GetEncodingProperties();
+            var encodingInfo = $"{encodingProperties.Width} x {encodingProperties.Height}";
+
+            if (string.IsNullOrEmpty(name))
+            {
+                name = $"Video track {ordinal}";
             }
 
-            public override bool Equals(object? obj)
-            {
-                return obj is VideoStreamInfoWrapper wrapper &&
-                       EqualityComparer<VideoTrack>.Default.Equals(track, wrapper.track) &&
-                       ordinal == wrapper.ordinal;
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(track, ordinal);
-            }
-
-            public override string ToString()
-            {
-                var name = track.Label;
-                var encodingProperties = track.GetEncodingProperties();
-                var encodingInfo = $"{encodingProperties.Width} x {encodingProperties.Height}";
-
-                if (string.IsNullOrEmpty(name))
-                {
-                    name = $"Video track {ordinal}";
-                }
-
-                return $"{name} : {encodingInfo}";
-            }
+            return $"{name} : {encodingInfo}";
         }
     }
 }

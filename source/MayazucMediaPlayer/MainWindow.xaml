@@ -71,7 +71,7 @@
             <Button BorderBrush="Transparent" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="OverayModeButton" ToolTipService.ToolTip="Window overlay modes" Background="Transparent" Tapped="EnterExitOverlayMode" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
                 <FontIcon FontFamily="Segoe MDL2 Assets" x:Name="OverayModeButtonIcon" Glyph="&#xEE49;"/>
             </Button>
-            <Grid Grid.Column="4" x:Name="TitleBarGrid" Background="{Binding ElementName=PlayMenuItem, Path=Background}">
+            <Grid Grid.Column="4" x:Name="TitleBarGrid" Background="{x:Bind PlayMenuItem.Background, Mode=OneWay}">
                 <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" TextWrapping="NoWrap" x:Name="CurrentViewTitle"/>
             </Grid>
             <Border  Width="100" Grid.Column="5">
@@ -126,7 +126,7 @@
 
         <controls:InAppNotification Canvas.ZIndex="100"  Grid.RowSpan="10" Grid.ColumnSpan="10"  HorizontalContentAlignment="Stretch" ShowDismissButton="True" x:Name="notificationRoot" StackMode="Replace" HorizontalAlignment="Right" VerticalAlignment="Top">
             <controls:InAppNotification.ContentTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="local:PopupRequestData">
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4"></ColumnDefinition>
@@ -135,9 +135,9 @@
                         </Grid.ColumnDefinitions>
                         <Grid  Background="LightBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></Grid>
                         <StackPanel Orientation="Horizontal" Grid.Column="2">
-                            <TextBlock Text="{Binding Title}"  Style="{ThemeResource BodyStrongTextBlockStyle}" Opacity="1" />
+                            <TextBlock Text="{x:Bind Title, Mode=OneWay}"  Style="{ThemeResource BodyStrongTextBlockStyle}" Opacity="1" />
                             <Rectangle Width="10"></Rectangle>
-                            <TextBlock Text="{Binding Subtitle}" Style="{ThemeResource BodyTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind Subtitle, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" />
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

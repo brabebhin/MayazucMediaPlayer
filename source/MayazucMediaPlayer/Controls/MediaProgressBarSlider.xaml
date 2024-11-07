@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid x:Name="TimelineGrid"  Visibility="{Binding FullCommandBarButtonsVisibility}" >
+    <Grid x:Name="TimelineGrid" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="8"></ColumnDefinition>

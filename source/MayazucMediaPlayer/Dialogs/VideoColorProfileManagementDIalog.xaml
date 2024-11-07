@@ -22,16 +22,14 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextDecorations="{x:Bind TextDecoration}" FontSize="20" VerticalAlignment="Center" Text="{x:Bind Title}"/>
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextDecorations="{x:Bind TextDecoration, Mode=OneWay}" FontSize="20" VerticalAlignment="Center" Text="{x:Bind Title}"/>
                     <controls:AppBarButtonWithToolTip   Grid.Column="1"  Click="DeleteProfile">
                         <AppBarButton.Icon>
-                            <SymbolIcon Symbol="{x:Bind ButtonIcon}"/>
+                            <SymbolIcon Symbol="{x:Bind ButtonIcon, Mode=OneWay}"/>
                         </AppBarButton.Icon>
                     </controls:AppBarButtonWithToolTip>
                 </Grid>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
-
-
 </dialogs:BaseDialog>

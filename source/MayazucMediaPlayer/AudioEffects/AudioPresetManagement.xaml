@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid  >
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
@@ -26,12 +26,12 @@
             <Grid Grid.Row="1">
 
                 <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="2">
-                    <controls:AppBarButtonWithToolTip   Label="Add new preset" Icon="Add" x:Name="AddNewPreset" Tapped="DataServiceAddNewPresetCommand" CommandParameter="{x:Bind AddNewPreset}"/>
+                    <controls:AppBarButtonWithToolTip   Label="Add new preset" Icon="Add" x:Name="AddNewPreset" Tapped="DataServiceAddNewPresetCommand" CommandParameter="{x:Bind AddNewPreset, Mode=OneWay}"/>
                 </CommandBar>
             </Grid>
         </Grid>
 
-        <ListView SelectionMode="None" x:Name="lsvPresets" Background="Transparent" ItemsSource="{x:Bind DataService.SavedPresets}" Grid.Row="1">
+        <ListView SelectionMode="None" x:Name="lsvPresets" Background="Transparent" ItemsSource="{x:Bind DataService.SavedPresets, Mode=OneWay}" Grid.Row="1">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -43,12 +43,12 @@
                     <Grid>
                         <Grid.ContextFlyout>
                             <MenuFlyout>
-                                <MenuFlyoutItem IsEnabled="{x:Bind IsEnabled}"  Text="Delete preset" Click="DeletePreset_click"/>
+                                <MenuFlyoutItem IsEnabled="{x:Bind IsEnabled, Mode=OneWay}"  Text="Delete preset" Click="DeletePreset_click"/>
                             </MenuFlyout>
                         </Grid.ContextFlyout>
 
                         <StackPanel Margin="0, 2, 0, 8"  HorizontalAlignment="Stretch"  Grid.Row="2">
-                            <TextBlock Grid.Row="0" Text="{x:Bind PresetName}"  Style="{ThemeResource SubheaderTextBlockStyle}" TextWrapping="WrapWholeWords" />
+                            <TextBlock Grid.Row="0" Text="{x:Bind PresetName, Mode=OneWay}"  Style="{ThemeResource SubheaderTextBlockStyle}" TextWrapping="WrapWholeWords" />
                             <controls:EqualizerPresetAmplificationsPreview  Height="130" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" EqualizerPreset="{x:Bind}"></controls:EqualizerPresetAmplificationsPreview>
                         </StackPanel>
                     </Grid>

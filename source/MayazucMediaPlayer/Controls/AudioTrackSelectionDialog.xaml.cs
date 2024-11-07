@@ -57,12 +57,12 @@ namespace MayazucMediaPlayer.Controls
         private void ProcessPlaybackItem(MediaPlaybackItem item)
         {
             lsvAudioStreams.SelectionChanged -= LsvVideoStreams_SelectionChanged;
-            HashSet<AudioStreamInfoWrapper> items = new HashSet<AudioStreamInfoWrapper>();
+            HashSet<AudioStreamPickerWrapper> items = new HashSet<AudioStreamPickerWrapper>();
 
             for (int i = 0; i < item.AudioTracks.Count; i++)
             {
                 var ms = item.AudioTracks[i];
-                items.Add(new AudioStreamInfoWrapper(ms, i + 1));
+                items.Add(new AudioStreamPickerWrapper(ms, i + 1));
             }
             lsvAudioStreams.ItemsSource = items;
             lsvAudioStreams.SelectedIndex = item.AudioTracks.SelectedIndex;
@@ -102,42 +102,52 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        internal class AudioStreamInfoWrapper
+      
+    }
+
+    internal class AudioStreamPickerWrapper
+    {
+        readonly AudioTrack track;
+        readonly int ordinal = 0;
+
+        public AudioStreamPickerWrapper(AudioTrack ms, int ord)
         {
-            readonly AudioTrack track;
-            readonly int ordinal = 0;
+            track = ms;
+            ordinal = ord;
+        }
 
-            public AudioStreamInfoWrapper(AudioTrack ms, int ord)
+        public override bool Equals(object? obj)
+        {
+            return obj is AudioStreamPickerWrapper wrapper &&
+                   EqualityComparer<AudioTrack>.Default.Equals(track, wrapper.track) &&
+                   ordinal == wrapper.ordinal;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(track, ordinal);
+        }
+
+        public string FormatString
+        {
+            get
             {
-                track = ms;
-                ordinal = ord;
+                return ToString();
+            }
+        }
+
+        public override string ToString()
+        {
+            var name = track.Label;
+            var encodingProperties = track.GetEncodingProperties();
+            var encodingInfo = $"{encodingProperties.SampleRate} Hz, {encodingProperties.ChannelCount} Channels, {encodingProperties.Bitrate} bits/s";
+
+            if (string.IsNullOrEmpty(name))
+            {
+                name = $"Track {ordinal}";
             }
 
-            public override bool Equals(object? obj)
-            {
-                return obj is AudioStreamInfoWrapper wrapper &&
-                       EqualityComparer<AudioTrack>.Default.Equals(track, wrapper.track) &&
-                       ordinal == wrapper.ordinal;
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(track, ordinal);
-            }
-
-            public override string ToString()
-            {
-                var name = track.Label;
-                var encodingProperties = track.GetEncodingProperties();
-                var encodingInfo = $"{encodingProperties.SampleRate} Hz, {encodingProperties.ChannelCount} Channels, {encodingProperties.Bitrate} bits/s";
-                
-                if(string.IsNullOrEmpty(name))
-                {
-                    name = $"Track {ordinal}";
-                }
-
-                return $"{name} : {encodingInfo}";
-            }
+            return $"{name} : {encodingInfo}";
         }
     }
 }

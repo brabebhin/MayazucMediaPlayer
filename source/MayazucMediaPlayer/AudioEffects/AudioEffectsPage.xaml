@@ -31,7 +31,7 @@
                   Grid.Row="1"
                   Width="310"
                   SelectionMode="None" 
-                  ItemsSource="{x:Bind DataService.Effects}" 
+                  ItemsSource="{x:Bind DataService.Effects, Mode=OneWay}" 
                   x:Name="lsvAudioEffects">
             <GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem">
@@ -45,7 +45,7 @@
                 <DataTemplate x:DataType="models:AudioEffect">
                     <Grid>
                         <ToggleButton Tapped="SaveEffectsCommand" IsChecked="{x:Bind IsEnabled, Mode=TwoWay}">
-                            <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{x:Bind DisplayTitle}" Grid.Column="1"/>
+                            <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{x:Bind DisplayTitle, Mode=OneWay}" Grid.Column="1"/>
                         </ToggleButton>
                     </Grid>
                 </DataTemplate>

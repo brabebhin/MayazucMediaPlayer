@@ -7,7 +7,7 @@ namespace MayazucMediaPlayer.Dialogs
 {
     public sealed partial class AudioEffectsPicker : BaseDialog
     {
-        public AudioEffectsViewModel EffectsModel
+        public AudioEffectsViewModel DataService
         {
             get;
             private set;
@@ -16,14 +16,14 @@ namespace MayazucMediaPlayer.Dialogs
         public AudioEffectsPicker()
         {
             InitializeComponent();
-            EffectsModel = new AudioEffectsViewModel(DispatcherQueue);
-            DataContext = EffectsModel;
+            DataService = new AudioEffectsViewModel(DispatcherQueue);
+            DataContext = DataService;
         }
 
 
         protected override void OnPrimaryButtonClick()
         {
-            EffectsModel.SaveEffectsCommand.Execute(this);
+            DataService.SaveEffectsCommand.Execute(this);
             Hide();
         }
     }

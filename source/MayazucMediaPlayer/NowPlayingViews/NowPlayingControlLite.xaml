@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:services="using:MayazucMediaPlayer.Services"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -17,8 +18,8 @@
         </Grid.RowDefinitions>
         <ListView x:Name="lsvNowPlayingList" IsItemClickEnabled="True" ItemClick="SkipToItem" Grid.Row="1" >
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{Binding MediaData.Title}" Margin="2"/>
+                <DataTemplate x:DataType="services:MediaPlayerItemSourceUIWrapper">
+                    <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  Text="{x:Bind MediaData.Title, Mode=OneWay}" Margin="2"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

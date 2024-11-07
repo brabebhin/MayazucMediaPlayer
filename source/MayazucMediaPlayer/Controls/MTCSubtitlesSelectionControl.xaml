@@ -44,8 +44,8 @@
         </StackPanel>
         <ListView  SelectionMode="None" x:Name="lsvSubtitles" Grid.Row="1">
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox Content="{Binding Name}" VerticalAlignment="Center" Tapped="subtitleOnOff" x:Name="checkSubtitleOn" IsChecked="{Binding IsActive, Mode=TwoWay}"/>
+                <DataTemplate x:DataType="local:TimedMetadataTrackViewModelItem">
+                    <CheckBox Content="{x:Bind Name, Mode=OneWay}" VerticalAlignment="Center" Tapped="subtitleOnOff" x:Name="checkSubtitleOn" IsChecked="{x:Bind IsActive, Mode=TwoWay}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

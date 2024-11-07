@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:mediaplayback="using:MayazucMediaPlayer.MediaPlayback"
     mc:Ignorable="d">
 
     <Grid>
@@ -17,8 +18,8 @@
 
         <ListView Grid.Row="1" Margin="2" x:Name="lsvAudioStreams" SelectionMode="Single">
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding}"/>
+                <DataTemplate x:DataType="local:AudioStreamPickerWrapper">
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind FormatString, Mode=OneWay}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

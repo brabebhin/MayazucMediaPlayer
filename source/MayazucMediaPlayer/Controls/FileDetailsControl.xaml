@@ -5,7 +5,7 @@
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:MayazucMediaPlayer.Controls" xmlns:controls1="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:MayazucMediaPlayer.Controls" xmlns:controls1="using:CommunityToolkit.WinUI.UI.Controls" xmlns:mediaplayback="using:MayazucMediaPlayer.MediaPlayback" xmlns:generic="using:System.Collections.Generic"
     mc:Ignorable="d"
     Background="Transparent">
 
@@ -23,17 +23,17 @@
                 <Border Width="16"/>
                 <TextBlock Text="Media is not available. Most likely the file was deleted or the path is not available anymore" TextWrapping="WrapWholeWords"/>
             </StackPanel>
-            <CommandBar Visibility="{Binding PlaybackCommandBarVisibility}" x:Name="MenuBar" HorizontalAlignment="Left" DefaultLabelPosition="Right" FlowDirection="LeftToRight" Background="Transparent"  Grid.Row="1">
-                <controls:AppBarButtonWithToolTip IsEnabled="False"  Command="{Binding PlayCommand}" CommandParameter="{Binding ElementName=fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
+            <CommandBar Visibility="{x:Bind PlaybackCommandBarVisibility, Mode=OneWay}" x:Name="MenuBar" HorizontalAlignment="Left" DefaultLabelPosition="Right" FlowDirection="LeftToRight" Background="Transparent"  Grid.Row="1">
+                <controls:AppBarButtonWithToolTip IsEnabled="False"  Command="{x:Bind PlayCommand, Mode=OneWay}" CommandParameter="{x:Bind fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
                 </controls:AppBarButtonWithToolTip>
-                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{Binding AddToNowPlayingCommand}" CommandParameter="{Binding ElementName=fdEnqueue}" x:Name="fdEnqueue" Label="Add to now playing">
+                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{x:Bind AddToNowPlayingCommand, Mode=OneWay}" CommandParameter="{x:Bind fdEnqueue}" x:Name="fdEnqueue" Label="Add to now playing">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                     </AppBarButton.Icon>
                 </controls:AppBarButtonWithToolTip>
 
-                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{Binding SaveToPlaylistCommand}" CommandParameter="{Binding ElementName=AddToPlaylistButton}" Icon="Add" x:Name="AddToPlaylistButton" Label="Add to playlist"></controls:AppBarButtonWithToolTip>
-                <controls:AppBarButtonWithToolTip  Visibility="Visible"  IsEnabled="False"  ToolTipService.ToolTip="Plays the associated item in queue, enquing if necessary" Command="{Binding SkipToQueueItemCommand}" CommandParameter="{Binding ElementName=SkipToQueueItemButton}" x:Name="SkipToQueueItemButton" Label="Skip to queue item">
+                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{x:Bind SaveToPlaylistCommand, Mode=OneWay}" CommandParameter="{x:Bind AddToPlaylistButton}" Icon="Add" x:Name="AddToPlaylistButton" Label="Add to playlist"></controls:AppBarButtonWithToolTip>
+                <controls:AppBarButtonWithToolTip  Visibility="Visible"  IsEnabled="False"  ToolTipService.ToolTip="Plays the associated item in queue, enquing if necessary" Command="{x:Bind SkipToQueueItemCommand, Mode=OneWay}" CommandParameter="{x:Bind SkipToQueueItemButton}" x:Name="SkipToQueueItemButton" Label="Skip to queue item">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE84E;" />
                     </AppBarButton.Icon>
@@ -45,9 +45,6 @@
             <TabViewItem Header="General" IsClosable="False">
                 <ScrollViewer>
                     <StackPanel>
-
-                    
-
                         <TextBlock   Text="File name" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"    Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="Wrap" x:Name="FileNameTextBlock" Margin="5" />
 
@@ -70,16 +67,16 @@
                             <TextBlock   IsTextSelectionEnabled="True"  Margin="8"   x:Name="TrackInfoTitle" Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="WrapWholeWords" />
                         </StackPanel>
 
-                        <TextBlock Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}"  Margin="5, 0, 0, 0" Text="Artist" Style="{StaticResource SubheaderTextBlockStyle}" />
-                        <StackPanel  Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}"  >
+                        <TextBlock Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"  Margin="5, 0, 0, 0" Text="Artist" Style="{StaticResource SubheaderTextBlockStyle}" />
+                        <StackPanel  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"  >
                             <TextBlock   IsTextSelectionEnabled="True"  Margin="8"    x:Name="TrackInfoArtist" Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="WrapWholeWords" />
                         </StackPanel>
-                        <TextBlock  Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}"   Margin="5, 0, 0, 0" Text="Album" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                        <StackPanel Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}" >
+                        <TextBlock  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"   Margin="5, 0, 0, 0" Text="Album" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <StackPanel Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}" >
                             <TextBlock    IsTextSelectionEnabled="True" Margin="8"    x:Name="TrackInfoAlbum" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords"  />
                         </StackPanel>
-                        <TextBlock  Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}"   Margin="5, 0, 0, 0" Text="Genre" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                        <StackPanel  Visibility="{Binding IsAudioFile, Converter={StaticResource BooleanToVisibleConverterInstance}}" >
+                        <TextBlock  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"   Margin="5, 0, 0, 0" Text="Genre" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <StackPanel  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}" >
                             <TextBlock    IsTextSelectionEnabled="True" Margin="8"    x:Name="TrackInfoGenre" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords"  />
                         </StackPanel>
 
@@ -101,24 +98,24 @@
                         </Grid>
                     </ListView.Header>
                     <ListView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="controls:MetadataKeyValuePair">
                             <StackPanel Margin="0, 10, 0, 10">
-                                <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 8" Text="{Binding Key}" Style="{ThemeResource SubheaderTextBlockStyle}"/>
-                                <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 8" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Text="{Binding Value}"/>
+                                <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 8" Text="{x:Bind Key, Mode=OneWay}" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                                <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 8" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Text="{x:Bind Value, Mode=OneWay}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
             </TabViewItem>
             <TabViewItem Header="Embedded streams"  IsClosable="False">
-                <Grid x:Name="GridViewStreams"  >
+                <Grid x:Name="GridViewStreams">
                     <ScrollViewer>
                         <StackPanel>
                             <TextBlock Text="Audio Streams" Margin="8" Style="{ThemeResource SubheaderTextBlockStyle}"/>
 
-                            <ListView ItemsSource="{Binding AudioStreams}" SelectionMode="None">
+                            <ListView ItemsSource="{x:Bind AudioStreams, Mode=OneWay}" SelectionMode="None">
                                 <ListView.ItemTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate x:DataType="mediaplayback:AudioStreamInfoWrapper">
                                         <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                                             <Expander.Header>
                                                 <Grid>
@@ -128,10 +125,10 @@
                                                         <ColumnDefinition></ColumnDefinition>
                                                         <ColumnDefinition></ColumnDefinition>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="0" Text="{Binding Name}" ToolTipService.ToolTip="Name" Margin="8" Tag="Name" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="1" Text="{Binding CodecName}" ToolTipService.ToolTip="Codec"  Margin="8"  Tag="CodecName" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="2" Text="{Binding Channels}"  ToolTipService.ToolTip="Nr channels"  Margin="8" Tag="Channels" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="3" Text="{Binding SampleRate}"  ToolTipService.ToolTip="Sample rate"  Margin="8" Tag="SampleRate" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="0" Text="{x:Bind Name, Mode=OneWay}" ToolTipService.ToolTip="Name" Margin="8" Tag="Name" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}" ToolTipService.ToolTip="Codec"  Margin="8"  Tag="CodecName" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="2" Text="{x:Bind Channels, Mode=OneWay}"  ToolTipService.ToolTip="Nr channels"  Margin="8" Tag="Channels" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="3" Text="{x:Bind SampleRate, Mode=OneWay}"  ToolTipService.ToolTip="Sample rate"  Margin="8" Tag="SampleRate" />
                                                 </Grid>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -152,28 +149,28 @@
                                                             <RowDefinition></RowDefinition>
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding Name}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="1" Grid.Column="0" Text="Language"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Language}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="2" Grid.Column="0" Text="Codec"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{Binding CodecName}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="Bitrate"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{Binding Bitrate}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{x:Bind Bitrate, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="4" Grid.Column="0" Text="Channels"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{Binding Channels}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{x:Bind Channels, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="5" Grid.Column="0" Text="Sample Rate"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{Binding SampleRate}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{x:Bind SampleRate, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="6" Grid.Column="0" Text="Bits Per Sample"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="1" Text="{Binding BitsPerSample}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="1" Text="{x:Bind BitsPerSample, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="7" Grid.Column="0" Text="Default"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="1" Text="{Binding IsDefault}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="1" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
                                                     </Grid>
                                                 </ScrollViewer>
                                             </Expander.Content>
@@ -184,9 +181,9 @@
 
                             <TextBlock Text="Video Streams" Margin="8"  Style="{ThemeResource SubheaderTextBlockStyle}"/>
 
-                            <ListView ItemsSource="{Binding VideoStreams}" SelectionMode="None">
+                            <ListView ItemsSource="{x:Bind VideoStreams, Mode=OneWay}" SelectionMode="None">
                                 <ListView.ItemTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate x:DataType="mediaplayback:VideoStreamInfoWrapper">
                                         <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                                             <Expander.Header>
                                                 <Grid>
@@ -196,10 +193,10 @@
                                                         <ColumnDefinition></ColumnDefinition>
                                                         <ColumnDefinition></ColumnDefinition>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="0" Text="{Binding Name}"  ToolTipService.ToolTip="Name"  Margin="8" Tag="Name" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="1" Text="{Binding CodecName}" ToolTipService.ToolTip="Codec"  Margin="8"  Tag="CodecName" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="2" Text="{Binding PixelWidth}"  ToolTipService.ToolTip="Pixel width"  Margin="8" Tag="Channels" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="3" Text="{Binding PixelHeight}"  ToolTipService.ToolTip="Pixel height"  Margin="8" Tag="SampleRate" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="0" Text="{x:Bind Name, Mode=OneWay}"  ToolTipService.ToolTip="Name"  Margin="8" Tag="Name" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}" ToolTipService.ToolTip="Codec"  Margin="8"  Tag="CodecName" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="2" Text="{x:Bind PixelWidth, Mode=OneWay}"  ToolTipService.ToolTip="Pixel width"  Margin="8" Tag="Channels" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Column="3" Text="{x:Bind PixelHeight, Mode=OneWay}"  ToolTipService.ToolTip="Pixel height"  Margin="8" Tag="SampleRate" />
                                                 </Grid>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -220,28 +217,28 @@
                                                             <RowDefinition></RowDefinition>
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding Name}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="1" Grid.Column="0" Text="Language"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Language}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="2" Grid.Column="0" Text="Codec"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{Binding CodecName}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="Pixel Width"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{Binding PixelWidth}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{x:Bind PixelWidth, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="4" Grid.Column="0" Text="Pixel Height"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{Binding PixelHeight}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{x:Bind PixelHeight, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="5" Grid.Column="0" Text="Decoder Engine"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{Binding DecoderEngine}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{x:Bind DecoderEngine, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="6" Grid.Column="0" Text="Bits Per Sample"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="1" Text="{Binding BitsPerSample}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="1" Text="{x:Bind BitsPerSample, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="7" Grid.Column="0" Text="Default"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="1" Text="{Binding IsDefault}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="1" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
                                                     </Grid>
                                                 </ScrollViewer>
                                             </Expander.Content>
@@ -252,9 +249,9 @@
 
                             <TextBlock Text="Embeded subtitles" Margin="8" Style="{ThemeResource SubheaderTextBlockStyle}"/>
 
-                            <ListView ItemsSource="{Binding SubtitleStreams}" SelectionMode="None">
+                            <ListView ItemsSource="{x:Bind SubtitleStreams, Mode=OneWay}" SelectionMode="None">
                                 <ListView.ItemTemplate>
-                                    <DataTemplate>
+                                    <DataTemplate x:DataType="mediaplayback:SubtitleStreamInfoWrapper">
                                         <Expander HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                                             <Expander.Header>
                                                 <Grid>
@@ -264,9 +261,9 @@
                                                         <ColumnDefinition></ColumnDefinition>
                                                         <ColumnDefinition></ColumnDefinition>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="0" Text="{Binding Name}"  ToolTipService.ToolTip="Name"  Margin="8" Tag="Name" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="1" Text="{Binding CodecName}" ToolTipService.ToolTip="Codec"  Margin="8"  Tag="CodecName" />
-                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="2" Text="{Binding Language}"  ToolTipService.ToolTip="Language"  Margin="8" Tag="Channels" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="0" Text="{x:Bind Name, Mode=OneWay}"  ToolTipService.ToolTip="Name"  Margin="8" Tag="Name" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}" ToolTipService.ToolTip="Codec"  Margin="8"  Tag="CodecName" />
+                                                    <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="2" Text="{x:Bind Language, Mode=OneWay}"  ToolTipService.ToolTip="Language"  Margin="8" Tag="Channels" />
                                                 </Grid>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -285,22 +282,22 @@
                                                             <RowDefinition></RowDefinition>
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{Binding Name}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="1" Grid.Column="0" Text="Language"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{Binding Language}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="2" Grid.Column="0" Text="Codec"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{Binding CodecName}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="3" Grid.Column="0" Text="Bitrate"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{Binding Bitrate}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{x:Bind Bitrate, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="4" Grid.Column="0" Text="Forced"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{Binding IsForced}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{x:Bind IsForced, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="5" Grid.Column="0" Text="Default"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{Binding IsDefault}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
 
                                                     </Grid>
                                                 </ScrollViewer>
@@ -331,22 +328,22 @@
                           Grid.Row="1"
                           Margin="2"
                           SelectionMode="None"
-                          ItemsSource="{Binding VideoThumbnails}">
+                          ItemsSource="{x:Bind VideoThumbnails, Mode=OneWay}">
 
                         <GridView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="local:MediaThumbnailPreviewData">
                                 <Grid Width="180" Margin="2" Height="180" Background="Black">
                                     <Viewbox Height="100" Width="100">
                                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B2;" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                     </Viewbox>
 
-                                    <Image MaxHeight="178"  ToolTipService.ToolTip="{Binding ToolTip}" MaxWidth="178" Margin="2" Source="{Binding MediaThumbnailData}"></Image>
+                                    <Image MaxHeight="178"  ToolTipService.ToolTip="{x:Bind ToolTip, Mode=OneWay}" MaxWidth="178" Margin="2" Source="{x:Bind MediaThumbnailData, Mode=OneWay}"></Image>
                                     <Grid Background="#80808080" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="2" >
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition></ColumnDefinition>
                                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding Title}" TextWrapping="WrapWholeWords"/>
+                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind Title, Mode=OneWay}" TextWrapping="WrapWholeWords"/>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>

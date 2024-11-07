@@ -26,24 +26,24 @@ namespace MayazucMediaPlayer.MediaCollections
     {
         public override string Title => "Network streams";
 
-        public NetworkStreamsCollectionUiService NetworkStreamsCollectionUiService { get; private set; }
+        public NetworkStreamsCollectionUiService DataService { get; private set; }
 
         public NetworkStreamsCollectionPage()
         {
             this.InitializeComponent();
-            NetworkStreamsCollectionUiService = new NetworkStreamsCollectionUiService(DispatcherQueue);
-            DataContext = NetworkStreamsCollectionUiService;
+            DataService = new NetworkStreamsCollectionUiService(DispatcherQueue);
+            DataContext = DataService;
         }
 
         protected override async Task OnInitializeStateAsync(object? parameter)
         {
-            await NetworkStreamsCollectionUiService.LoadHistory();
+            await DataService.LoadHistory();
             await base.OnInitializeStateAsync(parameter);
         }
 
         private async void PlayUrlHistory_click(object sender, RoutedEventArgs e)
         {
-            await NetworkStreamsCollectionUiService.PlayUrl(sender.GetDataContextObject<NetworkStreamHistoryEntry>().Url);
+            await DataService.PlayUrl(sender.GetDataContextObject<NetworkStreamHistoryEntry>().Url);
         }
     }
 }

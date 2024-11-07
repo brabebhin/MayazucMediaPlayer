@@ -5,17 +5,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:playlists="using:MayazucMediaPlayer.Playlists"
     mc:Ignorable="d"
     Title="Playlist Picker"
     PrimaryButtonText="OK"  
     SecondaryButtonText="Cancel">
 
     <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <ComboBox IsEditable="True" Width="480" TextSubmitted="playlistPicker_textSubmited"  FontWeight="SemiBold"  Background="{Binding  ButtonsBackground1}" BorderBrush="{Binding BorderBrushes}"   x:Name="cbPicker" SelectedIndex="-1">
+        <ComboBox IsEditable="True" Width="480" TextSubmitted="playlistPicker_textSubmited"  FontWeight="SemiBold" x:Name="cbPicker" SelectedIndex="-1">
             <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" ToolTipService.ToolTip="{Binding BackstorePath}" Text="{Binding Title}"/>
+                <DataTemplate x:DataType="playlists:PlaylistItem">
+                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" ToolTipService.ToolTip="{x:Bind BackstorePath, Mode=OneWay}" Text="{x:Bind Title, Mode=OneWay}"/>
                 </DataTemplate>
             </ComboBox.ItemTemplate>
             <ComboBox.Header>

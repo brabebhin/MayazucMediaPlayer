@@ -39,7 +39,7 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBlock  Margin="5" Grid.Row="1" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Left" Text="0.25" />
-                        <TextBlock  Text="{Binding ElementName=MediaPlaybackSpeedSlider, Path=Value, Mode=TwoWay, Converter={StaticResource MediaPlaybackSpeedSliderThumbConverter}}" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" />
+                        <TextBlock  Text="{x:Bind Converters.MediaPlaybackSpeedSliderThumbConverter(MediaPlaybackSpeedSlider.Value), Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" />
                         <TextBlock  Margin="5"  Grid.Row="1" Style="{ThemeResource BodyTextBlockStyle}"  HorizontalAlignment="Right" Text="2" Grid.Column="2"/>
                     </Grid>
                 </Slider.Header>

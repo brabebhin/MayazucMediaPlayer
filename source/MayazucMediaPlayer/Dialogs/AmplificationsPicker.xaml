@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:audioeffects="using:MayazucMediaPlayer.AudioEffects"
     mc:Ignorable="d"
     Title="Set amplifications"
     PrimaryButtonText="OK"  
@@ -52,7 +52,7 @@
 
                     </GridView.ItemContainerStyle>
                     <GridView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="audioeffects:FrequencyBandContext">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
@@ -60,9 +60,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="0, 0, 0, 2" HorizontalAlignment="Center" Text="{Binding FrequencyAmplification}"></TextBlock>
-                                <Slider MinHeight="350" SnapsTo="StepValues" Style="{StaticResource WideSlider}"  Orientation="Vertical" Grid.Row="1" Minimum="-12" Maximum="12" Value="{Binding FrequencyAmplification, Mode=TwoWay}"></Slider>
-                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="0, 2, 0, 0" HorizontalAlignment="Center"  Grid.Row="2" Text="{Binding FrequencyDisplay}"></TextBlock>
+                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="0, 0, 0, 2" HorizontalAlignment="Center" Text="{x:Bind FrequencyAmplification, Mode=OneWay}"></TextBlock>
+                                <Slider MinHeight="350" SnapsTo="StepValues" Style="{StaticResource WideSlider}"  Orientation="Vertical" Grid.Row="1" Minimum="-12" Maximum="12" Value="{x:Bind FrequencyAmplification, Mode=TwoWay}"></Slider>
+                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Margin="0, 2, 0, 0" HorizontalAlignment="Center"  Grid.Row="2" Text="{x:Bind FrequencyDisplay, Mode=OneWay}"></TextBlock>
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>

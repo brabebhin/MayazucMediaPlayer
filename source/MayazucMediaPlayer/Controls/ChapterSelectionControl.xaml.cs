@@ -15,15 +15,31 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Media.Playback;
 using System.Collections.ObjectModel;
 using Windows.Media.Core;
+using MayazucMediaPlayer.Converters;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MayazucMediaPlayer.Controls
 {
+
+    public class ChapterCueDto
+    {
+        public ChapterCue Cue { get; private set; }
+
+        public string Title => Cue.Title;
+
+        public string StartTime => new ConverterLocator().TimespanToString(Cue.StartTime);
+
+        public ChapterCueDto(ChapterCue cue)
+        {
+            Cue = cue;
+        }
+    }
+
     public sealed partial class ChapterSelectionControl : BaseUserControl
     {
-        ObservableCollection<ChapterCue> chapters = new ObservableCollection<ChapterCue>();
+        ObservableCollection<ChapterCueDto> chapters = new ObservableCollection<ChapterCueDto>();
         public ChapterSelectionControl()
         {
             this.InitializeComponent();
@@ -34,7 +50,7 @@ namespace MayazucMediaPlayer.Controls
             var chapterTrack = item.TimedMetadataTracks.FirstOrDefault(x => x.TimedMetadataKind == Windows.Media.Core.TimedMetadataKind.Chapter);
             chapters.Clear();
             if (chapterTrack != null)
-                chapters.AddRange(chapterTrack.Cues.Cast<ChapterCue>());
+                chapters.AddRange(chapterTrack.Cues.Cast<ChapterCue>().Select(x => new ChapterCueDto(x)));
             lsvChapterCues.ItemsSource = chapters;
         }
 

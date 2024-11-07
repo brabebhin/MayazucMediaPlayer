@@ -87,98 +87,98 @@ namespace MayazucMediaPlayer.MediaPlayback
                 return MediaPlaybackItemUIInformation.Create(ffmpeg, mds);
             }
         }
+    }
 
 
-        public class SubtitleStreamInfoWrapper
+    public class SubtitleStreamInfoWrapper
+    {
+        public bool IsForced { get; }
+        public bool IsExternal { get; }
+        public bool IsDefault { get; }
+        public long Bitrate { get; }
+        public string CodecName { get; }
+        public string Language { get; }
+        public string Name { get; }
+
+        public SubtitleStreamInfoWrapper(SubtitleStreamInfo info)
         {
-            public bool IsForced { get; }
-            public bool IsExternal { get; }
-            public bool IsDefault { get; }
-            public long Bitrate { get; }
-            public string CodecName { get; }
-            public string Language { get; }
-            public string Name { get; }
-
-            public SubtitleStreamInfoWrapper(SubtitleStreamInfo info)
-            {
-                IsForced = info.IsForced;
-                IsExternal = info.IsExternal;
-                IsDefault = info.IsDefault;
-                Bitrate = info.Bitrate;
-                CodecName = info.CodecName;
-                Language = info.Language;
-                Name = info.Name;
-            }
+            IsForced = info.IsForced;
+            IsExternal = info.IsExternal;
+            IsDefault = info.IsDefault;
+            Bitrate = info.Bitrate;
+            CodecName = info.CodecName;
+            Language = info.Language;
+            Name = info.Name;
         }
+    }
 
-        public class VideoStreamInfoWrapper
+    public class VideoStreamInfoWrapper
+    {
+        public DecoderEngine DecoderEngine { get; }
+        public HardwareDecoderStatus HardwareDecoderStatus { get; }
+        public int BitsPerSample { get; }
+        public double DisplayAspectRatio { get; }
+        public int PixelHeight { get; }
+        public int PixelWidth { get; }
+        public bool IsDefault { get; }
+        public long Bitrate { get; }
+        public string CodecName { get; }
+        public string Language { get; }
+        public string Name { get; }
+
+        public VideoStreamInfoWrapper(VideoStreamInfo info)
         {
-            public DecoderEngine DecoderEngine { get; }
-            public HardwareDecoderStatus HardwareDecoderStatus { get; }
-            public int BitsPerSample { get; }
-            public double DisplayAspectRatio { get; }
-            public int PixelHeight { get; }
-            public int PixelWidth { get; }
-            public bool IsDefault { get; }
-            public long Bitrate { get; }
-            public string CodecName { get; }
-            public string Language { get; }
-            public string Name { get; }
-
-            public VideoStreamInfoWrapper(VideoStreamInfo info)
-            {
-                DecoderEngine = info.DecoderEngine;
-                HardwareDecoderStatus = info.HardwareDecoderStatus;
-                BitsPerSample = info.BitsPerSample;
-                DisplayAspectRatio = info.DisplayAspectRatio;
-                PixelHeight = info.PixelHeight;
-                PixelWidth = info.PixelWidth;
-                IsDefault = info.IsDefault;
-                Bitrate = info.Bitrate;
-                CodecName = info.CodecName;
-                Language = info.Language;
-                Name = info.Name;
-            }
+            DecoderEngine = info.DecoderEngine;
+            HardwareDecoderStatus = info.HardwareDecoderStatus;
+            BitsPerSample = info.BitsPerSample;
+            DisplayAspectRatio = info.DisplayAspectRatio;
+            PixelHeight = info.PixelHeight;
+            PixelWidth = info.PixelWidth;
+            IsDefault = info.IsDefault;
+            Bitrate = info.Bitrate;
+            CodecName = info.CodecName;
+            Language = info.Language;
+            Name = info.Name;
         }
+    }
 
-        public class AudioStreamInfoWrapper
+    public class AudioStreamInfoWrapper
+    {
+        public DecoderEngine DecoderEngine { get; }
+        public int BitsPerSample { get; }
+        public int SampleRate { get; }
+        public int Channels { get; }
+        public bool IsDefault { get; }
+        public long Bitrate { get; }
+        public string CodecName { get; }
+        public string Language { get; }
+        public string Name { get; }
+
+        public AudioStreamInfoWrapper(AudioStreamInfo info)
         {
-            public DecoderEngine DecoderEngine { get; }
-            public int BitsPerSample { get; }
-            public int SampleRate { get; }
-            public int Channels { get; }
-            public bool IsDefault { get; }
-            public long Bitrate { get; }
-            public string CodecName { get; }
-            public string Language { get; }
-            public string Name { get; }
-
-            public AudioStreamInfoWrapper(AudioStreamInfo info)
-            {
-                DecoderEngine = info.DecoderEngine;
-                BitsPerSample = info.BitsPerSample;
-                SampleRate = info.SampleRate;
-                Channels = info.Channels;
-                IsDefault = info.IsDefault;
-                Bitrate = info.Bitrate;
-                CodecName = info.CodecName;
-                Language = info.Language;
-                Name = info.Name;
-            }
+            DecoderEngine = info.DecoderEngine;
+            BitsPerSample = info.BitsPerSample;
+            SampleRate = info.SampleRate;
+            Channels = info.Channels;
+            IsDefault = info.IsDefault;
+            Bitrate = info.Bitrate;
+            CodecName = info.CodecName;
+            Language = info.Language;
+            Name = info.Name;
         }
+    }
 
-        public class ChapterStreamInfoWrapper
+    public class ChapterStreamInfoWrapper
+    {
+        public string Title { get; private set; }
+        public TimeSpan Duration { get; private set; }
+        public TimeSpan StartTime { get; private set; }
+
+        public ChapterStreamInfoWrapper(ChapterInfo info)
         {
-            public string Title { get; private set; }
-            public TimeSpan Duration { get; private set; }
-            public TimeSpan StartTime { get; private set; }
-
-            public ChapterStreamInfoWrapper(ChapterInfo info)
-            {
-                Title = info.Title;
-                Duration = info.Duration;
-                StartTime = info.StartTime;
-            }
+            Title = info.Title;
+            Duration = info.Duration;
+            StartTime = info.StartTime;
         }
     }
 }

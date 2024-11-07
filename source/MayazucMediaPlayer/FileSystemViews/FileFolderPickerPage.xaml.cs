@@ -16,7 +16,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         public const string PlayNextCommandString = "PlayNext";
 
         public override string Title => "Play files + folders";
-        public FileManagementService DataModel
+        public FileManagementService DataService
         {
             get; private set;
         }
@@ -29,8 +29,8 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         protected override void FreeMemory()
         {
-            DataModel.NavigationRequest -= DataModel_NavigationRequest;
-            DataModel = null;
+            DataService.NavigationRequest -= DataModel_NavigationRequest;
+            DataService = null;
             base.FreeMemory();
         }
 
@@ -40,15 +40,15 @@ namespace MayazucMediaPlayer.FileSystemViews
         }
         protected override async Task OnInitializeStateAsync(object? parameter)
         {
-            if (DataModel == null)
+            if (DataService == null)
             {
-                DataModel = new FileManagementService(DispatcherQueue,
+                DataService = new FileManagementService(DispatcherQueue,
                     base.ApplicationDataModels.PlaybackModel,
                     ServiceProvider.GetService<PlaylistsService>());
-                await fileManagementControl.LoadStateInternal(DataModel);
-                DataContext = DataModel;
+                await fileManagementControl.LoadStateInternal(DataService);
+                DataContext = DataService;
 
-                DataModel.NavigationRequest += DataModel_NavigationRequest;
+                DataService.NavigationRequest += DataModel_NavigationRequest;
             }
         }
     }

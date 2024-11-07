@@ -11,16 +11,16 @@
     d:DesignWidth="400">
 
     <AppBarButton.Icon>
-        <SymbolIcon Symbol="{Binding ElementName=cbRepeatModes, Path=SelectedItem.ModeSymbol}"></SymbolIcon>
+        <SymbolIcon Symbol="{x:Bind ((local:RepeatModeItem)cbRepeatModes.SelectedItem).ModeSymbol, Mode=OneWay}"></SymbolIcon>
     </AppBarButton.Icon>
     <AppBarButton.Flyout>
         <Flyout>
             <ListView x:Name="cbRepeatModes" SelectionMode="Single">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel ToolTipService.ToolTip="{Binding ModeText}" Orientation="Horizontal">
-                            <SymbolIcon Symbol="{Binding ModeSymbol}"/>
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ModeText}" Margin="10,0,0,0" Visibility="{Binding ElementName=cbShuffleModes, Path=IsDropDownOpen, Converter={StaticResource BooleanToVisibleConverterInstance}, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataTemplate x:DataType="local:RepeatModeItem">
+                        <StackPanel ToolTipService.ToolTip="{x:Bind ModeText, Mode=OneWay}" Orientation="Horizontal">
+                            <SymbolIcon Symbol="{x:Bind ModeSymbol, Mode=OneWay}"/>
+                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ModeText, Mode=OneWay}" Margin="10,0,0,0" />
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

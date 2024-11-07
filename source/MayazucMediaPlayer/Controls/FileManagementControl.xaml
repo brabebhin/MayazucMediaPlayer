@@ -10,6 +10,7 @@
     x:Name="RootPage">
 
     <UserControl.Resources>
+
         <DataTemplate x:Key="MusicItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProvder">
             <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
@@ -56,21 +57,21 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid Width="32" Height="32" Grid.Row="0" VerticalAlignment="Stretch">
-                    <Image Width="32" Height="32" Source="{x:Bind ImageUri}"></Image>
+                    <Image Width="32" Height="32" Source="{x:Bind ImageUri, Mode=OneWay}"></Image>
                 </Grid>
                 <StackPanel HorizontalAlignment="Left" Margin="3, 3, 2, 3" Grid.Column="1">
-                    <TextBlock Text="{x:Bind DisplayName}" x:Name="tbFileName" Style="{ThemeResource BodyStrongTextBlockStyle}" />
+                    <TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" x:Name="tbFileName" Style="{ThemeResource BodyStrongTextBlockStyle}" />
                 </StackPanel>
                 <Grid Grid.Column="3">
-                    <TextBlock  MaxLines="1"  ToolTipService.ToolTip="{x:Bind Metadata.Artist}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{x:Bind Metadata.Artist, Converter={StaticResource VisibilityNullConverter}}" Text="{x:Bind Metadata.Artist}"/>
+                    <TextBlock  MaxLines="1"  ToolTipService.ToolTip="{x:Bind Metadata.Artist, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{x:Bind Metadata.Artist, Converter={StaticResource VisibilityNullConverter}}" Text="{x:Bind Metadata.Artist}"/>
                 </Grid>
                 <Grid Grid.Column="5">
-                    <TextBlock MaxLines="1"  ToolTipService.ToolTip="{x:Bind Metadata.Album}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{x:Bind Metadata.Album, Converter={StaticResource VisibilityNullConverter}}" Text="{x:Bind Metadata.Album}"/>
+                    <TextBlock MaxLines="1"  ToolTipService.ToolTip="{x:Bind Metadata.Album, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" Visibility="{x:Bind Metadata.Album, Converter={StaticResource VisibilityNullConverter}}" Text="{x:Bind Metadata.Album}"/>
                 </Grid>
                 <Grid Grid.Column="7">
-                    <TextBlock MaxLines="1"  ToolTipService.ToolTip="{x:Bind Metadata.Genre}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap"  Visibility="{x:Bind Metadata.Genre, Converter={StaticResource VisibilityNullConverter}}" Text="{x:Bind Metadata.Genre}"/>
+                    <TextBlock MaxLines="1"  ToolTipService.ToolTip="{x:Bind Metadata.Genre, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap"  Visibility="{x:Bind Metadata.Genre, Converter={StaticResource VisibilityNullConverter}}" Text="{x:Bind Metadata.Genre}"/>
                 </Grid>
-                <TextBlock Text="{x:Bind Path}" Grid.ColumnSpan="10" Grid.Row="1"/>
+                <TextBlock Text="{x:Bind Path, Mode=OneWay}" Grid.ColumnSpan="10" Grid.Row="1"/>
 
                 <Button Flyout="{StaticResource ItemMenuFlyout}" Background="Transparent" BorderBrush="Transparent" Grid.Row="0" Grid.Column="8" Grid.RowSpan="2">
                     <Button.Content>
@@ -115,12 +116,12 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid Width="32" Height="32" Grid.Row="0" VerticalAlignment="Stretch">
-                    <Image Width="32" Height="32" Source="{x:Bind ImageUri}"></Image>
+                    <Image Width="32" Height="32" Source="{x:Bind ImageUri, Mode=OneWay}"></Image>
                 </Grid>
                 <StackPanel HorizontalAlignment="Left" Margin="3, 3, 2, 3" Grid.Column="1">
-                    <TextBlock Text="{x:Bind DisplayName}" x:Name="tbFileName" Style="{ThemeResource BodyTextBlockStyle}" />
+                    <TextBlock Text="{x:Bind DisplayName, Mode=OneWay}" x:Name="tbFileName" Style="{ThemeResource BodyTextBlockStyle}" />
                 </StackPanel>
-                <TextBlock Text="{x:Bind Path}" Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0"  />
+                <TextBlock Text="{x:Bind Path, Mode=OneWay}" Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0"  />
 
                 <Button Flyout="{StaticResource ItemMenuFlyout}" Background="Transparent" BorderBrush="Transparent" Grid.Row="0" Grid.Column="2" Grid.RowSpan="2">
                     <Button.Content>
@@ -143,15 +144,15 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <CommandBar  Visibility="{x:Bind DataService.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=true, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
-                <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrderResetButton"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled}"  IsChecked="{x:Bind DataService.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
+            <CommandBar  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:True), Mode=OneWay, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind Converters.BooleanCountConverter(DataService.Items.Count), Mode=OneWay,FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
+                <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrderResetButton" IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE1ED;"></FontIcon>
                     </AppBarToggleButton.Icon>
                 </controls:AppBarToggleButtonWithToolTip>
             </CommandBar>
 
-            <Grid  Visibility="{x:Bind DataService.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}">
+            <Grid  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:False), Mode=OneWay}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -159,36 +160,37 @@
                 </Grid.ColumnDefinitions>
                 <controls:AppBarButtonWithToolTip Style="{StaticResource AppBarButtonStyleNoChevron}" Visibility="Collapsed" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
                 </controls:AppBarButtonWithToolTip>
-                <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
 
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility}"/>
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility}">
+                <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind  Converters.BooleanCountConverter(DataService.Items.Count), Mode=OneWay, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
+
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}"/>
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
                     </controls:AppBarButtonWithToolTip>
 
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButtonSelected" Label="Play selected" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled}"  Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed}"/>
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButtonSelected" Label="Enqueue selected" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled}" Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed}">
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButtonSelected" Label="Play selected" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}"  Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed, Mode=OneWay}"/>
+                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButtonSelected" Label="Enqueue selected" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed, Mode=OneWay}">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
                     </controls:AppBarButtonWithToolTip>
 
-                    <controls:AppBarToggleButtonWithToolTip  IsChecked="{x:Bind DataService.SelectionMode, Converter={StaticResource selectionModeToBoolean}}"  Tapped="FullCollectionEnableSelection"     IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
+                    <controls:AppBarToggleButtonWithToolTip  IsChecked="{x:Bind Converters.selectionModeToBoolean(DataService.SelectionMode), Mode=OneWay}"  Tapped="FullCollectionEnableSelection"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
 
-                    <controls:AppBarButtonWithToolTip  Tapped="FullCollectionSaveAsPlaylistCommand"    IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Save" x:Name="SaveAsPlaylistButton" Icon="Save"/>
+                    <controls:AppBarButtonWithToolTip  Tapped="FullCollectionSaveAsPlaylistCommand"   Label="Save" x:Name="SaveAsPlaylistButton" Icon="Save"/>
 
-                    <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled}"  IsChecked="{x:Bind DataService.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
+                    <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE1ED;"></FontIcon>
                         </AppBarToggleButton.Icon>
                     </controls:AppBarToggleButtonWithToolTip>
 
 
-                    <controls:AppBarButtonWithToolTip x:Name="ClearButton" Tapped="FullCollectionClearAllCommand"   Label="Remove all" Icon="Clear"   IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}" />
+                    <controls:AppBarButtonWithToolTip x:Name="ClearButton" Tapped="FullCollectionClearAllCommand"   Label="Remove all" Icon="Clear"  />
 
-                    <AppBarButton  Tapped="FullCollectionAddToExistingPlaylistCommand"      IsEnabled="{x:Bind DataService.Items.Count,  Converter={StaticResource BooleanCountConverter}, ConverterParameter=false}"  Label="Add to playlist" Icon="Add"/>
+                    <AppBarButton  Tapped="FullCollectionAddToExistingPlaylistCommand"  Label="Add to playlist" Icon="Add"/>
 
                     <CommandBar.SecondaryCommands>
                         <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandOnlyAudio"  Label="Select music files"></controls:AppBarButtonWithToolTip>
@@ -201,7 +203,7 @@
                         <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnSaveAsPlaylistSelected"  Tapped="FullCollectionSaveAsPlaylistCommandOnlySelected" Label="Create only from selected files"></controls:AppBarButtonWithToolTip>
                         <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyunselected" Label="Create playlist from unselected files"></controls:AppBarButtonWithToolTip>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnRemoveSelected"  Tapped="FullCollectionRemoveSelectedCommand"  CommandParameter="{x:Bind}" Label="Remove selected"></controls:AppBarButtonWithToolTip>
+                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnRemoveSelected"  Tapped="FullCollectionRemoveSelectedCommand" Label="Remove selected"></controls:AppBarButtonWithToolTip>
                         <controls:AppBarButtonWithToolTip Tapped="FullCollectionRemoveOnlyMusicCommand"   Label="Remove music files"></controls:AppBarButtonWithToolTip>
                         <controls:AppBarButtonWithToolTip Tapped="FullCollectionRemoveOnlyVideoCommand"   Label="Remove video files"></controls:AppBarButtonWithToolTip>
                         <AppBarSeparator></AppBarSeparator>
@@ -212,29 +214,29 @@
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>
-            <controls:SearchBar  Visibility="{x:Bind DataService.IsChangingOrder, Converter={StaticResource BooleanToVisibleConverterInstance}, ConverterParameter=false}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{x:Bind DataService.CanSearch}" SearchView="{x:Bind DataService.FilterCollectionView}" Margin="16, 0, 16, 10"></controls:SearchBar>
+            <controls:SearchBar  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:False), Mode=OneWay}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{x:Bind DataService.CanSearch, Mode=OneWay}" SearchView="{x:Bind DataService.FilterCollectionView, Mode=OneWay}" Margin="16, 0, 16, 10"></controls:SearchBar>
         </Grid>
         <ListView  
-                    ItemsSource="{x:Bind DataService.FilterCollectionView}"
-                    SelectionMode="{x:Bind DataService.SelectionMode}"  
+                    ItemsSource="{x:Bind DataService.FilterCollectionView, Mode=OneWay}"
+                    SelectionMode="{x:Bind DataService.SelectionMode, Mode=OneWay}"  
                     SelectionChanged="SelectionChangedForListView"
                     Grid.Row="1"
                     AllowDrop="True"
                     IsItemClickEnabled="True"
                     ItemClick="PlayFile"
-                    ItemTemplateSelector="{x:Bind DataTemplateSelectorInstance}"
-                    ReorderMode="{x:Bind DataService.ReorderMode}"
-                    CanReorderItems="{x:Bind DataService.CanReorderItems}"
-                    CanDragItems ="{x:Bind DataService.CanReorderItems}"
+                    ItemTemplateSelector="{x:Bind DataTemplateSelectorInstance, Mode=OneWay}"
+                    ReorderMode="{x:Bind DataService.ReorderMode, Mode=OneWay}"
+                    CanReorderItems="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
+                    CanDragItems ="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
                     HorizontalContentAlignment="Left"
                     ShowsScrollingPlaceholders="True"
                     x:Name="COntentPresenter">
             <ListView.Header>
-                <ProgressRing x:Name="progressBar" Margin="5" Width="100" Height="100" IsActive="{x:Bind ShowProgressRing}" Visibility="Collapsed"/>
+                <ProgressRing x:Name="progressBar" Margin="5" Width="100" Height="100" IsActive="{x:Bind ShowProgressRing, Mode=OneWay}" Visibility="Collapsed"/>
             </ListView.Header>
 
             <ListView.Footer>
-                <Grid Visibility="{x:Bind DataService.Items.Count, Converter={StaticResource VisibleWhenZeroConverter}}">
+                <Grid Visibility="{x:Bind Converters.VisibleWhenZeroConverter(DataService.Items.Count, x:False), Mode=OneWay}">
                     <StackPanel>
                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" x:Name="tbPlaceholder" Margin="2" TextWrapping="WrapWholeWords"  />
                     </StackPanel>

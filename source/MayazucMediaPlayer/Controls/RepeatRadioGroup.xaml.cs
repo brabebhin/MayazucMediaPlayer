@@ -84,38 +84,38 @@ namespace MayazucMediaPlayer.Controls
 
             cbRepeatModes.SelectionChanged += CbRepeatModes_SelectionChanged;
         }
+    }
 
-        internal class RepeatModeItem
+    internal class RepeatModeItem
+    {
+        public Symbol ModeSymbol
         {
-            public Symbol ModeSymbol
-            {
-                get;
-                private set;
-            }
+            get;
+            private set;
+        }
 
-            public string ModeText
-            {
-                get;
-                private set;
-            }
+        public string ModeText
+        {
+            get;
+            private set;
+        }
 
-            public string RepeatMode
-            {
-                get;
-                private set;
-            }
+        public string RepeatMode
+        {
+            get;
+            private set;
+        }
 
-            public RepeatModeItem(Symbol modeSymbol, string modeText, string repeatMode)
-            {
-                ModeSymbol = modeSymbol;
-                ModeText = modeText ?? throw new ArgumentNullException(nameof(modeText));
-                RepeatMode = repeatMode ?? throw new ArgumentNullException(nameof(repeatMode));
-            }
+        public RepeatModeItem(Symbol modeSymbol, string modeText, string repeatMode)
+        {
+            ModeSymbol = modeSymbol;
+            ModeText = modeText ?? throw new ArgumentNullException(nameof(modeText));
+            RepeatMode = repeatMode ?? throw new ArgumentNullException(nameof(repeatMode));
+        }
 
-            public async Task SetRepeatMode()
-            {
-                await AppState.Current.MediaServiceConnector.SetRepeatMode(RepeatMode);
-            }
+        public async Task SetRepeatMode()
+        {
+            await AppState.Current.MediaServiceConnector.SetRepeatMode(RepeatMode);
         }
     }
 }

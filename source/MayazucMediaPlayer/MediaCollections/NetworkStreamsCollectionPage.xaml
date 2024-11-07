@@ -23,21 +23,21 @@
             </Grid.ColumnDefinitions>
 
             <CommandBar Grid.Column="0" DefaultLabelPosition="Right">
-                <AppBarButton IsEnabled="{Binding HasValidUrl}" Icon="Play" Command="{Binding PlayUrlCommand}" CommandParameter="{Binding InputStreamUrl}"/>
+                <AppBarButton IsEnabled="{x:Bind DataService.HasValidUrl, Mode=OneWay}" Icon="Play" Command="{x:Bind DataService.PlayUrlCommand}" CommandParameter="{x:Bind DataService.InputStreamUrl, Mode=OneWay}"/>
             </CommandBar>
 
-            <TextBox PlaceholderText="Enter URL" Text="{Binding InputStreamUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Stretch" x:Name="tbStreamPlay"></TextBox>
+            <TextBox PlaceholderText="Enter URL" Text="{x:Bind DataService.InputStreamUrl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Stretch" x:Name="tbStreamPlay"></TextBox>
 
             <CommandBar Grid.Column="2" DefaultLabelPosition="Right">
-                <AppBarButton Icon="Clear" Label="Clear history" Command="{Binding ClearHistoryCommand}" />
+                <AppBarButton Icon="Clear" Label="Clear history" Command="{x:Bind DataService.ClearHistoryCommand, Mode=OneWay}" />
             </CommandBar>
         </Grid>
 
         <ListView Grid.Row="1" x:Name="lsvStreamHistory" 
                   SelectionMode="None"
-                  ItemsSource="{Binding NetworkStreamsHistory}">
+                  ItemsSource="{Binding DataService.NetworkStreamsHistory, Mode=OneWay}">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="local:NetworkStreamHistoryEntry">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -47,7 +47,7 @@
                         <CommandBar Grid.Column="0" DefaultLabelPosition="Right">
                             <AppBarButton Icon="Play" Click="PlayUrlHistory_click"/>
                         </CommandBar>
-                        <TextBlock IsTextSelectionEnabled="True" Grid.Column="2" VerticalAlignment="Center" Text="{Binding Url}"/>
+                        <TextBlock IsTextSelectionEnabled="True" Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind Url, Mode=OneWay}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

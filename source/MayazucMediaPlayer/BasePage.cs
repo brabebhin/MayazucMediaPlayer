@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.WinUI;
+using MayazucMediaPlayer.Converters;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.Services;
@@ -205,5 +206,7 @@ namespace MayazucMediaPlayer
         {
             return Task.FromResult(false);
         }
+
+        public ConverterLocator Converters { get; private set; } = new ConverterLocator();
     }
 }

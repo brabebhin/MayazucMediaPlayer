@@ -10,16 +10,16 @@
     d:DesignWidth="400">
 
     <AppBarButton.Icon>
-        <SymbolIcon Symbol="{Binding ElementName=cbShuffleModes, Path=SelectedItem.ModeSymbol}" Foreground="{Binding ElementName=cbShuffleModes, Path=SelectedItem.ShuffleOnOffColor}"></SymbolIcon>
+        <SymbolIcon Symbol="{x:Bind ((local:ShuffleModeItem)cbShuffleModes.SelectedItem).ModeSymbol, Mode=OneWay}" Foreground="{x:Bind ((local:ShuffleModeItem)cbShuffleModes.SelectedItem).ShuffleOnOffColor, Mode=OneWay}"></SymbolIcon>
     </AppBarButton.Icon>
     <AppBarButton.Flyout>
         <Flyout>
             <ListView x:Name="cbShuffleModes" SelectionMode="Single">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel ToolTipService.ToolTip="{Binding ModeText}" Orientation="Horizontal">
-                            <SymbolIcon Symbol="Shuffle" Foreground ="{Binding ShuffleOnOffColor}"/>
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{Binding ModeText}" Margin="10,0,0,0" Visibility="{Binding ElementName=cbShuffleModes, Path=IsDropDownOpen, Converter={StaticResource BooleanToVisibleConverterInstance}, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DataTemplate x:DataType="local:ShuffleModeItem">
+                        <StackPanel ToolTipService.ToolTip="{x:Bind ModeText, Mode=OneWay}" Orientation="Horizontal">
+                            <SymbolIcon Symbol="Shuffle" Foreground ="{x:Bind ShuffleOnOffColor, Mode=OneWay}"/>
+                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ModeText, Mode=OneWay}" Margin="10,0,0,0"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>

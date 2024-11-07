@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid x:Name="TimelineGrid"  Visibility="{Binding FullCommandBarButtonsVisibility}" >
+        <Grid x:Name="TimelineGrid"  Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" >
             <local:MediaProgressBarSlider x:Name="MediaTimelineControls"></local:MediaProgressBarSlider>
         </Grid>
 
@@ -32,18 +32,18 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <ContentPresenter Visibility="{Binding FullCommandBarButtonsVisibility}" x:Name="LeftContentPresenter"></ContentPresenter>
-            <ContentPresenter Visibility="{Binding FullCommandBarButtonsVisibility}" x:Name="RightContentPresenter" Grid.Column="2"></ContentPresenter>
+            <ContentPresenter Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" x:Name="LeftContentPresenter"></ContentPresenter>
+            <ContentPresenter Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" x:Name="RightContentPresenter" Grid.Column="2"></ContentPresenter>
 
             <CommandBar Grid.Column="1" x:Name="FullSizeControlBar" HorizontalContentAlignment="Center" HorizontalAlignment="Center" FlowDirection="LeftToRight" DefaultLabelPosition="Collapsed" IsDynamicOverflowEnabled="False">
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Previous" Click="GoToPrevious_click"></AppBarButton>
-                <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
+                <AppBarButton  Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipBack_click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9E;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
                 <AppBarButton Style='{StaticResource AppBarButtonStyleNoChevron}'  x:Name="PlayPauseButton" Icon="Play" Click="PlayPause_click"></AppBarButton>
-                <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}" Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipForward_click">
+                <AppBarButton  Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" Style='{StaticResource AppBarButtonStyleNoChevron}'  Click="SkipForward_click">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEB9D;" />
                     </AppBarButton.Icon>
@@ -51,32 +51,32 @@
                 <AppBarButton Icon="Next"  Style='{StaticResource AppBarButtonStyleNoChevron}' Click="SkipNext_click"></AppBarButton>
                 <AppBarSeparator></AppBarSeparator>
 
-                <local:RepeatRadioGroup Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="RepeatOptions" ToolTipService.ToolTip="Playback loop options"></local:RepeatRadioGroup>
-                <local:ShuffleRadioGroup Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="ShuffleOptions" ToolTipService.ToolTip="Playback shuffle options"></local:ShuffleRadioGroup>
+                <local:RepeatRadioGroup Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="RepeatOptions" ToolTipService.ToolTip="Playback loop options"></local:RepeatRadioGroup>
+                <local:ShuffleRadioGroup Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="ShuffleOptions" ToolTipService.ToolTip="Playback shuffle options"></local:ShuffleRadioGroup>
 
-                <AppBarSeparator Visibility="{Binding FullCommandBarButtonsVisibility}" ></AppBarSeparator>
-                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Icon="ClosedCaption"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                <AppBarSeparator Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" ></AppBarSeparator>
+                <AppBarButton Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Icon="ClosedCaption"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:MTCSubtitlesSelectionControl x:Name="mtcSubtitlesControl"></local:MTCSubtitlesSelectionControl>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton  Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Audio">
+                <AppBarButton  Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Audio">
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:AudioTrackSelectionDialog x:Name="mtcAudioTracks"></local:AudioTrackSelectionDialog>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Icon="Video"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                <AppBarButton Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Icon="Video"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
                     <AppBarButton.Flyout>
                         <Flyout>
                             <local:VideoTrackSelectionDialog x:Name="mtcVideoTracks"></local:VideoTrackSelectionDialog>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}" Style='{StaticResource AppBarButtonStyleNoChevron}'>
+                <AppBarButton Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" Style='{StaticResource AppBarButtonStyleNoChevron}'>
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8A4;" />
                     </AppBarButton.Icon>
@@ -86,11 +86,11 @@
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarSeparator Visibility="{Binding FullCommandBarButtonsVisibility}" ></AppBarSeparator>
-                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
+                <AppBarSeparator Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}" ></AppBarSeparator>
+                <AppBarButton Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}' x:Name="FullScreenButton" Label="Fullscreen toggle" Click="GoFullScreen_click">
 
                 </AppBarButton>
-                <AppBarButton Visibility="{Binding FullCommandBarButtonsVisibility}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings">
+                <AppBarButton Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}'  Icon="Setting" Label="Settings">
                     <AppBarButton.Flyout>
                         <Flyout>
                             <ScrollViewer>

@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:core="using:Windows.Media.Core"
     mc:Ignorable="d">
 
     <Grid>
@@ -16,15 +16,15 @@
         <TextBlock Text="Chapters" HorizontalAlignment="Center" Style="{ThemeResource CaptionTextBlockStyle}"/>
         <ListView Width="300" Grid.Row="1" Margin="2" SelectionMode="None" x:Name="lsvChapterCues" IsItemClickEnabled="True" ItemClick="SeekMediaToChapter_click">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="local:ChapterCueDto">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition Width="16"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Title}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" MaxLines="2"/>
-                        <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"  HorizontalAlignment="Right" Text="{Binding StartTime, Converter={StaticResource TimespanToStringConverterInstance}}" Grid.Column="2"/>
+                        <TextBlock Text="{x:Bind Title}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" MaxLines="2"/>
+                        <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"  HorizontalAlignment="Right" Text="{x:Bind StartTime}" Grid.Column="2"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

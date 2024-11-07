@@ -26,6 +26,19 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.Controls
 {
+    public class MetadataKeyValuePair
+    {
+        public string Key { get; private set; }
+
+        public string Value { get; private set; }
+
+        public MetadataKeyValuePair(string key, string value)
+        {
+            Key = key;
+            Value = value;
+        }
+    }
+
     public sealed partial class FileDetailsControl : BaseUserControl
     {
         public FileDetailsControl()
@@ -69,6 +82,11 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
+        public Visibility IsAudioFileVisibility
+        {
+            get => IsAudioFile ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         IMediaPlayerItemSource _data;
         public IMediaPlayerItemSource MediaData
         {
@@ -83,23 +101,23 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        public ObservableCollection<MediaPlaybackItemUIInformation.AudioStreamInfoWrapper> AudioStreams
+        public ObservableCollection<AudioStreamInfoWrapper> AudioStreams
         {
             get;
             private set;
-        } = new ObservableCollection<MediaPlaybackItemUIInformation.AudioStreamInfoWrapper>();
+        } = new ObservableCollection<AudioStreamInfoWrapper>();
 
-        public ObservableCollection<MediaPlaybackItemUIInformation.VideoStreamInfoWrapper> VideoStreams
+        public ObservableCollection<VideoStreamInfoWrapper> VideoStreams
         {
             get;
             private set;
-        } = new ObservableCollection<MediaPlaybackItemUIInformation.VideoStreamInfoWrapper>();
+        } = new ObservableCollection<VideoStreamInfoWrapper>();
 
-        public ObservableCollection<MediaPlaybackItemUIInformation.SubtitleStreamInfoWrapper> SubtitleStreams
+        public ObservableCollection<SubtitleStreamInfoWrapper> SubtitleStreams
         {
             get;
             private set;
-        } = new ObservableCollection<MediaPlaybackItemUIInformation.SubtitleStreamInfoWrapper>();
+        } = new ObservableCollection<SubtitleStreamInfoWrapper>();
 
         public ObservableCollection<MediaThumbnailPreviewData> VideoThumbnails
         {
@@ -249,7 +267,7 @@ namespace MayazucMediaPlayer.Controls
             var data = this.MediaData = playbackItem.MediaData;
             var metadata = await data.GetMetadataAsync();
             AddToPlaylistButton.IsEnabled = true;
-            lsvMetadataDisplay.ItemsSource = metadata.AdditionalMetadata.ToList();
+            lsvMetadataDisplay.ItemsSource = metadata.AdditionalMetadata.Select(x => new MetadataKeyValuePair(x.Key, x.Value)).ToList();
             fdPlay.IsEnabled = true;
             fdEnqueue.IsEnabled = true;
             SkipToQueueItemButton.IsEnabled = true;
