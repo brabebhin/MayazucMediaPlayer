@@ -47,7 +47,7 @@
         <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left">
             <mcConrols:AppBarToggleButtonWithToolTip IsChecked="True" Visibility="Visible" x:Name="PlaylistsSplitViewButton">
                 <AppBarToggleButton.Icon>
-                    <FontIcon FontFamily="HoloLens MDL2 Assets" Glyph="&#xE700;" />
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" />
                 </AppBarToggleButton.Icon>
             </mcConrols:AppBarToggleButtonWithToolTip>
 

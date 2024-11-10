@@ -97,8 +97,6 @@
 
                 </CommandBar>
             </Grid>
-
-
         </StackPanel>
 
         <ListView ItemsSource="{Binding Files}" 
@@ -108,7 +106,6 @@
                               AllowDrop="{Binding CanReorderItems}"
                               SelectionMode="{Binding ContentPresenterSelectionMode}" 
                               Grid.Row="1" x:Name="COntentPresenter">
-
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid  Tapped="GoToDetailsPage" Margin="5, 10, 0, 5"  HorizontalAlignment="Stretch">
