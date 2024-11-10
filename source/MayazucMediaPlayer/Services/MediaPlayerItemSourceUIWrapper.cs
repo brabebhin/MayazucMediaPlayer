@@ -51,6 +51,8 @@ namespace MayazucMediaPlayer.Services
             get => trackNumber;
             set
             {
+                if (trackNumber == value) return;
+
                 trackNumber = value;
                 NotifyPropertyChanged(nameof(TrackNumber));
             }

@@ -36,6 +36,7 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if (switchImageGlyph == value) return;
                 switchImageGlyph = value;
                 NotifyPropertyChanged(nameof(SwitchImageGlyph));
             }
@@ -49,6 +50,8 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if ((bool)PropertyValue.Equals(value)) return;
+
                 PropertyValue = value;
                 NotifyPropertyChanged(nameof(IsOn));
                 SwitchChanged?.Invoke(this, (bool)PropertyValue);
@@ -77,6 +80,7 @@ namespace MayazucMediaPlayer.Settings
 
             set
             {
+                if (toggleSwitchHeader == value) return;
                 toggleSwitchHeader = value;
                 NotifyPropertyChanged(nameof(ToggleSwitchHeader));
             }

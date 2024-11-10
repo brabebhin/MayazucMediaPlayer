@@ -15,7 +15,7 @@ namespace MayazucMediaPlayer.VideoEffects
     /// </summary>
     public sealed partial class VideoEffectsPage : BaseUserControl
     {
-        public VideoEffectsPageViewModel? Model
+        public VideoEffectsPageViewModel? DataService
         {
             get;
             private set;
@@ -35,11 +35,11 @@ namespace MayazucMediaPlayer.VideoEffects
 
         public async Task LoadState(VideoEffectProcessorConfiguration effectConfig)
         {
-            Model = new VideoEffectsPageViewModel(DispatcherQueue, effectConfig);
-            DataContext = Model;
+            DataService = new VideoEffectsPageViewModel(DispatcherQueue, effectConfig);
+            DataContext = DataService;
 
-            Model.ProfileSliderValueChanged += Model_ProfileSliderValueChanged;
-            await Model.LoadSavedColorProfiles();
+            DataService.ProfileSliderValueChanged += Model_ProfileSliderValueChanged;
+            await DataService.LoadSavedColorProfiles();
         }
 
 
@@ -48,16 +48,16 @@ namespace MayazucMediaPlayer.VideoEffects
             if (cbSavedProfiles.SelectedItem != null)
             {
                 cbSavedProfiles.SelectionChanged -= ColorProfileSelectionChanged;
-                Model.ProfileSliderValueChanged -= Model_ProfileSliderValueChanged;
-                await Model.LoadSelecteProfileAsync((SavedColorProfile)cbSavedProfiles.SelectedItem);
-                Model.ProfileSliderValueChanged += Model_ProfileSliderValueChanged;
+                DataService.ProfileSliderValueChanged -= Model_ProfileSliderValueChanged;
+                await DataService.LoadSelecteProfileAsync((SavedColorProfile)cbSavedProfiles.SelectedItem);
+                DataService.ProfileSliderValueChanged += Model_ProfileSliderValueChanged;
                 cbSavedProfiles.SelectionChanged += ColorProfileSelectionChanged;
             }
         }
 
         private async void ShowManagementDialog(object? sender, RoutedEventArgs e)
         {
-            VideoColorProfileManagementDIalog diag = new VideoColorProfileManagementDIalog(Model);
+            VideoColorProfileManagementDIalog diag = new VideoColorProfileManagementDIalog(DataService);
             await ContentDialogService.Instance.ShowAsync(diag);
 
         }
@@ -65,11 +65,16 @@ namespace MayazucMediaPlayer.VideoEffects
         private void ResetDefaultProfile(object? sender, RoutedEventArgs e)
         {
             cbSavedProfiles.SelectionChanged -= ColorProfileSelectionChanged;
-            Model.ProfileSliderValueChanged -= Model_ProfileSliderValueChanged;
-            cbSavedProfiles.SelectedItem = Model.SavedColorProfiles.FirstOrDefault(x => x.IsDefault);
-            Model.ResetDefault.Execute(null);
-            Model.ProfileSliderValueChanged += Model_ProfileSliderValueChanged;
+            DataService.ProfileSliderValueChanged -= Model_ProfileSliderValueChanged;
+            cbSavedProfiles.SelectedItem = DataService.SavedColorProfiles.FirstOrDefault(x => x.IsDefault);
+            DataService.ResetDefault.Execute(null);
+            DataService.ProfileSliderValueChanged += Model_ProfileSliderValueChanged;
             cbSavedProfiles.SelectionChanged += ColorProfileSelectionChanged;
+        }
+
+        private void RestoreDefaultSliderValue(object sender, RoutedEventArgs e)
+        {
+            DataService.ResetDefault.Execute(sender.GetDataContextObject<VideoEffectSliderProperty>());
         }
     }
 }

@@ -31,6 +31,7 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_NumberOfSongsText == value) return;
                 _NumberOfSongsText = value;
                 NotifyPropertyChanged(nameof(NumberOfSongsText));
             }
@@ -46,6 +47,7 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_PlaylistCoverSource == value) return;
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     _PlaylistCoverSource = AssetsPaths.PlaylistCoverPlaceholder;
@@ -157,9 +159,10 @@ namespace MayazucMediaPlayer.Playlists
             {
                 return _TitleBoxText;
             }
-
             set
             {
+                if (_TitleBoxText == value) return;
+
                 _TitleBoxText = value;
                 NotifyPropertyChanged(nameof(TitleBoxText));
             }

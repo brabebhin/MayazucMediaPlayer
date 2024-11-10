@@ -29,6 +29,8 @@ namespace MayazucMediaPlayer.AudioEffects
             get => _EqualizerPresetEditPage;
             set
             {
+                if (_EqualizerPresetEditPage == value) return;
+
                 var oldValue = _EqualizerPresetEditPage;
                 _EqualizerPresetEditPage = value;
                 NotifyPropertyChanged(nameof(EqualizerPresetEditPage));

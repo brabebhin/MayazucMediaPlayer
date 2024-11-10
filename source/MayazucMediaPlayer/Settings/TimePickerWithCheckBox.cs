@@ -43,6 +43,7 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if ((TimeSpan)SettingsService.Instance.GetProperty(TimePickerStorePropertyName) == (TimeSpan)value) return;
                 SettingsService.Instance.SetProperty(TimePickerStorePropertyName, (TimeSpan)value, this);
                 NotifyPropertyChanged(nameof(SelectedTime));
             }

@@ -50,6 +50,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (reorderMode == value) return;
+
                 reorderMode = value;
                 CanReorderItems = reorderMode == ListViewReorderMode.Enabled;
                 CanSearch = !CanReorderItems;
@@ -68,6 +70,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (_CanReorderItems == value) return;
+
                 _CanReorderItems = value;
                 NotifyPropertyChanged(nameof(CanReorderItems));
             }
@@ -84,6 +88,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (isChangingOrder == value) return;
+
                 isChangingOrder = value;
                 NotifyPropertyChanged(nameof(IsChangingOrder));
                 CanReorderItems = value;
@@ -97,6 +103,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             get => isReorderButtonEnabled;
             private set
             {
+                if (isReorderButtonEnabled == value) return;
+
                 isReorderButtonEnabled = value;
                 NotifyPropertyChanged(nameof(IsReorderButtonEnabled));
             }
@@ -119,6 +127,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (selectionMode == value) return;
+
                 selectionMode = value;
                 NotifyPropertyChanged(nameof(SelectionMode));
                 SelectingPlayButtonsVisibility = selectionMode == ListViewSelectionMode.None ? Visibility.Collapsed : Visibility.Visible;
@@ -400,6 +410,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (playButtonIsEnabled == value) return;
+
                 playButtonIsEnabled = value;
                 NotifyPropertyChanged(nameof(PlayButtonIsEnabled));
             }
@@ -411,9 +423,10 @@ namespace MayazucMediaPlayer.FileSystemViews
             {
                 return _EnqueueButtonIsEnabled;
             }
-
             set
             {
+                if (_EnqueueButtonIsEnabled == value) return;
+
                 _EnqueueButtonIsEnabled = value;
                 NotifyPropertyChanged(nameof(EnqueueButtonIsEnabled));
             }
@@ -428,6 +441,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (_NpChangeOrderButton == value) return;
+
                 _NpChangeOrderButton = value;
                 NotifyPropertyChanged(nameof(NpChangeOrderButton));
             }
@@ -442,6 +457,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if( _CanSearch == value) return;
                 _CanSearch = value;
                 NotifyPropertyChanged(nameof(CanSearch));
             }

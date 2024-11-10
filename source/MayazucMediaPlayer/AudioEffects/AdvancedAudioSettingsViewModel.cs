@@ -35,6 +35,8 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
+                if (SettingsService.Instance.AudioBalance == value) return;
+
                 SettingsService.Instance.AudioBalance = value;
                 NotifyPropertyChanged(nameof(AudioBalanceValue));
                 AppState.Current.MediaServiceConnector.NotifyAudioBalanceChanged(value);

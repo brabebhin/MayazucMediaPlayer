@@ -22,6 +22,8 @@ namespace MayazucMediaPlayer.Settings
 
             set
             {
+                if (bool.Parse(PropertyValue.ToString()) == value) return;
+
                 PropertyValue = value;
                 NotifyPropertyChanged(nameof(IsChecked));
             }

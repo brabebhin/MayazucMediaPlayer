@@ -82,7 +82,7 @@ namespace MayazucMediaPlayer.Settings
                     TextDescription = "Configure the behaviour of taps & clicks on the playback area of the now playing view"
                 },
 
-                new ComboboxWithHeader<string>(nameof(SettingsService.Instance.PlaybackTapGestureModeRaw), "Always", "Never", "Fullscreen only", "Normal view only")
+                new ComboboxWithHeader(nameof(SettingsService.Instance.PlaybackTapGestureModeRaw), "Always", "Never", "Fullscreen only", "Normal view only")
                 {
                     ComboboxHeader = "Tap to play/resume playback",
                 },
@@ -142,7 +142,7 @@ namespace MayazucMediaPlayer.Settings
                     SystemSettingsLink = "ms-settings:easeofaccess-closedcaptioning"
                 },
 
-                new ComboboxWithHeader<string>(CharacterEncoding.AllEncodings.Select(x => GetEncodingName(x)), nameof(SettingsService.Instance.FFmpegCharacterEncodingIndex))
+                new ComboboxWithHeader(CharacterEncoding.AllEncodings.Select(x => GetEncodingName(x)), nameof(SettingsService.Instance.FFmpegCharacterEncodingIndex))
                 {
                     ImagePath = FontIconPaths.EncodingsGroupImage,
                     ComboboxHeader = "Subtitle encoding for ASCII text."
@@ -191,7 +191,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 new ContentSettingsItem(new OpenSubtitlesAccountForm()),
 
-                new ComboboxWithHeader<LanguageCode>(LanguageCodesService.Codes, nameof(SettingsService.Instance.PreferredSubtitleLanguageIndex))
+                new ComboboxWithHeader(LanguageCodesService.Codes, nameof(SettingsService.Instance.PreferredSubtitleLanguageIndex))
                 {
                     ImagePath = FontIconPaths.SubtitlesEncodings,
                     DefaultValue = LanguageCodesService.GetDefaultLanguageIndex(),
@@ -218,7 +218,7 @@ namespace MayazucMediaPlayer.Settings
         {
             SettingsItemGroup items = new SettingsItemGroup(groupImage: FontIconPaths.UIThemesGroup, groupName: "UI General");
 
-            items.Add(new ComboboxWithHeader<string>(nameof(SettingsService.Instance.DefaultUITheme), "System default", "Dark", "Light")
+            items.Add(new ComboboxWithHeader(nameof(SettingsService.Instance.DefaultUITheme), "System default", "Dark", "Light")
             {
                 ComboboxHeader = "UI theme. Requires restart to take full effect",
             });
@@ -240,7 +240,7 @@ namespace MayazucMediaPlayer.Settings
                 TextDescription = "Video decoder mode. Choose between automatic hardware-software switch, force software decoding or using system decoders"
             });
 
-            items.Add(new ComboboxWithHeader<string>(FFmpegVideoModeInterop.DecoderModeNames, nameof(SettingsService.Instance.VideoDecoderMode))
+            items.Add(new ComboboxWithHeader(FFmpegVideoModeInterop.DecoderModeNames, nameof(SettingsService.Instance.VideoDecoderMode))
             {
                 ComboboxHeader = "Video decoder mode"
             });

@@ -14,6 +14,8 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
+                if (cutOff == value) return;
+
                 cutOff = value;
                 NotifyPropertyChanged(nameof(CutOffFrequency));
             }
@@ -31,6 +33,8 @@ namespace MayazucMediaPlayer.AudioEffects
             get => amplification;
             set
             {
+                if (amplification == value) return;
+
                 amplification = value;
                 NotifyPropertyChanged(nameof(Amplification));
             }

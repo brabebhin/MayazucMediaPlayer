@@ -48,6 +48,35 @@ namespace MayazucMediaPlayer.VideoEffects
             private set;
         }
 
+        public bool? GrayscaleEnabled
+        {
+            get
+            {
+                return EffectConfig.GrayscaleEffect;
+            }
+            set
+            {
+                if (EffectConfig.GrayscaleEffect == value) return;
+                EffectConfig.GrayscaleEffect = value.GetValueOrDefault(false);
+                NotifyPropertyChanged(nameof(GrayscaleEnabled));
+            }
+        }
+
+        public bool? BlurEnabled
+        {
+            get
+            {
+                return EffectConfig.BlurEffect;
+            }
+            set
+            {
+                if (EffectConfig.BlurEffect == value) return;
+
+                EffectConfig.BlurEffect = value.GetValueOrDefault(false);
+                NotifyPropertyChanged(nameof(BlurEnabled));
+            }
+        }
+
 
         public bool MasterSwitch
         {
@@ -57,6 +86,8 @@ namespace MayazucMediaPlayer.VideoEffects
             }
             set
             {
+                if (EffectConfig.MasterSwitch == value) return;
+
                 EffectConfig.MasterSwitch = value;
                 NotifyPropertyChanged(nameof(MasterSwitch));
                 foreach (var ep in EffectProperties)

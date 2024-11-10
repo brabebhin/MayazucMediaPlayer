@@ -30,6 +30,8 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if (propertyValue.Equals(value)) return;
+
                 propertyValue = value;
                 NotifyPropertyChanged(nameof(PropertyValue));
                 SetValue();
@@ -68,6 +70,8 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if (elementVisible == value) return;
+
                 elementVisible = value;
                 NotifyPropertyChanged(nameof(ElementVisible));
             }
@@ -83,6 +87,7 @@ namespace MayazucMediaPlayer.Settings
             }
             private set
             {
+                if (_settingsWrapperPropertyName == value) return;
                 _settingsWrapperPropertyName = value;
                 NotifyPropertyChanged(nameof(SettingsChangedCallback));
                 callback = SettingsService.Instance.RegisterSettingChangeCallback(_settingsWrapperPropertyName, (s, e) =>
@@ -111,6 +116,7 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if (isEnabled == value) return;
                 isEnabled = value;
                 NotifyPropertyChanged(nameof(IsEnabled));
             }

@@ -366,6 +366,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_EnqueueButtonIsEnabled == value) return;
+
                 _EnqueueButtonIsEnabled = value;
 
                 NotifyPropertyChanged(nameof(EnqueueButtonIsEnabled));
@@ -381,6 +383,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             private set
             {
+                if (_DisplayListSelectionMode == value) return;
+
                 _DisplayListSelectionMode = value;
                 NotifyPropertyChanged(nameof(DisplayListSelectionMode));
             }
@@ -394,6 +398,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_PlayButtonIsEnabled == value) return;
+
                 _PlayButtonIsEnabled = value;
 
                 NotifyPropertyChanged(nameof(PlayButtonIsEnabled));
@@ -408,6 +414,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_AddToPlaylistButtonIsEnabled == value) return;
+
                 _AddToPlaylistButtonIsEnabled = value;
 
                 NotifyPropertyChanged(nameof(AddToPlaylistButtonIsEnabled));
@@ -422,6 +430,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_SaveAsPlaylistButtonIsEnabled == value) return;
+
                 _SaveAsPlaylistButtonIsEnabled = value;
                 NotifyPropertyChanged(nameof(SaveAsPlaylistButtonIsEnabled));
             }
@@ -435,6 +445,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_DeleteButtonIsEnabled == value) return;
+
                 _DeleteButtonIsEnabled = value;
                 NotifyPropertyChanged(nameof(DeleteButtonIsEnabled));
             }
@@ -450,6 +462,8 @@ namespace MayazucMediaPlayer.Playlists
             }
             set
             {
+                if (_SearchGridVisibility == value) return;
+
                 _SearchGridVisibility = value;
                 NotifyPropertyChanged(nameof(SearchGridVisibility));
             }

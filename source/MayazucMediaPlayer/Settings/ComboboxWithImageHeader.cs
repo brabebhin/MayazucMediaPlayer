@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class ComboboxWithHeader<T> : SettingsItem
+    public class ComboboxWithHeader : SettingsItem
     {
         public override DataTemplate Template
         {
@@ -29,6 +29,8 @@ namespace MayazucMediaPlayer.Settings
 
             set
             {
+                if (imagePath == value) return;
+
                 imagePath = value;
                 NotifyPropertyChanged(nameof(ImagePath));
             }
@@ -49,7 +51,7 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
-                if (value >= 0)
+                if (value >= 0 && (int)PropertyValue != value)
                 {
                     PropertyValue = value;
                     NotifyPropertyChanged(nameof(SlectedIndex));
@@ -68,17 +70,17 @@ namespace MayazucMediaPlayer.Settings
         }
 
 
-        public ComboboxWithHeader(string settingsWrapperPropertyName, params T[] comboboxItems) : this(settingsWrapperPropertyName)
+        public ComboboxWithHeader(string settingsWrapperPropertyName, params object[] comboboxItems) : this(settingsWrapperPropertyName)
         {
-            foreach (T s in comboboxItems)
+            foreach (var s in comboboxItems)
             {
                 ComboboxStringList.Add(s.ToString());
             }
         }
 
-        public ComboboxWithHeader(IEnumerable<T> comboboxItems, string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
+        public ComboboxWithHeader(IEnumerable<object> comboboxItems, string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
         {
-            foreach (T s in comboboxItems)
+            foreach (var s in comboboxItems)
             {
                 ComboboxStringList.Add(s);
             }

@@ -49,7 +49,7 @@ namespace MayazucMediaPlayer.Dialogs
             profileName.MarkedForDeletion = !profileName.MarkedForDeletion;
         }
 
-        
+
     }
 
     public class SavedColorProfileUIWrapper : ObservableObject
@@ -66,6 +66,8 @@ namespace MayazucMediaPlayer.Dialogs
             get => _markedForDeletion;
             set
             {
+                if (_markedForDeletion == value) return;
+
                 _markedForDeletion = value;
                 if (_markedForDeletion)
                 {

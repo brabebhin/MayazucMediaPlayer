@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1">
-            <ListView ItemsSource="{Binding UserCredentials}" x:Name="lsvLogins"  SelectionMode="None">
+            <ListView x:Name="lsvLogins"  SelectionMode="None">
                 <users:OpenSubtitlesAccountForm x:Name="osdbForm"></users:OpenSubtitlesAccountForm>
             </ListView>
         </Grid>

@@ -30,6 +30,8 @@ namespace MayazucMediaPlayer.Settings
 
             set
             {
+                if (imageComboBoxPath == value) return;
+
                 imageComboBoxPath = value;
                 NotifyPropertyChanged(nameof(ImageComboBoxPath));
             }
@@ -67,6 +69,8 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if (textBoxEnabled == value) return;
+
                 textBoxEnabled = value;
                 NotifyPropertyChanged(nameof(TextBoxEnabled));
             }
@@ -82,9 +86,10 @@ namespace MayazucMediaPlayer.Settings
             {
                 return imageTextBoxPath;
             }
-
             set
             {
+                if (imageTextBoxPath == value) return;
+
                 imageTextBoxPath = value;
                 NotifyPropertyChanged(nameof(ImageTextBoxPath));
             }
@@ -99,9 +104,10 @@ namespace MayazucMediaPlayer.Settings
             {
                 return textBoxHeader;
             }
-
             set
             {
+                if (textBoxHeader == value) return;
+
                 textBoxHeader = value;
                 NotifyPropertyChanged(nameof(TextBoxHeader));
             }
@@ -121,7 +127,7 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
-                if (value >= 0)
+                if (value >= 0 && (int)PropertyValue != value)
                 {
                     PropertyValue = value;
                     TextBoxEnabled = value == 2;

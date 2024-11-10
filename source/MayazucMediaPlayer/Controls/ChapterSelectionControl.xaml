@@ -23,8 +23,8 @@
                             <ColumnDefinition Width="16"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{x:Bind Title}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" MaxLines="2"/>
-                        <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"  HorizontalAlignment="Right" Text="{x:Bind StartTime}" Grid.Column="2"/>
+                        <TextBlock Text="{x:Bind Title, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" MaxLines="2"/>
+                        <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"  HorizontalAlignment="Right" Text="{x:Bind StartTime, Mode=OneWay}" Grid.Column="2"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

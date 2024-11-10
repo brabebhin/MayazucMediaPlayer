@@ -17,8 +17,11 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
-                _enabled = value;
-                NotifyPropertyChanged(nameof(IsEnabled));
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    NotifyPropertyChanged(nameof(IsEnabled));
+                }
             }
         }
 
@@ -30,8 +33,11 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
-                wrappedOject.Amplification = value;
-                NotifyPropertyChanged(nameof(FrequencyAmplification));
+                if (wrappedOject.Amplification != value)
+                {
+                    wrappedOject.Amplification = value;
+                    NotifyPropertyChanged(nameof(FrequencyAmplification));
+                }
             }
         }
 
@@ -55,8 +61,11 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public void SetSliderHeight(double value)
         {
-            SliderHeight = value;
-            NotifyPropertyChanged($"{nameof(SliderHeight)}");
+            if (SliderHeight != value)
+            {
+                SliderHeight = value;
+                NotifyPropertyChanged($"{nameof(SliderHeight)}");
+            }
         }
 
         readonly FrequencyDefinition wrappedOject;

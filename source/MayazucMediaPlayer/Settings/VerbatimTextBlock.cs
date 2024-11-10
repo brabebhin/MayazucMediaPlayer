@@ -20,6 +20,8 @@ namespace MayazucMediaPlayer.Settings
             }
             set
             {
+                if (textDescription == value) return;
+
                 textDescription = value;
                 NotifyPropertyChanged(nameof(TextDescription));
             }

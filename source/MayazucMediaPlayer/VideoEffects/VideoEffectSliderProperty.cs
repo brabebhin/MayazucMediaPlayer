@@ -17,6 +17,8 @@ namespace MayazucMediaPlayer.VideoEffects
             get => enabled;
             set
             {
+                if (enabled == value) return;
+
                 enabled = value;
                 NotifyPropertyChanged(nameof(Enabled));
             }
@@ -43,7 +45,7 @@ namespace MayazucMediaPlayer.VideoEffects
 
         float _EffectPropertyValue, _EffectPropertyMinimum, _EffectPropertyMaximum;
 
-        public float EffectPropertyMaximum
+        public double EffectPropertyMaximum
         {
             get
             {
@@ -51,12 +53,14 @@ namespace MayazucMediaPlayer.VideoEffects
             }
             set
             {
-                _EffectPropertyMaximum = value;
+                if (_EffectPropertyMaximum == value) return;
+
+                _EffectPropertyMaximum = (float)value;
                 NotifyPropertyChanged(nameof(EffectPropertyMaximum));
             }
         }
 
-        public float EffectPropertyValue
+        public double EffectPropertyValue
         {
             get
             {
@@ -64,13 +68,15 @@ namespace MayazucMediaPlayer.VideoEffects
             }
             set
             {
-                _EffectPropertyValue = value;
+                if (_EffectPropertyValue == value) return;
+
+                _EffectPropertyValue = (float)value;
                 NotifyPropertyChanged(nameof(EffectPropertyValue));
-                ValueChanged?.Invoke(this, value);
+                ValueChanged?.Invoke(this, (float)value);
             }
         }
 
-        public float EffectPropertyMinimum
+        public double EffectPropertyMinimum
         {
             get
             {
@@ -78,7 +84,9 @@ namespace MayazucMediaPlayer.VideoEffects
             }
             set
             {
-                _EffectPropertyMinimum = value;
+                if (_EffectPropertyMinimum == value) return;
+
+                _EffectPropertyMinimum = (float)value;
                 NotifyPropertyChanged(nameof(EffectPropertyMinimum));
             }
         }

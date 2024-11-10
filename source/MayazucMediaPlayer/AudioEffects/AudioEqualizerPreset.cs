@@ -43,8 +43,11 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             set
             {
-                presetName = value;
-                NotifyPropertyChanged("PresetName");
+                if (presetName != value)
+                {
+                    presetName = value;
+                    NotifyPropertyChanged("PresetName");
+                }
             }
             get
             {

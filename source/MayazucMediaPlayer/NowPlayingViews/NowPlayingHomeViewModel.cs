@@ -53,6 +53,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             get => _SelectButtonChecked;
             set
             {
+                if (_SelectButtonChecked == value) return;
+
                 _SelectButtonChecked = value;
                 NotifyPropertyChanged(nameof(SelectButtonChecked));
             }
@@ -63,6 +65,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             get => _NowPlayingCommandBarEnabled;
             set
             {
+                if (_NowPlayingCommandBarEnabled == value) return;
                 _NowPlayingCommandBarEnabled = value;
                 NotifyPropertyChanged(nameof(NowPlayingCommandBarEnabled));
             }
@@ -73,17 +76,28 @@ namespace MayazucMediaPlayer.NowPlayingViews
             get => _ContextMenuEnabled;
             set
             {
+                if (_ContextMenuEnabled == value) return;
                 _ContextMenuEnabled = value;
                 NotifyPropertyChanged(nameof(ContextMenuEnabled));
             }
         }
 
-        public bool ClearQueueButtonEnabled { get => _ClearQueueButtonEnabled; set { _ClearQueueButtonEnabled = value; NotifyPropertyChanged(nameof(ClearQueueButtonEnabled)); } }
+        public bool ClearQueueButtonEnabled
+        {
+            get => _ClearQueueButtonEnabled;
+            set
+            {
+                if (_ClearQueueButtonEnabled == value) return;
+                _ClearQueueButtonEnabled = value;
+                NotifyPropertyChanged(nameof(ClearQueueButtonEnabled));
+            }
+        }
         public bool RemoveSelectedButtonEnabled
         {
             get => _RemoveSelectedButtonEnabled;
             set
             {
+                if (_RemoveSelectedButtonEnabled == value) return;
                 _RemoveSelectedButtonEnabled = value;
                 NotifyPropertyChanged(nameof(RemoveSelectedButtonEnabled));
             }
@@ -92,6 +106,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             get => _UnselectButtonEnabled; set
             {
+                if (_UnselectButtonEnabled == value) return;
                 _UnselectButtonEnabled = value;
                 NotifyPropertyChanged(nameof(UnselectButtonEnabled));
             }
@@ -101,12 +116,32 @@ namespace MayazucMediaPlayer.NowPlayingViews
             get => _SelectButtonEnabled;
             set
             {
+                if (_SelectButtonEnabled == value) return;
                 _SelectButtonEnabled = value;
                 NotifyPropertyChanged(nameof(SelectButtonEnabled));
             }
         }
-        public bool AddToPlaylistButtonEnabled { get => _AddToPlaylistButtonEnabled; set { _AddToPlaylistButtonEnabled = value; NotifyPropertyChanged(nameof(AddToPlaylistButtonEnabled)); } }
-        public bool SaveButtonEnabled { get => _SaveButtonEnabled; set { _SaveButtonEnabled = value; NotifyPropertyChanged(nameof(SaveButtonEnabled)); } }
+        public bool AddToPlaylistButtonEnabled
+        {
+            get => _AddToPlaylistButtonEnabled;
+            set
+            {
+                if (_AddToPlaylistButtonEnabled == value) return;
+                _AddToPlaylistButtonEnabled = value;
+                NotifyPropertyChanged(nameof(AddToPlaylistButtonEnabled));
+            }
+        }
+        public bool SaveButtonEnabled
+        {
+            get => _SaveButtonEnabled;
+            set
+            {
+                if (_SaveButtonEnabled == value) return;
+
+                _SaveButtonEnabled = value;
+                NotifyPropertyChanged(nameof(SaveButtonEnabled));
+            }
+        }
 
         public bool MiniPlayerToggled
         {
@@ -116,6 +151,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (miniPlayerToggled == value) return;
+
                 miniPlayerToggled = value;
                 NotifyPropertyChanged(nameof(MiniPlayerToggled));
             }
@@ -140,6 +177,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (_NowPlayingSearchFilter == value) return;
+
                 _NowPlayingSearchFilter = value;
                 NotifyPropertyChanged(nameof(NowPlayingSearchFilter));
                 if (string.IsNullOrWhiteSpace(_NowPlayingSearchFilter))
@@ -162,6 +201,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (npShuffleButton == value) return;
+
                 npShuffleButton = value;
                 NotifyPropertyChanged(nameof(NpShuffleButton));
             }
@@ -175,6 +216,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (npChangeSongButton == value) return;
+
                 npChangeSongButton = value;
                 NotifyPropertyChanged(nameof(NpChangeSongButton));
             }
@@ -199,6 +242,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (_CanSearch == value) return;
+
                 _CanSearch = value;
                 NotifyPropertyChanged(nameof(CanSearch));
             }
@@ -283,6 +328,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (reorderMode == value) return;
+
                 reorderMode = value;
                 CanReorderItems = reorderMode == ListViewReorderMode.Enabled;
                 EnableButtonsForReorder(reorderMode == ListViewReorderMode.Disabled);
@@ -304,6 +351,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (isChangingOrder == value) return;
+
                 isChangingOrder = value;
                 NotifyPropertyChanged(nameof(IsChangingOrder));
             }
@@ -345,6 +394,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
             set
             {
+                if (npSelectLabel == value) return;
+
                 npSelectLabel = value;
                 NotifyPropertyChanged(nameof(NpSelectLabel));
             }
@@ -378,6 +429,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private void SetCanReorderModeAndNotify(bool value)
         {
+            if (_CanReorderItems == value) return;
             _CanReorderItems = value;
             NotifyPropertyChanged(nameof(CanReorderItems));
         }

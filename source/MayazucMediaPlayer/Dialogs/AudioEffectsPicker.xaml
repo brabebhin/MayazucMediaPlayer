@@ -20,7 +20,7 @@
         <StackPanel  >
             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="You must save changes before effects are applied. Audio effects only work if equalizer is turned on." TextWrapping="WrapWholeWords"/>
             <StackPanel Orientation="Horizontal">
-                <controls:AppBarButtonWithToolTip   Icon="Cancel" Command="{x:Bind DataService.ResetEffectsCommand}" Label="Disable all effects"/>
+                <controls:AppBarButtonWithToolTip   Icon="Cancel" Command="{x:Bind DataService.ResetEffectsCommand, Mode=OneWay}" Label="Disable all effects"/>
             </StackPanel>
         </StackPanel>
         <ListView Grid.Row="1"  SelectionMode="None"  ItemsSource="{x:Bind DataService.Effects, Mode=OneWay}" x:Name="lsvAudioEffects">

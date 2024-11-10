@@ -19,6 +19,8 @@ namespace MayazucMediaPlayer.Tests
             }
             set
             {
+                if (isTestRunnable == value) return;
+
                 isTestRunnable = value;
                 NotifyPropertyChanged(nameof(IsTestRunnable));
             }
@@ -33,6 +35,8 @@ namespace MayazucMediaPlayer.Tests
             }
             set
             {
+                if (_TestResultColor == value) return;
+
                 _TestResultColor = value;
                 NotifyPropertyChanged(nameof(TestResultColor));
             }

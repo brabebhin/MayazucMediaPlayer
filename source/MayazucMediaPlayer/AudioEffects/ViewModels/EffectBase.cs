@@ -40,6 +40,8 @@ namespace MayazucMediaPlayer.AudioEffects.ViewModels
             }
             set
             {
+                if (_enabled == value) return;
+
                 _enabled = value;
                 NotifyPropertyChanged(nameof(IsEnabled));
             }

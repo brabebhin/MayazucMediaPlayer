@@ -22,6 +22,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             get => _title;
             private set
             {
+                if (_title == value) return;
+
                 _title = value;
                 NotifyPropertyChanged(nameof(Title));
             }
@@ -39,6 +41,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
             get => _image;
             private set
             {
+                if (_image == value) return;
+
                 _image = value;
                 NotifyPropertyChanged(nameof(MediaThumbnailData));
             }

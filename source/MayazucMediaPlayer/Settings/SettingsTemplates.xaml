@@ -3,13 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MayazucMediaPlayer.Controls">
 
-    <DataTemplate x:FieldModifier="public" x:Key="SystemHyperlinkButton">
+    <DataTemplate  x:Key="SystemHyperlinkButton">
         <local:SettingsAppHyperlinkButton  NavigateUri="{Binding SystemSettingsLink}">
             <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{Binding Description}" TextWrapping="WrapWholeWords"/>
         </local:SettingsAppHyperlinkButton>
     </DataTemplate>
 
-    <DataTemplate x:FieldModifier="public" x:Key="SimpleCheckboxTemplate">
+    <DataTemplate  x:Key="SimpleCheckboxTemplate">
         <Grid Visibility="{Binding ElementVisible}">
             <CheckBox FontWeight="SemiBold"   IsChecked="{Binding IsChecked, Mode=TwoWay}">
                 <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   VerticalAlignment="Center" TextWrapping="WrapWholeWords" Grid.Column="1" Text="{Binding Description}"   />
@@ -17,7 +17,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:FieldModifier="public"  x:Key="ComboBoxWithHeader">
+    <DataTemplate x:Key="ComboBoxWithHeader">
         <Grid HorizontalAlignment="Left" Visibility="{Binding ElementVisible}" Margin="5" Width="280">
             <ComboBox  FontWeight="SemiBold" ItemsSource="{Binding ComboboxStringList}" IsEnabled="{Binding IsEnabled}" SelectedIndex="{Binding SlectedIndex, Mode=TwoWay}" HorizontalAlignment="Stretch">
                 <ComboBox.Header>

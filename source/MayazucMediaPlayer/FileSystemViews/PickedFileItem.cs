@@ -92,10 +92,11 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             set
             {
+                if (imageFile == value) return;
+
                 if (value != null)
                 {
                     imageFile = value;
-
                     ImageUri = imageFile.FullName;
                 }
 

@@ -26,6 +26,8 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
+                if (EQModels.AutomaticPresetManagement == value) return;
+
                 EQModels.AutomaticPresetManagement = value;
                 NotifyPropertyChanged(nameof(AutomaticPresetManagement));
             }

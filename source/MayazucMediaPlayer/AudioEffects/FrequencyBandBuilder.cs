@@ -20,8 +20,11 @@ namespace MayazucMediaPlayer.AudioEffects
 
             set
             {
-                cutOff = value;
-                NotifyPropertyChanged(nameof(CutOff));
+                if (cutOff != value)
+                {
+                    cutOff = value;
+                    NotifyPropertyChanged(nameof(CutOff));
+                }
             }
         }
 

@@ -23,17 +23,17 @@
         <StackPanel>
             <StackPanel x:Name="mainBar" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                    <mcConrols:AppBarButtonWithToolTip   Label="Files.."  x:Name="AddFilesButton" CommandParameter="{x:Bind AddFilesButton}" Command="{x:Bind DataService.OpenFilesCommand}" >
+                    <mcConrols:AppBarButtonWithToolTip   Label="Files.."  x:Name="AddFilesButton" CommandParameter="{x:Bind AddFilesButton, Mode=OneWay}" Command="{x:Bind DataService.OpenFilesCommand}" >
                         <AppBarButton.Icon>
                             <SymbolIcon Symbol="OpenFile" Foreground="DodgerBlue"/>
                         </AppBarButton.Icon>
                     </mcConrols:AppBarButtonWithToolTip>
-                    <mcConrols:AppBarButtonWithToolTip   Label="Folder.."  x:Name="AddFolderButton" CommandParameter="{x:Bind AddFolderButton}"  Command="{x:Bind DataService.OpenFoldersCommand}" >
+                    <mcConrols:AppBarButtonWithToolTip   Label="Folder.."  x:Name="AddFolderButton" CommandParameter="{x:Bind AddFolderButton, Mode=OneWay}"  Command="{x:Bind DataService.OpenFoldersCommand}" >
                         <AppBarButton.Icon>
                             <FontIcon Foreground="CornflowerBlue" FontFamily="Segoe MDL2 Assets" Glyph="&#xEC51;" />
                         </AppBarButton.Icon>
                     </mcConrols:AppBarButtonWithToolTip>
-                    <mcConrols:AppBarButtonWithToolTip   Label="Folders hierarchy"  x:Name="AddDeepFolders" CommandParameter="{x:Bind AddDeepFolders}" Command="{x:Bind DataService.AddDeepFoldersCommand}">
+                    <mcConrols:AppBarButtonWithToolTip   Label="Folders hierarchy"  x:Name="AddDeepFolders" CommandParameter="{x:Bind AddDeepFolders, Mode=OneWay}" Command="{x:Bind DataService.AddDeepFoldersCommand}">
                         <AppBarButton.Icon>
                             <SymbolIcon Foreground="CadetBlue" Symbol="SyncFolder"/>
                         </AppBarButton.Icon>

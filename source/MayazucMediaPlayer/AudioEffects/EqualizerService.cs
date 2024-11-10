@@ -85,8 +85,11 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
-                SettingsService.Instance.SelectedEqualizerPreset = value;
-                NotifyPropertyChanged(nameof(CurrentPresetName));
+                if (SettingsService.Instance.SelectedEqualizerPreset != value)
+                {
+                    SettingsService.Instance.SelectedEqualizerPreset = value;
+                    NotifyPropertyChanged(nameof(CurrentPresetName));
+                }
             }
         }
 
@@ -98,8 +101,11 @@ namespace MayazucMediaPlayer.AudioEffects
             }
             set
             {
-                SettingsService.Instance.AutomaticPresetManagement = value;
-                NotifyPropertyChanged(nameof(AutomaticPresetManagement));
+                if (SettingsService.Instance.AutomaticPresetManagement != value)
+                {
+                    SettingsService.Instance.AutomaticPresetManagement = value;
+                    NotifyPropertyChanged(nameof(AutomaticPresetManagement));
+                }
             }
         }
 

@@ -77,6 +77,8 @@ namespace MayazucMediaPlayer.Controls
             get => SettingsService.Instance.MinimumSubtitleDuration;
             set
             {
+                if (SettingsService.Instance.MinimumSubtitleDuration == value) return;
+
                 SettingsService.Instance.MinimumSubtitleDuration = value;
                 NotifyPropertyChanged(nameof(MinimumDuration));
             }
@@ -86,6 +88,8 @@ namespace MayazucMediaPlayer.Controls
             get => SettingsService.Instance.PreventSubtitleOverlaps;
             set
             {
+                if (SettingsService.Instance.PreventSubtitleOverlaps == value) return;
+
                 SettingsService.Instance.PreventSubtitleOverlaps = value;
                 NotifyPropertyChanged(nameof(PreventOverlaps));
             }

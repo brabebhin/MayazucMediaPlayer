@@ -36,6 +36,8 @@ namespace MayazucMediaPlayer.Users
             }
             set
             {
+                if (_userName == value) return;
+
                 _userName = value;
                 NotifyPropertyChanged(nameof(UserName));
             }
@@ -49,6 +51,8 @@ namespace MayazucMediaPlayer.Users
             }
             set
             {
+                if (_password == value) return;
+
                 _password = value;
                 NotifyPropertyChanged(nameof(Password));
             }
