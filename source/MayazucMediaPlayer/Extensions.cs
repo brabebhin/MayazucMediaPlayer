@@ -24,7 +24,7 @@ namespace MayazucMediaPlayer
 {
     public static class Extensions
     {
-        public static void Remove<T>(this Collection<T> list, T item, object lockObject)
+        public static void RemoveWithLock<T>(this Collection<T> list, T item, object lockObject)
         {
             lock (lockObject)
             {

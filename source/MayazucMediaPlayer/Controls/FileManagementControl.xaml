@@ -179,7 +179,7 @@
 
                     <controls:AppBarToggleButtonWithToolTip  IsChecked="{x:Bind Converters.selectionModeToBoolean(DataService.SelectionMode), Mode=OneWay}"  Tapped="FullCollectionEnableSelection"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
 
-                    <controls:AppBarButtonWithToolTip  Tapped="FullCollectionSaveAsPlaylistCommand"   Label="Save" x:Name="SaveAsPlaylistButton" Icon="Save"/>
+                    <controls:AppBarButtonWithToolTip  Tapped="FullCollectionSaveAsPlaylistCommand"   Label="Save as playlist" x:Name="SaveAsPlaylistButton" Icon="Save"/>
 
                     <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
                         <AppBarToggleButton.Icon>

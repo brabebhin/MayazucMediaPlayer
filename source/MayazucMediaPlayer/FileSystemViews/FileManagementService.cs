@@ -19,6 +19,7 @@ using Nito.AsyncEx;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
@@ -519,7 +520,7 @@ namespace MayazucMediaPlayer.FileSystemViews
 
             FilterCollectionView.Source = Items;
 
-            ChangeSongOrderRequestCommand = new RelayCommand<object>(ChangeSongRequestCommandFunction);
+            ChangeSongOrderRequestCommand = new RelayCommand<object>(ChangeOrderRequestCommandFunction);
 
             PlaySingleFileCommand = new AsyncRelayCommand<object>(PlaySingleFile);
             EnqueueSingleFileCommand = new AsyncRelayCommand<object>(EnqueueSingleFile);
@@ -637,11 +638,12 @@ namespace MayazucMediaPlayer.FileSystemViews
             await PlayFilesInternal(new[] { file }, 0);
         }
 
-        private void ChangeSongRequestCommandFunction(object arg)
+        private async void ChangeOrderRequestCommandFunction(object arg)
         {
             if (ReorderMode == ListViewReorderMode.Enabled)
             {
                 ReorderMode = ListViewReorderMode.Disabled;
+                await OnContentsChanged(Items.ToList().AsReadOnly());
             }
             else
             {
@@ -670,6 +672,8 @@ namespace MayazucMediaPlayer.FileSystemViews
                     }
                 }
             }
+
+            await OnContentsChanged(Items.ToList().AsReadOnly());
         }
 
         private async Task RemoveOnlyVideoCommandInternal()
@@ -817,7 +821,8 @@ namespace MayazucMediaPlayer.FileSystemViews
         private void RemoveSlided(object? sender)
         {
             var x = sender as IMediaPlayerItemSourceProvder;
-            Items.Remove(x, Items);
+            Items.RemoveWithLock(x, Items);
+            OnContentsChanged(Items.ToList().AsReadOnly());
         }
 
         private async Task OpenDeepFolderAsync(object arg)
@@ -953,6 +958,8 @@ namespace MayazucMediaPlayer.FileSystemViews
                     var cacheOnlyAa = SettingsService.Instance.OnlyUseCacheInFilePicker;
                     Items.AddRange(validItems);
                 }
+
+                await OnContentAdded(validItems.AsReadOnly());
             }
         }
 
@@ -1173,7 +1180,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             await RemoveItemsFromOriginalCollection(selected.ToList());
         }
 
-        private IEnumerable<IMediaPlayerItemSourceProvder> GetSelectedItemsFromUI()
+        protected IEnumerable<IMediaPlayerItemSourceProvder> GetSelectedItemsFromUI()
         {
             var selected = new List<object>();
             GetSelectedItemsRequest?.Invoke(this, selected);
@@ -1213,6 +1220,26 @@ namespace MayazucMediaPlayer.FileSystemViews
             {
                 await PlayFilesInternal(new IMediaPlayerItemSourceProvder[] { file }, 0);
             }
+        }
+
+        /// <summary>
+        /// when items are added
+        /// </summary>
+        /// <param name="addedContent"></param>
+        /// <returns></returns>
+        protected virtual Task OnContentAdded(ReadOnlyCollection<IMediaPlayerItemSourceProvder> addedContent)
+        {
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// When items order is changed or items are removed
+        /// </summary>
+        /// <param name="newContent">The list of contents after removal or reorder</param>
+        /// <returns></returns>
+        protected virtual Task OnContentsChanged(ReadOnlyCollection<IMediaPlayerItemSourceProvder> newContent)
+        {
+            return Task.CompletedTask;
         }
 
         private ListViewReorderMode reorderMode = ListViewReorderMode.Disabled;

@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Playlists
 {
@@ -15,7 +16,7 @@ namespace MayazucMediaPlayer.Playlists
     /// </summary>
     public sealed partial class PlaylistDetailsPage : BaseUserControl, IDisposable
     {
-        public PlaylistsDetailsViewModel Model
+        public PlaylistsDetailsService PlaylistsDetailsService
         {
             get; private set;
         }
@@ -28,65 +29,27 @@ namespace MayazucMediaPlayer.Playlists
 
         private bool disposedValue;
 
-        public PlaylistDetailsPage(PlaylistItem playlistData, PlaylistsDetailsViewModel model)
+        public PlaylistDetailsPage(PlaylistItem playlistData, PlaylistsDetailsService model)
         {
             InitializeComponent();
-            COntentPresenter.SelectionChanged += COntentPresenter_SelectionChanged;
-            DataContext = Model = model;
-
-            Model.GetSelectedItemsRequest += Model_GetSelectedItemsRequest;
-            Model.NavigationRequest += Model_NavigationRequest;
-            Model.PropertyChanged += Model_PropertyChanged;
-            _ = Model.LoadState(playlistData);
+            DataContext = PlaylistsDetailsService = model;
+            PlaylistsDetailsService.PropertyChanged += Model_PropertyChanged;
+            _ = LoadPlaylistItem(playlistData);
         }
 
-
-        private void Model_NavigationRequest(object? sender, NavigationRequestEventArgs e)
+        private async Task LoadPlaylistItem(PlaylistItem item)
         {
-            //this.Frame.NavigateAsync(e.PageType, e.Parameter);
-        }
-
-        private void Model_GetSelectedItemsRequest(object? sender, List<object> e)
-        {
-            e.AddRange(COntentPresenter.SelectedItems);
+            await PlaylistsDetailsService.LoadState(item);
+            await playlistContentsManagerControl.LoadStateInternal(PlaylistsDetailsService);
         }
 
         private void Model_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Model.TitleBoxText))
+            if (e.PropertyName == nameof(PlaylistsDetailsService.TitleBoxText))
             {
-                ActualPageTitle = Model.TitleBoxText;
+                ActualPageTitle = PlaylistsDetailsService.TitleBoxText;
             }
         }
-
-        void COntentPresenter_SelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            if (COntentPresenter.SelectedItems.Count > 0)
-            {
-                RemoveSelected.IsEnabled = true;
-            }
-            else
-            {
-                RemoveSelected.IsEnabled = false;
-            }
-        }
-
-        private async void GoToDetailsPage(object? sender, TappedRoutedEventArgs e)
-        {
-            if (Model.ContentPresenterSelectionMode == ListViewSelectionMode.None)
-            {
-                try
-                {
-                    var mds = (sender as FrameworkElement).GetDataContextObject<MediaPlayerItemSourceUIWrapper>();
-                    await FileDetailsPage.ShowForMediaData(mds);
-                }
-                catch
-                {
-                    //file could not be loaded
-                }
-            }
-        }
-
 
         private void Dispose(bool disposing)
         {
@@ -96,10 +59,8 @@ namespace MayazucMediaPlayer.Playlists
                 {
                     // TODO: dispose managed state (managed objects)
                 }
-                Model.GetSelectedItemsRequest -= Model_GetSelectedItemsRequest;
-                Model.NavigationRequest -= Model_NavigationRequest;
-                Model.PropertyChanged -= Model_PropertyChanged;
-                Model.Dispose();
+                PlaylistsDetailsService.PropertyChanged -= Model_PropertyChanged;
+                PlaylistsDetailsService.Dispose();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;

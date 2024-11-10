@@ -107,7 +107,7 @@ namespace MayazucMediaPlayer
 
             serviceCollection.AddTransient<FileManagementService>();
             serviceCollection.AddTransient<PlaylistViewerModel>();
-            serviceCollection.AddTransient<PlaylistsDetailsViewModel>();
+            serviceCollection.AddTransient<PlaylistsDetailsService>();
 
             serviceCollection.AddSingleton<HotKeyManager>();
 

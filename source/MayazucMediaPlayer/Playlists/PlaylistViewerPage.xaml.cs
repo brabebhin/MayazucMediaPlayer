@@ -150,7 +150,7 @@ namespace MayazucMediaPlayer.Playlists
                 var detailsPage = PlaylistDetailsViewPage as PlaylistDetailsPage;
                 if (detailsPage == null) return;
 
-                var playlistItemDisplayed = detailsPage.Model.CurrentPlaylistItem;
+                var playlistItemDisplayed = detailsPage.PlaylistsDetailsService.CurrentPlaylistItem;
 
                 if (playlistItemDisplayed == e)
                     PlaylistDetailsViewPage = null;
@@ -161,7 +161,7 @@ namespace MayazucMediaPlayer.Playlists
         private void GoToDetailsPage(object? sender, TappedRoutedEventArgs e)
         {
             var itm = (sender as FrameworkElement).DataContext as PlaylistItem;
-            var newUC = new PlaylistDetailsPage(itm, ServiceProvider.GetService<PlaylistsDetailsViewModel>());
+            var newUC = new PlaylistDetailsPage(itm, ServiceProvider.GetService<PlaylistsDetailsService>());
             Grid.SetRowSpan(newUC, 2);
             Grid.SetColumn(newUC, 1);
             newUC.HorizontalAlignment = HorizontalAlignment.Stretch;
