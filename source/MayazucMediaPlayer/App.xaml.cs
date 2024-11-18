@@ -93,7 +93,7 @@ namespace MayazucMediaPlayer
 
             serviceCollection.AddSingleton<IBackgroundPlayer, BackgroundMediaPlayer>();
 
-            serviceCollection.AddSingleton<NowPlayingHomeViewModel>();
+            serviceCollection.AddSingleton<NowPlayingUiService>();
 
 
             serviceCollection.AddSingleton<EqualizerService>();

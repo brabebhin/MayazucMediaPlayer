@@ -14,7 +14,7 @@ namespace MayazucMediaPlayer.Services
     /// <summary>
     /// Wraps a playback sequence and its disk storage
     /// </summary>
-    public class PlaybackSequence : MediaDataStorageUIWrapperCollection, IPlaybackSequence
+    public class PlaybackSequence : MediaDataStorageUIWrapperCollection<MediaPlayerItemSourceUIWrapper>, IPlaybackSequence
     {
         private readonly AutoPlayManager autoPlayManager = new AutoPlayManager(null);
         readonly AsyncLock asyncLock = new AsyncLock();

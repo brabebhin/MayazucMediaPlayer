@@ -25,169 +25,17 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <mcConrols:SearchBar x:Name="mcSearchbar" SearchView="{x:Bind DataService.NowPlayingCollectionViewSource, Mode=OneWay}" IsEnabled="{x:Bind DataService.CanSearch, Mode=OneWay}" Grid.Row="1" Margin="12, 2, 12, 2"></mcConrols:SearchBar>
-                </Grid>
 
-                <CommandBar x:Name="SelectionCommandBar" Visibility="Collapsed" Grid.Row="2" HorizontalAlignment="Left" >
-                    <mcConrols:AppBarToggleButtonWithToolTip IsChecked="{x:Bind npSelect.IsChecked, Mode=TwoWay}" Checked="ShowSelectionCommandBar" Unchecked="HideSelectionCommandBar" x:Name="npSelect2"  Label="Select...">
-                        <AppBarToggleButton.Icon>
-                            <FontIcon Glyph="&#xE71D;"></FontIcon>
-                        </AppBarToggleButton.Icon>
-                    </mcConrols:AppBarToggleButtonWithToolTip>
-
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.UnselectButtonEnabled, Mode=OneWay}"    Command="{x:Bind DataService.ClearSelectionCommand, Mode=OneWay}"  CommandParameter="{x:Bind npUnselectAllButton}"  Icon="ClearSelection" x:Name="npUnselectAllButton"  Label="Unselect all..."/>
-
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.RemoveSelectedButtonEnabled, Mode=OneWay}"    Command="{x:Bind DataService.RemoveCommand, Mode=OneWay}"  Icon="Remove"  CommandParameter="{x:Bind npRemoveFromPlayBackButton}"  x:Name="npRemoveFromPlayBackButton"  Label="Remove selected"/>
-
-                </CommandBar>
-                <CommandBar x:Name="ReorderCommandBar" Visibility="Collapsed" Grid.Row="2"  HorizontalAlignment="Left">
-                    <mcConrols:AppBarToggleButtonWithToolTip Command="{x:Bind DataService.ChangeSongOrderRequestCommand, Mode=OneWay}" CommandParameter="{x:Bind npChangeSongButton, Mode=OneWay}" x:Name="npChangeSongButton2" IsChecked="{x:Bind DataService.IsChangingOrder, Mode=OneWay}" Label="Reorder">
-                        <AppBarToggleButton.Icon>
-                            <FontIcon Glyph="&#xE1ED;"></FontIcon>
-                        </AppBarToggleButton.Icon>
-                    </mcConrols:AppBarToggleButtonWithToolTip>
-                </CommandBar>
-                
                 <CommandBar IsEnabled="{x:Bind DataService.NowPlayingCommandBarEnabled, Mode=OneWay}" Grid.Row="2"  HorizontalAlignment="Left"  x:Name="CommandBarus">
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.SaveButtonEnabled, Mode=OneWay}"  Command="{x:Bind DataService.SaveNowPlayingAsPlaylistCommand, Mode=OneWay}" CommandParameter="{x:Bind npSaveAsPlayList}"  x:Name="npSaveAsPlayList"  Icon="Save" Label="Save"/>
 
-                    <mcConrols:AppBarButtonWithToolTip  IsEnabled="{x:Bind DataService.AddToPlaylistButtonEnabled, Mode=OneWay}"   Click="AddToPlaylist" Icon="Add" x:Name="npAddToPlaylist" Label="Add to playlist"/>
+                    <mcConrols:AppBarButtonWithToolTip Command="{x:Bind DataService.ShuffleRequestClickCommand, Mode=OneWay}" CommandParameter="{x:Bind npShuffleButton, Mode=OneWay}" Icon="Shuffle" x:Name="npShuffleButton" Label="Shuffle"/>
+                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.ClearQueueButtonEnabled, Mode=OneWay}"  Label="Clear queue" Command="{x:Bind DataService.ClearPlaybackQueueCommand, Mode=OneWay}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{x:Bind npStopPlaybackQueue, Mode=OneWay}"/>
 
-                    <mcConrols:AppBarToggleButtonWithToolTip Checked="ShowReorderCommandBar" Unchecked="HideReoderCommandBar" Command="{x:Bind DataService.ChangeSongOrderRequestCommand, Mode=OneWay}" CommandParameter="{x:Bind npChangeSongButton, Mode=OneWay}" x:Name="npChangeSongButton" IsChecked="{x:Bind DataService.IsChangingOrder, Mode=OneWay}" Label="Reorder">
-                        <AppBarToggleButton.Icon>
-                            <FontIcon Glyph="&#xE1ED;"></FontIcon>
-                        </AppBarToggleButton.Icon>
-                    </mcConrols:AppBarToggleButtonWithToolTip>
-
-                    <mcConrols:AppBarToggleButtonWithToolTip Checked="ShowSelectionCommandBar" Unchecked="HideSelectionCommandBar" x:Name="npSelect"  Label="Select...">
-                        <AppBarToggleButton.Icon>
-                            <FontIcon Glyph="&#xE71D;"></FontIcon>
-                        </AppBarToggleButton.Icon>
-                    </mcConrols:AppBarToggleButtonWithToolTip>
-
-                    <CommandBar.SecondaryCommands>
-                        <mcConrols:AppBarButtonWithToolTip Command="{x:Bind DataService.ShuffleRequestClickCommand, Mode=OneWay}" CommandParameter="{x:Bind npShuffleButton, Mode=OneWay}" Icon="Shuffle" x:Name="npShuffleButton" Label="Shuffle"/>
-                        <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.ClearQueueButtonEnabled, Mode=OneWay}"  Label="Clear queue" Command="{x:Bind DataService.ClearPlaybackQueueCommand, Mode=OneWay}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{x:Bind npStopPlaybackQueue, Mode=OneWay}"/>
-                    </CommandBar.SecondaryCommands>
                 </CommandBar>
 
             </Grid>
 
-            <Grid Grid.Row="1" x:Name="ContentRoot">
-                <ListView AllowDrop="True"                
-                      ReorderMode="{x:Bind DataService.ReorderMode, Mode=OneWay}"
-                      CanReorderItems="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
-                      CanDragItems ="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
-                      HorizontalContentAlignment="Left"
-                      IsItemClickEnabled="{x:Bind DataService.IsItemClickEnabled, Mode=OneWay}"
-                      ItemClick="SkipToItem"
-                      ItemsSource="{x:Bind DataService.NowPlayingCollectionViewSource, Mode=OneWay}"
-                      Grid.Row="2" 
-                      x:FieldModifier="public"
-                      SelectionMode="{x:Bind DataService.SelectionMode, Mode=OneWay}"
-                      x:Name="NowPlayingListView" 
-                      Grid.ColumnSpan="2">
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="services:MediaPlayerItemSourceUIWrapper">
-                            <Grid  Style="{StaticResource GridCardStyle}">
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="8"></ColumnDefinition>
-                                        <ColumnDefinition></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="2"  Background="{x:Bind IsInPlayback, Converter={StaticResource NowPlayingBrushConverter}, Mode=OneWay}"></Grid>
-                                    
-                                    <Grid Grid.Row="0" Margin="2" Grid.Column="1">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                <ColumnDefinition Width="10"></ColumnDefinition>
-                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Grid  Grid.Column="0" HorizontalAlignment="Stretch">
-                                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}"  Text="#" FontSize="16" VerticalAlignment="Center">
-                                                </TextBlock>
-                                            </Grid>
-                                            <Grid  Grid.Column="2" HorizontalAlignment="Left">
-                                                <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind TrackNumber, Mode=OneWay}" FontSize="16"  VerticalAlignment="Center">
-                                                </TextBlock>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid Grid.Row="1" Grid.Column="1">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                                <ColumnDefinition></ColumnDefinition>
-                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                                            </Grid.ColumnDefinitions>
-
-                                            <!--image grid-->
-                                            <Grid Width="48" BorderThickness="2" x:Name="ColoredGrid"  Height="48" Grid.Column="1" VerticalAlignment="Top">
-                                                <Image Width="48" Height="48" Source="{x:Bind ThumbnailImage, Mode=OneWay}"></Image>
-                                            </Grid>
-
-                                            <!--track title-->
-                                            <Grid Grid.Row="1" Grid.Column="2">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition></RowDefinition>
-                                                    <RowDefinition  Height="Auto"></RowDefinition>
-                                                </Grid.RowDefinitions>
-                                                <Grid Grid.Row="0" Grid.Column="1">
-                                                    <StackPanel Margin="2" Grid.Column="1">
-                                                        <TextBlock  Style="{ThemeResource BodyTextBlockStyle}"  x:Name="tbFileName" TextWrapping="WrapWholeWords" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{x:Bind Title, Mode=OneWay}">
-                                                        </TextBlock>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Grid>
-
-                                            <Grid  Grid.Column="3" HorizontalAlignment="Right" Margin="5, 0, 5, 0">
-                                                <Button BorderBrush="Transparent" Background="Transparent" VerticalAlignment="Center">
-                                                    <Button.Content>
-                                                        <SymbolIcon Symbol="More"/>
-                                                    </Button.Content>
-                                                    <Button.Flyout>
-                                                        <MenuFlyout>
-                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Remove from queue" Click="RemoveFromQueue_tapped"/>
-                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Add to playlist..." Click="AddSingleItemToPlaylist_Tapped"/>
-                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Move up" Click="MoveItemUp_Tapped"/>
-                                                            <MenuFlyoutItem  IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Move down" Click="MoveItemDown_Tapped"/>
-                                                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
-                                                            <MenuFlyoutItem IsEnabled="{x:Bind MediaData.Persistent, Mode=OneWay}" Text="Properties" Click="GoToFileProperties_tapped"/>
-                                                        </MenuFlyout>
-                                                    </Button.Flyout>
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                    <ListView.Footer>
-                        <Grid Visibility="{x:Bind Converters.VisibleWhenZeroConverter(DataService.NowPlayingCollectionViewSource.Count, x:False), Mode=OneWay}">
-                            <StackPanel>
-                                <TextBlock FontSize="20" Margin="2" TextWrapping="WrapWholeWords" Text="This is where the playback queue will show up."  Style="{ThemeResource BodyTextBlockStyle}" />
-                            </StackPanel>
-                        </Grid>
-                    </ListView.Footer>
-                </ListView>
-            </Grid>
+            <mcConrols:FileManagementControl x:Name="NowPlayingFileManagementControl" Grid.Row="1"/>
         </Grid>
     </Grid>
 </local2:BasePage>

@@ -20,6 +20,8 @@
     The default template can be found here: C:\Program Files (x86)\Windows Kits\10\DesignTime\CommonConfiguration\Neutral\UAP\10.0.10069.0\Generic
     Simply take the portion of code that corresponds to the MediaTransportControl and bring it in to your app just like we have done in this sample-->
 
+    <Style BasedOn="{StaticResource AppBarButtonStyleNoChevron}" TargetType="local:AppBarButtonWithToolTip"></Style>
+    
     <Style TargetType="dialogs:BaseDialog">
 
         <Setter Property="Foreground" Value="{ThemeResource SystemControlPageTextBaseHighBrush}" />

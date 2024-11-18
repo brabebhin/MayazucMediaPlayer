@@ -19,11 +19,14 @@ namespace MayazucMediaPlayer.Controls
 
         private void ToolTipChangedCallback(Microsoft.UI.Xaml.DependencyObject sender, Microsoft.UI.Xaml.DependencyProperty dp)
         {
-            ToolTipService.SetToolTip(this, this.Label);
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                ToolTipService.SetToolTip(this, this.Label);
+            });
         }
     }
 
-    public partial class AppBarToggleButtonWithToolTip: AppBarToggleButton
+    public partial class AppBarToggleButtonWithToolTip : AppBarToggleButton
     {
         private long labelChangedToken;
 
@@ -34,7 +37,10 @@ namespace MayazucMediaPlayer.Controls
 
         private void ToolTipChangedCallback(Microsoft.UI.Xaml.DependencyObject sender, Microsoft.UI.Xaml.DependencyProperty dp)
         {
-            ToolTipService.SetToolTip(this, this.Label);
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                ToolTipService.SetToolTip(this, this.Label);
+            });
         }
     }
 }

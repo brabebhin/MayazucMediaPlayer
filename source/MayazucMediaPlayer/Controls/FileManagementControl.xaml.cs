@@ -24,7 +24,7 @@ namespace MayazucMediaPlayer.Controls
 
         public FileManagerDataTemplateSelector DataTemplateSelectorInstance { get; private set; }
 
-        public FileManagementService DataService
+        public IPlaybackItemManagementUIService DataService
         {
             get; private set;
         }
@@ -43,15 +43,15 @@ namespace MayazucMediaPlayer.Controls
         {
             await DispatcherQueue.EnqueueAsync(() =>
             {
-                if (COntentPresenter.SelectedItems.Any())
+                if (ContentPresenter.SelectedItems.Any())
                 {
-                    COntentPresenter.DeselectRange(new ItemIndexRange(0, (uint)DataService.Items.Count));
+                    ContentPresenter.DeselectRange(new ItemIndexRange(0, (uint)DataService.ItemsCount));
                 }
                 if (e != null)
                 {
                     foreach (var o in e)
                     {
-                        COntentPresenter.SelectRange(o);
+                        ContentPresenter.SelectRange(o);
                     }
                 }
 
@@ -60,15 +60,15 @@ namespace MayazucMediaPlayer.Controls
 
         private void DataModel_GetSelectedItemsRequest(object? sender, List<object> e)
         {
-            e.AddRange(COntentPresenter.SelectedItems);
+            e.AddRange(ContentPresenter.SelectedItems);
         }
 
         private void DataModel_ClearSelectionRequest(object? sender, EventArgs e)
         {
-            COntentPresenter.SelectedItems.Clear();
+            ContentPresenter.SelectedItems.Clear();
         }
 
-        public Task LoadStateInternal(FileManagementService model)
+        public Task LoadStateInternal(IPlaybackItemManagementUIService model)
         {
             if (DataService == null)
             {
@@ -82,9 +82,10 @@ namespace MayazucMediaPlayer.Controls
             }
             return Task.CompletedTask;
         }
+
         private void SelectionChangedForListView(object? sender, SelectionChangedEventArgs e)
         {
-            if (COntentPresenter.SelectedItems.Count == 0 || COntentPresenter.SelectionMode == ListViewSelectionMode.None)
+            if (ContentPresenter.SelectedItems.Count == 0 || ContentPresenter.SelectionMode == ListViewSelectionMode.None)
             {
                 btnSaveAsPlaylistSelected.IsEnabled = btnRemoveSelected.IsEnabled = btnAddToExistingPlaylist.IsEnabled = false;
             }

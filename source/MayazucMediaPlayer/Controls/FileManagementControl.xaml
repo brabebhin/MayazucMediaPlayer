@@ -12,7 +12,7 @@
     <UserControl.Resources>
 
         <DataTemplate x:Key="MusicItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProvder">
-            <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
+            <Grid  Margin="2"  Style="{StaticResource GridCardStyle}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Click="SingleItemPlayFileCommand"  Text="Play"/>
@@ -144,7 +144,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <CommandBar  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:True), Mode=OneWay, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind Converters.BooleanCountConverter(DataService.Items.Count), Mode=OneWay,FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
+            <CommandBar  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:True), Mode=OneWay, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind DataService.CommandBarEnabled, Mode=OneWay,FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
                 <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrderResetButton" IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE1ED;"></FontIcon>
@@ -161,7 +161,7 @@
                 <controls:AppBarButtonWithToolTip Style="{StaticResource AppBarButtonStyleNoChevron}" Visibility="Collapsed" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
                 </controls:AppBarButtonWithToolTip>
 
-                <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind  Converters.BooleanCountConverter(DataService.Items.Count), Mode=OneWay, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
+                <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind DataService.CommandBarEnabled, Mode=OneWay, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
 
                     <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}"/>
                     <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}">
@@ -230,13 +230,13 @@
                     CanDragItems ="{x:Bind DataService.CanReorderItems, Mode=OneWay}"
                     HorizontalContentAlignment="Left"
                     ShowsScrollingPlaceholders="True"
-                    x:Name="COntentPresenter">
+                    x:Name="ContentPresenter">
             <ListView.Header>
                 <ProgressRing x:Name="progressBar" Margin="5" Width="100" Height="100" IsActive="{x:Bind ShowProgressRing, Mode=OneWay}" Visibility="Collapsed"/>
             </ListView.Header>
 
             <ListView.Footer>
-                <Grid Visibility="{x:Bind Converters.VisibleWhenZeroConverter(DataService.Items.Count, x:False), Mode=OneWay}">
+                <Grid Visibility="{x:Bind Converters.VisibleWhenZeroConverter(DataService.FilterCollectionView.Count, x:False), Mode=OneWay}">
                     <StackPanel>
                         <TextBlock Style="{ThemeResource CaptionTextBlockStyle}" x:Name="tbPlaceholder" Margin="2" TextWrapping="WrapWholeWords"  />
                     </StackPanel>

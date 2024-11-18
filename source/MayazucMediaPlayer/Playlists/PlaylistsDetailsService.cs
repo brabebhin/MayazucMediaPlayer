@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using FluentResults;
 using MayazucMediaPlayer.Common;
+using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaMetadata;
@@ -20,7 +21,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.Playlists
 {
-    public class PlaylistsDetailsService : FileManagementService, IDisposable
+    public class PlaylistsDetailsService : PlaybackItemManagementUIService<PlayListItemMediaSourceProvider>, IDisposable
     {
         string _NumberOfSongsText;
         public string NumberOfSongsText
@@ -249,7 +250,7 @@ namespace MayazucMediaPlayer.Playlists
             SubmitNavigationEvent(typeof(FileFolderPickerPage), null);
         }
 
-        protected override Task OnContentsChanged(ReadOnlyCollection<IMediaPlayerItemSourceProvder> newContent)
+        protected override Task OnContentsChanged(ReadOnlyCollection<PlayListItemMediaSourceProvider> newContent)
         {
             base.Dispatcher.TryEnqueue(async () =>
             {
@@ -291,7 +292,7 @@ namespace MayazucMediaPlayer.Playlists
         }
     }
 
-    internal class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProvder
+    public class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProvder
     {
         private readonly IMediaPlayerItemSource data;
         private readonly Task<EmbeddedMetadataResult> metadataTask;

@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI;
-using MayazucMediaPlayer.Common;
+using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Dialogs;
+using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Services;
-using MayazucMediaPlayer.UserInput;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public class NowPlayingHomeViewModel : MainViewModelBase, IDisposable
+    public partial class NowPlayingUiService : PlaybackItemManagementUIService<MediaPlayerItemSourceUIWrapper>, IDisposable
     {
         readonly AsyncLock stopPlaybackQueueLock = new AsyncLock();
         string npSelectLabel = "Select... ";
@@ -24,9 +24,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         ListViewReorderMode reorderMode = ListViewReorderMode.Disabled;
         ListViewSelectionMode selectionMode = ListViewSelectionMode.None;
 
-        public event EventHandler<IReadOnlyCollection<object>> SetSelectedItems;
         public event EventHandler ClearSelectionRequest;
-        public event EventHandler<List<MediaPlayerItemSourceUIWrapper>> GetSelectedItemsRequest;
 
         bool npShuffleButton = true;
         bool npChangeSongButton = true;
@@ -223,29 +221,11 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
         }
 
-        public MediaDataStorageUIWrapperCollection NowPlaying
+        public override IMediaPlayerItemSourceProvderCollection<MediaPlayerItemSourceUIWrapper> Items
         {
             get
             {
                 return PlaybackServiceInstance.NowPlayingBackStore;
-            }
-        }
-
-
-
-        bool _CanSearch = true;
-        public bool CanSearch
-        {
-            get
-            {
-                return _CanSearch;
-            }
-            set
-            {
-                if (_CanSearch == value) return;
-
-                _CanSearch = value;
-                NotifyPropertyChanged(nameof(CanSearch));
             }
         }
 
@@ -268,170 +248,10 @@ namespace MayazucMediaPlayer.NowPlayingViews
             private set;
         }
 
-        public IRelayCommand<object> ChangeSongOrderRequestCommand
-        {
-            get;
-            private set;
-        }
-
-
-
-        public IRelayCommand<object> SelectRequestCommand
-        {
-            get;
-            private set;
-        }
-
-
-        public IRelayCommand<object> ClearSelectionCommand
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand<object> RemoveCommand
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand SkipBackFrames
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand SkipForwardFrames
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand IncreasePlaybackRate
-        {
-            get;
-            private set;
-        }
-
         public AsyncRelayCommand DecreasePlaybackRate
         {
             get;
             private set;
-        }
-
-
-        public ListViewReorderMode ReorderMode
-        {
-            get
-            {
-                return reorderMode;
-            }
-            set
-            {
-                if (reorderMode == value) return;
-
-                reorderMode = value;
-                CanReorderItems = reorderMode == ListViewReorderMode.Enabled;
-                EnableButtonsForReorder(reorderMode == ListViewReorderMode.Disabled);
-
-                NotifyPropertyChanged(nameof(ReorderMode));
-                if (CanReorderItems)
-                {
-                    NowPlayingSearchFilter = null;
-                }
-                CanSearch = !CanReorderItems;
-            }
-        }
-
-        public bool IsChangingOrder
-        {
-            get
-            {
-                return isChangingOrder;
-            }
-            set
-            {
-                if (isChangingOrder == value) return;
-
-                isChangingOrder = value;
-                NotifyPropertyChanged(nameof(IsChangingOrder));
-            }
-        }
-
-        public ListViewSelectionMode SelectionMode
-        {
-            get
-            {
-                return selectionMode;
-            }
-            set
-            {
-                selectionMode = value;
-                var enableButtons = value == ListViewSelectionMode.None;
-
-                ClearQueueButtonEnabled = enableButtons;
-                RemoveSelectedButtonEnabled = enableButtons;
-
-                AddToPlaylistButtonEnabled = enableButtons;
-                SaveButtonEnabled = enableButtons;
-                NpShuffleButton = enableButtons;
-                NpChangeSongButton = enableButtons;
-                CanReorderItems = false;
-                ContextMenuEnabled = enableButtons;
-                IsItemClickEnabled = enableButtons;
-
-                NotifyPropertyChanged(nameof(SelectionMode));
-                NotifyPropertyChanged(nameof(IsItemClickEnabled));
-
-            }
-        }
-
-        public string NpSelectLabel
-        {
-            get
-            {
-                return npSelectLabel;
-            }
-            set
-            {
-                if (npSelectLabel == value) return;
-
-                npSelectLabel = value;
-                NotifyPropertyChanged(nameof(NpSelectLabel));
-            }
-        }
-
-        public bool CanReorderItems
-        {
-            get
-            {
-                return _CanReorderItems;
-            }
-            set
-            {
-                SetCanReorderModeAndNotify(value);
-            }
-        }
-
-        private void EnableButtonsForReorder(bool value)
-        {
-            ContextMenuEnabled = value;
-            ClearQueueButtonEnabled = value;
-            RemoveSelectedButtonEnabled = value;
-            UnselectButtonEnabled = value;
-            SelectButtonEnabled = value;
-            AddToPlaylistButtonEnabled = value;
-            SaveButtonEnabled = value;
-            NpShuffleButton = value;
-            IsItemClickEnabled = value;
-            NotifyPropertyChanged(nameof(IsItemClickEnabled));
-        }
-
-        private void SetCanReorderModeAndNotify(bool value)
-        {
-            if (_CanReorderItems == value) return;
-            _CanReorderItems = value;
-            NotifyPropertyChanged(nameof(CanReorderItems));
         }
 
         public IBackgroundPlayer BackgroundMediaPlayerInstance
@@ -442,34 +262,15 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         public PlaylistsService PlaylistsService { get; private set; }
 
-        public NowPlayingHomeViewModel(DispatcherQueue dispatcher,
+        public NowPlayingUiService(DispatcherQueue dispatcher,
             PlaybackSequenceService m,
             IBackgroundPlayer backgroundMediaPlayerInstance,
-            PlaylistsService playlistsService) : base(dispatcher, m)
+            PlaylistsService playlistsService) : base(dispatcher, m, playlistsService)
         {
             PlaylistsService = playlistsService;
-            NowPlayingCollectionViewSource = new AdvancedCollectionView(NowPlaying);
             BackgroundMediaPlayerInstance = backgroundMediaPlayerInstance;
             SaveNowPlayingAsPlaylistCommand = new AsyncRelayCommand<object>(SaveAsPlaylistCommandFunction);
             ShuffleRequestClickCommand = new AsyncRelayCommand<object>(ShuffleRequestCommandFunction);
-            ChangeSongOrderRequestCommand = new AsyncRelayCommand<object>(ChangeSongRequestCommandFunction);
-            SelectRequestCommand = new RelayCommand<object>(SelectionRequestCommandFunction);
-            ClearSelectionCommand = new RelayCommand<object>(UnSelectAllRequestCommandFunction);
-            RemoveCommand = new AsyncRelayCommand<object>(RemoveFromPlaybackRequestCommandFunction);
-            SkipBackFrames = new AsyncRelayCommand(async () =>
-            {
-                await AppState.Current.MediaServiceConnector.SkipSecondsBack(Constants.JumpBackSeconds);
-            });
-            SkipForwardFrames = new AsyncRelayCommand(async () =>
-            {
-                await AppState.Current.MediaServiceConnector.SkipSecondsForth(Constants.JumpAheadSeconds);
-            });
-            ClearPlaybackQueueCommand = new AsyncRelayCommand<object>(StopPlaybackAsync);
-
-            IncreasePlaybackRate = new AsyncRelayCommand(async () =>
-            {
-                await AppState.Current.MediaServiceConnector.QuickenPlaybackRate();
-            });
 
             DecreasePlaybackRate = new AsyncRelayCommand(async () =>
             {
@@ -612,38 +413,9 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
         }
 
-        private void SelectionRequestCommandFunction(object? sender)
-        {
-            if (SelectionMode == ListViewSelectionMode.Multiple)
-            {
-                SelectionMode = ListViewSelectionMode.None;
-                (sender as AppBarToggleButton).Label = "Select... ";
-                (sender as AppBarToggleButton).IsChecked = false;
-            }
-            else
-            {
-                SelectionMode = ListViewSelectionMode.Multiple;
-                NpSelectLabel = "Disable select...";
-
-                (sender as AppBarToggleButton).IsChecked = true;
-            }
-        }
-
         private void UnSelectAllRequestCommandFunction(object? sender)
         {
             ClearSelectionRequest?.Invoke(this, new EventArgs());
-        }
-
-        private void SelectAllRequestCommandFunction(object? sender)
-        {
-            //NowPlayingListSelectedItems.Clear();
-            var NowPlayingListSelectedItems = new List<Object>();
-            SelectionMode = ListViewSelectionMode.Multiple;
-            foreach (var item in NowPlaying)
-            {
-                NowPlayingListSelectedItems.Add(item);
-            }
-            SetSelectedItems?.Invoke(this, NowPlayingListSelectedItems.AsReadOnly());
         }
 
         private async Task RemoveFromPlaybackRequestCommandFunction(object? sender)
@@ -654,8 +426,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
         public async Task RemoveFromPlayback(object? sender)
         {
             var selectedItems = new List<MediaPlayerItemSourceUIWrapper>();
-            GetSelectedItemsRequest?.Invoke(this, selectedItems);
-            if (selectedItems.Count == NowPlaying.Count)
+            //GetSelectedItemsRequest?.Invoke(this, selectedItems);
+            if (selectedItems.Count == Items.Count)
             {
                 await StopPlaybackAsync(sender);
             }
@@ -694,7 +466,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        ~NowPlayingHomeViewModel()
+        ~NowPlayingUiService()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(false);

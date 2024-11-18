@@ -1,4 +1,5 @@
-﻿using MayazucMediaPlayer.Services;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.Services;
 using Microsoft.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
@@ -16,6 +17,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         public const string PlayNextCommandString = "PlayNext";
 
         public override string Title => "Play files + folders";
+
         public FileManagementService DataService
         {
             get; private set;
@@ -45,7 +47,9 @@ namespace MayazucMediaPlayer.FileSystemViews
                 DataService = new FileManagementService(DispatcherQueue,
                     base.ApplicationDataModels.PlaybackModel,
                     ServiceProvider.GetService<PlaylistsService>());
+                
                 await fileManagementControl.LoadStateInternal(DataService);
+
                 DataContext = DataService;
 
                 DataService.NavigationRequest += DataModel_NavigationRequest;

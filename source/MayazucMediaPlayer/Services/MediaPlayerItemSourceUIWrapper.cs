@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.WinUI;
+using FluentResults;
+using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services.MediaSources;
 using Microsoft.UI.Dispatching;
@@ -7,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,8 +18,10 @@ namespace MayazucMediaPlayer.Services
     /// <summary>
     /// UI wrapper for MediaDataStorage class
     /// </summary>
-    public class MediaPlayerItemSourceUIWrapper : ObservableObject
+    public class MediaPlayerItemSourceUIWrapper : ObservableObject, IMediaPlayerItemSourceProvder
     {
+        private Task<EmbeddedMetadataResult> metadataTask;
+
         [NotNull]
         public IMediaPlayerItemSource MediaData
         {
@@ -59,6 +64,7 @@ namespace MayazucMediaPlayer.Services
         }
 
         bool isInPlayback;
+
         public bool IsInPlayback
         {
             get => isInPlayback;
@@ -70,6 +76,42 @@ namespace MayazucMediaPlayer.Services
                     NotifyPropertyChanged(nameof(IsInPlayback));
                 }
             }
+        }
+
+        public string DisplayName => MediaData.Title;
+
+        public string ImageUri
+        {
+            get
+            {
+                if (metadataTask.IsCompletedSuccessfully)
+                    return metadataTask.Result.SavedThumbnailFile;
+                else return EmbeddedMetadataResolver.GetDefaultMetadataForFile(MediaData.MediaPath).SavedThumbnailFile;
+            }
+        }
+
+        public Guid ItemID => MediaData.ID;
+
+        public EmbeddedMetadataResult Metadata
+        {
+            get
+            {
+                if (metadataTask.IsCompletedSuccessfully)
+                    return metadataTask.Result;
+                return EmbeddedMetadataResolver.GetDefaultMetadataForFile(MediaData.MediaPath);
+            }
+        }
+
+        public string Path => MediaData.MediaPath;
+
+        public bool SupportsMetadata => true;
+
+        public event EventHandler<FileInfo> ImageFileChanged;
+        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+
+        public Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>> GetMediaDataSourcesAsync()
+        {
+            return Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>>.FromResult(Result.Ok(new List<IMediaPlayerItemSource>() { MediaData }.AsReadOnly()));
         }
 
         public MediaPlayerItemSourceUIWrapper(IMediaPlayerItemSource mds, DispatcherQueue disp)
@@ -91,8 +133,8 @@ namespace MayazucMediaPlayer.Services
 
         private async Task Checkmetadata()
         {
-            var metadata = await MediaData.GetMetadataAsync();
-
+            metadataTask = MediaData.GetMetadataAsync();
+            var metadata = await metadataTask;
             _ = Dispatcher.EnqueueAsync(async () =>
             {
                 ThumbnailImage = new BitmapImage(new Uri(metadata.SavedThumbnailFile));
@@ -112,12 +154,13 @@ namespace MayazucMediaPlayer.Services
         }
     }
 
-    public class MediaDataStorageUIWrapperCollection : ObservableCollection<MediaPlayerItemSourceUIWrapper>, IFilterableCollection<MediaPlayerItemSourceUIWrapper>
+    public class MediaDataStorageUIWrapperCollection<T> : IMediaPlayerItemSourceProvderCollection<T> where T: MediaPlayerItemSourceUIWrapper
     {
         public MediaDataStorageUIWrapperCollection() : base()
         {
         }
-        public MediaDataStorageUIWrapperCollection(IEnumerable<MediaPlayerItemSourceUIWrapper> items) : base(items)
+
+        public MediaDataStorageUIWrapperCollection(IEnumerable<T> items) : base(items)
         {
         }
 
@@ -126,7 +169,7 @@ namespace MayazucMediaPlayer.Services
             return this.Select(x => x.MediaData).ToList().AsReadOnly();
         }
 
-        public IEnumerable<MediaPlayerItemSourceUIWrapper> Filter(string filterParam)
+        public override IEnumerable<T> Filter(string filterParam)
         {
             if (string.IsNullOrWhiteSpace(filterParam))
             {
@@ -134,7 +177,7 @@ namespace MayazucMediaPlayer.Services
             }
             else
             {
-                return new ObservableCollection<MediaPlayerItemSourceUIWrapper>(this.Where(x => x.MediaData.Title.IndexOf(filterParam, StringComparison.CurrentCultureIgnoreCase) >= 0));
+                return new ObservableCollection<T>(this.Where(x => x.MediaData.Title.IndexOf(filterParam, StringComparison.CurrentCultureIgnoreCase) >= 0));
             }
         }
 
@@ -154,16 +197,6 @@ namespace MayazucMediaPlayer.Services
         public int IndexOfMediaData(MediaPlayerItemSourceUIWrapper other)
         {
             return IndexOfMediaData(other.MediaData);
-        }
-    }
-
-    public class ReadOnlyMediaDataStorageUIWrapperCollection : MediaDataStorageUIWrapperCollection
-    {
-        public ReadOnlyMediaDataStorageUIWrapperCollection() : base()
-        {
-        }
-        public ReadOnlyMediaDataStorageUIWrapperCollection(IEnumerable<MediaPlayerItemSourceUIWrapper> items) : base(items)
-        {
         }
     }
 }

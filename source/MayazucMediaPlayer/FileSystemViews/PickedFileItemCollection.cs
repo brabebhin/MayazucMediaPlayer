@@ -6,9 +6,21 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public class IMediaPlayerItemSourceProvderCollection : ObservableCollection<IMediaPlayerItemSourceProvder>, IFilterableCollection<IMediaPlayerItemSourceProvder>
+    public class IMediaPlayerItemSourceProvderCollection<T> : ObservableCollection<T>, IFilterableCollection<T> where T : IMediaPlayerItemSourceProvder
     {
-        public IEnumerable<IMediaPlayerItemSourceProvder> Filter(string filterParam)
+        public IMediaPlayerItemSourceProvderCollection()
+        {
+        }
+
+        public IMediaPlayerItemSourceProvderCollection(IEnumerable<T> collection) : base(collection)
+        {
+        }
+
+        public IMediaPlayerItemSourceProvderCollection(List<T> list) : base(list)
+        {
+        }
+
+        public virtual IEnumerable<T> Filter(string filterParam)
         {
             if (string.IsNullOrWhiteSpace(filterParam))
             {
@@ -16,7 +28,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             else
             {
-                return new ObservableCollection<IMediaPlayerItemSourceProvder>(this.Where(x => x.Path.IndexOf(filterParam, StringComparison.CurrentCultureIgnoreCase) >= 0));
+                return new ObservableCollection<T>(this.Where(x => x.Path.IndexOf(filterParam, StringComparison.CurrentCultureIgnoreCase) >= 0));
             }
         }
     }
