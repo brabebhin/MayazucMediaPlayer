@@ -81,7 +81,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             var mds = IMediaPlayerItemSourceFactory.Get(new PickedFileItem(file));
             var builder = new FFmpegInteropItemBuilder(null);
-            using (var ffmpeg = await builder.GetFFmpegInteropMssAsync(mds))
+            using (var ffmpeg = await builder.GetFFmpegInteropMssAsync(mds, true, 0))
             {
                 //await mds.FillMetadataAsync(ffmpeg);
                 return MediaPlaybackItemUIInformation.Create(ffmpeg, mds);

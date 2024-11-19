@@ -15,10 +15,6 @@
 #include "FormatInfo.h"
 #include "text_encoding_detect.h"
 
-// Note: Remove this static_assert after copying these generated source files to your project.
-// This assertion exists to avoid compiling these generated source files directly.
-//static_assert(false, "Do not compile generated C++/WinRT source files directly");
-
 namespace winrt::FFmpegInteropX::implementation
 {
     using namespace winrt::Windows::Foundation;
@@ -246,6 +242,7 @@ namespace winrt::FFmpegInteropX::implementation
         static DispatcherQueue GetCurrentDispatcherQueue();
 
     public://internal:
+        static IAsyncOperation<winrt::FFmpegInteropX::FFmpegMediaSource> ReadExternalSubtitleStreamAsync(IRandomAccessStream stream, hstring streamName, winrt::FFmpegInteropX::MediaSourceConfig const& config, VideoStreamDescriptor videoDescriptor, DispatcherQueue dispatcher, uint64_t windowId, bool useHdr);
         static IAsyncOperation<FFmpegInteropX::FFmpegMediaSource> CreateFromStreamInternalAsync(IRandomAccessStream stream, FFmpegInteropX::MediaSourceConfig config, uint64_t windowId);
         static IAsyncOperation<FFmpegInteropX::FFmpegMediaSource> CreateFromUriInternalAsync(hstring uri, FFmpegInteropX::MediaSourceConfig config, uint64_t windowId);
         static winrt::com_ptr<FFmpegMediaSource> CreateFromStream(IRandomAccessStream const& stream, winrt::com_ptr<MediaSourceConfig> const& config, DispatcherQueue  const& dispatcher, uint64_t windowId, bool useHdr);
@@ -267,6 +264,8 @@ namespace winrt::FFmpegInteropX::implementation
         winrt::com_ptr<MediaSourceConfig> config = { nullptr };
         bool isShuttingDown = false;
 
+        std::vector<std::shared_ptr<SubtitleProvider>> subtitleStreamProviders;
+
     private:
 
         winrt::weak_ref<MediaStreamSource> mssWeak = { nullptr };
@@ -282,7 +281,6 @@ namespace winrt::FFmpegInteropX::implementation
 
         std::vector<std::shared_ptr<MediaSampleProvider>> sampleProviders;
         std::vector<std::shared_ptr<MediaSampleProvider>> audioStreams;
-        std::vector<std::shared_ptr<SubtitleProvider>> subtitleStreams;
         std::vector<std::shared_ptr<MediaSampleProvider>> videoStreams;
 
         std::shared_ptr<MediaSampleProvider> currentVideoStream = { nullptr };

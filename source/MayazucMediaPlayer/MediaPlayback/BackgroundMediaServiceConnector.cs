@@ -25,12 +25,12 @@ namespace MayazucMediaPlayer.MediaPlayback
             return (CurrentPlaybackSession).PlaybackState == MediaPlaybackState.Playing;
         }
 
-        public void Initialize(IServiceProvider services, IntPtr hwnd)
+        public void Initialize(IServiceProvider services, IntPtr hwnd, ulong windowId)
         {
             if (PlayerInstance == null)
             {
                 PlayerInstance = (IBackgroundPlayer)services.GetService(typeof(IBackgroundPlayer));
-                PlayerInstance.Initialize(hwnd);
+                PlayerInstance.Initialize(hwnd, windowId);
             }
         }
 

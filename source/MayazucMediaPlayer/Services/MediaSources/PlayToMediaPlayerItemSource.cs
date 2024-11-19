@@ -24,11 +24,11 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
 
-        public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync()
+        public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId)
         {
             try
             {
-                return await ItemBuilder.GetFFmpegInteropMssAsync(PlayToSourceEvent, false);
+                return await ItemBuilder.GetFFmpegInteropMssAsync(PlayToSourceEvent, false, windowId);
             }
             catch { }
 

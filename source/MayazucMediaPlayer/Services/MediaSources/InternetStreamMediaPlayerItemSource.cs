@@ -23,12 +23,12 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
 
-        public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync()
+        public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId)
         {
             try
             {
                 var config = MediaHelperExtensions.GetFFmpegUserConfigs();
-                var ffmpegSource = await FFmpegMediaSource.CreateFromUriAsync(StreamingAddress, config);
+                var ffmpegSource = await FFmpegMediaSource.CreateFromUriAsync(StreamingAddress, config, windowId);
 
                 return ffmpegSource;
             }

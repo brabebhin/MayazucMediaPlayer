@@ -113,6 +113,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             config.General.FastSeek = true;
             config.General.MaxSupportedPlaybackRate = 4;
             config.Audio.DownmixAudioStreamsToStereo = SettingsService.Instance.StereoDownMix;
+            config.Video.HdrSupport = HdrSupport.Automatic;
             config.Video.VideoDecoderMode = FFmpegVideoModeInterop.DecoderModeMap[SettingsService.Instance.VideoDecoderMode];
             config.Subtitles.ExternalSubtitleAnsiEncoding = CharacterEncoding.AllEncodings[SettingsService.Instance.FFmpegCharacterEncodingIndex];
             config.Subtitles.AutoSelectForcedSubtitles = false;

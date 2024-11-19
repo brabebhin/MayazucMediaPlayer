@@ -18,7 +18,7 @@ namespace MayazucMediaPlayer.Services
     /// <summary>
     /// UI wrapper for MediaDataStorage class
     /// </summary>
-    public class MediaPlayerItemSourceUIWrapper : ObservableObject, IMediaPlayerItemSourceProvder
+    public class MediaPlayerItemSourceUIWrapper : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         private Task<EmbeddedMetadataResult> metadataTask;
 
@@ -49,34 +49,6 @@ namespace MayazucMediaPlayer.Services
         }
 
         public string Description { get; private set; }
-
-        int trackNumber;
-        public int TrackNumber
-        {
-            get => trackNumber;
-            set
-            {
-                if (trackNumber == value) return;
-
-                trackNumber = value;
-                NotifyPropertyChanged(nameof(TrackNumber));
-            }
-        }
-
-        bool isInPlayback;
-
-        public bool IsInPlayback
-        {
-            get => isInPlayback;
-            set
-            {
-                if (isInPlayback != value)
-                {
-                    isInPlayback = value;
-                    NotifyPropertyChanged(nameof(IsInPlayback));
-                }
-            }
-        }
 
         public string DisplayName => MediaData.Title;
 

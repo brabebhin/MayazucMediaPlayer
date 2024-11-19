@@ -26,5 +26,8 @@ namespace MayazucMediaPlayer.FileSystemViews
         event EventHandler<EmbeddedMetadataResult> MetadataChanged;
 
         Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>> GetMediaDataSourcesAsync();
+
+        int ExpectedPlaybackIndex { get; set; }
+        bool IsInPlayback { get; set; }
     }
 }

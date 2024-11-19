@@ -24,6 +24,7 @@
 
 #include <winrt/Windows.UI.h>
 #include <winrt/Windows.System.h>
+#include <winrt/Windows.System.Profile.h>
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.Storage.FileProperties.h>
 #include <winrt/Windows.Storage.Streams.h>
@@ -33,6 +34,8 @@
 #else
 #endif
 
+#include <winrt/Windows.System.h>
+#include <winrt/Windows.Media.Core.h>
 #pragma pop_macro("TRY")
 #pragma pop_macro("GetCurrentTime")
 
@@ -75,6 +78,7 @@ extern "C"
 #include "AudioStreamInfo.h"
 #include "VideoStreamInfo.h"
 #include "SubtitleStreamInfo.h"
+#include "AVCodecContextHelpers.h"
 
 // Disable debug string output on non-debug build
 #if !_DEBUG

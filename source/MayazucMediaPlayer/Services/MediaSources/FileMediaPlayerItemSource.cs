@@ -23,7 +23,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
 
-        public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync()
+        public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId)
         {
             PickedFile.File.Refresh();
             if (PickedFile.File.Exists)
@@ -32,7 +32,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
                 {
                     var stream = await PickedFile.File.OpenReadAsync();
                     var config = MediaHelperExtensions.GetFFmpegUserConfigs();
-                    var ffmpegSource = await FFmpegMediaSource.CreateFromStreamAsync(stream, config);
+                    var ffmpegSource = await FFmpegMediaSource.CreateFromStreamAsync(stream, config, windowId);
 
                     return ffmpegSource;
                 }

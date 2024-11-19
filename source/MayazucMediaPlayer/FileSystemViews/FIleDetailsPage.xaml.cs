@@ -35,7 +35,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             var builder = new FFmpegInteropItemBuilder(null);
             try
             {
-                using (var ffmpeg = await builder.GetFFmpegInteropMssAsync(mds))
+                using (var ffmpeg = await builder.GetFFmpegInteropMssAsync(mds, true, 0))
                 {
                     return MediaPlaybackItemUIInformation.Create(ffmpeg, mds);
                 }

@@ -20,7 +20,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
     /// </summary>
     public interface IMediaPlayerItemSource
     {
-        Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync();
+        Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId);
 
         Task<EmbeddedMetadataResult> GetMetadataAsync();
 

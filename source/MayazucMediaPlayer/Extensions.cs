@@ -415,11 +415,11 @@ namespace MayazucMediaPlayer
             return returnValue;
         }
 
-        public static void NumberMusicDataStorages(this ObservableCollection<MediaPlayerItemSourceUIWrapper> list)
+        public static void NumberMediaData(this ObservableCollection<MediaPlayerItemSourceUIWrapper> list)
         {
             for (int i = 0; i < list.Count; i++)
             {
-                list[i].TrackNumber = (i + 1);
+                list[i].ExpectedPlaybackIndex = (i + 1);
             }
         }
 

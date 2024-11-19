@@ -9,6 +9,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         /// This method must return a ffmpegInteropMSS object with an initialized media playback item
         /// </summary>
         /// <returns></returns>
-        Task<FFmpegMediaSource> GetFFmpegInteropMssAsync(T source, bool createPlaybackItem);
+        Task<FFmpegMediaSource> GetFFmpegInteropMssAsync(T source, bool createPlaybackItem, ulong windowId);
     }
 }

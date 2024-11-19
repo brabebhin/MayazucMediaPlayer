@@ -170,7 +170,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         /// Do initialization things
         /// </summary>
         /// <returns></returns>
-        void Initialize(IntPtr hwnd);
+        void Initialize(IntPtr hwnd, ulong windowId);
 
         /// <summary>
         /// Cross-concearn: disable given subtitles in playback item

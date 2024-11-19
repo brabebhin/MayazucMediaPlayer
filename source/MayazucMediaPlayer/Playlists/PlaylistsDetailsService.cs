@@ -292,7 +292,7 @@ namespace MayazucMediaPlayer.Playlists
         }
     }
 
-    public class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProvder
+    public class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         private readonly IMediaPlayerItemSource data;
         private readonly Task<EmbeddedMetadataResult> metadataTask;

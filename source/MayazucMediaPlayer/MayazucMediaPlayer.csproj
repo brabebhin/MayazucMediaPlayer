@@ -10,19 +10,25 @@
 		<RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
 		<UseWinUI>true</UseWinUI>
 		<Nullable>enable</Nullable>
+		<Configurations>Debug_Desktop;Release_Desktop</Configurations>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Desktop|x64'">
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Desktop|x64'">
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Desktop|arm64'">
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Desktop|arm64'">
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutDirFFmpegInteropX>..\..\Output\FFmpegInteropX\$(PlatformTarget)\$(Configuration)_Desktop\</OutDirFFmpegInteropX>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<Compile Remove="AppBackground.cs" />
 		<Compile Remove="AudioEffects\AudioEqualizerSlider.xaml.cs" />
@@ -74,7 +80,7 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.1.240916" />
-		<PackageReference Include="FFmpegInteropX.Desktop.FFmpeg" Version="5.1.100-pre3" />
+		<PackageReference Include="FFmpegInteropX.Desktop.FFmpeg" Version="7.0.100-pre3" />
 		<PackageReference Include="Microsoft.VCRTForwarders.140" Version="1.1.0" />
 		<PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI" Version="7.1.2" />

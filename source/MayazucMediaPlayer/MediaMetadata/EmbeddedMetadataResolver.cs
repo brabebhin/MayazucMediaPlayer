@@ -223,7 +223,7 @@ namespace MayazucMediaPlayer.MediaMetadata
             FFmpegMediaSource mediaSource)
         {
             var folderToSaveThumbnailIn = await LocalFolders.GetAlbumArtFolder();
-            FileInfo retValue = null;
+            FileInfo retValue = new FileInfo(AssetsPaths.PlaceholderAlbumArt);
             if (!mediaSource.HasThumbnail) return retValue;
 
             var picture = mediaSource.ExtractThumbnail();
@@ -244,7 +244,7 @@ namespace MayazucMediaPlayer.MediaMetadata
                     retValue = resultingAlbumArtFile.FileInformation;
                 }
             }
-            catch { retValue = null; }
+            catch {  }
 
 
             return retValue;

@@ -181,6 +181,8 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
+        private ulong WindowId { get; set; } = 0;
+
         public BackgroundMediaPlayer(DispatcherQueue dispatcher,
             PlaybackSequenceService playbackModels,
             EqualizerService equalizerService,
@@ -242,7 +244,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
 
             ItemBuilder = new FFmpegInteropItemBuilder(EqualizerService);
-            PlaybackListAdapter = new MediaSequencerMediaPlaylistAdapter(PlaybackQueueService, ItemBuilder, CurrentPlayer, DispatcherUiThread, commandDispatcher, VideoEffectsConfiguration);
+            PlaybackListAdapter = new MediaSequencerMediaPlaylistAdapter(PlaybackQueueService, ItemBuilder, CurrentPlayer, DispatcherUiThread, commandDispatcher, VideoEffectsConfiguration, WindowId);
 
             if (SettingsService.Instance.PlayToEnabled) _ = StartDlnaSink();
 
@@ -400,7 +402,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private async Task ResetToLocalPlaybackAdapter()
         {
-            PlaybackListAdapter = new MediaSequencerMediaPlaylistAdapter(PlaybackQueueService, ItemBuilder, CurrentPlayer, DispatcherUiThread, commandDispatcher, VideoEffectsConfiguration);
+            PlaybackListAdapter = new MediaSequencerMediaPlaylistAdapter(PlaybackQueueService, ItemBuilder, CurrentPlayer, DispatcherUiThread, commandDispatcher, VideoEffectsConfiguration, WindowId);
             await PlaybackQueueService.NowPlayingBackStore.LoadSequenceAsync();
         }
 
@@ -1148,7 +1150,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             using (await playToReceiverLock.LockAsync())
             {
-                PlayToRecieverInstance = new MayazucPlayToReciever(DispatcherUiThread, CurrentPlayer, new PlayToConfiguration(), commandDispatcher, PlaybackQueueService);
+                PlayToRecieverInstance = new MayazucPlayToReciever(DispatcherUiThread, CurrentPlayer, new PlayToConfiguration(), commandDispatcher, PlaybackQueueService, WindowId);
                 PlayToRecieverInstance.SourceReady += PlayToRecieverInstance_SourceReady;
                 await PlayToRecieverInstance.InitializeAsync();
                 await PlayToRecieverInstance.StartAsync();
@@ -1322,8 +1324,10 @@ namespace MayazucMediaPlayer.MediaPlayback
             });
         }
 
-        public void Initialize(IntPtr hwnd)
+        public void Initialize(IntPtr hwnd, ulong windowId)
         {
+            WindowId = windowId;
+
             InitPlayer(hwnd);
             PlaybackQueueService.FillData();
             PlaylistsService.LoadPlaylistsAsync();

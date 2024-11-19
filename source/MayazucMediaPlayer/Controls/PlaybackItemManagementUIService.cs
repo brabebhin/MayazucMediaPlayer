@@ -846,7 +846,7 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private async Task PlayFilesInternal(IEnumerable<T> Items, int startIndex)
+        protected virtual async Task PlayFilesInternal(IEnumerable<T> Items, int startIndex)
         {
             try
             {
@@ -856,7 +856,6 @@ namespace MayazucMediaPlayer.Controls
                 }
 
                 await GlobalProgressBarUtilities.ShowProgressBar("Loading...");
-                PlayButtonIsEnabled = false;
 
                 var mediaSourcesToPlay = await PrepareForPlayback(Items);
                 if (mediaSourcesToPlay.IsSuccess)
@@ -873,10 +872,7 @@ namespace MayazucMediaPlayer.Controls
             }
             finally
             {
-                PlayButtonIsEnabled = true;
-
                 await GlobalProgressBarUtilities.HideProgressBar();
-                //Frame.BackStack.Clear();
             }
         }
 

@@ -55,17 +55,21 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
 
         public bool LocalSource => false;
 
+        readonly ulong WindowId = 0;
+
         public PlayToMediaPlaybackListAdapter(MediaPlayer player,
             IFFmpegInteropMediaSourceProvider<SourceChangeRequestedEventArgs> itemBuilder,
             SourceChangeRequestedEventArgs source,
             PlayToReceiver connector,
-            PlaybackSequenceService playbackServiceInstance)
+            PlaybackSequenceService playbackServiceInstance,
+            ulong windowId)
         {
             CurrentPlayer = player;
             ItemBuilder = itemBuilder;
             Source = source;
             Connector = connector;
             PlaybackServiceInstance = playbackServiceInstance;
+            WindowId = windowId;
         }
 
         public Task<bool> MoveToNextItem(MediaPlaybackItem CurrentItem, bool userAction, bool incrementIndex)
@@ -89,7 +93,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
                     var metadata = new EmbeddedMetadataResult(Source.Album, Source.Author, Source.Genre, Source.Title);
                     var data = IMediaPlayerItemSourceFactory.Get(Source);
 
-                    ffmpeginteropMss = await data.GetFFmpegMediaSourceAsync();
+                    ffmpeginteropMss = await data.GetFFmpegMediaSourceAsync(WindowId);
                     CurrentPlaybackItem = ffmpeginteropMss.CreateMediaPlaybackItem();
 
                     var PlaybackDataStreamInfo = MediaPlaybackItemUIInformation.Create(ffmpeginteropMss, data);

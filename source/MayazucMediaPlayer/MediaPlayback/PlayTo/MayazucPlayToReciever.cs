@@ -48,17 +48,22 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
             private set;
         }
 
+        private readonly ulong WindowId = 0;
+
         public MayazucPlayToReciever(DispatcherQueue dispatcher,
             MediaPlayer currentPlayer,
             PlayToConfiguration configuration,
             CommandDispatcher mediaCommandsDispatcher,
-            PlaybackSequenceService playbackService)
+            PlaybackSequenceService playbackService,
+            ulong windowId)
         {
             PlaybackServiceInstance = playbackService;
             Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
             CurrentPlayer = currentPlayer ?? throw new ArgumentNullException(nameof(currentPlayer));
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             MediaCommandsDispatcher = mediaCommandsDispatcher ?? throw new ArgumentNullException(nameof(MediaCommandsDispatcher));
+
+            WindowId = windowId;
         }
 
         public PlayToReceiver Reciever
@@ -160,7 +165,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
                     UnsubscribeToMediaPlayerEvents();
                     IsPlayReceivedPreMediaLoaded = false;
                     justLoadedMedia = true;
-                    var playbackList = new PlayToMediaPlaybackListAdapter(CurrentPlayer, itemBuilder, args, Reciever, PlaybackServiceInstance);
+                    var playbackList = new PlayToMediaPlaybackListAdapter(CurrentPlayer, itemBuilder, args, Reciever, PlaybackServiceInstance, WindowId);
                     playbackList.AttachingToMediaPlayer += PlaybackList_AttachingToMediaPlayer;
                     SourceReady.Invoke(this, new PlayToRecieverSourceReadyEventArgs(playbackList));
                 }

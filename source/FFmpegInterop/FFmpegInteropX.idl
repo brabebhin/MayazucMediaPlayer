@@ -236,48 +236,6 @@ namespace FFmpegInteropX
 
     };
 
-#ifdef UWP
-    [default_interface]
-    runtimeclass BasicVideoEffect : Windows.Media.Effects.IBasicVideoEffect
-    {
-        BasicVideoEffect();
-    };
-
-
-    [default_interface]
-    [bindable]
-    runtimeclass VideoEffectConfiguration
-    {
-        VideoEffectConfiguration();
-
-    ///<summary>Adjusts the brightness of the image. Default value is 0, recommended range -1 to 1.</summary>
-    Single Brightness{get; set; };
-
-    ///<summary>Adjusts the contrast of the image. Default value is 0, recommended range -1 to 1.</summary>
-    Single Contrast{ get; set; };
-
-    ///<summary>Adjusts the saturation of the image. Default value is 0, recommended range -1 to 1.</summary>
-    Single Saturation{ get; set; };
-
-    ///<summary>Adjusts the color temperature of the image. Default value is 0, allowed range -1 to 1.</summary>
-    Single Temperature{ get; set; };
-
-    ///<summary>Adjusts the tint of the image. Default value is 0, allowed range -1 to 1.</summary>
-    Single Tint{ get; set; };
-
-    ///<summary>Adjusts the sharpness of the image. Default value is 0, allowed range 0 to 10.</summary>
-    Single Sharpness{ get; set; };
-
-    ///<summary>Adjusts which areas are sharpened. Default value is 0, allowed range 0 to 10.</summary>
-    Single SharpnessThreshold{ get; set; };
-
-    [default_overload]
-    void AddVideoEffect(Windows.Media.Playback.MediaPlayer player);
-
-    [default_overload]
-    void AddVideoEffect(Windows.Media.Playback.MediaPlayer player, Boolean isOptional);
-    };
-#endif
 
 #ifdef UWP
     [bindable]
@@ -599,7 +557,49 @@ namespace FFmpegInteropX
 
         ///<summary>Gets the presentation timestamp delay for the given stream. </summary>
         Windows.Foundation.TimeSpan GetStreamDelay(IStreamInfo stream);
-    };   
+    };
+
+    runtimeclass SubtitleParser : Windows.Foundation.IClosable
+    {
+        ///<summary>Returns the parsed subtitle track.</summary>
+        SubtitleStreamInfo SubtitleTrack {get;};
+
+        [default_overload]
+        ///<summary>Adds an external subtitle from a stream.</summary>
+        ///<param name="stream">The subtitle stream.</param>
+        ///<param name="streamName">The name to use for the subtitle.</param>
+        ///<param name="config">Used to configure subtitles</param>
+        ///<param name="videoDescriptor">Descriptor of the video stream that the subtitle will be attached to. Used to compute sizes of image subs.</param>
+        static Windows.Foundation.IAsyncOperation<SubtitleParser> ReadSubtitleAsync(Windows.Storage.Streams.IRandomAccessStream stream,
+            String streamName,
+            MediaSourceConfig config,
+            Windows.Media.Core.VideoStreamDescriptor videoDescriptor);
+
+        [default_overload]
+        ///<summary>Adds an external subtitle from a stream.</summary>
+        ///<param name="stream">The subtitle stream.</param>
+        static Windows.Foundation.IAsyncOperation<SubtitleParser> ReadSubtitleAsync(Windows.Storage.Streams.IRandomAccessStream stream);
+
+        ///<summary>Adds an external subtitle from an URI.</summary>
+        ///<param name="stream">The subtitle URI.</param>
+        ///<param name="streamName">The name to use for the subtitle.</param>
+        ///<param name="config">Used to configure subtitles</param>
+        ///<param name="videoDescriptor">Descriptor of the video stream that the subtitle will be attached to. Used to compute sizes of image subs.</param>
+        static Windows.Foundation.IAsyncOperation<SubtitleParser> ReadSubtitleAsync(Windows.Foundation.Uri uri,
+            String streamName,
+            MediaSourceConfig config,
+            Windows.Media.Core.VideoStreamDescriptor videoDescriptor);
+
+        ///<summary>Adds an external subtitle from an URI.</summary>
+        ///<param name="stream">The subtitle URI.</param>
+        static Windows.Foundation.IAsyncOperation<SubtitleParser> ReadSubtitleAsync(Windows.Foundation.Uri uri);
+
+        ///<summary>Gets the presentation timestamp delay for the subtitle stream. </summary>
+        Windows.Foundation.TimeSpan GetStreamDelay();
+
+        ///<summary>Sets a presentation timestamp delay for the subtitle stream. Audio, video and subtitle synchronisation can be achieved this way. A positive value will cause samples (or subtitles) to be rendered at a later time. A negative value will make rendering come sooner</summary>
+        void SetStreamDelay(Windows.Foundation.TimeSpan delay);
+     }   
 
     [default_interface]
 #ifdef UWP

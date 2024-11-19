@@ -10,7 +10,38 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public class PickedFileItem : ObservableObject, IMediaPlayerItemSourceProvder
+    public class IMediaPlayerItemSourceProviderBase : ObservableObject
+    {
+        int trackNumber;
+        public int ExpectedPlaybackIndex
+        {
+            get => trackNumber;
+            set
+            {
+                if (trackNumber == value) return;
+
+                trackNumber = value;
+                NotifyPropertyChanged(nameof(ExpectedPlaybackIndex));
+            }
+        }
+
+        bool isInPlayback;
+
+        public bool IsInPlayback
+        {
+            get => isInPlayback;
+            set
+            {
+                if (isInPlayback != value)
+                {
+                    isInPlayback = value;
+                    NotifyPropertyChanged(nameof(IsInPlayback));
+                }
+            }
+        }
+    }
+
+    public class PickedFileItem : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         public EmbeddedMetadataResult Metadata { get; private set; }
 
@@ -166,7 +197,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         }
     }
 
-    public class InternetStreamMediaPlayerItemSourceProvder : IMediaPlayerItemSourceProvder
+    public class InternetStreamMediaPlayerItemSourceProvder : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         public string DisplayName
         {

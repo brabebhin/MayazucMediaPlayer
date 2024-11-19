@@ -81,7 +81,7 @@ namespace MayazucMediaPlayer.Services
         public int Randomize(int observableIndex)
         {
             var retValue = this.Randomize<MediaPlayerItemSourceUIWrapper>(observableIndex);
-            NumberNowPlayingInternal();
+            //NumberNowPlayingInternal();
             SaveInstanceToBackstore();
 
             return retValue;
@@ -157,7 +157,7 @@ namespace MayazucMediaPlayer.Services
         {
             for (int i = 0; i < Count; i++)
             {
-                this[i].TrackNumber = i + 1;
+                this[i].ExpectedPlaybackIndex = i + 1;
                 this[i].MediaData.ExpectedPlaybackIndex = i;
             }
         }

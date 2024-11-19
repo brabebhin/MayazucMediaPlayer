@@ -93,7 +93,6 @@ HRESULT MediaSampleProvider::Initialize()
 
 void MediaSampleProvider::InitializeNameLanguageCodec()
 {
-    // unfortunately, setting Name or Language on MediaStreamDescriptor does not have any effect, they are not shown in track selection list
     auto title = av_dict_get(m_pAvStream->metadata, "title", NULL, 0);
     if (title)
     {
@@ -113,6 +112,8 @@ void MediaSampleProvider::InitializeNameLanguageCodec()
                 {
                     auto winLanguage = winrt::Windows::Globalization::Language(entry->TwoLetterCode());
                     Language = winLanguage.DisplayName();
+                    if (m_streamDescriptor)
+                        m_streamDescriptor.Language(winLanguage.LanguageTag());
                 }
                 catch (...)
                 {
@@ -126,6 +127,8 @@ void MediaSampleProvider::InitializeNameLanguageCodec()
             {
                 auto winLanguage = winrt::Windows::Globalization::Language(Language);
                 Language = winLanguage.DisplayName();
+                if (m_streamDescriptor)
+                    m_streamDescriptor.Language(winLanguage.LanguageTag());
             }
             catch (...)
             {
@@ -165,6 +168,9 @@ void MediaSampleProvider::InitializeNameLanguageCodec()
         Name = name;
     }
 
+    if (m_streamDescriptor)
+        m_streamDescriptor.Name(Name);
+
     auto codec = m_pAvCodecCtx->codec_descriptor->name;
     if (codec)
     {
@@ -185,8 +191,7 @@ void MediaSampleProvider::InitializeStreamInfo()
         char* channelLayoutName = new char[256];
         if (channelLayoutName)
         {
-            auto layout = m_pAvCodecCtx->channel_layout ? m_pAvCodecCtx->channel_layout : AvCodecContextHelpers::GetDefaultChannelLayout(channels);
-            av_get_channel_layout_string(channelLayoutName, 256, channels, layout);
+            av_channel_layout_describe(&m_pAvCodecCtx->ch_layout, channelLayoutName, 256);
             channelLayout = StringUtils::Utf8ToPlatformString(channelLayoutName);
             delete[] channelLayoutName;
         }
@@ -426,7 +431,7 @@ void MediaSampleProvider::SetCommonVideoEncodingProperties(VideoEncodingProperti
     else
     {
         // get rotation from side data
-        auto displaymatrix = av_stream_get_side_data(m_pAvStream, AVPacketSideDataType::AV_PKT_DATA_DISPLAYMATRIX, NULL);
+        auto displaymatrix = av_packet_side_data_get(m_pAvStream->codecpar->coded_side_data, m_pAvStream->codecpar->nb_coded_side_data, AVPacketSideDataType::AV_PKT_DATA_DISPLAYMATRIX);
         if (displaymatrix)
         {
             // need to invert and use positive values

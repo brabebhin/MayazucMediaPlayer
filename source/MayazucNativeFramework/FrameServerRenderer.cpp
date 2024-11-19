@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FrameServerRenderer.h"
 #include "FrameServerRenderer.g.cpp"
-
+#include <mfmediaengine.h>
 
 namespace winrt::MayazucNativeFramework::implementation
 {

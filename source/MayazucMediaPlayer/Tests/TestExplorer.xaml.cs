@@ -96,7 +96,7 @@ namespace MayazucMediaPlayer.Tests
                     {
                         Stopwatch watch = new Stopwatch();
                         watch.Start();
-                        var mss = await builder.GetFFmpegInteropMssAsync(item);
+                        var mss = await builder.GetFFmpegInteropMssAsync(item, true, 0);
                         list.Items.Add(mss.PlaybackItem);
                         watch.Stop();
                         Debug.WriteLine($"playback item in {watch.ElapsedMilliseconds}");

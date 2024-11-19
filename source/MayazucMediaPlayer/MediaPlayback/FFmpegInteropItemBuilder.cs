@@ -22,13 +22,13 @@ namespace MayazucMediaPlayer.MediaPlayback
             EqualizerServiceInstance = equalizerServiceInstance;
         }
 
-        public async Task<FFmpegMediaSource> GetFFmpegInteropMssAsync(IMediaPlayerItemSource source, bool createPlaybackItem = true)
+        public async Task<FFmpegMediaSource> GetFFmpegInteropMssAsync(IMediaPlayerItemSource source, bool createPlaybackItem, ulong windowId)
         {
             var config = MediaHelperExtensions.GetFFmpegUserConfigs();
 
             if (source != null)
             {
-                FFmpegMediaSource ffmpegInterop = await source.GetFFmpegMediaSourceAsync();
+                FFmpegMediaSource ffmpegInterop = await source.GetFFmpegMediaSourceAsync(windowId);
 
                 if (ffmpegInterop.VideoStreams.Count > 0)
                 {

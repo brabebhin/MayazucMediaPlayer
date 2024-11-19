@@ -31,7 +31,7 @@ namespace MayazucMediaPlayer
         void Initialize([In] IntPtr hwnd);
     }
 
-    public class AppState: IDisposable
+    public class AppState : IDisposable
     {
         static readonly object lockState = new object();
         static AppState _current;
@@ -182,9 +182,9 @@ namespace MayazucMediaPlayer
 
         }
 
-        private void InitBackgroundMediaPlayer(IntPtr hwnd)
+        private void InitBackgroundMediaPlayer(IntPtr hwnd, ulong windowId)
         {
-            AppState.Current.MediaServiceConnector.Initialize(ApplicationState.Services, hwnd);
+            AppState.Current.MediaServiceConnector.Initialize(ApplicationState.Services, hwnd, windowId);
         }
 
         private AppState ApplicationState
@@ -215,7 +215,7 @@ namespace MayazucMediaPlayer
             m_window = new MainWindow();
             m_window.Activate();
 
-            InitBackgroundMediaPlayer(GetActiveWindow());
+            InitBackgroundMediaPlayer(GetActiveWindow(), m_window.AppWindow.Id.Value);
 
             await m_window.LoadAsync();
             AppState.Current.MusicLibraryIndexService.Start();

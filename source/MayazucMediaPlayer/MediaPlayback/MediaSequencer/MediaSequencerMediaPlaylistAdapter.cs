@@ -39,6 +39,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         readonly CommandDispatcher mediaCommandsDispatcher;
 
         readonly VideoEffectProcessorConfiguration VideoEffectsConfiguration;
+        readonly ulong WindowId = 0;
 
         public MediaSequencerMediaPlaylistAdapter(
             PlaybackSequenceService playbackQueueService,
@@ -46,7 +47,8 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             MediaPlayer player,
             DispatcherQueue dispatcher,
             CommandDispatcher mediaCommandsDispatcher,
-            VideoEffectProcessorConfiguration videoEffectsConfiguration)
+            VideoEffectProcessorConfiguration videoEffectsConfiguration,
+            ulong windowId)
         {
             PlaybackModelsInstance = playbackQueueService ?? throw new ArgumentNullException(nameof(playbackQueueService));
             playbackItemProvider = provider ?? throw new ArgumentNullException(nameof(provider));
@@ -56,6 +58,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             PlaybackModelsInstance.NowPlayingBackStore.CollectionChanged += NowPlayingBackStore_CollectionChanged;
             playbackQueueProvider = new MediaPlaybackQueueProvider(PlaybackModelsInstance.NowPlayingBackStore);
             VideoEffectsConfiguration = videoEffectsConfiguration;
+            WindowId = windowId;
         }
 
         private void NowPlayingBackStore_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -109,7 +112,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         private async void BackStore_MediaOpened(object? sender, MediaOpenedEventArgs e)
         {
-            var nextItemTask = mediaCommandsDispatcher.EnqueueAsync(async () =>
+            await mediaCommandsDispatcher.EnqueueAsync(async () =>
             {
                 using (IsBusy.SetBusy())
                 {
@@ -131,8 +134,6 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             });
 
             CurrentPlaybackItemChanged?.Invoke(this, new MayazucCurrentMediaPlaybackItemChangedEventArgs(e.EventData.PlaybackItem, MediaPlaybackItemChangedReason.EndOfStream, this));
-
-            await nextItemTask;
         }
 
         private IMediaSourceSequencer InitializeBackstoreForItem(MediaPlaybackItem nextItem)
@@ -284,7 +285,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
                     }
                     var ffmpegInteropMss = await DispatcherQueueExtensions.EnqueueAsync(dispatcher, async () =>
                     {
-                        return await playbackItemProvider.GetFFmpegInteropMssAsync(mediaData, true);
+                        return await playbackItemProvider.GetFFmpegInteropMssAsync(mediaData, true, WindowId);
                     });
 
                     if (ffmpegInteropMss == null)
@@ -344,7 +345,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
                 var ffmpegInteropMss = await dispatcher.EnqueueAsync(async () =>
                 {
-                    return await playbackItemProvider.GetFFmpegInteropMssAsync(mediaData, true);
+                    return await playbackItemProvider.GetFFmpegInteropMssAsync(mediaData, true, WindowId);
                 });
 
                 if (ffmpegInteropMss == null)
