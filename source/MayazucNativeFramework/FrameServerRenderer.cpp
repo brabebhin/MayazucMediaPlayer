@@ -19,20 +19,22 @@ namespace winrt::MayazucNativeFramework::implementation
 			{
 				if (renderingTarget)
 					renderingTarget.Close();
-				
-				//TODO: deal with HDR
+
 				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi, pixelFormat, CanvasAlphaMode::Premultiplied);
 			}
 			if (canvasSwapChain.Format() != pixelFormat || canvasSwapChain.Size().Width != width || canvasSwapChain.Size().Height != height || canvasSwapChain.Dpi() != dpi)
 			{
 				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, SubtitleSwapChainBufferCount);
 			}
-
 			{
 				CanvasDrawingSession outputDrawingSession = canvasSwapChain.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.CopyFrameToVideoSurface(renderingTarget);
 				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
-				outputDrawingSession.Flush();				
+				if (subtitleRenderingTarget)
+				{
+					outputDrawingSession.DrawImage(subtitleRenderingTarget);
+				}
+				outputDrawingSession.Flush();
 				canvasSwapChain.Present(0);
 			}
 		}
@@ -40,6 +42,21 @@ namespace winrt::MayazucNativeFramework::implementation
 		{
 
 		}
+	}
+
+	void FrameServerRenderer::RefreshSubtitle(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi)
+	{
+		auto canvasDevice = CanvasDevice::GetSharedDevice();
+
+		if (subtitleRenderingTarget == nullptr || subtitleRenderingTarget.Device().IsDeviceLost() || (subtitleRenderingTarget.Bounds().Width != width) || (subtitleRenderingTarget.Bounds().Height != height))
+		{
+			if (subtitleRenderingTarget)
+				subtitleRenderingTarget.Close();
+
+			subtitleRenderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized, CanvasAlphaMode::Premultiplied);
+		}
+
+		player.RenderSubtitlesToSurface(subtitleRenderingTarget);
 	}
 
 	winrt::Windows::Foundation::IAsyncAction FrameServerRenderer::RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream)

@@ -114,6 +114,7 @@
   <ItemGroup>
     <ClInclude Include="EffectsProcessor.h" />
     <ClInclude Include="FrameServerRenderer.h" />
+    <ClInclude Include="MediaFoundationSubtitleRenderer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="SsaAssTextRenderer.h" />
     <ClInclude Include="SubtitleRenderer.h" />
@@ -122,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrameServerRenderer.cpp" />
+    <ClCompile Include="MediaFoundationSubtitleRenderer.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

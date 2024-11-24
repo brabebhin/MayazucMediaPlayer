@@ -16,6 +16,7 @@
     <ClCompile Include="FrameServerRenderer.cpp" />
     <ClCompile Include="SubtitleRenderer.cpp" />
     <ClCompile Include="SsaAssTextRenderer.cpp" />
+    <ClCompile Include="MediaFoundationSubtitleRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -25,6 +26,7 @@
     <ClInclude Include="SubtitleRenderer.h" />
     <ClInclude Include="SsaAssTextRenderer.h" />
     <ClInclude Include="SwapChainPanelHelper.h" />
+    <ClInclude Include="MediaFoundationSubtitleRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="MayazucNativeFramework.idl" />

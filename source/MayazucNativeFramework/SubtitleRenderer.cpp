@@ -100,24 +100,27 @@ namespace winrt::MayazucNativeFramework::implementation
 			auto renderSurfaceDrawingSession = renderTargetSurface.CreateDrawingSession();
 			renderSurfaceDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());
 
-			auto subtitleOutputSpriteBatch = renderSurfaceDrawingSession.CreateSpriteBatch();
-			//start with image cues
-			for (int i = 0; i < imageCuesToRender.size(); i++)
-			{
-				try
+			ICanvasSpriteBatch subtitleOutputSpriteBatch = nullptr;
+			if (imageCuesToRender.size() > 0) {
+				subtitleOutputSpriteBatch = renderSurfaceDrawingSession.CreateSpriteBatch();
+				//start with image cues
+				for (int i = 0; i < imageCuesToRender.size(); i++)
 				{
-					auto imageCue = imageCuesToRender[i];
-					auto position = TimedTextPointRelativeToAbsolute(imageCue.Position(), width, height);
-					auto extent = TimedTextSizeRelativeToAbsolute(imageCue.Extent(), width, height);
-
-					auto targetPosition = TimedTextPositionSizeToRect(position, extent);
-					if (targetPosition.Width == 0 || targetPosition.Height == 0)
+					try
 					{
-						continue;
+						auto imageCue = imageCuesToRender[i];
+						auto position = TimedTextPointRelativeToAbsolute(imageCue.Position(), width, height);
+						auto extent = TimedTextSizeRelativeToAbsolute(imageCue.Extent(), width, height);
+
+						auto targetPosition = TimedTextPositionSizeToRect(position, extent);
+						if (targetPosition.Width == 0 || targetPosition.Height == 0)
+						{
+							continue;
+						}
+						subtitleOutputSpriteBatch.Draw(CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, imageCue.SoftwareBitmap()), targetPosition);
 					}
-					subtitleOutputSpriteBatch.Draw(CanvasBitmap::CreateFromSoftwareBitmap(canvasDevice, imageCue.SoftwareBitmap()), targetPosition);
+					catch (...) {}
 				}
-				catch (...) {}
 			}
 
 			//move on to textCues
@@ -194,9 +197,10 @@ namespace winrt::MayazucNativeFramework::implementation
 				}
 			}
 
-			subtitleOutputSpriteBatch.Close();
+			if (subtitleOutputSpriteBatch)
+				subtitleOutputSpriteBatch.Close();
 			renderSurfaceDrawingSession.Flush();
-		
+
 			{
 				auto swapChainDrawingSession = canvasSwapChain.CreateDrawingSession(Colors::Transparent());
 				swapChainDrawingSession.Clear(winrt::Microsoft::UI::Colors::Transparent());

@@ -39,8 +39,15 @@ namespace MayazucMediaPlayer.Controls
         readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         ThreadPoolTimer? _fullscreenCursorTimer;
         volatile bool isPointerOverTransportControls = false;
+        bool useMfSubsRenderer = true;
 
         SubtitleRenderer NativeSubtitleRenderer
+        {
+            get;
+            set;
+        }
+
+        MediaFoundationSubtitleRenderer MFSubtitleRenderer
         {
             get;
             set;
@@ -59,18 +66,22 @@ namespace MayazucMediaPlayer.Controls
                 {
                     if (_mediaPlayer != null)
                     {
+                        _mediaPlayer.SubtitleFrameChanged -= _mediaPlayer_SubtitleFrameChanged;
                         _mediaPlayer.VideoFrameAvailable -= VideoFameAvailanle;
                         _mediaPlayer.IsVideoFrameServerEnabled = false;
                     }
                     _mediaPlayer = value;
                     if (_mediaPlayer != null)
                     {
+                        _mediaPlayer.SubtitleFrameChanged += _mediaPlayer_SubtitleFrameChanged;
                         _mediaPlayer.VideoFrameAvailable += VideoFameAvailanle;
                         _mediaPlayer.IsVideoFrameServerEnabled = true;
                     }
                 }
             }
         }
+
+
 
         private volatile bool windowSupportsHdr = false;
         private DisplayInformation displayInformation;
@@ -86,7 +97,7 @@ namespace MayazucMediaPlayer.Controls
             this.ManipulationStarted += MediaPlayerRenderingElement2_ManipulationStarted;
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
             renderer = new FrameServerRenderer(VideoSwapChain);
-            NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
+            allocSubtitleRenderer();
             _ = MediaEffectsFrame.NavigateAsync(typeof(MediaEffectsPage));
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
             MediaTransportControlsInstance.PointerEntered += MediaTransportControlsInstance_PointerEntered;
@@ -97,6 +108,18 @@ namespace MayazucMediaPlayer.Controls
             CheckHdr(displayInformation);
 
             _ = nowPlayingList.InitializeStateAsync(null);
+        }
+
+        void allocSubtitleRenderer()
+        {
+            if (useMfSubsRenderer)
+            {
+                MFSubtitleRenderer = new MediaFoundationSubtitleRenderer(SubtitleSwapChain);
+            }
+            else
+            {
+                NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
+            }
         }
 
         protected override void OnDispose(bool disposing)
@@ -272,7 +295,14 @@ namespace MayazucMediaPlayer.Controls
                     SubtitleSwapChain.Visibility = Visibility.Visible;
                     SubtitleSwapChain.Opacity = 1;
 
-                    NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (float)thisActualWidth, (float)thisActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                    if (useMfSubsRenderer)
+                    {
+                        MFSubtitleRenderer.RenderSubtitlesToFrame(_mediaPlayer, (float)thisActualWidth, (float)thisActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                    }
+                    else
+                    {
+                        NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (float)thisActualWidth, (float)thisActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                    }
                 }
                 catch
                 {
@@ -290,10 +320,10 @@ namespace MayazucMediaPlayer.Controls
 
         private void UpdateSubtitles(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
         {
-            DispatcherQueue.TryEnqueue(async () =>
-            {
-                DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
-            });
+            //DispatcherQueue.TryEnqueue(async () =>
+            //{
+            //    DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
+            //});
         }
 
         private async void EffectConfiguration_ConfigurationChanged(object? sender, string e)
@@ -314,6 +344,14 @@ namespace MayazucMediaPlayer.Controls
                 RedrawPaused(WrappedMediaPlayer, e.NewSize);
 
                 DrawSubtitles(e.NewSize);
+            });
+        }
+
+        private void _mediaPlayer_SubtitleFrameChanged(MediaPlayer sender, object args)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
             });
         }
 

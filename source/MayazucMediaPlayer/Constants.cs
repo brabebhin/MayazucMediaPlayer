@@ -12,6 +12,6 @@ namespace MayazucMediaPlayer
         public const long JumpAheadSeconds = 10;
         public const long JumpBackSeconds = 5;
 
-        public const TimedMetadataTrackPresentationMode DefaultSubtitlePresentationMode = TimedMetadataTrackPresentationMode.ApplicationPresented;
+        public const TimedMetadataTrackPresentationMode DefaultSubtitlePresentationMode = TimedMetadataTrackPresentationMode.PlatformPresented;
     }
 }
