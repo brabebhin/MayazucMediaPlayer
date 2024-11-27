@@ -40,7 +40,7 @@ namespace winrt::MayazucNativeFramework::implementation
             this->swapChainPannel = swapChainPannel;
         }
 
-        void RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat);
+        void RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat);
     
     
     private:

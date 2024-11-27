@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -81,8 +82,6 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-
-
         private volatile bool windowSupportsHdr = false;
         private DisplayInformation displayInformation;
 
@@ -127,11 +126,12 @@ namespace MayazucMediaPlayer.Controls
             base.OnDispose(disposing);
             displayInformation.AdvancedColorInfoChanged -= DisplayInformation_AdvancedColorInfoChanged;
             displayInformation.Dispose();
+            WrappedMediaPlayer = null;
         }
 
         private async void DisplayInformation_AdvancedColorInfoChanged(DisplayInformation sender, object args)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            DispatcherQueue.TryEnqueue(() =>
             {
                 CheckHdr(sender);
             });
@@ -144,7 +144,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void MediaTransportControlsInstance_PointerExited(object sender, PointerRoutedEventArgs e)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            DispatcherQueue.TryEnqueue(() =>
             {
                 isPointerOverTransportControls = false;
             });
@@ -152,7 +152,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void MediaTransportControlsInstance_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            DispatcherQueue.TryEnqueue(() =>
             {
                 isPointerOverTransportControls = true;
             });
@@ -228,30 +228,33 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
+        private void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
 
-            if (args.EventData.PreviousItem != null)
+            if (!useMfSubsRenderer)
             {
-                foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
+                if (args.EventData.PreviousItem != null)
                 {
-                    tmd.CueEntered -= UpdateSubtitles;
-                    tmd.CueExited -= UpdateSubtitles;
+                    foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
+                    {
+                        tmd.CueEntered -= UpdateSubtitles;
+                        tmd.CueExited -= UpdateSubtitles;
+                    }
+
+                    args.EventData.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
+
+                }
+                foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
+                {
+                    tmd.CueEntered += UpdateSubtitles;
+                    tmd.CueExited += UpdateSubtitles;
                 }
 
-                args.EventData.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
-
-            }
-            foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
-            {
-                tmd.CueEntered += UpdateSubtitles;
-                tmd.CueExited += UpdateSubtitles;
+                args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
             }
 
-            args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
-
-            await DispatcherQueue.EnqueueAsync(() =>
+            DispatcherQueue.TryEnqueue(() =>
             {
                 if (args.EventData.PlaybackItem != null)
                 {
@@ -290,18 +293,18 @@ namespace MayazucMediaPlayer.Controls
                     var thisActualWidth = requestedSize.HasValue ? requestedSize.Value.Width : VideoSwapChain.ActualWidth;
                     var thisActualHeight = (requestedSize.HasValue ? requestedSize.Value.Height : VideoSwapChain.Height) - TransportControlsRow.ActualHeight;
                     SubtitleSwapChain.Height = thisActualHeight < 0 ? 0 : thisActualHeight;
-                    SubtitleSwapChain.Width = thisActualWidth;
+                    SubtitleSwapChain.Width = thisActualWidth < 0 ? 0 : thisActualWidth;
 
                     SubtitleSwapChain.Visibility = Visibility.Visible;
                     SubtitleSwapChain.Opacity = 1;
 
                     if (useMfSubsRenderer)
                     {
-                        MFSubtitleRenderer.RenderSubtitlesToFrame(_mediaPlayer, (float)thisActualWidth, (float)thisActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                        MFSubtitleRenderer.RenderSubtitlesToFrame(_mediaPlayer, (uint)thisActualWidth, (uint)thisActualHeight, 96u, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
                     }
                     else
                     {
-                        NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (float)thisActualWidth, (float)thisActualHeight, 96f, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+                        NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (uint)thisActualWidth, (uint)thisActualHeight, 96u, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
                     }
                 }
                 catch
@@ -320,18 +323,22 @@ namespace MayazucMediaPlayer.Controls
 
         private void UpdateSubtitles(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
         {
-            //DispatcherQueue.TryEnqueue(async () =>
-            //{
-            //    DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
-            //});
+            try
+            {
+                DispatcherQueue.TryEnqueue(async () =>
+                {
+                    DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
+                });
+            }
+            catch { }
         }
 
         private async void EffectConfiguration_ConfigurationChanged(object? sender, string e)
         {
-            await DispatcherQueue.EnqueueAsync(new Action(() =>
+            DispatcherQueue.TryEnqueue(() =>
             {
                 RedrawPaused(WrappedMediaPlayer, new Size(this.ActualWidth, this.ActualHeight));
-            }));
+            });
         }
 
         private void MediaPlayerRenderingElement_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -357,7 +364,7 @@ namespace MayazucMediaPlayer.Controls
 
         private void VideoFameAvailanle(MediaPlayer sender, object args)
         {
-            DispatcherQueue.TryEnqueue(async () =>
+            DispatcherQueue.TryEnqueue(() =>
             {
                 DrawVideoFrame(sender, new Size(this.ActualWidth, this.ActualHeight));
             });
@@ -409,7 +416,7 @@ namespace MayazucMediaPlayer.Controls
 
                 VideoSwapChain.Width = width;
                 VideoSwapChain.Height = height;
-                renderer.RenderMediaPlayerFrame(sender, (float)width, (float)height, 96f, GetPixelFormat(), AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
+                renderer.RenderMediaPlayerFrame(sender, (uint)width, (uint)height, 96u, GetPixelFormat(), AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {

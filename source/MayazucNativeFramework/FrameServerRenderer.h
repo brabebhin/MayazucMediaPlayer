@@ -40,14 +40,28 @@ namespace winrt::MayazucNativeFramework::implementation
     {
         FrameServerRenderer(winrt::Microsoft::UI::Xaml::Controls::SwapChainPanel const& swapChainPannel)
         {
+            this->swapChainPannel = swapChainPannel;
             SwapChainAllocResources(swapChainPannel, 800, 480, 96, winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized, SubtitleSwapChainBufferCount, canvasSwapChain);
         }
 
-        void RefreshSubtitle(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi);
-        void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
+        void RefreshSubtitle(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi);
+        void RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration);
         IAsyncAction RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream);
 
     private:
+
+        void RefreshSubtitleInternal(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi, CanvasDevice const& device)
+        {
+            //if (subtitleRenderingTarget == nullptr || subtitleRenderingTarget.Device().IsDeviceLost() || (subtitleRenderingTarget.Bounds().Width != width) || (subtitleRenderingTarget.Bounds().Height != height))
+            {
+                if (subtitleRenderingTarget)
+                    subtitleRenderingTarget.Close();
+
+                subtitleRenderingTarget = CanvasRenderTarget(device, (uint32_t)width, (uint32_t)height, dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized, CanvasAlphaMode::Premultiplied);
+            }
+            player.RenderSubtitlesToSurface(subtitleRenderingTarget);
+        }
+
         EffectProcessor effectsPrcessor;
         winrt::Microsoft::Graphics::Canvas::CanvasRenderTarget subtitleRenderingTarget = { nullptr };
         winrt::Microsoft::Graphics::Canvas::CanvasRenderTarget renderingTarget = { nullptr };

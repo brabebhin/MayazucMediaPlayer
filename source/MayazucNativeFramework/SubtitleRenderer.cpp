@@ -18,7 +18,7 @@ namespace winrt::MayazucNativeFramework::implementation
 	using namespace winrt::Microsoft::UI;
 	using namespace std;
 
-	void SubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat)
+	void SubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlaybackItem const& playbackItem, uint32_t width, uint32_t height, uint32_t dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat)
 	{
 		vector<ImageCue> imageCuesToRender;
 		unordered_map<TimedTextRegion, vector<TimedTextCue>> timedTextCuesWithRegions;

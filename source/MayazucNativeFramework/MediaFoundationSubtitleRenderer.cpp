@@ -16,7 +16,7 @@ namespace winrt::MayazucNativeFramework::implementation
 	using namespace winrt::Windows::Foundation;
 	using namespace winrt::Microsoft::UI;
 
-	void MediaFoundationSubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat)
+	void MediaFoundationSubtitleRenderer::RenderSubtitlesToFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat)
 	{
 		try {
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
@@ -36,6 +36,9 @@ namespace winrt::MayazucNativeFramework::implementation
 			}
 
 			{
+				auto renderSurfaceDS = renderTargetSurface.CreateDrawingSession();
+				renderSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
+				renderSurfaceDS.Close();
 				CanvasDrawingSession outputDrawingSession = canvasSwapChain.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.RenderSubtitlesToSurface(renderTargetSurface);
 				outputDrawingSession.DrawImage(renderTargetSurface);

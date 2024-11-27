@@ -5,7 +5,7 @@
 
 namespace winrt::MayazucNativeFramework::implementation
 {
-	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
+	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
 	{
 		try {
 			auto canvasDevice = CanvasDevice::GetSharedDevice();
@@ -20,22 +20,31 @@ namespace winrt::MayazucNativeFramework::implementation
 				if (renderingTarget)
 					renderingTarget.Close();
 
-				renderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi, pixelFormat, CanvasAlphaMode::Premultiplied);
+				renderingTarget = CanvasRenderTarget(canvasDevice, width, height, dpi, pixelFormat, CanvasAlphaMode::Premultiplied);
 			}
-			if (canvasSwapChain.Format() != pixelFormat || canvasSwapChain.Size().Width != width || canvasSwapChain.Size().Height != height || canvasSwapChain.Dpi() != dpi)
+
+			if (canvasSwapChain.Format() != pixelFormat || (uint32_t)canvasSwapChain.Size().Width != (uint32_t)width || (uint32_t)canvasSwapChain.Size().Height != (uint32_t)height || (uint32_t)canvasSwapChain.Dpi() != (uint32_t)dpi)
 			{
-				canvasSwapChain.ResizeBuffers((float)width, (float)height, dpi, pixelFormat, SubtitleSwapChainBufferCount);
+				canvasSwapChain.ResizeBuffers(width, height, dpi, pixelFormat, SubtitleSwapChainBufferCount);
 			}
 			{
+				auto renderSurfaceDS = renderingTarget.CreateDrawingSession();
+				renderSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
+				renderSurfaceDS.Close();
 				CanvasDrawingSession outputDrawingSession = canvasSwapChain.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.CopyFrameToVideoSurface(renderingTarget);
-				outputDrawingSession.DrawImage(effectsPrcessor.ProcessFrame(renderingTarget));
+				
+				auto effectImage = effectsPrcessor.ProcessFrame(renderingTarget);
+				outputDrawingSession.DrawImage(effectImage);
+
+				//RefreshSubtitleInternal(player, width, height, dpi, canvasDevice);
+
 				if (subtitleRenderingTarget)
 				{
 					outputDrawingSession.DrawImage(subtitleRenderingTarget);
 				}
 				outputDrawingSession.Flush();
-				canvasSwapChain.Present(0);
+				canvasSwapChain.Present();
 			}
 		}
 		catch (...)
@@ -44,19 +53,9 @@ namespace winrt::MayazucNativeFramework::implementation
 		}
 	}
 
-	void FrameServerRenderer::RefreshSubtitle(winrt::Windows::Media::Playback::MediaPlayer const& player, float width, float height, float dpi)
+	void FrameServerRenderer::RefreshSubtitle(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi)
 	{
-		auto canvasDevice = CanvasDevice::GetSharedDevice();
-
-		if (subtitleRenderingTarget == nullptr || subtitleRenderingTarget.Device().IsDeviceLost() || (subtitleRenderingTarget.Bounds().Width != width) || (subtitleRenderingTarget.Bounds().Height != height))
-		{
-			if (subtitleRenderingTarget)
-				subtitleRenderingTarget.Close();
-
-			subtitleRenderingTarget = CanvasRenderTarget(canvasDevice, (float)width, (float)height, dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized, CanvasAlphaMode::Premultiplied);
-		}
-
-		player.RenderSubtitlesToSurface(subtitleRenderingTarget);
+		RefreshSubtitleInternal(player, width, height, dpi, CanvasDevice::GetSharedDevice());
 	}
 
 	winrt::Windows::Foundation::IAsyncAction FrameServerRenderer::RenderMediaPlayerFrameToStreamAsync(winrt::Windows::Media::Playback::MediaPlayer player, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration effectConfiguration, winrt::Windows::Storage::Streams::IRandomAccessStream outputStream)
