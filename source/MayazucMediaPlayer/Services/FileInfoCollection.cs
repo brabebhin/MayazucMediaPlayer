@@ -5,7 +5,7 @@ using System.IO;
 
 namespace MayazucMediaPlayer.Services
 {
-    public class FileInfoCollection : List<FileInfo>
+    public partial class FileInfoCollection : List<FileInfo>
     {
         readonly Func<string, bool> Filter;
 

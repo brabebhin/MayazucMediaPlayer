@@ -6,7 +6,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback
 {
-    public sealed class PlaybackItemExtraData : IDisposable
+    public sealed partial class PlaybackItemExtraData : IDisposable
     {
         private readonly object threadLock = new object();
         private volatile bool disposedValue;

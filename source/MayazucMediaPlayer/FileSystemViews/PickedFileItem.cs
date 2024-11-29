@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public class IMediaPlayerItemSourceProviderBase : ObservableObject
+    public partial class IMediaPlayerItemSourceProviderBase : ObservableObject
     {
         int trackNumber;
         public int ExpectedPlaybackIndex
@@ -41,7 +41,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         }
     }
 
-    public class PickedFileItem : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
+    public partial class PickedFileItem : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         public EmbeddedMetadataResult Metadata { get; private set; }
 
@@ -197,7 +197,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         }
     }
 
-    public class InternetStreamMediaPlayerItemSourceProvder : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
+    public partial class InternetStreamMediaPlayerItemSourceProvder : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         public string DisplayName
         {

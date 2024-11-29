@@ -13,7 +13,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 {
-    public class MediaSequencerMediaPlaylistAdapter : IMediaPlaybackListAdapter
+    public partial class MediaSequencerMediaPlaylistAdapter : IMediaPlaybackListAdapter
     {
         public BusyFlag IsBusy { get; private set; } = new BusyFlag();
 

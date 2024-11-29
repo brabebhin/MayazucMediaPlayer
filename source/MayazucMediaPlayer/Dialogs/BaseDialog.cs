@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Dialogs
 {
-    public class BaseDialog : ContentDialog
+    public partial class BaseDialog : ContentDialog
     {
         public BaseDialog()
         {

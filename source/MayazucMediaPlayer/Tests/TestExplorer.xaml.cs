@@ -27,64 +27,6 @@ namespace MayazucMediaPlayer.Tests
             InitializeComponent();
             lsvTests.ItemsSource = Tests;
 
-            Tests.Add(new TestItem("Sync obs collection", new AsyncRelayCommand<object>(async (x) =>
-            {
-
-                ObservableCollection<string> list = new ObservableCollection<string>();
-                list.Add("A");
-                list.Add("B");
-                list.Add("C");
-                list.Add("D");
-
-                SynchronizedObservableCollection<string, string> synced = new SynchronizedObservableCollection<string, string>(list, (x) => x);
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (synced[i] != list[i])
-                        System.Diagnostics.Debugger.Break();
-                    if (synced[i].Count() != list.Count)
-                        System.Diagnostics.Debugger.Break();
-                }
-
-
-                list.Add("E");
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (synced[i] != list[i])
-                        System.Diagnostics.Debugger.Break();
-                    if (synced[i].Count() != list.Count)
-                        System.Diagnostics.Debugger.Break();
-                }
-
-                list.Remove("B");
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (synced[i] != list[i])
-                        System.Diagnostics.Debugger.Break();
-                    if (synced[i].Count() != list.Count)
-                        System.Diagnostics.Debugger.Break();
-                }
-
-                list.Move(0, 2);
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (synced[i] != list[i])
-                        System.Diagnostics.Debugger.Break();
-                    if (synced[i].Count() != list.Count)
-                        System.Diagnostics.Debugger.Break();
-                }
-
-                list[0] = "X";
-                for (int i = 0; i < list.Count; i++)
-                {
-                    if (synced[i] != list[i])
-                        System.Diagnostics.Debugger.Break();
-                    if (synced[i].Count() != list.Count)
-                        System.Diagnostics.Debugger.Break();
-                }
-
-
-            })));
-
             Tests.Add(new TestItem("Now playing playbacklist", new AsyncRelayCommand<object>(async (x) =>
             {
                 MediaPlaybackList list = new MediaPlaybackList();

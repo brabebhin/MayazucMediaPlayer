@@ -17,7 +17,7 @@ using Windows.Storage;
 
 namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
 {
-    public class OpenSubtitlesRestAgent : IOpenSubtitlesAgent
+    public partial class OpenSubtitlesRestAgent : IOpenSubtitlesAgent
     {
         private static readonly HttpClient httpClient = new HttpClient();
 

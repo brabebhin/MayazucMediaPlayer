@@ -87,7 +87,7 @@ namespace MayazucMediaPlayer
         VideosFolder,
     }
 
-    public class FileCreationResult : IDisposable
+    public partial class FileCreationResult : IDisposable
     {
         private bool disposedValue;
 

@@ -15,7 +15,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class EQConfigurationService : ServiceBase
+    public partial class EQConfigurationService : ServiceBase
     {
         public EqualizerService EQModels
         {

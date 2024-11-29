@@ -20,7 +20,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.Playlists
 {
-    public class PlaylistViewerModel : MainViewModelBase
+    public partial class PlaylistViewerModel : MainViewModelBase
     {
         readonly AsyncLock randomPlaylistLock = new AsyncLock();
 

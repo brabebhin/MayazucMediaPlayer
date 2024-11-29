@@ -14,7 +14,7 @@ using Windows.Storage;
 
 namespace MayazucMediaPlayer.VideoEffects
 {
-    public class VideoEffectsPageViewModel : ServiceBase
+    public partial class VideoEffectsPageViewModel : ServiceBase
     {
         public event EventHandler<object> ProfileSliderValueChanged;
 

@@ -21,7 +21,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.Playlists
 {
-    public class PlaylistsDetailsService : PlaybackItemManagementUIService<PlayListItemMediaSourceProvider>, IDisposable
+    public partial class PlaylistsDetailsService : PlaybackItemManagementUIService<PlayListItemMediaSourceProvider>, IDisposable
     {
         string _NumberOfSongsText;
         public string NumberOfSongsText
@@ -292,7 +292,7 @@ namespace MayazucMediaPlayer.Playlists
         }
     }
 
-    public class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
+    public partial class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         private readonly IMediaPlayerItemSource data;
         private readonly Task<EmbeddedMetadataResult> metadataTask;

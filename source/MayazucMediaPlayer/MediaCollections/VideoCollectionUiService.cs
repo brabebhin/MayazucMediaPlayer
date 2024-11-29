@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.MediaCollections
 {
-    public class VideoCollectionUiService : ServiceBase
+    public partial class VideoCollectionUiService : ServiceBase
     {
         readonly AsyncLock collectionlock = new AsyncLock();
 

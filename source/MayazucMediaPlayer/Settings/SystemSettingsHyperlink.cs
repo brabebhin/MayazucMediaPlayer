@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class SystemSettingsHyperlink : SettingsItem
+    public partial class SystemSettingsHyperlink : SettingsItem
     {
         public SystemSettingsHyperlink() : base(string.Empty)
         {

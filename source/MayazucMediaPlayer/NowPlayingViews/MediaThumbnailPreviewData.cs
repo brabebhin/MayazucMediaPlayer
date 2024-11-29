@@ -13,7 +13,7 @@ using Windows.Storage.Streams;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public class MediaThumbnailPreviewData : ObservableObject
+    public partial class MediaThumbnailPreviewData : ObservableObject
     {
         string _title;
 

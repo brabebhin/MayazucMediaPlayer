@@ -4,7 +4,7 @@ using System;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class StringValueToVisibility : IValueConverter
+    public partial class StringValueToVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

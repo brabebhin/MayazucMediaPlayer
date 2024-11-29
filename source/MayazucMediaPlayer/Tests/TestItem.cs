@@ -7,7 +7,7 @@ using Windows.UI;
 
 namespace MayazucMediaPlayer.Tests
 {
-    public class TestItem : ObservableObject
+    public partial class TestItem : ObservableObject
     {
 
         bool isTestRunnable = true;

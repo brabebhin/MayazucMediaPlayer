@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MayazucMediaPlayer.Common
 {
     //https://stackoverflow.com/questions/9914333/overriding-default-primitive-type-handling-in-json-net
-    public class PreferInt32JsonTextReader : JsonTextReader
+    public partial class PreferInt32JsonTextReader : JsonTextReader
     {
         public PreferInt32JsonTextReader(TextReader reader) : base(reader) { }
 

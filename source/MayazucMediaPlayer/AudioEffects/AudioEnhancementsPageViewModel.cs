@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class AudioEnhancementsPageViewModel : ServiceBase
+    public partial class AudioEnhancementsPageViewModel : ServiceBase
     {
         public EqualizerService EQModels
         {

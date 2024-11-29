@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public sealed class EqualizerService : ObservableObject
+    public sealed partial class EqualizerService : ObservableObject
     {
         public ObservableCollection<AudioEqualizerPreset> SavedPresets
         {

@@ -6,7 +6,7 @@ using System;
 
 namespace MayazucMediaPlayer.VideoEffects
 {
-    public class VideoEffectSliderProperty : ObservableObject
+    public partial class VideoEffectSliderProperty : ObservableObject
     {
 
         public event EventHandler<float> ValueChanged;

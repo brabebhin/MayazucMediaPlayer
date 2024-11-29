@@ -31,7 +31,7 @@ namespace MayazucMediaPlayer
         void Initialize([In] IntPtr hwnd);
     }
 
-    public class AppState : IDisposable
+    public partial class AppState : IDisposable
     {
         static readonly object lockState = new object();
         static AppState _current;

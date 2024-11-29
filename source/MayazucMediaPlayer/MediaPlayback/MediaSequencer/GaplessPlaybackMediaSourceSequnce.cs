@@ -8,7 +8,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
     /// <summary>
     /// A media source sequencer that uses a MediaPlaybackList as backing store for gapless playback
     /// </summary>
-    public class GaplessPlaybackMediaSourceSequnce : IMediaSourceSequencer
+    public partial class GaplessPlaybackMediaSourceSequnce : IMediaSourceSequencer
     {
         bool started = false;
         public MediaPlaybackItem CurrentItem

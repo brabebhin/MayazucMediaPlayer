@@ -18,7 +18,7 @@ namespace MayazucMediaPlayer.Services
     /// <summary>
     /// UI wrapper for MediaDataStorage class
     /// </summary>
-    public class MediaPlayerItemSourceUIWrapper : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
+    public partial class MediaPlayerItemSourceUIWrapper : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         private Task<EmbeddedMetadataResult> metadataTask;
 

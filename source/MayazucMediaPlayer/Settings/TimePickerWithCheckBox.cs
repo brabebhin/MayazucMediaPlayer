@@ -3,7 +3,7 @@ using System;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public sealed class TimePickerWithCheckBox : CheckBoxItem
+    public sealed partial class TimePickerWithCheckBox : CheckBoxItem
     {
         readonly Action<object, string> settingPropertyChanged;
 

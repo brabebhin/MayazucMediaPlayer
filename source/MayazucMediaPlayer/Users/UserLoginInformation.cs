@@ -13,7 +13,7 @@ using Windows.Security.Credentials;
 
 namespace MayazucMediaPlayer.Users
 {
-    public class UserLoginInformation : ObservableObject
+    public partial class UserLoginInformation : ObservableObject
     {
         public string ServiceLogo
         {

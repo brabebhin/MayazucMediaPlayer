@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Controls
 {
-    internal class SettingsAppHyperlinkButton : HyperlinkButton
+    internal partial class SettingsAppHyperlinkButton : HyperlinkButton
     {
         public SettingsAppHyperlinkButton()
         {

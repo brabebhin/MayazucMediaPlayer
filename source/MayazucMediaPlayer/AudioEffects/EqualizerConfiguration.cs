@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class EqualizerConfiguration : ObservableObject
+    public partial class EqualizerConfiguration : ObservableObject
     {
         public const string DefaultConfigurationName = "Mayazuc Media Player";
         private const string DefaultPresetName = "default";

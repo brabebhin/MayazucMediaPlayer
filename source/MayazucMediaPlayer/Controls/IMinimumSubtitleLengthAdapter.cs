@@ -16,7 +16,7 @@ namespace MayazucMediaPlayer.Controls
 
     }
 
-    public class LocalFileMinimumSubtitleLengthAdapter : ObservableObject, IContentSettingsItem, IMinimumSubtitleLengthAdapter
+    public partial class LocalFileMinimumSubtitleLengthAdapter : ObservableObject, IContentSettingsItem, IMinimumSubtitleLengthAdapter
     {
         public MediaSourceConfig StreamSourceConfig
         {
@@ -70,7 +70,7 @@ namespace MayazucMediaPlayer.Controls
         }
     }
 
-    public class GlobalMinimumSubtitleLengthAdapter : ObservableObject, IContentSettingsItem, IMinimumSubtitleLengthAdapter
+    public partial class GlobalMinimumSubtitleLengthAdapter : ObservableObject, IContentSettingsItem, IMinimumSubtitleLengthAdapter
     {
         public double MinimumDuration
         {

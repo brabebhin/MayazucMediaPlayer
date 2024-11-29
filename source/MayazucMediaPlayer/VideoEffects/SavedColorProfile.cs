@@ -3,7 +3,7 @@ using System;
 
 namespace MayazucMediaPlayer.VideoEffects
 {
-    public sealed class SavedColorProfile : ObservableObject
+    public sealed partial class SavedColorProfile : ObservableObject
     {
         public string Name
         {

@@ -7,7 +7,7 @@ using Windows.UI;
 namespace MayazucMediaPlayer.Converters
 {
     [Obsolete]
-    public class StringHashToColorConverter : IValueConverter
+    public partial class StringHashToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

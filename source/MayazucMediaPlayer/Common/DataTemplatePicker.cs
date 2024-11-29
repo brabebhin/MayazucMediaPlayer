@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace MayazucMediaPlayer.Common
 {
-    public class DataTemplatePicker : DataTemplateSelector
+    public partial class DataTemplatePicker : DataTemplateSelector
     {
         protected override DataTemplate SelectTemplateCore(object item)
         {

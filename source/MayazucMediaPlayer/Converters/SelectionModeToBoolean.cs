@@ -4,7 +4,7 @@ using System;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class SelectionModeToBoolean : IValueConverter
+    public partial class SelectionModeToBoolean : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

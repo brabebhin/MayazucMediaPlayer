@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Services
 {
-    public class PlaybackSequenceService : ObservableObject
+    public partial class PlaybackSequenceService : ObservableObject
     {
         public const int AutoResetEventMSTimeout = 20 * 1000;
         public static AutoResetEvent PlaylistReadWriteLock { get; private set; } = new AutoResetEvent(true);

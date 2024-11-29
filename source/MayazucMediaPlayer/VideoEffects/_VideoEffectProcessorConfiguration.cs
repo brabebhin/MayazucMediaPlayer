@@ -4,7 +4,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.VideoEffects
 {
-    public class _VideoEffectProcessorConfiguration : ObservableObject
+    public partial class _VideoEffectProcessorConfiguration : ObservableObject
     {
         bool _masterSwitch;
         float _Brightness;

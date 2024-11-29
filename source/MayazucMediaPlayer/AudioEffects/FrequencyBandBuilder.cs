@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class FrequencyBandBuilder : ObservableObject
+    public partial class FrequencyBandBuilder : ObservableObject
     {
         public FrequencyBandBuilder()
         {

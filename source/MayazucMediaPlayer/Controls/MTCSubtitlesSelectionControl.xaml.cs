@@ -300,7 +300,7 @@ namespace MayazucMediaPlayer.Controls
         }
     }
 
-    public class TimedMetadataTrackViewModelItem : ObservableObject
+    public partial class TimedMetadataTrackViewModelItem : ObservableObject
     {
         public TimedMetadataTrack Track
         {

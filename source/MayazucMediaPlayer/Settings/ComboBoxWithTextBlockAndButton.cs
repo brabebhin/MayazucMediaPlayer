@@ -9,7 +9,7 @@ namespace MayazucMediaPlayer.Settings
     /// <summary>
     /// only used for metadata options
     /// </summary>
-    public sealed class ComboBoxWithTextBlockAndButton : SettingsButton
+    public sealed partial class ComboBoxWithTextBlockAndButton : SettingsButton
     {
         public override DataTemplate Template
         {

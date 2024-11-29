@@ -6,7 +6,7 @@ using System;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class SettingsButton : SettingsItem
+    public partial class SettingsButton : SettingsItem
     {
         private static void navigate(Object obj)
         {

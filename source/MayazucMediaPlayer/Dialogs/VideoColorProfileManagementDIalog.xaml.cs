@@ -52,7 +52,7 @@ namespace MayazucMediaPlayer.Dialogs
 
     }
 
-    public class SavedColorProfileUIWrapper : ObservableObject
+    public partial class SavedColorProfileUIWrapper : ObservableObject
     {
         public SavedColorProfile Data
         {

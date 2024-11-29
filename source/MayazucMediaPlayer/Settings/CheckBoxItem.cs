@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class CheckBoxItem : SettingsItem
+    public partial class CheckBoxItem : SettingsItem
     {
         public override DataTemplate Template
         {

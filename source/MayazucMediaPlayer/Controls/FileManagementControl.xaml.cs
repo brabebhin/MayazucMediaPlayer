@@ -342,7 +342,7 @@ namespace MayazucMediaPlayer.Controls
         }
     }
 
-    public class FileManagerDataTemplateSelector : DataTemplateSelector
+    public partial class FileManagerDataTemplateSelector : DataTemplateSelector
     {
         readonly DataTemplate MusicTemplate;
         readonly DataTemplate VideoPlaylistTemplate;

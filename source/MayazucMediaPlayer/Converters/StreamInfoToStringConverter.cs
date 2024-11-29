@@ -4,7 +4,7 @@ using System;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class StreamInfoToStringConverter : IValueConverter
+    public partial class StreamInfoToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

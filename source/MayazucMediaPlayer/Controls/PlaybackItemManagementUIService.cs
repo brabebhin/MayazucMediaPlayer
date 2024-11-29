@@ -36,7 +36,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public class PlaybackItemManagementUIService<T> : MainViewModelBase, IPlaybackItemManagementUIService where T : IMediaPlayerItemSourceProvder
+    public partial class PlaybackItemManagementUIService<T> : MainViewModelBase, IPlaybackItemManagementUIService where T : IMediaPlayerItemSourceProvder
     {
         bool playButtonIsEnabled = false;
         bool _EnqueueButtonIsEnabled = false;

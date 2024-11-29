@@ -167,7 +167,7 @@ namespace MayazucMediaPlayer.Settings
         }
     }
 
-    public class SettingsItemGroup : ObservableCollection<SettingsItem>, IGrouping<string, SettingsItem>
+    public partial class SettingsItemGroup : ObservableCollection<SettingsItem>, IGrouping<string, SettingsItem>
     {
         public string GroupImage
         {

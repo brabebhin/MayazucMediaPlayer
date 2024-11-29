@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class ContentSettingsItem : SettingsItem
+    public partial class ContentSettingsItem : SettingsItem
     {
         public IContentSettingsItem Content
         {

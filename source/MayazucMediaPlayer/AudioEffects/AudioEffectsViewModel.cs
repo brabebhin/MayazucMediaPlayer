@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public sealed class AudioEffectsViewModel : ServiceBase
+    public sealed partial class AudioEffectsViewModel : ServiceBase
     {
         public AsyncRelayCommand SaveEffectsCommand
         {

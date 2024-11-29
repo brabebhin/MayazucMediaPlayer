@@ -10,7 +10,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
     /// <summary>
     /// A media sequencer that plays each item individually
     /// </summary>
-    public class VideoEffectSequentialMediaSourceSequence : IMediaSourceSequencer
+    public partial class VideoEffectSequentialMediaSourceSequence : IMediaSourceSequencer
     {
         bool started = false;
         readonly Queue<MediaPlaybackItem> items = new Queue<MediaPlaybackItem>();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class DoubleToStringThumbtipConverter : IValueConverter
+    public partial class DoubleToStringThumbtipConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

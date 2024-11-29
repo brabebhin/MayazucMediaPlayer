@@ -23,7 +23,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback
 {
-    public class BackgroundMediaPlayer : IBackgroundPlayer
+    public partial class BackgroundMediaPlayer : IBackgroundPlayer
     {
         private const int MediaPlayerAsyncOperationTimeoutInSeconds = 25;
         CommandDispatcher commandDispatcher = new CommandDispatcher();

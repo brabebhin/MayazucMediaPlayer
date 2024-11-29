@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class ComboboxWithHeader : SettingsItem
+    public partial class ComboboxWithHeader : SettingsItem
     {
         public override DataTemplate Template
         {

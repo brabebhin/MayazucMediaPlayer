@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class FrequencyDefinition : ObservableObject
+    public partial class FrequencyDefinition : ObservableObject
     {
         int cutOff;
 

@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.Helpers
 {
-    public sealed class BusyFlag : IDisposable
+    public sealed partial class BusyFlag : IDisposable
     {
         public event EventHandler<bool> StateChanged;
         public bool IsBusy

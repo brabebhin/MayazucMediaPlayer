@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class TimespanToStringConverter : IValueConverter
+    public partial class TimespanToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

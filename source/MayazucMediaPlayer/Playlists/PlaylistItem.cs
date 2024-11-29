@@ -19,7 +19,7 @@ namespace MayazucMediaPlayer.Playlists
     /// <summary>
     /// An abstraction over m3u8, pls, wpl and zpl playlists
     /// </summary>
-    public class PlaylistItem : ObservableObject
+    public partial class PlaylistItem : ObservableObject
     {
         public const string FileExtension = ".wpl";
 

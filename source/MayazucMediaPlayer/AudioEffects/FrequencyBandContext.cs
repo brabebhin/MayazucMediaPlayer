@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class FrequencyBandContext : ObservableObject
+    public partial class FrequencyBandContext : ObservableObject
     {
         private bool _enabled = true;
 

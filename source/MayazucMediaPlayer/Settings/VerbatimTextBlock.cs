@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class VerbatimTextBlock : SettingsItem
+    public partial class VerbatimTextBlock : SettingsItem
     {
         public override DataTemplate Template
         {

@@ -10,7 +10,7 @@ using Windows.Storage;
 
 namespace MayazucMediaPlayer.MediaCollections
 {
-    public class MusicCollectionUiService : ServiceBase
+    public partial class MusicCollectionUiService : ServiceBase
     {
         readonly AsyncLock collectionlock = new AsyncLock();
 
@@ -33,7 +33,7 @@ namespace MayazucMediaPlayer.MediaCollections
         }
     }
 
-    public class StorageFileWithThumbnail : ObservableObject
+    public partial class StorageFileWithThumbnail : ObservableObject
     {
         public StorageFile File { get; private set; }
 

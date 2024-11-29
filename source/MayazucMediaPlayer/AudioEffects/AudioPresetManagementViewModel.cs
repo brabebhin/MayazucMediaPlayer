@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class AudioPresetManagementViewModel : ServiceBase
+    public partial class AudioPresetManagementViewModel : ServiceBase
     {
         public IServiceProvider ServiceProvider
         {

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class FrequencyDefinitionCollection : ObservableCollection<FrequencyDefinition>
+    public partial class FrequencyDefinitionCollection : ObservableCollection<FrequencyDefinition>
     {
         public void AddRange(IEnumerable<FrequencyDefinition> definitions)
         {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Navigation
 {
-    public class DependencyInjectionFrame : ContentPresenter, IDisposable
+    public partial class DependencyInjectionFrame : ContentPresenter, IDisposable
     {
         public event EventHandler<NavigationRequestEventArgs> ExternalNavigationRequest;
 

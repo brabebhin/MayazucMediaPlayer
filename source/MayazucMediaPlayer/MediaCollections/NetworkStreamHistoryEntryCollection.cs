@@ -2,7 +2,7 @@
 
 namespace MayazucMediaPlayer.MediaCollections
 {
-    public class NetworkStreamHistoryEntryCollection : ObservableHashSet<NetworkStreamHistoryEntry>
+    public partial class NetworkStreamHistoryEntryCollection : ObservableHashSet<NetworkStreamHistoryEntry>
     {
         public override bool Add(NetworkStreamHistoryEntry item)
         {

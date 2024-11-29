@@ -6,7 +6,7 @@ using Windows.UI;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class BoolToPlaybackHighlightConverter : IValueConverter
+    public partial class BoolToPlaybackHighlightConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

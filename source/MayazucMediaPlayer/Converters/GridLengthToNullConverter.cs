@@ -4,7 +4,7 @@ using System;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class GridLengthToNullConverter : IValueConverter
+    public partial class GridLengthToNullConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

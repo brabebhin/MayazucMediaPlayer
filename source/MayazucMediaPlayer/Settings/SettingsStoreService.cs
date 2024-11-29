@@ -11,7 +11,7 @@ using System.Timers;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class SettingsStoreService
+    public partial class SettingsStoreService
     {
         private AsyncLock lockObject = new AsyncLock();
         ApplicationSettingsContainer Containers { get; set; } = new ApplicationSettingsContainer();
@@ -97,12 +97,12 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public class ApplicationSettingsContainer : Dictionary<string, ApplicationSettingsContainerValue>
+        public partial class ApplicationSettingsContainer : Dictionary<string, ApplicationSettingsContainerValue>
         {
 
         }
 
-        public class ApplicationSettingsContainerValue : Dictionary<string, dynamic>
+        public partial class ApplicationSettingsContainerValue : Dictionary<string, dynamic>
         {
 
         }

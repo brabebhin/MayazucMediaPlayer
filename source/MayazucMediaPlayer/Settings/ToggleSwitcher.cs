@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class ToggleSwitcher : SettingsItem
+    public partial class ToggleSwitcher : SettingsItem
     {
         public EventHandler<bool> SwitchChanged;
 

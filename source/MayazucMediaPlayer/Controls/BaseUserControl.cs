@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public class BaseUserControl : UserControl, INotifyPropertyChanged, IDisposable
+    public partial class BaseUserControl : UserControl, INotifyPropertyChanged, IDisposable
     {
         private bool disposedValue;
 

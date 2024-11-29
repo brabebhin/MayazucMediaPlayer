@@ -14,7 +14,7 @@ using Windows.Media.PlayTo;
 
 namespace MayazucMediaPlayer.MediaPlayback.PlayTo
 {
-    class PlayToMediaPlaybackListAdapter : IMediaPlaybackListAdapter
+    partial class PlayToMediaPlaybackListAdapter : IMediaPlaybackListAdapter
     {
         readonly AsyncLock _lock = new AsyncLock();
         SourceChangeRequestedEventArgs Source { get; set; }

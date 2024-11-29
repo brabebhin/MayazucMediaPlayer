@@ -38,7 +38,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public class FileManagementService : PlaybackItemManagementUIService<PickedFileItem>
+    public partial class FileManagementService : PlaybackItemManagementUIService<PickedFileItem>
     {
         public IAsyncRelayCommand<object> OpenFilesCommand
         {

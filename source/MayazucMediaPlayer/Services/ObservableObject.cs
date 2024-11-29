@@ -5,7 +5,7 @@ using System.Windows.Markup;
 
 namespace MayazucMediaPlayer.Services
 {
-    public class ObservableObject : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
+    public partial class ObservableObject : CommunityToolkit.Mvvm.ComponentModel.ObservableObject
     {
         protected virtual void NotifyPropertyChanged(String propertyName = "")
         {

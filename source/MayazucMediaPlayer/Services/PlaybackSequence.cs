@@ -14,7 +14,7 @@ namespace MayazucMediaPlayer.Services
     /// <summary>
     /// Wraps a playback sequence and its disk storage
     /// </summary>
-    public class PlaybackSequence : MediaDataStorageUIWrapperCollection<MediaPlayerItemSourceUIWrapper>, IPlaybackSequence
+    public partial class PlaybackSequence : MediaDataStorageUIWrapperCollection<MediaPlayerItemSourceUIWrapper>, IPlaybackSequence
     {
         private readonly AutoPlayManager autoPlayManager = new AutoPlayManager(null);
         readonly AsyncLock asyncLock = new AsyncLock();
@@ -245,7 +245,7 @@ namespace MayazucMediaPlayer.Services
         }
     }
 
-    public class NowPlayingPlaybackSequence : PlaybackSequence
+    public partial class NowPlayingPlaybackSequence : PlaybackSequence
     {
         public NowPlayingPlaybackSequence(DispatcherQueue _dispatcherQueue, IPlaybackSequenceProviderFactory nowPlayingSequenceProviderFactory) : base(JsonPlaybackSequenceFactory.NowPlayingPlaybackSequenceStore, _dispatcherQueue, nowPlayingSequenceProviderFactory)
         {

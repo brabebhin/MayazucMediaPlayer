@@ -13,9 +13,9 @@ using Windows.System;
 
 namespace MayazucMediaPlayer.UserInput
 {
-    public class HotKeyManager : IDisposable
+    public partial class HotKeyManager : IDisposable
     {
-        private class HotKeyCollection : Dictionary<HotKeySettings, HotKeyId>
+        private partial class HotKeyCollection : Dictionary<HotKeySettings, HotKeyId>
         {
             public void Add(MayazucHotKey item)
             {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Services
 {
-    public class PlaylistsService : ServiceBase
+    public partial class PlaylistsService : ServiceBase
     {
         public event EventHandler<string> PlaylistItemChanged;
         public event EventHandler<string> PlaylistItemDeleted;

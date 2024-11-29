@@ -5,7 +5,7 @@ using Windows.Storage;
 
 namespace MayazucMediaPlayer.AudioEffects.ViewModels
 {
-    public class AudioEffect : ObservableObject
+    public partial class AudioEffect : ObservableObject
     {
         public string Type
         {

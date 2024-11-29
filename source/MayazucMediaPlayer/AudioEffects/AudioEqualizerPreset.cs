@@ -5,7 +5,7 @@ using System.Linq;
 using Windows.UI.Core;
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class AudioEqualizerPreset : ObservableObject
+    public partial class AudioEqualizerPreset : ObservableObject
     {
         string presetName;
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class MediaPlaybackSpeedSliderThumbConverter : IValueConverter
+    public partial class MediaPlaybackSpeedSliderThumbConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

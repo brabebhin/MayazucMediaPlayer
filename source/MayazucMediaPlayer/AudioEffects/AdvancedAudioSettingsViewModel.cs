@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public sealed class AdvancedAudioSettingsViewModel : ServiceBase
+    public sealed partial class AdvancedAudioSettingsViewModel : ServiceBase
     {
         public bool IsRunningOnDesktop
         {

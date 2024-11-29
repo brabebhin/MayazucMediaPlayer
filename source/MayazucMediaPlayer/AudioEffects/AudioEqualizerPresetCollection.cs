@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
-    public class AudioEqualizerPresetCollection : ObservableCollection<AudioEqualizerPreset>
+    public partial class AudioEqualizerPresetCollection : ObservableCollection<AudioEqualizerPreset>
     {
         public AudioEqualizerPresetCollection()
         {

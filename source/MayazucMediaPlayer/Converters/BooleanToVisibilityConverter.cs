@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class BooleanToVisibilityConverter : IValueConverter
+    public partial class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -24,7 +24,7 @@ namespace MayazucMediaPlayer.Converters
         }
     }
 
-    public class BooleanToCountConverter : IValueConverter
+    public partial class BooleanToCountConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

@@ -9,7 +9,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {
-    public class NowPlayingCommandBarViewModel : ServiceBase
+    public partial class NowPlayingCommandBarViewModel : ServiceBase
     {
         public NowPlayingCommandBarViewModel(DispatcherQueue dp) : base(dp)
         {

@@ -3,7 +3,7 @@ using System;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class NowPlayingBrushConverter : IValueConverter
+    public partial class NowPlayingBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

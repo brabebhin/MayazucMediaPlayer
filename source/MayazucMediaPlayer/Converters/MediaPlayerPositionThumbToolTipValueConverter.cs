@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Converters
 {
-    public class MediaPlayerPositionThumbToolTipValueConverter : IValueConverter
+    public partial class MediaPlayerPositionThumbToolTipValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
