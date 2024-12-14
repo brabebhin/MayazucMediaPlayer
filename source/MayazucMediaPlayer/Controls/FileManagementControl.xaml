@@ -216,8 +216,7 @@
             </Grid>
             <controls:SearchBar  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:False), Mode=OneWay}"  Grid.Row="1" x:Name="mcSearchBar" IsEnabled="{x:Bind DataService.CanSearch, Mode=OneWay}" SearchView="{x:Bind DataService.FilterCollectionView, Mode=OneWay}" Margin="16, 0, 16, 10"></controls:SearchBar>
         </Grid>
-        <ListView  
-                    ItemsSource="{x:Bind DataService.FilterCollectionView, Mode=OneWay}"
+        <ListView   ItemsSource="{x:Bind DataService.FilterCollectionView.CurrentView, Mode=OneWay}"
                     SelectionMode="{x:Bind DataService.SelectionMode, Mode=OneWay}"  
                     SelectionChanged="SelectionChangedForListView"
                     Grid.Row="1"
@@ -244,5 +243,4 @@
             </ListView.Footer>
         </ListView>
     </Grid>
-
 </controls:BaseUserControl>

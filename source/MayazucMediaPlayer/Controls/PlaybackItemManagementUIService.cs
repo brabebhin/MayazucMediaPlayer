@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI;
 using FFmpegInteropX;
 using FluentResults;
 using MayazucMediaPlayer.Dialogs;
@@ -159,7 +158,7 @@ namespace MayazucMediaPlayer.Controls
         {
             get
             {
-                return (FilterCollectionView.Source as IEnumerable).Cast<T>();
+                return FilterCollectionView.CurrentView.Cast<T>();
             }
         }
 
@@ -452,7 +451,7 @@ namespace MayazucMediaPlayer.Controls
             PlaybackSequenceService m,
             PlaylistsService playlistsService) : base(dp, m)
         {
-            FilterCollectionView = new AdvancedCollectionView(Items);
+            FilterCollectionView = new AdvancedCollectionView();
             PlaylistsService = playlistsService;
 
             InitializeMembers();
@@ -505,7 +504,7 @@ namespace MayazucMediaPlayer.Controls
             RemoveOnlyMusicCommand = new AsyncRelayCommand(RemoveOnlyMusicCommandInternal);
             RemoveOnlyVideoCommand = new AsyncRelayCommand(RemoveOnlyVideoCommandInternal);
 
-            FilterCollectionView.Source = Items;
+            FilterCollectionView.ItemsSource = Items;
 
             ChangeSongOrderRequestCommand = new RelayCommand<object>(ChangeOrderRequestCommandFunction);
 
@@ -541,7 +540,7 @@ namespace MayazucMediaPlayer.Controls
 
             CopySingleFileToFolder = new AsyncRelayCommand<object>(CopyFileToFolderFunction);
             CopyFileToClipboard = new AsyncRelayCommand<object>(CopyFileToClipboardFunction);
-            
+
             SetCommandBarEnabled();
         }
 

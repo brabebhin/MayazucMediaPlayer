@@ -141,18 +141,6 @@ namespace MayazucMediaPlayer.Services
             return this.Select(x => x.MediaData).ToList().AsReadOnly();
         }
 
-        public override IEnumerable<T> Filter(string filterParam)
-        {
-            if (string.IsNullOrWhiteSpace(filterParam))
-            {
-                return this;
-            }
-            else
-            {
-                return new ObservableCollection<T>(this.Where(x => x.MediaData.Title.IndexOf(filterParam, StringComparison.CurrentCultureIgnoreCase) >= 0));
-            }
-        }
-
         public int IndexOfMediaData(IMediaPlayerItemSource other)
         {
             if (other == null) return -1;

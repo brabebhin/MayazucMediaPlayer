@@ -96,7 +96,7 @@
                    Grid.Row="1"                     
                    SelectionMode="{Binding DisplayListSelectionMode}" 
                    Background="Transparent" x:Name="DisplayList"
-                   ItemsSource="{Binding PlaylistsView}">
+                   ItemsSource="{Binding PlaylistsView.CurrentView}">
 
                         <ListView.ItemTemplate>
                             <DataTemplate>

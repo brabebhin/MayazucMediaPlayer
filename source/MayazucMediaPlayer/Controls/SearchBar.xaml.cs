@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI;
+﻿using MayazucMediaPlayer.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -84,14 +84,14 @@ namespace MayazucMediaPlayer.Controls
                 if (SearchView == null) return;
                 if (Filter == null || string.IsNullOrWhiteSpace(tbSearchText.Text))
                 {
-                    SearchView.Filter = null;
+                    SearchView.Filter(null);
                 }
                 else
                 {
                     var text = tbSearchText.Text;
                     if (!string.IsNullOrWhiteSpace(text))
                     {
-                        SearchView.Filter = (x) => { return Filter(x).IndexOf(text, StringComparison.CurrentCultureIgnoreCase) >= 0; };
+                        SearchView.Filter((x) => { return Filter(x).IndexOf(text, StringComparison.CurrentCultureIgnoreCase) >= 0; });
                         //SearchView.Source = ItemsSource.Cast<object>().Where(x => Filter(x));
                     }
                 }
@@ -113,7 +113,7 @@ namespace MayazucMediaPlayer.Controls
                 //sender.ItemsSource = dataset;
 
                 var suitableItems = new List<string>();
-                suitableItems.AddRange(SearchView.Where(x => Filter(x).IndexOf(sender.Text, StringComparison.CurrentCultureIgnoreCase) >= 0).Select(x => x.ToString()));
+                suitableItems.AddRange(SearchView.ItemsSource.Cast<object>().Where(x => Filter(x).IndexOf(sender.Text, StringComparison.CurrentCultureIgnoreCase) >= 0).Select(x => x.ToString()));
                 if (suitableItems.Count == 0)
                 {
                     suitableItems.Add("No results found");

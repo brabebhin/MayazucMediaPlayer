@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.UI;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.Runtime;
@@ -104,7 +103,8 @@ namespace MayazucMediaPlayer.Playlists
         public PlaylistViewerModel(DispatcherQueue disp, PlaybackSequenceService playbackSeqService, PlaylistsService playlistService) : base(disp, playbackSeqService)
         {
             PlaylistsService = playlistService;
-            PlaylistsView = new AdvancedCollectionView(Playlists);
+            PlaylistsView = new AdvancedCollectionView();
+            PlaylistsView.ItemsSource = Playlists;
             ShowSearchGridCommand = new RelayCommand<object>(ShowHideSearchGrid);
             SetSelectionModeCommand = new RelayCommand<object>(SelectAllCommand);
             DeleteSelectedPlaylistsCommand = new AsyncRelayCommand<object>(DeleteSelectedCommand);

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public class IMediaPlayerItemSourceProvderCollection<T> : ObservableCollection<T>, IFilterableCollection<T> where T : IMediaPlayerItemSourceProvder
+    public class IMediaPlayerItemSourceProvderCollection<T> : ObservableCollection<T> where T : IMediaPlayerItemSourceProvder
     {
         private ConcurrentDictionary<string, List<T>> pathMap = new ConcurrentDictionary<string, List<T>>();
         private string playingMediaPath = null;
@@ -98,18 +98,6 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
 
             SyncRemovePathMap(oldItem);
-        }
-
-        public virtual IEnumerable<T> Filter(string filterParam)
-        {
-            if (string.IsNullOrWhiteSpace(filterParam))
-            {
-                return this;
-            }
-            else
-            {
-                return new ObservableCollection<T>(this.Where(x => x.Path.IndexOf(filterParam, StringComparison.CurrentCultureIgnoreCase) >= 0));
-            }
         }
     }
 }

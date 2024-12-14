@@ -107,7 +107,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             OpenFoldersCommand = new AsyncRelayCommand<object>(OpenFolderAsync);
 
             AddDeepFoldersCommand = new AsyncRelayCommand<object>(OpenDeepFolderAsync);
-            FilterCollectionView.Source = Items;
+            FilterCollectionView.ItemsSource = Items;
         }
 
         private async Task OpenDeepFolderAsync(object arg)
