@@ -23,7 +23,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             if (args.Reason != MediaOpenedEventReason.MediaPlayerObjectRequested)
             {
-                await AdvancedFileDetailsControl.HandleMediaOpened(args.EventData.PlaybackItem);
+                await AdvancedFileDetailsControl.HandleMediaOpened(args.Data.PlaybackItem);
             }
         }
 

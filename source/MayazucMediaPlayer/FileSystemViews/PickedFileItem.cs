@@ -2,11 +2,14 @@
 using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
+using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.UI;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
@@ -22,7 +25,13 @@ namespace MayazucMediaPlayer.FileSystemViews
 
                 trackNumber = value;
                 NotifyPropertyChanged(nameof(ExpectedPlaybackIndex));
+                NotifyPropertyChanged(nameof(UIDisplayedIndex));
             }
+        }
+
+        public int UIDisplayedIndex
+        {
+            get => trackNumber + 1;
         }
 
         bool isInPlayback;
@@ -36,7 +45,20 @@ namespace MayazucMediaPlayer.FileSystemViews
                 {
                     isInPlayback = value;
                     NotifyPropertyChanged(nameof(IsInPlayback));
+                    NotifyPropertyChanged(nameof(BackgroundColor));
                 }
+            }
+        }
+
+        public SolidColorBrush BackgroundColor
+        {
+            get
+            {
+                if (IsInPlayback)
+                {
+                    return new SolidColorBrush(Colors.Coral);
+                }
+                return new SolidColorBrush(Colors.Transparent);
             }
         }
     }

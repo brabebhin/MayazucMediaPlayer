@@ -51,17 +51,16 @@ namespace MayazucMediaPlayer.Services
             await NowPlayingBackStore.SetSequence(mediaDatas);
         }
 
-        public async Task HandleMediaOpened(Windows.Media.Playback.MediaPlayer sender, MediaOpenedEventArgs args)
+        public Task HandleMediaOpened(Windows.Media.Playback.MediaPlayer sender, MediaOpenedEventArgs args)
         {
             var index = SettingsService.Instance.PlaybackIndex;
 
             if (args.Reason == MediaOpenedEventReason.MediaPlaybackListItemChanged)
             {
-                for (int i = 0; i < NowPlayingBackStore.Count; i++)
-                {
-                    NowPlayingBackStore[i].IsInPlayback = i == index;
-                }
+                NowPlayingBackStore.NotifyPlayingMediaPath(args.Data.MediaPath);
             }
+
+            return Task.CompletedTask;
         }
 
         public void FillData()

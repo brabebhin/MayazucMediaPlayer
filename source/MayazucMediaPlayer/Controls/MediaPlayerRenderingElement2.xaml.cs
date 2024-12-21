@@ -234,31 +234,31 @@ namespace MayazucMediaPlayer.Controls
 
             if (!useMfSubsRenderer)
             {
-                if (args.EventData.PreviousItem != null)
+                if (args.Data.PreviousItem != null)
                 {
-                    foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
+                    foreach (var tmd in args.Data.PreviousItem.TimedMetadataTracks)
                     {
                         tmd.CueEntered -= UpdateSubtitles;
                         tmd.CueExited -= UpdateSubtitles;
                     }
 
-                    args.EventData.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
+                    args.Data.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
 
                 }
-                foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
+                foreach (var tmd in args.Data.PlaybackItem.TimedMetadataTracks)
                 {
                     tmd.CueEntered += UpdateSubtitles;
                     tmd.CueExited += UpdateSubtitles;
                 }
 
-                args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
+                args.Data.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
             }
 
             DispatcherQueue.TryEnqueue(() =>
             {
-                if (args.EventData.PlaybackItem != null)
+                if (args.Data.PlaybackItem != null)
                 {
-                    if (!args.EventData.PlaybackItem.IsVideo())
+                    if (!args.Data.PlaybackItem.IsVideo())
                     {
                         PosterImageImage.Visibility = Visibility.Visible;
                         VideoSwapChain.Visibility = Visibility.Collapsed;

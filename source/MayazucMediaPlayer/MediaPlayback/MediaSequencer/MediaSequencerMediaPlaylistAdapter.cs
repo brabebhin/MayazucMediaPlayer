@@ -117,7 +117,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
                 using (IsBusy.SetBusy())
                 {
                     var currentBackStore = sender as IMediaSourceSequencer;
-                    var currentIndex = e.EventData.PlaybackItem.GetExtradata().MediaPlayerItemSource.ExpectedPlaybackIndex;
+                    var currentIndex = e.Data.PlaybackItem.GetExtradata().MediaPlayerItemSource.ExpectedPlaybackIndex;
                     var nextItem = await GetNextItem(currentIndex: currentIndex, userAction: false, changeIndex: true);
                     if (nextItem == null)
                         return;
@@ -133,7 +133,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
                 }
             });
 
-            CurrentPlaybackItemChanged?.Invoke(this, new MayazucCurrentMediaPlaybackItemChangedEventArgs(e.EventData.PlaybackItem, MediaPlaybackItemChangedReason.EndOfStream, this));
+            CurrentPlaybackItemChanged?.Invoke(this, new MayazucCurrentMediaPlaybackItemChangedEventArgs(e.Data.PlaybackItem, MediaPlaybackItemChangedReason.EndOfStream, this));
         }
 
         private IMediaSourceSequencer InitializeBackstoreForItem(MediaPlaybackItem nextItem)

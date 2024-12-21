@@ -22,6 +22,14 @@ namespace MayazucMediaPlayer.MediaPlayback
             private set;
         }
 
+        public string MediaPath
+        {
+            get
+            {
+                return ExtraData?.MediaPlayerItemSource?.MediaPath ?? string.Empty;
+            }
+        }
+
         public NewMediaPlaybackItemOpenedEventArgs(MediaPlaybackItem? previous, MediaPlaybackItem itm, PlaybackItemExtraData data)
         {
             ExtraData = data;

@@ -113,24 +113,24 @@ namespace MayazucMediaPlayer.Controls
         {
             if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
 
-            if (args.EventData.PreviousItem != null)
+            if (args.Data.PreviousItem != null)
             {
-                foreach (var tmd in args.EventData.PreviousItem.TimedMetadataTracks)
+                foreach (var tmd in args.Data.PreviousItem.TimedMetadataTracks)
                 {
                     tmd.CueEntered -= Tmd_CueEntered;
                     tmd.CueExited -= Tmd_CueEntered;
                 }
 
-                args.EventData.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
+                args.Data.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
 
             }
-            foreach (var tmd in args.EventData.PlaybackItem.TimedMetadataTracks)
+            foreach (var tmd in args.Data.PlaybackItem.TimedMetadataTracks)
             {
                 tmd.CueEntered += Tmd_CueEntered;
                 tmd.CueExited += Tmd_CueEntered;
             }
 
-            args.EventData.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
+            args.Data.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
         }
 
         private void PlaybackItem_TimedMetadataTracksChanged(MediaPlaybackItem sender, IVectorChangedEventArgs args)

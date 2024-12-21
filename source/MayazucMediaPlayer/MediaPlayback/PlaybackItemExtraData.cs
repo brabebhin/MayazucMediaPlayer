@@ -8,7 +8,6 @@ namespace MayazucMediaPlayer.MediaPlayback
 {
     public sealed partial class PlaybackItemExtraData : IDisposable
     {
-        private readonly object threadLock = new object();
         private volatile bool disposedValue;
 
         public bool Disposed
@@ -16,10 +15,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             get => disposedValue;
             set
             {
-                lock (threadLock)
-                {
-                    disposedValue = value;
-                }
+                disposedValue = value;
             }
         }
 

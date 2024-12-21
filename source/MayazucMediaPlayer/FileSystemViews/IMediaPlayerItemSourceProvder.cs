@@ -1,10 +1,12 @@
 ﻿using FluentResults;
 using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services.MediaSources;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.UI;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
@@ -27,7 +29,11 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>> GetMediaDataSourcesAsync();
 
+        int UIDisplayedIndex { get; }
+
         int ExpectedPlaybackIndex { get; set; }
         bool IsInPlayback { get; set; }
+
+        SolidColorBrush BackgroundColor { get; }
     }
 }

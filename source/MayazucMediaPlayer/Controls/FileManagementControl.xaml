@@ -12,7 +12,7 @@
     <UserControl.Resources>
 
         <DataTemplate x:Key="MusicItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProvder">
-            <Grid  Margin="2"  Style="{StaticResource GridCardStyle}">
+            <Grid  Margin="2"  Style="{StaticResource GridCardStyle}" Background="{Binding BackgroundColor, Mode=OneWay}">
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Click="SingleItemPlayFileCommand"  Text="Play"/>
@@ -82,7 +82,8 @@
         </DataTemplate>
 
         <DataTemplate x:Key="VideoPlaylistItemDataTemplate" x:DataType="filesystemviews:IMediaPlayerItemSourceProvder">
-            <Grid Margin="2"  Style="{StaticResource GridCardStyle}">
+            <Grid Margin="2"  Style="{StaticResource GridCardStyle}" Background="{Binding BackgroundColor, Mode=OneWay}">
+
                 <Grid.Resources>
                     <MenuFlyout x:Key="ItemMenuFlyout">
                         <MenuFlyoutItem Click="SingleItemPlayFileCommand"  Text="Play"/>

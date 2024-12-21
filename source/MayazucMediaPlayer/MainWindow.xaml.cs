@@ -138,7 +138,7 @@ namespace MayazucMediaPlayer
             }
             set
             {
-                if (IsNowPlayingMaximized() != value && !(GetAppWindowForCurrentWindow().Presenter.Kind == AppWindowPresenterKind.CompactOverlay))
+                if (IsNowPlayingMaximized() != value)
                 {
                     NowPlayingPage.IsTabStop = value;
                     if (!value)
@@ -282,12 +282,12 @@ namespace MayazucMediaPlayer
             {
                 if (args.Reason != MediaOpenedEventReason.MediaPlayerObjectRequested)
                 {
-                    if (args.EventData.PlaybackItem.IsVideo() && !WasNowPlayingMaximziedSomeTime)
+                    if (args.Data.PlaybackItem.IsVideo() && !WasNowPlayingMaximziedSomeTime)
                     {
                         NowPlayingMaximized = true;
                     }
 
-                    NowPlayingPageTitle = args.EventData.ExtraData.MediaPlayerItemSource.Title;
+                    NowPlayingPageTitle = args.Data.ExtraData.MediaPlayerItemSource.Title;
                     if (IsNowPlayingMaximized())
                     {
                         SetWindowTitle();

@@ -157,7 +157,7 @@ namespace MayazucMediaPlayer.Services
         {
             for (int i = 0; i < Count; i++)
             {
-                this[i].ExpectedPlaybackIndex = i + 1;
+                this[i].ExpectedPlaybackIndex = i;
                 this[i].MediaData.ExpectedPlaybackIndex = i;
             }
         }

@@ -10,7 +10,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             private set;
         }
 
-        public NewMediaPlaybackItemOpenedEventArgs EventData
+        public NewMediaPlaybackItemOpenedEventArgs Data
         {
             get;
             private set;
@@ -19,7 +19,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         public MediaOpenedEventArgs(MediaOpenedEventReason reason, NewMediaPlaybackItemOpenedEventArgs e)
         {
             Reason = reason;
-            EventData = e;
+            Data = e;
         }
     }
 

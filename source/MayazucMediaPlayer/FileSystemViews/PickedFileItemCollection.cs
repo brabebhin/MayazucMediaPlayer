@@ -28,7 +28,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         {
             if (playingMediaPath != null)
             {
-                if (pathMap.TryGetValue(mediaPath, out var list))
+                if (pathMap.TryGetValue(playingMediaPath, out var list))
                 {
                     list.ForEach(x => x.IsInPlayback = false);
                 }
@@ -53,7 +53,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             }
             else
             {
-                pathMap.TryAdd(item.Path, new List<T>());
+                pathMap.TryAdd(item.Path, new List<T>() { item });
             }
         }
 

@@ -419,7 +419,7 @@ namespace MayazucMediaPlayer
         {
             for (int i = 0; i < list.Count; i++)
             {
-                list[i].ExpectedPlaybackIndex = (i + 1);
+                list[i].ExpectedPlaybackIndex = (i);
             }
         }
 

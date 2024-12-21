@@ -138,14 +138,14 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (args.Reason == MediaOpenedEventReason.MediaPlaybackListItemChanged)
                 {
-                    var mds = args.EventData.ExtraData.MediaPlayerItemSource;
+                    var mds = args.Data.ExtraData.MediaPlayerItemSource;
 
                     await DispatcherQueue.EnqueueAsync(async () =>
                     {
-                        await mtcSubtitlesControl.LoadMediaPlaybackItem(args.EventData.PlaybackItem);
-                        await mtcVideoTracks.LoadVideoTracksAsync(args.EventData.PlaybackItem);
-                        await mtcAudioTracks.LoadAudioTracksAsync(args.EventData.PlaybackItem);
-                        ChaptersControlInstance.LoadMediaPlaybackItem(args.EventData.PlaybackItem);
+                        await mtcSubtitlesControl.LoadMediaPlaybackItem(args.Data.PlaybackItem);
+                        await mtcVideoTracks.LoadVideoTracksAsync(args.Data.PlaybackItem);
+                        await mtcAudioTracks.LoadAudioTracksAsync(args.Data.PlaybackItem);
+                        ChaptersControlInstance.LoadMediaPlaybackItem(args.Data.PlaybackItem);
                     });
                 }
             }
