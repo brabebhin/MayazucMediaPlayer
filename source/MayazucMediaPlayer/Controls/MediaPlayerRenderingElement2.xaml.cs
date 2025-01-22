@@ -40,7 +40,7 @@ namespace MayazucMediaPlayer.Controls
         readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         ThreadPoolTimer? _fullscreenCursorTimer;
         volatile bool isPointerOverTransportControls = false;
-        bool useMfSubsRenderer = true;
+        bool useMfSubsRenderer = false;
 
         SubtitleRenderer NativeSubtitleRenderer
         {

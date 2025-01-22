@@ -720,7 +720,7 @@ namespace MayazucMediaPlayer.Settings
             set
             {
                 settingsStoreService.SetValueOrDefault<bool>(ContainerNames.MetadataOptions, ContainerKeys.OnlyUseCacheInFilePicker, true, value);
-                RiseSettingChanged(value, nameof(StereoDownMix));
+                RiseSettingChanged(value, nameof(OnlyUseCacheInFilePicker));
             }
         }
 

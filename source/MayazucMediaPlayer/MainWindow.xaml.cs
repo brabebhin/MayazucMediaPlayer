@@ -20,6 +20,7 @@ using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Microsoft.Windows.AppNotifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -359,9 +360,9 @@ namespace MayazucMediaPlayer
             {
                 try
                 {
-                    notificationRoot.Content = content;
+                    //notificationRoot.Content = content;
 
-                    notificationRoot.Show(duration);
+                    //notificationRoot.Show(duration);
                 }
                 catch { }
             });

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI.Controls;
+using CommunityToolkit.WinUI.Controls;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.UserInput;
@@ -102,8 +102,8 @@ namespace MayazucMediaPlayer.Users
                 WindowsCredential.RetrievePassword();
                 Password = WindowsCredential.Password;
 
-                InAppNotification notificationRoot = inappNotification as InAppNotification;
-                notificationRoot.Show("Password retrieved from storage", 2000);
+                //InAppNotification notificationRoot = inappNotification as InAppNotification;
+                //notificationRoot.Show("Password retrieved from storage", 2000);
             }
             catch { }
         }
@@ -116,8 +116,8 @@ namespace MayazucMediaPlayer.Users
                 Password = "";
                 UserName = "";
                 await ServiceProvider.LogoutAsync();
-                InAppNotification notificationRoot = inappNotification as InAppNotification;
-                notificationRoot.Show("Credentials deleted", 2000);
+                //InAppNotification notificationRoot = inappNotification as InAppNotification;
+                //notificationRoot.Show("Credentials deleted", 2000);
             }
             catch { }
         }
@@ -134,7 +134,7 @@ namespace MayazucMediaPlayer.Users
 
         private async Task Save(object inappNotification)
         {
-            InAppNotification notificationRoot = inappNotification as InAppNotification;
+            //InAppNotification notificationRoot = inappNotification as InAppNotification;
 
             try
             {
@@ -156,39 +156,38 @@ namespace MayazucMediaPlayer.Users
                         await ServiceProvider.LogoutAsync();
                         if (await ServiceProvider.LoginAsync())
                         {
-                            notificationRoot.Show("Credentials saved", 2000);
+                            //notificationRoot.Show("Credentials saved", 2000);
                         }
                         else
                         {
-                            notificationRoot.Content = new TextBlock()
-                            {
-                                Text = "Credentials saved but they could not be verified by remote service",
-                                Foreground = new SolidColorBrush(Colors.Red)
-                            };
-                            notificationRoot.Show(6000);
+                            //notificationRoot.Content = new TextBlock()
+                            //{
+                            //    Text = "Credentials saved but they could not be verified by remote service",
+                            //    Foreground = new SolidColorBrush(Colors.Red)
+                            //};
+                            //notificationRoot.Show(6000);
 
                         }
                     }
                     catch (Exception eex)
                     {
-                        notificationRoot.Content = new TextBlock()
-                        {
-                            Text = "Could not check credentials - service may be unreachable - " + eex.HResult,
-                            Foreground = new SolidColorBrush(Colors.Red)
-                        };
-                        notificationRoot.Show(6000);
+                        //notificationRoot.Content = new TextBlock()
+                        //{
+                        //    Text = "Could not check credentials - service may be unreachable - " + eex.HResult,
+                        //    Foreground = new SolidColorBrush(Colors.Red)
+                        //};
+                        //notificationRoot.Show(6000);
                     }
                 }
             }
             catch (Exception ex)
             {
-
-                notificationRoot.Content = new TextBlock()
-                {
-                    Text = "Operation could not be completed - " + ex.HResult,
-                    Foreground = new SolidColorBrush(Colors.Red)
-                };
-                notificationRoot.Show(6000);
+                //notificationRoot.Content = new TextBlock()
+                //{
+                //    Text = "Operation could not be completed - " + ex.HResult,
+                //    Foreground = new SolidColorBrush(Colors.Red)
+                //};
+                //notificationRoot.Show(6000);
             }
         }
     }

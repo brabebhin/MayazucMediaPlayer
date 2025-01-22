@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dialogs="using:MayazucMediaPlayer.Dialogs"
     xmlns:controls="using:MayazucMediaPlayer.Controls"
-    xmlns:controls1="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls1="using:CommunityToolkit.WinUI.Controls"
     xmlns:videoEffects="using:MayazucMediaPlayer.VideoEffects"
     xmlns:converters="using:MayazucMediaPlayer.Converters">
 
@@ -60,31 +60,6 @@
     <SolidColorBrush x:Key="NowPlayingHighlightFalseBrush" Color="Transparent"></SolidColorBrush>
 
     <converters:StringHashToColorConverter x:Name="iconConverter" x:Key="iconConverter"/>
-
-    <Style TargetType="controls1:DataGrid" x:Key="ReadOnlyDatagridStyle">
-        <Setter Property="Margin" Value =" 12"/>
-        <Setter Property="VerticalAlignment" Value="Stretch"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="HorizontalScrollBarVisibility" Value="Visible"/>
-        <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
-        <Setter Property="AlternatingRowBackground" Value="Transparent"/>
-        <Setter Property="AlternatingRowForeground" Value="Gray"/>
-        <Setter Property="AreRowDetailsFrozen" Value="False"/>
-        <Setter Property="AreRowGroupHeadersFrozen" Value="True"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="CanUserSortColumns" Value="False"/>
-        <Setter Property="CanUserReorderColumns" Value="False"/>
-        <Setter Property="CanUserResizeColumns" Value="True"/>
-        <Setter Property="ColumnHeaderHeight" Value="32"/>
-        <Setter Property="MaxColumnWidth" Value="400"/>
-        <Setter Property="FrozenColumnCount" Value="0"/>
-        <Setter Property="GridLinesVisibility" Value="None"/>
-        <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-
-    </Style>
 
     <Style TargetType="TextBlock" x:Key="PageTitle">
         <Setter Property="Typography.Capitals" Value ="Titling"/>

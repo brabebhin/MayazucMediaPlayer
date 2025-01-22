@@ -111,6 +111,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             config.Video.VideoOutputAllowBgra8 = SettingsService.Instance.VideoOutputAllowBgra8;
             config.Video.VideoOutputAllowIyuv = SettingsService.Instance.VideoOutputAllowIyuv;
             config.General.FastSeek = true;
+            config.Subtitles.UseLibassAsSubtitleRenderer = true;
             config.General.MaxSupportedPlaybackRate = 4;
             config.Audio.DownmixAudioStreamsToStereo = SettingsService.Instance.StereoDownMix;
             config.Video.HdrSupport = HdrSupport.Automatic;
@@ -119,6 +120,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             config.Subtitles.AutoSelectForcedSubtitles = false;
             config.Subtitles.MinimumSubtitleDuration = TimeSpan.FromSeconds(SettingsService.Instance.MinimumSubtitleDuration);
             config.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsService.Instance.PreventSubtitleOverlaps;
+            
             //TimedTextStyle configStyle = config.Subtitles.SubtitleStyle;
             //configStyle.OutlineColor = Microsoft.UI.Colors.Blue;
             //configStyle.OutlineRadius = new TimedTextDouble(80, TimedTextUnit.Percentage);

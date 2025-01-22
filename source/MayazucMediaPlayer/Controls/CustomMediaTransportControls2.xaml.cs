@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.UI.Controls;
+using CommunityToolkit.WinUI.Controls;
 using FluentResults;
 using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.MediaPlayback;

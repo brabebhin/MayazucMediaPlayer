@@ -16,8 +16,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
                 <ResourceDictionary Source="Themes/McStyles.xaml"/>
-                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.Core/InAppNotification/Styles/MSEdgeNotificationStyle.xaml" />
-                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.UI.Controls.Core/InAppNotification/Styles/VSCodeNotificationStyle.xaml" />
                 <!-- Other merged dictionaries here -->
                 <ResourceDictionary>
                     <ResourceDictionary.ThemeDictionaries>

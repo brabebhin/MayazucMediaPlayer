@@ -74,8 +74,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         private void NowPlayingBackgroundGrid_SizeChanged(object? sender, SizeChangedEventArgs e)
         {
-            LayoutRoot.DesiredWidth = e.NewSize.Width / 2;
-            LayoutRoot.ItemHeight = e.NewSize.Height / 2;
+            //LayoutRoot.DesiredWidth = e.NewSize.Width / 2;
+            //LayoutRoot.ItemHeight = e.NewSize.Height / 2;
         }
     }
 }

@@ -18,10 +18,20 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         public IMediaPlayerItemSourceProvderCollection(IEnumerable<T> collection) : base(collection)
         {
+            SyncPathMap(collection);
         }
 
         public IMediaPlayerItemSourceProvderCollection(List<T> list) : base(list)
         {
+            SyncPathMap(list);
+        }
+
+        private void SyncPathMap(IEnumerable<T> list)
+        {
+            foreach (T item in list)
+            {
+                SyncAddPathMap(item);
+            }
         }
 
         public void NotifyPlayingMediaPath(string mediaPath)

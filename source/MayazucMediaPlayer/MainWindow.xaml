@@ -10,7 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:navigation="using:MayazucMediaPlayer.Navigation"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls" xmlns:controls1="using:MayazucMediaPlayer.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls" 
+    xmlns:controls1="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d">
 
     <Window.SystemBackdrop>
@@ -124,7 +125,7 @@
             </Grid>
         </Grid>
 
-        <controls:InAppNotification Canvas.ZIndex="100"  Grid.RowSpan="10" Grid.ColumnSpan="10"  HorizontalContentAlignment="Stretch" ShowDismissButton="True" x:Name="notificationRoot" StackMode="Replace" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <!--<controls:InAppNotification Canvas.ZIndex="100"  Grid.RowSpan="10" Grid.ColumnSpan="10"  HorizontalContentAlignment="Stretch" ShowDismissButton="True" x:Name="notificationRoot" StackMode="Replace" HorizontalAlignment="Right" VerticalAlignment="Top">
             <controls:InAppNotification.ContentTemplate>
                 <DataTemplate x:DataType="local:PopupRequestData">
                     <Grid HorizontalAlignment="Stretch">
@@ -142,7 +143,7 @@
                     </Grid>
                 </DataTemplate>
             </controls:InAppNotification.ContentTemplate>
-        </controls:InAppNotification>
+        </controls:InAppNotification>-->
 
         <controls1:GenericContentControl Canvas.ZIndex="100" Grid.RowSpan="10" Grid.ColumnSpan="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="contentDialogService"></controls1:GenericContentControl>
 

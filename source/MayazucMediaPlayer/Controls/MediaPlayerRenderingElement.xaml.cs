@@ -22,7 +22,6 @@ using CommunityToolkit.WinUI;
 using Microsoft.Graphics.Canvas.Brushes;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media.Imaging;
-using CommunityToolkit.WinUI.UI;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucNativeFramework;
 using MayazucMediaPlayer.LocalCache;

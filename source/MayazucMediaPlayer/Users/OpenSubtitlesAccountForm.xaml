@@ -6,7 +6,7 @@
     xmlns:local="using:MayazucMediaPlayer.Users"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:toolkit="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -57,7 +57,7 @@
             </toolkit:WrapPanel>
         </StackPanel>
 
-        <toolkit:InAppNotification x:Name="notificationRoot" StackMode="Replace" Content="this is some weird text"  Height="75" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <!--<toolkit:InAppNotification x:Name="notificationRoot" StackMode="Replace" Content="this is some weird text"  Height="75" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>-->
 
 
     </Grid>

@@ -265,6 +265,11 @@ namespace MayazucMediaPlayer.Settings
                 Description = "Allow BGRA8 software decoder output",
             });
 
+            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.StereoDownMix))
+            {
+                Description = "Stereo downmix",
+            });
+
             return items;
         }
 
