@@ -327,7 +327,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 DispatcherQueue.TryEnqueue(async () =>
                 {
-                    DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
+                    //DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
                 });
             }
             catch { }

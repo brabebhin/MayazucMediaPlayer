@@ -30,7 +30,7 @@ namespace winrt::MayazucNativeFramework::implementation
 			{
 				auto renderSurfaceDS = renderingTarget.CreateDrawingSession();
 				renderSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
-				renderSurfaceDS.Close();
+				//renderSurfaceDS.Close();
 				CanvasDrawingSession outputDrawingSession = canvasSwapChain.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
 				player.CopyFrameToVideoSurface(renderingTarget);
 				
@@ -43,7 +43,7 @@ namespace winrt::MayazucNativeFramework::implementation
 				{
 					outputDrawingSession.DrawImage(subtitleRenderingTarget);
 				}
-				outputDrawingSession.Flush();
+				//outputDrawingSession.Flush();
 				canvasSwapChain.Present();
 			}
 		}

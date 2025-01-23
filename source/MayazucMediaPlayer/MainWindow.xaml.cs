@@ -356,13 +356,11 @@ namespace MayazucMediaPlayer
 
         private async Task ShowNotification(PopupRequestData content, int duration = 2500)
         {
-            await DispatcherQueue.EnqueueAsync(() =>
+            await DispatcherQueue.EnqueueAsync(async () =>
             {
                 try
                 {
-                    //notificationRoot.Content = content;
-
-                    //notificationRoot.Show(duration);
+                    await notificationRoot.ShowNotificationAsync(content.Title, content.Subtitle, TimeSpan.FromMilliseconds(duration));
                 }
                 catch { }
             });

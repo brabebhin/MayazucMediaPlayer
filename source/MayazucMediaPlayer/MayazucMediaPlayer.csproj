@@ -41,6 +41,7 @@
 		<Compile Remove="Common\RelayCommand.cs" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Remove="Controls\NotificationControl.xaml" />
 		<None Remove="Controls\ResumePlaybackControl.xaml" />
 		<None Remove="AudioEffects\AudioEqualizerSlider.xaml" />
 		<None Remove="Controls\AudioTrackSelectionDialog.xaml" />
@@ -264,6 +265,12 @@
 
 	<ItemGroup>
 	  <Resource Remove="Controls\MTCPlaybackSpeedControl.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Page Update="Controls\NotificationControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 	<ItemGroup>
