@@ -305,6 +305,12 @@ namespace FFmpegInteropX
         Double DisplayAspectRatio{ get; };
     };
 
+    runtimeclass SubtitleRenderResult
+    {
+        Boolean Succeeded {get; };
+        Boolean HasChanged {get; };
+    };
+
     static runtimeclass CodecChecker
     {
         ///<summary>This event is raised if a codec is required to improve playback experience.</summary>
@@ -566,6 +572,9 @@ namespace FFmpegInteropX
 
         ///<summary>Gets the presentation timestamp delay for the given stream. </summary>
         Windows.Foundation.TimeSpan GetStreamDelay(IStreamInfo stream);
+
+        ///<summary>Renders subtitles from the given stream at the current video position. </summary>
+        SubtitleRenderResult RenderSubtitlesToDirectXSurface(Windows.Graphics.DirectX.Direct3D11.IDirect3DSurface renderTarget, SubtitleStreamInfo subtitle, Windows.Foundation.TimeSpan position);
     };
 
     runtimeclass SubtitleParser : Windows.Foundation.IClosable

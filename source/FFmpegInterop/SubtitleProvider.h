@@ -6,13 +6,13 @@
 #include "ReferenceCue.h"
 #include "AvCodecContextHelpers.h"
 #include <winrt/FFmpegInteropX.h>
-
+#include "SubtitleRenderResult.h"
 
 using namespace winrt::Windows::UI::Core;
 using namespace winrt::Windows::Media::Playback;
 using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Foundation;
-
+using namespace winrt::Windows::Graphics::Imaging;
 #ifdef Win32
 using namespace winrt::Microsoft::UI::Dispatching;
 #else
@@ -65,6 +65,11 @@ public:
     }
 
 public:
+
+    virtual winrt::com_ptr<implementation::SubtitleRenderResult> RenderSubtitlesToDirectXSurface(winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DSurface rendertarget, TimeSpan position)
+    {
+        return winrt::make_self<implementation::SubtitleRenderResult>();
+    }
 
     virtual void InitializeStreamInfo() override
     {
@@ -201,7 +206,7 @@ public:
                 }
             }
         }
-        catch (...)
+        catch (exception ex)
         {
             OutputDebugString(L"Failed to create subtitle cue.");
         }

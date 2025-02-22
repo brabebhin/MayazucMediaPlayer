@@ -15,24 +15,30 @@ namespace winrt::MayazucNativeFramework::implementation
 				SwapChainAllocResources(this->swapChainPannel, width, height, dpi, pixelFormat, SubtitleSwapChainBufferCount, canvasSwapChain);
 			}
 
-			if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != width) || (renderingTarget.Bounds().Height != height))
+		/*	if (renderingTarget == nullptr || (renderingTarget.Bounds().Width != width) || (renderingTarget.Bounds().Height != height))
 			{
 				if (renderingTarget)
 					renderingTarget.Close();
 
-				renderingTarget = CanvasRenderTarget(canvasDevice, width, height, dpi, pixelFormat, CanvasAlphaMode::Premultiplied);
-			}
+			}*/
 
 			if (canvasSwapChain.Format() != pixelFormat || (uint32_t)canvasSwapChain.Size().Width != (uint32_t)width || (uint32_t)canvasSwapChain.Size().Height != (uint32_t)height || (uint32_t)canvasSwapChain.Dpi() != (uint32_t)dpi)
 			{
 				canvasSwapChain.ResizeBuffers(width, height, dpi, pixelFormat, SubtitleSwapChainBufferCount);
 			}
 			{
-				auto renderSurfaceDS = renderingTarget.CreateDrawingSession();
-				renderSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
+			
 				//renderSurfaceDS.Close();
+				
 				CanvasDrawingSession outputDrawingSession = canvasSwapChain.CreateDrawingSession(winrt::Microsoft::UI::Colors::Transparent());
+				
+				renderingTarget = CanvasRenderTarget(outputDrawingSession, width, height, dpi, pixelFormat, CanvasAlphaMode::Premultiplied);
+				//auto renderSurfaceDS = renderingTarget.CreateDrawingSession();
+				//renderSurfaceDS.Clear(winrt::Microsoft::UI::Colors::Transparent());
+
+				
 				player.CopyFrameToVideoSurface(renderingTarget);
+				
 				
 				auto effectImage = effectsPrcessor.ProcessFrame(renderingTarget);
 				outputDrawingSession.DrawImage(effectImage);
