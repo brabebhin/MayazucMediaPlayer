@@ -5,7 +5,12 @@
 
 namespace winrt::MayazucNativeFramework::implementation
 {
-	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, uint32_t width, uint32_t height, uint32_t dpi, winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
+	void FrameServerRenderer::RenderMediaPlayerFrame(winrt::Windows::Media::Playback::MediaPlayer const& player, 
+		uint32_t width, 
+		uint32_t height, 
+		uint32_t dpi, 
+		winrt::Windows::Graphics::DirectX::DirectXPixelFormat const& pixelFormat, 
+		winrt::MayazucNativeFramework::VideoEffectProcessorConfiguration const& effectConfiguration)
 	{
 		try {
 			auto canvasDevice = CanvasDevice::GetSharedDevice();

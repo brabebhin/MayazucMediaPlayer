@@ -7,8 +7,7 @@ using TemperatureAndTintEffect = Microsoft.Graphics.Canvas.Effects.TemperatureAn
 
 namespace MayazucMediaPlayer.Controls
 {
-    [Obsolete("Replaced by native code")]
-    public class EffectProcessor
+    public class VideoEffectProcessor
     {
         ICanvasEffect CreateColorEffect(ICanvasImage source, float c, float b, float s)
         {
@@ -95,13 +94,12 @@ namespace MayazucMediaPlayer.Controls
             return gaussianBlurEffect;
         }
 
-        public _VideoEffectProcessorConfiguration EffectConfiguration { get; set; }
 
-        public EffectProcessor()
+        public VideoEffectProcessor()
         {
         }
 
-        public ICanvasImage ProcessFrame(ICanvasImage source)
+        public ICanvasImage ProcessFrame(ICanvasImage source, _VideoEffectProcessorConfiguration EffectConfiguration)
         {
             if (EffectConfiguration.MasterSwitch)
             {

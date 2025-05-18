@@ -27,23 +27,21 @@ using MayazucNativeFramework;
 using MayazucMediaPlayer.LocalCache;
 using Windows.Storage;
 using MayazucMediaPlayer.Tests;
+using System.Collections.Concurrent;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MayazucMediaPlayer.Controls
 {
-    [Obsolete]
     public sealed partial class MediaPlayerRenderingElement : BaseUserControl
     {
-        bool useNativeSubtitleRenderer = true;
-
-        //FrameServerRenderer renderer = new FrameServerRenderer();
         Win2DSubtitleRenderer subsRenderer = new Win2DSubtitleRenderer();
 
-        private EffectProcessor EffectRenderer = new EffectProcessor();
-        //SubtitleRenderer nativeSubRenderer = new SubtitleRenderer();
+        private VideoEffectProcessor EffectRenderer = new VideoEffectProcessor();
         MediaPlayer _mediaPlayer;
+
+        ConcurrentQueue<Size> swapChainResizeQueue = new ConcurrentQueue<Size>();
 
         public MediaPlayer WrappedMediaPlayer
         {
@@ -73,7 +71,6 @@ namespace MayazucMediaPlayer.Controls
             await DispatcherQueue.EnqueueAsync(async () =>
             {
                 DrawSubtitles();
-
             });
         }
 
@@ -85,7 +82,7 @@ namespace MayazucMediaPlayer.Controls
             SubtitleImage.Visibility = Visibility.Visible;
             SubtitleImage.Opacity = 1;
 
-                   }
+        }
 
         public ImageSource PosterSource
         {
@@ -112,49 +109,8 @@ namespace MayazucMediaPlayer.Controls
         {
             if (args.Reason == MediaOpenedEventReason.MediaPlayerObjectRequested) return;
 
-            if (args.Data.PreviousItem != null)
-            {
-                foreach (var tmd in args.Data.PreviousItem.TimedMetadataTracks)
-                {
-                    tmd.CueEntered -= Tmd_CueEntered;
-                    tmd.CueExited -= Tmd_CueEntered;
-                }
-
-                args.Data.PreviousItem.TimedMetadataTracksChanged -= PlaybackItem_TimedMetadataTracksChanged;
-
-            }
-            foreach (var tmd in args.Data.PlaybackItem.TimedMetadataTracks)
-            {
-                tmd.CueEntered += Tmd_CueEntered;
-                tmd.CueExited += Tmd_CueEntered;
-            }
-
-            args.Data.PlaybackItem.TimedMetadataTracksChanged += PlaybackItem_TimedMetadataTracksChanged;
-        }
-
-        private void PlaybackItem_TimedMetadataTracksChanged(MediaPlaybackItem sender, IVectorChangedEventArgs args)
-        {
-            switch (args.CollectionChange)
-            {
-                case CollectionChange.ItemInserted:
-                    sender.TimedMetadataTracks[(int)args.Index].CueEntered += Tmd_CueEntered;
-                    sender.TimedMetadataTracks[(int)args.Index].CueExited += Tmd_CueEntered;
-                    break;
-                case CollectionChange.ItemRemoved:
-                    sender.TimedMetadataTracks[(int)args.Index].CueEntered -= Tmd_CueEntered;
-                    sender.TimedMetadataTracks[(int)args.Index].CueExited -= Tmd_CueEntered;
-                    break;
-            }
-        }
-
-        private async void Tmd_CueEntered(Windows.Media.Core.TimedMetadataTrack sender, Windows.Media.Core.MediaCueEventArgs args)
-        {
-            await DispatcherQueue.EnqueueAsync(async () =>
-            {
-                DrawSubtitles();
-
-            });
-        }
+            
+        }       
 
         private async void EffectConfiguration_ConfigurationChanged(object? sender, string e)
         {
@@ -167,7 +123,7 @@ namespace MayazucMediaPlayer.Controls
         private async void MediaPlayerRenderingElement_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             RedrawPaused(WrappedMediaPlayer);
-           
+            swapChainResizeQueue.Enqueue(e.NewSize);
         }
 
         private void OnMediaPlayerChanged(DependencyObject sender, DependencyProperty dp)

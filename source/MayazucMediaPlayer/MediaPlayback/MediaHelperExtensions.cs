@@ -111,7 +111,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             config.Video.VideoOutputAllowBgra8 = SettingsService.Instance.VideoOutputAllowBgra8;
             config.Video.VideoOutputAllowIyuv = SettingsService.Instance.VideoOutputAllowIyuv;
             config.General.FastSeek = true;
-            config.Subtitles.UseLibassAsSubtitleRenderer = true;
+            config.Subtitles.UseLibassAsSubtitleRenderer = false;
             config.General.MaxSupportedPlaybackRate = 4;
             config.Audio.DownmixAudioStreamsToStereo = SettingsService.Instance.StereoDownMix;
             config.Video.HdrSupport = HdrSupport.Automatic;

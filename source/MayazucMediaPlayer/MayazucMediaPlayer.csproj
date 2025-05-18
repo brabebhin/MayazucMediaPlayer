@@ -109,6 +109,7 @@
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<PackageReference Include="TagLibSharp" Version="2.3.0" />
+		<PackageReference Include="TerraFX.Interop.Windows" Version="10.0.26100.2" />
 		<PackageReference Include="WinUIEx" Version="2.4.2" />
 		<PackageReference Include="ZXing.Net.Mobile" Version="3.1.0-beta2" />
 		<Manifest Include="$(ApplicationManifest)" />

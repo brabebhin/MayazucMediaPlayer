@@ -2,8 +2,10 @@ using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.NowPlayingViews;
+using MayazucMediaPlayer.Rendering;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.UserInput;
+using MayazucMediaPlayer.VideoEffects;
 using MayazucNativeFramework;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Display;
@@ -16,6 +18,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -41,8 +44,14 @@ namespace MayazucMediaPlayer.Controls
         ThreadPoolTimer? _fullscreenCursorTimer;
         volatile bool isPointerOverTransportControls = false;
         bool useMfSubsRenderer = false;
+        ConcurrentQueue<Size> pendingResizesQueue = new ConcurrentQueue<Size>();
 
-        SubtitleRenderer NativeSubtitleRenderer
+        private readonly Task VideoRenderingTask;
+        private readonly ManualResetEventSlim PlayPauseSignal = new ManualResetEventSlim(false);
+
+        _VideoEffectProcessorConfiguration effectProcessorConfiguration = new _VideoEffectProcessorConfiguration();
+
+        MayazucNativeFramework.SubtitleRenderer NativeSubtitleRenderer
         {
             get;
             set;
@@ -54,7 +63,7 @@ namespace MayazucMediaPlayer.Controls
             set;
         }
 
-        FrameServerRenderer renderer;
+        VideoRenderer videoRenderer;
 
         MediaPlayer _mediaPlayer;
 
@@ -95,7 +104,7 @@ namespace MayazucMediaPlayer.Controls
             AppState.Current.MediaServiceConnector.PlayerInstance.OnStateChanged += CurrentPlaybackSession_PlaybackStateChanged;
             this.ManipulationStarted += MediaPlayerRenderingElement2_ManipulationStarted;
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
-            renderer = new FrameServerRenderer(VideoSwapChain);
+            videoRenderer = new VideoRenderer(VideoSwapChain);
             allocSubtitleRenderer();
             _ = MediaEffectsFrame.NavigateAsync(typeof(MediaEffectsPage));
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
@@ -107,6 +116,23 @@ namespace MayazucMediaPlayer.Controls
             CheckHdr(displayInformation);
 
             _ = nowPlayingList.InitializeStateAsync(null);
+            VideoRenderingTask = Task.Factory.StartNew(VideoRenderingLoop, TaskCreationOptions.LongRunning);
+        }
+
+        private async Task VideoRenderingLoop()
+        {
+            while (true)
+            {
+                try
+                {
+                    PlayPauseSignal.Wait();
+                    await DrawVideoFrame(_mediaPlayer);
+                }
+                finally
+                {
+                    PlayPauseSignal.Set();
+                }
+            }
         }
 
         void allocSubtitleRenderer()
@@ -117,7 +143,7 @@ namespace MayazucMediaPlayer.Controls
             }
             else
             {
-                NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
+                //NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
             }
         }
 
@@ -183,10 +209,12 @@ namespace MayazucMediaPlayer.Controls
                 if (state == MediaPlaybackState.Playing)
                 {
                     StartMouseTransportControlHideTimer();
+                    PlayPauseSignal.Set();
                 }
                 else
                 {
                     ShowMouseShowTransportControls();
+                    PlayPauseSignal.Reset();
                 }
             }));
         }
@@ -258,10 +286,18 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (args.Data.PlaybackItem != null)
                 {
+                    pendingResizesQueue.Enqueue(new Size(this.ActualWidth, this.ActualHeight));
                     if (!args.Data.PlaybackItem.IsVideo())
                     {
                         PosterImageImage.Visibility = Visibility.Visible;
                         VideoSwapChain.Visibility = Visibility.Collapsed;
+                        PlayPauseSignal.Reset();
+                    }
+                    else
+                    {
+                        PlayPauseSignal.Set();
+                        PosterImageImage.Visibility = Visibility.Collapsed;
+                        VideoSwapChain.Visibility = Visibility.Visible;
                     }
                 }
             });
@@ -337,7 +373,7 @@ namespace MayazucMediaPlayer.Controls
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                RedrawPaused(WrappedMediaPlayer, new Size(this.ActualWidth, this.ActualHeight));
+                //RedrawPaused(WrappedMediaPlayer);
             });
         }
 
@@ -348,79 +384,91 @@ namespace MayazucMediaPlayer.Controls
                 NowPlayingListSplitView.OpenPaneLength = e.NewSize.Width / 2;
                 MediaEffectsSplitView.OpenPaneLength = e.NewSize.Width * 0.67;
 
-                RedrawPaused(WrappedMediaPlayer, e.NewSize);
+                pendingResizesQueue.Enqueue(e.NewSize);
+                //RedrawPaused(WrappedMediaPlayer);
 
-                DrawSubtitles(e.NewSize);
+                //DrawSubtitles(e.NewSize);
             });
         }
 
         private void _mediaPlayer_SubtitleFrameChanged(MediaPlayer sender, object args)
         {
-            DispatcherQueue.TryEnqueue(() =>
-            {
-                DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
-            });
+            //DispatcherQueue.TryEnqueue(() =>
+            //{
+            //    DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
+            //});
         }
 
         private void VideoFameAvailanle(MediaPlayer sender, object args)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                DrawVideoFrame(sender, new Size(this.ActualWidth, this.ActualHeight));
+                //DrawVideoFrame(sender);
             });
         }
 
-        private void RedrawPaused(MediaPlayer sender, Size? requestedSize)
+        private void RedrawPaused(MediaPlayer sender)
         {
-            if (WrappedMediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
-                if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
-                    DrawVideoFrame(sender, requestedSize);
+            //if (WrappedMediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
+            //    if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
+            //        DrawVideoFrame(sender);
         }
 
 
 
-        private void DrawVideoFrame(MediaPlayer sender, Size? requestedSize)
+        private async Task DrawVideoFrame(MediaPlayer sender)
         {
             try
             {
-                if (this.ActualWidth == 0 || this.ActualHeight == 0) return;
-
-                var thisActualHeight = requestedSize.HasValue ? requestedSize.Value.Height : this.ActualHeight;
-                var thisActualWidth = requestedSize.HasValue ? requestedSize.Value.Width : this.ActualWidth;
-
-                PosterImageImage.Visibility = Visibility.Collapsed;
-                VideoSwapChain.Visibility = Visibility.Visible;
-
-                VideoSwapChain.Opacity = 1;
-
-                var currentPlaybackSession = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
-                var ar = (float)currentPlaybackSession.NaturalVideoWidth / currentPlaybackSession.NaturalVideoHeight;
-
-                var width = 0f;
-                var height = 0f;
-
-                if (currentPlaybackSession.NaturalVideoHeight != currentPlaybackSession.NaturalVideoWidth)
+                if (!pendingResizesQueue.IsEmpty)
                 {
-                    height = (float)thisActualHeight;
-                    width = height * ar;
+                    await DispatcherQueue.EnqueueAsync(() =>
+                    {
+                        while (!pendingResizesQueue.IsEmpty)
+                        {
+                            if (pendingResizesQueue.TryDequeue(out var videoRenderSize))
+                                SetVideoSwapChainRenderSize(videoRenderSize);
+                        }
+                    });
                 }
-                else if (currentPlaybackSession.NaturalVideoHeight == currentPlaybackSession.NaturalVideoWidth)
+                else
                 {
-                    height = width = (float)thisActualWidth * ar;
+                    videoRenderer.RenderMediaPlayerFrame(sender, effectProcessorConfiguration);
                 }
-                //else
-                //{
-                //    width = (float)this.ActualWidth;
-                //    height = (float)this.ActualWidth / ar;
-                //}
-
-                VideoSwapChain.Width = width;
-                VideoSwapChain.Height = height;
-                renderer.RenderMediaPlayerFrame(sender, (uint)width, (uint)height, 96u, GetPixelFormat(), AppState.Current.MediaServiceConnector.VideoEffectsConfiguration);
             }
             catch
             {
             }
+        }
+
+        private void SetVideoSwapChainRenderSize(Size newSize)
+        {
+            var requestedSize = new Size(newSize.Width, newSize.Height);
+
+            if (requestedSize.Width == 0 || requestedSize.Height == 0) return;
+
+            var thisActualHeight = requestedSize.Height;
+            var thisActualWidth = requestedSize.Width;
+
+            var currentPlaybackSession = WrappedMediaPlayer.PlaybackSession;
+            var ar = (float)currentPlaybackSession.NaturalVideoWidth / currentPlaybackSession.NaturalVideoHeight;
+
+            float width = 0f;
+            float height = 0f;
+            if (currentPlaybackSession.NaturalVideoHeight != currentPlaybackSession.NaturalVideoWidth)
+            {
+                height = (float)thisActualHeight;
+                width = height * ar;
+            }
+            else if (currentPlaybackSession.NaturalVideoHeight == currentPlaybackSession.NaturalVideoWidth)
+            {
+                height = width = (float)thisActualWidth * ar;
+            }
+
+            VideoSwapChain.Width = width;
+            VideoSwapChain.Height = height;
+
+            videoRenderer.ResizeSwapChain((uint)width, (uint)height, 96, GetPixelFormat());
         }
 
         private DirectXPixelFormat GetPixelFormat()
@@ -446,7 +494,7 @@ namespace MayazucMediaPlayer.Controls
                         var file = await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
                         using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                         {
-                            await renderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
+                            //await videoRenderer.RenderMediaPlayerFrameToStreamAsync(_mediaPlayer, AppState.Current.MediaServiceConnector.VideoEffectsConfiguration, stream);
                         }
 
                         PopupHelper.ShowInfoMessage($"Frame saved: {DateTime.Now.ToString("hh:mm:ss")}");

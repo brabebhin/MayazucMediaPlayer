@@ -11,7 +11,6 @@ namespace MayazucMediaPlayer
         public new bool Add(T item)
         {
             var result = base.Add(item);
-            ShellFile file = null;
 
             if (result)
             {
