@@ -13,11 +13,6 @@ using namespace winrt::Windows::Media::Playback;
 using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Graphics::Imaging;
-#ifdef Win32
-using namespace winrt::Microsoft::UI::Dispatching;
-#else
-using namespace winrt::Windows::System;
-#endif
 
 class SubtitleProvider :
     public CompressedSampleProvider, public std::enable_shared_from_this<SubtitleProvider>
@@ -32,15 +27,13 @@ public:
         AVCodecContext* avCodecCtx,
         MediaSourceConfig const& config,
         int index,
-        TimedMetadataKind const& ptimedMetadataKind,
-        DispatcherQueue const& pdispatcher)
+        TimedMetadataKind const& ptimedMetadataKind)
         : CompressedSampleProvider(reader,
             avFormatCtx,
             avCodecCtx,
             config,
             index,
             HardwareDecoderStatus::Unknown),
-        dispatcher(pdispatcher),
         timedMetadataKind(ptimedMetadataKind)
     {
     }
@@ -66,9 +59,14 @@ public:
 
 public:
 
-    virtual winrt::com_ptr<implementation::SubtitleRenderResult> RenderSubtitlesToDirectXSurface(winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DSurface rendertarget, TimeSpan position)
+    virtual winrt::com_ptr<implementation::SubtitleRenderResult> RenderSubtitlesToDirectXSurface(winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DSurface rendertarget, TimeSpan position, bool forceRender)
     {
         return winrt::make_self<implementation::SubtitleRenderResult>();
+    }
+
+    virtual bool CanRenderSubtitles()
+    {
+        return false;
     }
 
     virtual void InitializeStreamInfo() override
@@ -77,6 +75,8 @@ public:
 
         streamInfo = SubtitleStreamInfo(Name, Language, CodecName, (StreamDisposition)m_pAvStream->disposition,
             false, forced, SubtitleTrack, IsExternal(), m_streamIndex);
+
+        streamInfo.as<implementation::SubtitleStreamInfo>()->Renderable(CanRenderSubtitles());
     }
 
     virtual void NotifyVideoFrameSize(int width, int height, double aspectRatio)
@@ -476,8 +476,6 @@ private:
 
     int cueCount = 0;
     TimedMetadataKind timedMetadataKind;
-    DispatcherQueue dispatcher = { nullptr };
-    DispatcherQueueTimer timer = { nullptr };
     TimeSpan actualSubtitleDelay{};
     std::vector<std::pair<IMediaCue, long long>> negativePositionCues;
     IMediaCue infiniteDurationCue = { nullptr };
@@ -485,6 +483,13 @@ private:
     TimeSpan lastExtendedDurationCueOriginalEndTime{};
     TimedMetadataTrack referenceTrack = { nullptr };
     const long long InfiniteDuration = ((long long)0xFFFFFFFF) * 10000;
+
+public:
+    static bool CodecContextIsSsaAss(AVCodecContext* m_pAvCodecCtx)
+    {
+        return m_pAvCodecCtx->codec_id == AV_CODEC_ID_ASS ||
+            m_pAvCodecCtx->codec_id == AV_CODEC_ID_SSA;
+    }
 
 };
 

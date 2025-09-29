@@ -6,12 +6,6 @@
 using namespace winrt::Windows::Graphics::Imaging;
 using namespace winrt::Windows::Media::Core;
 
-#ifdef Win32
-using namespace winrt::Microsoft::UI::Dispatching;
-#else
-using namespace winrt::Windows::System;
-#endif
-
 class SubtitleProviderBitmap : public SubtitleProvider
 {
 
@@ -20,9 +14,8 @@ public:
         AVFormatContext* avFormatCtx,
         AVCodecContext* avCodecCtx,
         MediaSourceConfig const& config,
-        int index,
-        DispatcherQueue const& dispatcher)
-        : SubtitleProvider(reader, avFormatCtx, avCodecCtx, config, index, TimedMetadataKind::ImageSubtitle, dispatcher)
+        int index)
+        : SubtitleProvider(reader, avFormatCtx, avCodecCtx, config, index, TimedMetadataKind::ImageSubtitle)
     {
     }
 
@@ -298,6 +291,13 @@ private:
             // initially get size information
             subtitleWidth = m_pAvCodecCtx->width;
             subtitleHeight = m_pAvCodecCtx->height;
+
+            if (subtitleWidth == 0 && subtitleHeight == 0)
+            {
+                OutputDebugString(L"Warning: No subtitle size received. Assuming equal to video size.\n");
+                subtitleWidth = videoWidth;
+                subtitleHeight = videoHeight;
+            }
 
             if (subtitleWidth > 0 && subtitleHeight > 0)
             {

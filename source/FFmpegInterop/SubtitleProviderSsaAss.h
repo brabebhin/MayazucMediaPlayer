@@ -7,12 +7,6 @@ using namespace winrt::Windows::Storage::FileProperties;
 using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Foundation::Metadata;
 
-#ifdef Win32
-using namespace winrt::Microsoft::UI::Dispatching;
-#else
-using namespace winrt::Windows::System;
-#endif
-
 class SubtitleProviderSsaAss : public SubtitleProvider
 {
 public:
@@ -21,15 +15,14 @@ public:
         AVCodecContext* avCodecCtx,
         MediaSourceConfig const& config,
         int index,
-        DispatcherQueue const& dispatcher,
         std::shared_ptr<AttachedFileHelper> attachedFileHelper)
-        : SubtitleProvider(reader,
+        : SubtitleProvider(
+            reader,
             avFormatCtx,
             avCodecCtx,
             config,
             index,
-            TimedMetadataKind::Subtitle,
-            dispatcher
+            TimedMetadataKind::Subtitle
         )
     {
         this->attachedFileHelper = attachedFileHelper;

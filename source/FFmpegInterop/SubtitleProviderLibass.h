@@ -15,12 +15,6 @@ using namespace winrt::Windows::Media::Core;
 using namespace winrt::Windows::Foundation::Metadata;
 using namespace winrt::Windows::Graphics::Imaging;
 
-#ifdef Win32
-using namespace winrt::Microsoft::UI::Dispatching;
-#else
-using namespace winrt::Windows::System;
-#endif
-
 const float MIN_UINT8_CAST = 0.9F / 255;
 const float MAX_UINT8_CAST = 255.9F / 255;
 #define CLAMP_UINT8(value) ((value > MIN_UINT8_CAST) ? ((value < MAX_UINT8_CAST) ? (BYTE)(value * 255) : 255) : 0)
@@ -53,18 +47,21 @@ public:
         AVCodecContext* avCodecCtx,
         MediaSourceConfig const& config,
         int index,
-        DispatcherQueue const& dispatcher,
         std::shared_ptr<AttachedFileHelper> attachedFileHelper)
         : SubtitleProvider(reader,
             avFormatCtx,
             avCodecCtx,
             config,
             index,
-            TimedMetadataKind::ImageSubtitle,
-            dispatcher
+            TimedMetadataKind::ImageSubtitle
         )
     {
         this->attachedFileHelper = attachedFileHelper;
+    }
+
+    virtual bool CanRenderSubtitles() override
+    {
+        return true;
     }
 
     virtual HRESULT SetHardwareDevice(winrt::com_ptr<ID3D11Device> newDevice,
@@ -75,11 +72,6 @@ public:
         deviceContext = newDeviceContext;
         return S_OK;
     };
-
-    void SubtitleProviderLibass::SetPosition(winrt::Windows::Foundation::TimeSpan  position)
-    {
-        currentPosition = position;
-    }
 
     void ParseHeaders()
     {
@@ -106,7 +98,7 @@ public:
         videoHeight = frameHeight;
     }
 
-    virtual winrt::com_ptr<implementation::SubtitleRenderResult>  RenderSubtitlesToDirectXSurface(winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DSurface rendertarget, TimeSpan position) override
+    virtual winrt::com_ptr<implementation::SubtitleRenderResult>  RenderSubtitlesToDirectXSurface(winrt::Windows::Graphics::DirectX::Direct3D11::IDirect3DSurface rendertarget, TimeSpan position, bool forceRender) override
     {
         std::lock_guard lock(mutex);
 
@@ -133,11 +125,14 @@ public:
         SetSubtitleSize(desc.Width, desc.Height);
         auto start = CalculatePosition(&position);
         int changes = 0;
-
-        // ass render - if no changes, return immediately!
+        
         auto assImage = ass_render_frame(assRenderer, track, start, &changes);
-        if (!changes)
+        if (!changes && !forceRender)
+        {
+            //if no changes and the caller didn't request a force render, then nothing left to do.
+            OutputDebugString(L"Subtitle frame is same as previous!\n");
             return winrt::make_self<implementation::SubtitleRenderResult>(true, false);
+        }
 
         // get d3d interfaces
         winrt::com_ptr<ID3D11Resource> resource;
@@ -147,7 +142,7 @@ public:
         resource = renderTargetDXGI.as<ID3D11Resource>();
         resource->GetDevice(device.put());
         device->GetImmediateContext(deviceContext.put());
-        
+
         // Create render target view
         auto hr = device->CreateRenderTargetView(resource.get(), NULL, renderTargetView.put());
         if (!SUCCEEDED(hr)) return winrt::make_self<implementation::SubtitleRenderResult>();
@@ -158,7 +153,7 @@ public:
 
         // If no image is provided, we are done here (empty scene) - this is not an error
         if (!assImage) {
-            return winrt::make_self<implementation::SubtitleRenderResult>(true, true);
+            return winrt::make_self<implementation::SubtitleRenderResult>(true, changes != 0);
         }
 
         // blend ass_image to buffer
@@ -175,7 +170,7 @@ public:
             UploadToTexture(pixelData, width, rects, deviceContext, resource);
         }
 
-        return winrt::make_self<implementation::SubtitleRenderResult>(true, true);
+        return winrt::make_self<implementation::SubtitleRenderResult>(true, changes != 0);
     }
 
     virtual IMediaCue CreateCue(AVPacket* packet, winrt::Windows::Foundation::TimeSpan* position, winrt::Windows::Foundation::TimeSpan* duration) override
@@ -218,6 +213,10 @@ public:
             // could be replaced by shaders, directx math or vector intrinsics
             for (ASS_Image* img = assImage; img != nullptr; img = img->next)
             {
+                /*
+                TODO: we actually need a test case for this.
+                if (!img->w || !img->h) continue; // we shouldn't render this image according to docs*/
+
                 uint8_t* src = img->bitmap;
                 int stride = img->stride;
                 uint32_t color = img->color;
@@ -257,7 +256,7 @@ public:
                     }
                 }
             }
-        });
+            });
     }
 
     void UploadToTexture(BYTE* pixelData, int linesize, std::vector<D3D11_RECT> rects,
@@ -491,7 +490,6 @@ private:
     SoftwareBitmap dummyBitmap = { nullptr };
     int nextId = 0;
     unsigned threads = 4;
-    TimeSpan currentPosition{ 0 };
 
     std::shared_ptr<AttachedFileHelper> attachedFileHelper;
 };
