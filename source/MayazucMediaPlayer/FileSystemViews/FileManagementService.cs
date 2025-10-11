@@ -117,8 +117,6 @@ namespace MayazucMediaPlayer.FileSystemViews
 
             if (folder != null)
             {
-                await GlobalProgressBarUtilities.ShowProgressBar("Searching...");
-
                 QueryOptions opts = new QueryOptions();
                 foreach (var str in SupportedFileFormats.AllSupportedFileFormats)
                 {
@@ -134,8 +132,6 @@ namespace MayazucMediaPlayer.FileSystemViews
 
                 var files = await qfiles.GetFilesAsync();
                 await OpenFilesInternalAsync(files.Select(x => x.ToFileInfo()));
-
-                await GlobalProgressBarUtilities.HideProgressBar();
             }
         }
 

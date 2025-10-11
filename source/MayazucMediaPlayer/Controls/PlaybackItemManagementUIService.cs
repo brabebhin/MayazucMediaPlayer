@@ -847,31 +847,23 @@ namespace MayazucMediaPlayer.Controls
 
         protected virtual async Task PlayFilesInternal(IEnumerable<T> Items, int startIndex)
         {
-            try
+            if (!Items.Any())
             {
-                if (!Items.Any())
-                {
-                    return;
-                }
-
-                await GlobalProgressBarUtilities.ShowProgressBar("Loading...");
-
-                var mediaSourcesToPlay = await PrepareForPlayback(Items);
-                if (mediaSourcesToPlay.IsSuccess)
-                {
-                    if (startIndex == 0)
-                    {
-                        await AppState.Current.MediaServiceConnector.StartPlaybackFromBeginning(mediaSourcesToPlay.Value);
-                    }
-                    else
-                    {
-                        await AppState.Current.MediaServiceConnector.StartPlaybackFromIndexAndPosition(mediaSourcesToPlay.Value, startIndex, 0);
-                    }
-                }
+                return;
             }
-            finally
+
+
+            var mediaSourcesToPlay = await PrepareForPlayback(Items);
+            if (mediaSourcesToPlay.IsSuccess)
             {
-                await GlobalProgressBarUtilities.HideProgressBar();
+                if (startIndex == 0)
+                {
+                    await AppState.Current.MediaServiceConnector.StartPlaybackFromBeginning(mediaSourcesToPlay.Value);
+                }
+                else
+                {
+                    await AppState.Current.MediaServiceConnector.StartPlaybackFromIndexAndPosition(mediaSourcesToPlay.Value, startIndex, 0);
+                }
             }
         }
 
@@ -894,7 +886,6 @@ namespace MayazucMediaPlayer.Controls
             }
             try
             {
-                await GlobalProgressBarUtilities.ShowProgressBar("Loading...");
                 EnqueueButtonIsEnabled = false;
                 PlayButtonIsEnabled = false;
                 var mediaSourcesToPlay = await PrepareForPlayback(Items);
@@ -907,7 +898,6 @@ namespace MayazucMediaPlayer.Controls
             {
                 EnqueueButtonIsEnabled = true;
                 PlayButtonIsEnabled = true;
-                await GlobalProgressBarUtilities.HideProgressBar();
             }
         }
 
@@ -966,7 +956,6 @@ namespace MayazucMediaPlayer.Controls
 
         private async Task AddFilesToExistingPlaylist(IEnumerable<T> Items)
         {
-            await GlobalProgressBarUtilities.ShowProgressBar("Saving");
             PlaylistPicker picker = new PlaylistPicker();
             var target = await picker.PickPlaylistAsync(PlaylistsService.Playlists);
 
@@ -975,46 +964,37 @@ namespace MayazucMediaPlayer.Controls
                 await PrepareToSaveToPlaylist(target, Items);
                 await MessageDialogService.Instance.ShowMessageDialogAsync("Added to playlist", "Success");
             }
-            await GlobalProgressBarUtilities.HideProgressBar();
         }
 
         private async Task PrepareToSaveToPlaylist(PlaylistItem item, IEnumerable<T> Items)
         {
-            try
+            if (!Items.Any())
             {
-                await GlobalProgressBarUtilities.ShowProgressBar("Preparing...");
-                if (!Items.Any())
+                return;
+            }
+            List<string> brokenFiles = new List<string>();
+
+            var mediaSourcesToPlay = await PrepareForPlayback(Items);
+
+            if (item == null && mediaSourcesToPlay.IsSuccess)
+            {
+                var diag = new StringInputDialog("Playlist name", "Pick a playlist name");
+                await ContentDialogService.Instance.ShowAsync(diag);
+
+                var PlayListName = diag.Result;
+                if (PlayListName == null)
                 {
                     return;
                 }
-                List<string> brokenFiles = new List<string>();
 
-                var mediaSourcesToPlay = await PrepareForPlayback(Items);
+                await PlaylistsService.AddPlaylist(PlayListName, mediaSourcesToPlay.Value);
 
-                if (item == null && mediaSourcesToPlay.IsSuccess)
-                {
-                    var diag = new StringInputDialog("Playlist name", "Pick a playlist name");
-                    await ContentDialogService.Instance.ShowAsync(diag);
+                PopupHelper.ShowSuccessDialog();
 
-                    var PlayListName = diag.Result;
-                    if (PlayListName == null)
-                    {
-                        return;
-                    }
-
-                    await PlaylistsService.AddPlaylist(PlayListName, mediaSourcesToPlay.Value);
-
-                    PopupHelper.ShowSuccessDialog();
-
-                }
-                else if (mediaSourcesToPlay.IsSuccess)
-                {
-                    await PlaylistsService.AddToPlaylist(item, mediaSourcesToPlay.Value);
-                }
             }
-            finally
+            else if (mediaSourcesToPlay.IsSuccess)
             {
-                await GlobalProgressBarUtilities.HideProgressBar();
+                await PlaylistsService.AddToPlaylist(item, mediaSourcesToPlay.Value);
             }
         }
 

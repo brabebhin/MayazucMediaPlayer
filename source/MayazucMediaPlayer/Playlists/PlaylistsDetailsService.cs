@@ -172,7 +172,6 @@ namespace MayazucMediaPlayer.Playlists
 
         public async Task LoadState(PlaylistItem NavigationParameter)
         {
-            await GlobalProgressBarUtilities.ShowProgressBar("Loading...");
             //await SavePlaylistItemChanges();
             base.Items.Clear();
             CurrentPlaylistItem = NavigationParameter;
@@ -180,8 +179,6 @@ namespace MayazucMediaPlayer.Playlists
             var playlist = NavigationParameter as PlaylistItem;
             playlistPath = playlist.BackstorePath;
             await LoadFromPlaylist(playlist);
-
-            await GlobalProgressBarUtilities.HideProgressBar();
         }
 
         private async Task SavePlaylistItemChanges(IEnumerable<IMediaPlayerItemSourceProvder> items)

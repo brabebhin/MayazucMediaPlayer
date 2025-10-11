@@ -424,17 +424,17 @@ namespace MayazucMediaPlayer.Controls
                 {
                     await DispatcherQueue.EnqueueAsync(() =>
                     {
+                        Size videoRenderSize = default(Size);
                         while (!pendingResizesQueue.IsEmpty)
                         {
-                            if (pendingResizesQueue.TryDequeue(out var videoRenderSize))
-                                SetVideoSwapChainRenderSize(videoRenderSize);
+                            pendingResizesQueue.TryDequeue(out videoRenderSize);
                         }
+                        if (videoRenderSize != default(Size))
+                            SetVideoSwapChainRenderSize(videoRenderSize);
+
                     });
                 }
-                else
-                {
-                    videoRenderer.RenderMediaPlayerFrame(sender, effectProcessorConfiguration);
-                }
+                videoRenderer.RenderMediaPlayerFrame(sender, effectProcessorConfiguration);
             }
             catch
             {

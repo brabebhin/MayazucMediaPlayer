@@ -229,14 +229,11 @@ namespace MayazucMediaPlayer.NowPlayingViews
             IsChangingOrder = true;
             try
             {
-                await GlobalProgressBarUtilities.ShowProgressBar("Please wait");
-
                 await (AppState.Current.MediaServiceConnector.PlayerInstance).RandomizeNowPlayingQueue();
                 //var oldIndex = SettingsWrapper.Instance.PlaybackIndex;
                 //var newIndex = Models.NowPlaying.RandomizeMusicDataStorage(oldIndex);
                 //SettingsWrapper.Instance.PlaybackIndex = newIndex;
 
-                await GlobalProgressBarUtilities.HideProgressBar();
                 //AppState.Current.MediaServiceConnector.SendNewNowPlaying(Models.NowPlaying.Select(x => x.MediaData).ToArray());
             }
             finally

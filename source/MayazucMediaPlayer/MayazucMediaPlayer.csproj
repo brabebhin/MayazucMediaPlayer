@@ -13,19 +13,7 @@
 		<Configurations>Debug_Desktop;Release_Desktop</Configurations>
 		<CsWinRTAotWarningLevel>2</CsWinRTAotWarningLevel>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Desktop|x64'">
-		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-		<WarningsAsErrors>CsWinRT1028</WarningsAsErrors>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Desktop|x64'">
-		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-		<WarningsAsErrors>CsWinRT1028</WarningsAsErrors>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Desktop|arm64'">
-		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
-		<WarningsAsErrors>CsWinRT1028</WarningsAsErrors>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Desktop|arm64'">
+	<PropertyGroup>
 		<DefineConstants>DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 		<WarningsAsErrors>CsWinRT1028</WarningsAsErrors>
 	</PropertyGroup>
@@ -33,7 +21,7 @@
 	<PropertyGroup>
 		<OutDirFFmpegInteropX>..\..\Output\FFmpegInteropX\$(PlatformTarget)\$(Configuration)_Desktop\</OutDirFFmpegInteropX>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<Compile Remove="AppBackground.cs" />
 		<Compile Remove="AudioEffects\AudioEqualizerSlider.xaml.cs" />
@@ -143,7 +131,7 @@
 				<TargetPath>runtimes\win-$(Platform)\native\FFmpegInteropX.pdb</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			</AllItemsFullPathWithTargetPath>
-			
+
 			<AllItemsFullPathWithTargetPath Include="$(OutDir)MayazucNativeFramework.dll">
 				<TargetPath>runtimes\win-$(Platform)\native\MayazucNativeFramework.dll</TargetPath>
 				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -179,75 +167,75 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\EqualizerPresetAmplificationsPreview.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\EqualizerPresetAmplificationsPreview.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\ChapterSelectionControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\ChapterSelectionControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\MediaProgressBarSlider.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\MediaProgressBarSlider.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\VolumeControlBar.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\VolumeControlBar.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\AudioTrackSelectionDialog.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\AudioTrackSelectionDialog.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\CustomMediaTransportControls2.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\CustomMediaTransportControls2.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\MediaPlayerRenderingElement2.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\MediaPlayerRenderingElement2.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="MediaCollections\NetworkStreamsCollectionPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="MediaCollections\NetworkStreamsCollectionPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\MediaPlayerRenderingElement.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\MediaPlayerRenderingElement.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Settings\SubtitlesSettingsItem.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Settings\SubtitlesSettingsItem.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\SettingsItemsListView.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\SettingsItemsListView.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\GenericContentControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\GenericContentControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -257,21 +245,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <CustomAdditionalCompileInputs Remove="Controls\MTCPlaybackSpeedControl.xaml" />
+		<CustomAdditionalCompileInputs Remove="Controls\MTCPlaybackSpeedControl.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Remove="AudioEffects\AudioEqualizerSlider.xaml" />
+		<Page Remove="AudioEffects\AudioEqualizerSlider.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Remove="Controls\MTCPlaybackSpeedControl.xaml" />
+		<Resource Remove="Controls\MTCPlaybackSpeedControl.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Page Update="Controls\NotificationControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </Page>
+		<Page Update="Controls\NotificationControl.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 
 	<ItemGroup>
