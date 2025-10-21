@@ -40,11 +40,17 @@ namespace MayazucMediaPlayer.Controls
 {
     public sealed partial class MediaPlayerRenderingElement2 : BaseUserControl
     {
+        private record VideoSwapChainResizeRequest(Size TargetSize, double VideoStreamAspectRatio)
+        {
+            public Size TargetSize { get; private set; } = TargetSize;
+            public double VideoStreamAspectRatio { get; private set; } = VideoStreamAspectRatio;
+        }
+
         readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         ThreadPoolTimer? _fullscreenCursorTimer;
         volatile bool isPointerOverTransportControls = false;
         bool useMfSubsRenderer = false;
-        ConcurrentQueue<Size> pendingResizesQueue = new ConcurrentQueue<Size>();
+        ConcurrentQueue<VideoSwapChainResizeRequest> pendingResizesQueue = new ConcurrentQueue<VideoSwapChainResizeRequest>();
 
         private readonly Task VideoRenderingTask;
         private readonly ManualResetEventSlim PlayPauseSignal = new ManualResetEventSlim(false);
@@ -77,14 +83,14 @@ namespace MayazucMediaPlayer.Controls
                     if (_mediaPlayer != null)
                     {
                         _mediaPlayer.SubtitleFrameChanged -= _mediaPlayer_SubtitleFrameChanged;
-                        _mediaPlayer.VideoFrameAvailable -= VideoFameAvailanle;
+                        _mediaPlayer.VideoFrameAvailable -= VideoFameAvailable;
                         _mediaPlayer.IsVideoFrameServerEnabled = false;
                     }
                     _mediaPlayer = value;
                     if (_mediaPlayer != null)
                     {
                         _mediaPlayer.SubtitleFrameChanged += _mediaPlayer_SubtitleFrameChanged;
-                        _mediaPlayer.VideoFrameAvailable += VideoFameAvailanle;
+                        _mediaPlayer.VideoFrameAvailable += VideoFameAvailable;
                         _mediaPlayer.IsVideoFrameServerEnabled = true;
                     }
                 }
@@ -286,7 +292,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (args.Data.PlaybackItem != null)
                 {
-                    pendingResizesQueue.Enqueue(new Size(this.ActualWidth, this.ActualHeight));
+                    pendingResizesQueue.Enqueue(new VideoSwapChainResizeRequest(new Size(this.ActualWidth, this.ActualHeight), args.Data.ExtraData.FFmpegMediaSource.CurrentVideoStream.DisplayAspectRatio));
                     if (!args.Data.PlaybackItem.IsVideo())
                     {
                         PosterImageImage.Visibility = Visibility.Visible;
@@ -384,7 +390,12 @@ namespace MayazucMediaPlayer.Controls
                 NowPlayingListSplitView.OpenPaneLength = e.NewSize.Width / 2;
                 MediaEffectsSplitView.OpenPaneLength = e.NewSize.Width * 0.67;
 
-                pendingResizesQueue.Enqueue(e.NewSize);
+                var ar = AppState.Current.MediaServiceConnector.PlayerInstance.FfmpegInteropInstance.GetCurrentVideoAspectRatio();
+                if (!ar.HasValue)
+                {
+                    ar = 1;
+                }
+                pendingResizesQueue.Enqueue(new(e.NewSize, ar.Value));
                 //RedrawPaused(WrappedMediaPlayer);
 
                 //DrawSubtitles(e.NewSize);
@@ -399,11 +410,11 @@ namespace MayazucMediaPlayer.Controls
             //});
         }
 
-        private void VideoFameAvailanle(MediaPlayer sender, object args)
+        private void VideoFameAvailable(MediaPlayer sender, object args)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                //DrawVideoFrame(sender);
+                //_ = DrawVideoFrame(sender);
             });
         }
 
@@ -424,14 +435,20 @@ namespace MayazucMediaPlayer.Controls
                 {
                     await DispatcherQueue.EnqueueAsync(() =>
                     {
-                        Size videoRenderSize = default(Size);
-                        while (!pendingResizesQueue.IsEmpty)
+                        try
                         {
-                            pendingResizesQueue.TryDequeue(out videoRenderSize);
+                            var videoRenderSize = default(VideoSwapChainResizeRequest);
+                            while (!pendingResizesQueue.IsEmpty)
+                            {
+                                pendingResizesQueue.TryDequeue(out videoRenderSize);
+                            }
+                            if (videoRenderSize != default(VideoSwapChainResizeRequest))
+                                SetVideoSwapChainRenderSize(videoRenderSize);
                         }
-                        if (videoRenderSize != default(Size))
-                            SetVideoSwapChainRenderSize(videoRenderSize);
+                        catch
+                        {
 
+                        }
                     });
                 }
                 videoRenderer.RenderMediaPlayerFrame(sender, effectProcessorConfiguration);
@@ -441,8 +458,9 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private void SetVideoSwapChainRenderSize(Size newSize)
+        private void SetVideoSwapChainRenderSize(VideoSwapChainResizeRequest requestedSizeData)
         {
+            var newSize = requestedSizeData.TargetSize;
             var requestedSize = new Size(newSize.Width, newSize.Height);
 
             if (requestedSize.Width == 0 || requestedSize.Height == 0) return;
@@ -451,7 +469,7 @@ namespace MayazucMediaPlayer.Controls
             var thisActualWidth = requestedSize.Width;
 
             var currentPlaybackSession = WrappedMediaPlayer.PlaybackSession;
-            var ar = (float)currentPlaybackSession.NaturalVideoWidth / currentPlaybackSession.NaturalVideoHeight;
+            var ar = (float)requestedSizeData.VideoStreamAspectRatio;
 
             float width = 0f;
             float height = 0f;

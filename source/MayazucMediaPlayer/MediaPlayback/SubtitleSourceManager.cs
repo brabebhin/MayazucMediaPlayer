@@ -167,7 +167,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 for (index = 0; index < subs.Count; index++)
                 {
-                    if (MediaHelperExtensions.CheckSubtitlelanguage(subs[index], SettingsService.Instance.PreferredSubtitleLanguage.LanguageName))
+                    if (FFmpegInteropXExtensions.CheckSubtitlelanguage(subs[index], SettingsService.Instance.PreferredSubtitleLanguage.LanguageName))
                     {
                         if (subsDictionary[subs[index]] == false)
                         {

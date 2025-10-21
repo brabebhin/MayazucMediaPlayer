@@ -213,7 +213,7 @@ namespace MayazucMediaPlayer.MediaMetadata
 
         public static async Task<EmbeddedMetadataResult> ExtractMetadataAsync(FileInfo fileToGetThumbnailFrom)
         {
-            var config = MediaHelperExtensions.GetFFmpegUserConfigs();
+            var config = FFmpegInteropXExtensions.GetFFmpegUserConfigs();
             var mediaSource = await FFmpegInteropItemBuilder.CreateFFmpegInteropMediaSourceFromFileAsync(config, fileToGetThumbnailFrom);
             return await RetrieveEmbeddedMetadata(mediaSource, fileToGetThumbnailFrom);
         }

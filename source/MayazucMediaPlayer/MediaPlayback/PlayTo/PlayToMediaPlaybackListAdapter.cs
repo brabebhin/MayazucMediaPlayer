@@ -19,11 +19,6 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
         readonly AsyncLock _lock = new AsyncLock();
         SourceChangeRequestedEventArgs Source { get; set; }
 
-        public BusyFlag IsBusy
-        {
-            get; private set;
-        } = new BusyFlag();
-
         public event EventHandler AttachingToMediaPlayer;
         public event EventHandler<MayazucCurrentMediaPlaybackItemChangedEventArgs> CurrentPlaybackItemChanged;
         public event EventHandler ItemCreationFailed;
@@ -85,32 +80,29 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
 
         internal async Task<bool> LoadPlaybackItemAsync()
         {
-            using (IsBusy.SetBusy())
+            try
             {
-                try
-                {
 
-                    var metadata = new EmbeddedMetadataResult(Source.Album, Source.Author, Source.Genre, Source.Title);
-                    var data = IMediaPlayerItemSourceFactory.Get(Source);
+                var metadata = new EmbeddedMetadataResult(Source.Album, Source.Author, Source.Genre, Source.Title);
+                var data = IMediaPlayerItemSourceFactory.Get(Source);
 
-                    ffmpeginteropMss = await data.GetFFmpegMediaSourceAsync(WindowId);
-                    CurrentPlaybackItem = ffmpeginteropMss.CreateMediaPlaybackItem();
+                ffmpeginteropMss = await data.GetFFmpegMediaSourceAsync(WindowId);
+                CurrentPlaybackItem = ffmpeginteropMss.CreateMediaPlaybackItem();
 
-                    var PlaybackDataStreamInfo = MediaPlaybackItemUIInformation.Create(ffmpeginteropMss, data);
-                    PlaybackItemExtraData extradata = CurrentPlaybackItem.AddExtradataToPlaybackItem(data, ffmpeginteropMss, PlaybackDataStreamInfo);
+                var PlaybackDataStreamInfo = MediaPlaybackItemUIInformation.Create(ffmpeginteropMss, data);
+                PlaybackItemExtraData extradata = CurrentPlaybackItem.AddExtradataToPlaybackItem(data, ffmpeginteropMss, PlaybackDataStreamInfo);
 
-                    var ffmpegThumbnail = Source.Thumbnail;
+                var ffmpegThumbnail = Source.Thumbnail;
 
-                    var subRequest = await data.PrepareSubtitles();
-                    await extradata.SubtitleService.PrepareSubtitles(subRequest);
-                    await MediaPlaybackItemDisplayPropertiesHelper.SetPlaybackItemMediaProperties(CurrentPlaybackItem, data);
-                    return true;
-                }
-                catch
-                {
-                    ItemCreationFailed?.Invoke(this, new EventArgs());
-                    return false;
-                }
+                var subRequest = await data.PrepareSubtitles();
+                await extradata.SubtitleService.PrepareSubtitles(subRequest);
+                await MediaPlaybackItemDisplayPropertiesHelper.SetPlaybackItemMediaProperties(CurrentPlaybackItem, data);
+                return true;
+            }
+            catch
+            {
+                ItemCreationFailed?.Invoke(this, new EventArgs());
+                return false;
             }
         }
 

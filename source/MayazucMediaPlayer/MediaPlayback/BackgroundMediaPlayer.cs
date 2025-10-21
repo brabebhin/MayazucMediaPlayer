@@ -137,7 +137,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                         _playbackSource.Dispose();
                     }
                     _playbackSource = value;
-                    CurrentPlayer.AutoPlay = false;
+                    //CurrentPlayer.AutoPlay = false;
                     _playbackSource.CurrentPlaybackItemChanged += PlaybackListAdapter_CurrentPlaybackItemChanged;
                 }
             }
@@ -154,17 +154,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
-        public BusyFlag DataBusyFlag
-        {
-            get
-            {
-                if (PlaybackListAdapter != null)
-                {
-                    return PlaybackListAdapter.IsBusy;
-                }
-                return null;
-            }
-        }
 
         public EqualizerService EqualizerService
         {
@@ -218,7 +207,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     catch { }
                 });
             });
-
+            CurrentPlayer.AutoPlay = true;
             CurrentPlayer.MediaOpened += CurrentPlayer_MediaOpened;
             CurrentPlayer.PlaybackSession.PlaybackStateChanged += OnPlaybackStateChangedAsync;
             CurrentPlayer.IsLoopingEnabled = false;
@@ -521,7 +510,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                         }
                     }, PlaybackListAdapter);
 
-                    if (eventData != null && autoPlay)
+                    if (eventData && autoPlay)
                     {
                         CurrentPlayer.Play();
                     }
@@ -607,7 +596,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     }
                 }, PlaybackListAdapter);
 
-                if (eventData != null)
+                if (eventData)
                 {
                     if (RestartPosition != 0)
                     {
@@ -624,21 +613,18 @@ namespace MayazucMediaPlayer.MediaPlayback
             });
         }
 
-        private async Task<MayazucCurrentMediaPlaybackItemChangedEventArgs> WaitForItemChangedOrFail(Func<Task> wrappedAction, IMediaPlaybackListAdapter playlist)
+        private async Task<bool> WaitForItemChangedOrFail(Func<Task> wrappedAction, IMediaPlaybackListAdapter playlist)
         {
-            TaskCompletionSource<MayazucCurrentMediaPlaybackItemChangedEventArgs> itemChangedSignal = new TaskCompletionSource<MayazucCurrentMediaPlaybackItemChangedEventArgs>();
+            TaskCompletionSource<bool> itemChangedSignal = new TaskCompletionSource<bool>();
 
             EventHandler<MayazucCurrentMediaPlaybackItemChangedEventArgs> openedhandler = (s, e) =>
             {
-                if (e.NewItem != null)
-                {
-                    itemChangedSignal.TrySetResult(e);
-                }
+                itemChangedSignal.TrySetResult(true);
             };
 
             EventHandler itemFailed = (s, e) =>
             {
-                itemChangedSignal.TrySetResult(null);
+                itemChangedSignal.TrySetResult(false);
             };
 
             playlist.CurrentPlaybackItemChanged += openedhandler;
@@ -647,26 +633,21 @@ namespace MayazucMediaPlayer.MediaPlayback
             try
             {
                 await wrappedAction();
+
+                itemChangedSignal.TrySetResult(true);
             }
             catch
             {
-                itemChangedSignal.TrySetResult(null);
+                itemChangedSignal.TrySetResult(false);
             }
-            MayazucCurrentMediaPlaybackItemChangedEventArgs eventData = null;
-
-            if (await PlaybackListAdapter.BackstoreHasItems())
+            finally
             {
-                var watchDogTask = Task.Delay(TimeSpan.FromSeconds(MediaPlayerAsyncOperationTimeoutInSeconds));
-                var resultedTask = await Task.WhenAny(watchDogTask, itemChangedSignal.Task);
-                if (resultedTask == itemChangedSignal.Task)
-                    eventData = await itemChangedSignal.Task;
+                PlaybackListAdapter.CurrentPlaybackItemChanged -= openedhandler;
+                playlist.ItemCreationFailed -= itemFailed;
+                playlist.Disposing -= itemFailed;
             }
 
-            PlaybackListAdapter.CurrentPlaybackItemChanged -= openedhandler;
-            playlist.ItemCreationFailed -= itemFailed;
-            playlist.Disposing -= itemFailed;
-
-            return eventData;
+            return await itemChangedSignal.Task;
         }
 
         private async Task ReloadCurrentItem()
@@ -730,7 +711,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     }
                 }, PlaybackListAdapter);
 
-                if (eventData != null)
+                if (eventData)
                     CurrentPlayer.Play();
             }
             catch { }
@@ -872,7 +853,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     var subStream = FfmpegInteropInstance.SubtitleStreams[i];
                     if (subStream.IsForced)
                     {
-                        if (MediaHelperExtensions.CheckSubtitlelanguage(subStream.SubtitleTrack, language))
+                        if (FFmpegInteropXExtensions.CheckSubtitlelanguage(subStream.SubtitleTrack, language))
                         {
                             e.TimedMetadataTracks.SetPresentationMode((uint)i, Constants.DefaultSubtitlePresentationMode);
                         }
@@ -886,8 +867,8 @@ namespace MayazucMediaPlayer.MediaPlayback
             List<AvEffectDefinition> defs = new List<AvEffectDefinition>();
 
             //defs.Add(new AvEffectDefinition("sine", "frequency=8500:beep_factor=4:duration=5"));
-            defs.AddRange(MediaHelperExtensions.GetEqualizerEffectDefinitions(EqualizerService.GetCurrentEqualizerConfig()));
-            defs.AddRange(MediaHelperExtensions.GetAdditionalEffectsDefinitions());
+            defs.AddRange(FFmpegInteropXExtensions.GetEqualizerEffectDefinitions(EqualizerService.GetCurrentEqualizerConfig()));
+            defs.AddRange(FFmpegInteropXExtensions.GetAdditionalEffectsDefinitions());
 
             playbackListAdapter?.SetFFmpegAudioEffects(defs);
         }
@@ -1284,7 +1265,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
             }, PlaybackListAdapter);
 
-            if (eventData != null)
+            if (eventData)
             {
                 if (request.StartTime != 0)
                 {
@@ -1296,10 +1277,11 @@ namespace MayazucMediaPlayer.MediaPlayback
                 }
                 if (autoPlay)
                 {
-                    CurrentPlayer.AutoPlay = true;
                     CurrentPlayer.Play();
                 }
             }
+
+            CurrentPlayer.AutoPlay = true;
         }
 
         public Task SetDisableSubtitleAsync(MediaPlaybackItem currentPlaybackItem, uint trackIndex, int? hashCode = null)

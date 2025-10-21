@@ -27,7 +27,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
         {
             try
             {
-                var config = MediaHelperExtensions.GetFFmpegUserConfigs();
+                var config = FFmpegInteropXExtensions.GetFFmpegUserConfigs();
                 var ffmpegSource = await FFmpegMediaSource.CreateFromUriAsync(StreamingAddress, config, windowId);
 
                 return ffmpegSource;

@@ -24,7 +24,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         public async Task<FFmpegMediaSource> GetFFmpegInteropMssAsync(IMediaPlayerItemSource source, bool createPlaybackItem, ulong windowId)
         {
-            var config = MediaHelperExtensions.GetFFmpegUserConfigs();
+            var config = FFmpegInteropXExtensions.GetFFmpegUserConfigs();
 
             if (source != null)
             {
@@ -41,8 +41,8 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                     if (SettingsService.Instance.EqualizerEnabled && EqualizerServiceInstance != null)
                     {
-                        List<AvEffectDefinition> definitions = new List<AvEffectDefinition>(MediaHelperExtensions.GetEqualizerEffectDefinitions(EqualizerServiceInstance.GetCurrentEqualizerConfig()));
-                        definitions.AddRange(MediaHelperExtensions.GetAdditionalEffectsDefinitions());
+                        List<AvEffectDefinition> definitions = new List<AvEffectDefinition>(FFmpegInteropXExtensions.GetEqualizerEffectDefinitions(EqualizerServiceInstance.GetCurrentEqualizerConfig()));
+                        definitions.AddRange(FFmpegInteropXExtensions.GetAdditionalEffectsDefinitions());
                         ffmpegInterop.SetFFmpegAudioFilters(definitions.GetFFmpegFilterJoinedFilterDef());
                     }
                     return ffmpegInterop;

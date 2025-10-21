@@ -10,7 +10,6 @@ namespace MayazucMediaPlayer.MediaPlayback
     public interface IMediaPlaybackListAdapter : IDisposable
     {
         bool LocalSource { get; }
-        BusyFlag IsBusy { get; }
 
         event EventHandler AttachingToMediaPlayer;
 

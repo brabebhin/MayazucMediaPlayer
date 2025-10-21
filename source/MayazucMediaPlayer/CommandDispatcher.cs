@@ -30,26 +30,30 @@ namespace MayazucMediaPlayer
 
         public void Start()
         {
-            if (started) return;
-            backgroundThread = Task.Factory.StartNew(async () =>
+            lock (this)
             {
-                while (await executionQueue.OutputAvailableAsync())
+                if (started) return;
+                backgroundThread = Task.Factory.StartNew(async () =>
                 {
-                    if (executionQueue.TryReceive(out var a))
+                    started = true;
+                    while (await executionQueue.OutputAvailableAsync())
                     {
-                        try
+                        if (executionQueue.TryReceive(out var a))
                         {
-                            await a.Execute();
-                        }
-                        catch
-                        {
+                            try
+                            {
+                                await a.Execute();
+                            }
+                            catch
+                            {
 
+                            }
                         }
                     }
-                }
 
-                cancelEvent.Set();
-            }, TaskCreationOptions.LongRunning);
+                    cancelEvent.Set();
+                }, TaskCreationOptions.LongRunning);
+            }
         }
 
         public void SignalToCancel()
@@ -113,7 +117,8 @@ namespace MayazucMediaPlayer
         private class MCCommandDispatcherOperation
         {
             readonly Func<object>? syncAction;
-            readonly Func<Task<object>>? asyncAction;
+            readonly Func<Task<object>>? asyncActionWithReturnValue;
+            readonly Func<Task>? asyncActionWithoutReturnValue;
             readonly TaskCompletionSource<CommandDispatcherOperationAsyncContext> executionTask = new TaskCompletionSource<CommandDispatcherOperationAsyncContext>();
 
             public MCCommandDispatcherOperation(Action a)
@@ -128,12 +133,12 @@ namespace MayazucMediaPlayer
 
             public MCCommandDispatcherOperation(Func<Task> a)
             {
-                asyncAction = new Func<Task<object>>(async () => { await a(); return new CommandDispatcherOperationAsyncContext(); });
+                asyncActionWithoutReturnValue = a;
             }
 
             public MCCommandDispatcherOperation(Func<Task<object>> a)
             {
-                asyncAction = a;
+                asyncActionWithReturnValue = a;
             }
 
             public async Task Execute()
@@ -142,9 +147,14 @@ namespace MayazucMediaPlayer
                 try
                 {
                     var result = syncAction?.Invoke();
-                    if (asyncAction != null)
+                    if (asyncActionWithReturnValue != null)
                     {
-                        result = await asyncAction.Invoke();
+                        result = await asyncActionWithReturnValue.Invoke();
+                    }
+                    if (asyncActionWithoutReturnValue != null)
+                    {
+                        await asyncActionWithoutReturnValue.Invoke();
+                        result = new object();
                     }
                     returnValue.SetResult(result);
                 }

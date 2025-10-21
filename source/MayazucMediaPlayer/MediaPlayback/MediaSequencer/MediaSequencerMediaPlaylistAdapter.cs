@@ -15,7 +15,6 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 {
     public partial class MediaSequencerMediaPlaylistAdapter : IMediaPlaybackListAdapter
     {
-        public BusyFlag IsBusy { get; private set; } = new BusyFlag();
 
         public MediaPlaybackItem CurrentPlaybackItem
         {
@@ -66,11 +65,11 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             LocalSource = !PlaybackModelsInstance.NowPlayingBackStore.All(x => x.MediaData.HasExternalSource);
         }
 
-        private IMediaSourceSequencer nextBackStore;
-        private IMediaSourceSequencer currentbackStore;
+        private IMediaSourceSequencer? nextBackStore;
+        private IMediaSourceSequencer? currentbackStore;
         private bool disposedValue;
 
-        public IMediaSourceSequencer CurrentBackStore
+        public IMediaSourceSequencer? CurrentBackStore
         {
             get => currentbackStore;
             set
@@ -114,23 +113,21 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         {
             await mediaCommandsDispatcher.EnqueueAsync(async () =>
             {
-                using (IsBusy.SetBusy())
-                {
-                    var currentBackStore = sender as IMediaSourceSequencer;
-                    var currentIndex = e.Data.PlaybackItem.GetExtradata().MediaPlayerItemSource.ExpectedPlaybackIndex;
-                    var nextItem = await GetNextItem(currentIndex: currentIndex, userAction: false, changeIndex: true);
-                    if (nextItem == null)
-                        return;
-                    IMediaSourceSequencer targetBackstore = InitializeBackstoreForItem(nextItem);
+                var currentBackStore = sender as IMediaSourceSequencer;
+                var currentIndex = e.Data.PlaybackItem.GetExtradata().MediaPlayerItemSource.ExpectedPlaybackIndex;
+                var nextItem = await GetNextItem(currentIndex: currentIndex, userAction: false, changeIndex: true);
+                if (nextItem == null)
+                    return;
+                IMediaSourceSequencer targetBackstore = InitializeBackstoreForItem(nextItem);
 
-                    await targetBackstore.AddItem(nextItem);
-                    var trimmedItems = currentBackStore.Trim();
-                    foreach (var item in trimmedItems)
-                    {
-                        var interopMss = item.GetExtradata().FFmpegMediaSource;
-                        item.GetExtradata()?.Dispose();
-                    }
+                await targetBackstore.AddItem(nextItem);
+                var trimmedItems = currentBackStore!.Trim();
+                foreach (var item in trimmedItems)
+                {
+                    var interopMss = item.GetExtradata().FFmpegMediaSource;
+                    item.GetExtradata()?.Dispose();
                 }
+
             });
 
             CurrentPlaybackItemChanged?.Invoke(this, new MayazucCurrentMediaPlaybackItemChangedEventArgs(e.Data.PlaybackItem, MediaPlaybackItemChangedReason.EndOfStream, this));
@@ -147,7 +144,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
                 targetBackstore = nextBackStoreInternal;
             }
 
-            return targetBackstore;
+            return targetBackstore!;
         }
 
         private void BackStore_SequenceEnded(object? sender, EventArgs e)
@@ -189,12 +186,9 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             bool userAction,
             bool incrementIndex)
         {
-            using (IsBusy.SetBusy())
-            {
-                var nextItem = await GetNextItem(SettingsService.Instance.PlaybackIndex, userAction, incrementIndex);
+            var nextItem = await GetNextItem(SettingsService.Instance.PlaybackIndex, userAction, incrementIndex);
 
-                return await Start(nextItem);
-            }
+            return await Start(nextItem);
         }
 
         public async Task ReloadNextItemAsync(MediaPlaybackItem CurrenItem,
@@ -202,21 +196,17 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             bool incrementIndex,
             int currentIndex)
         {
-            using (IsBusy.SetBusy())
-            {
+            if (CurrentBackStore == null)
+                await Start(currentIndex);
 
-                if (CurrentBackStore == null)
-                    await Start(currentIndex);
-
-                var nextItem = await GetNextItem(CurrenItem != null ? PlaybackModelsInstance.NowPlayingBackStore.IndexOfMediaData(CurrenItem.GetExtradata().MediaPlayerItemSource) : currentIndex, userAction, incrementIndex);
-                //reset the backstore if necessary
-                ResetNextBackstore();
-                // get the next backstore
-                var targetBackStore = InitializeBackstoreForItem(nextItem);
-                var oldItem = await targetBackStore.ReloadNextItem(nextItem);
-                oldItem?.GetExtradata()?.Dispose();
-                oldItem?.Source?.Dispose();
-            }
+            var nextItem = await GetNextItem(CurrenItem != null ? PlaybackModelsInstance.NowPlayingBackStore.IndexOfMediaData(CurrenItem.GetExtradata().MediaPlayerItemSource) : currentIndex, userAction, incrementIndex);
+            //reset the backstore if necessary
+            ResetNextBackstore();
+            // get the next backstore
+            var targetBackStore = InitializeBackstoreForItem(nextItem);
+            var oldItem = await targetBackStore.ReloadNextItem(nextItem);
+            oldItem?.GetExtradata()?.Dispose();
+            oldItem?.Source?.Dispose();
         }
 
         private void ResetNextBackstore()
@@ -268,46 +258,43 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         public async Task<bool> Start(int index)
         {
-            using (IsBusy.SetBusy())
+            MediaPlaybackItem startingItem = await GetDefaultStartingItem(index);
+            if (startingItem == null) return false;
+
+            return await StartInternal(startingItem);
+
+            async Task<MediaPlaybackItem> GetDefaultStartingItem(int index)
             {
-                MediaPlaybackItem startingItem = await GetDefaultStartingItem(index);
-                if (startingItem == null) return false;
-
-                return await StartInternal(startingItem);
-
-                async Task<MediaPlaybackItem> GetDefaultStartingItem(int index)
+                var mediaData = await playbackQueueProvider.GetStartingItem(index);
+                if (mediaData == null)
                 {
-                    var mediaData = await playbackQueueProvider.GetStartingItem(index);
-                    if (mediaData == null)
-                    {
-                        ItemCreationFailed?.Invoke(this, new EventArgs());
-                        return await Task.FromResult(default(MediaPlaybackItem));
-                    }
-                    var ffmpegInteropMss = await DispatcherQueueExtensions.EnqueueAsync(dispatcher, async () =>
-                    {
-                        return await playbackItemProvider.GetFFmpegInteropMssAsync(mediaData, true, WindowId);
-                    });
-
-                    if (ffmpegInteropMss == null)
-                    {
-                        ItemCreationFailed?.Invoke(this, new EventArgs());
-                        return await Task.FromResult(default(MediaPlaybackItem));
-                    }
-                    PlaybackItemExtraData extraData = ffmpegInteropMss.PlaybackItem.AddExtradataToPlaybackItem(mediaData, ffmpegInteropMss, MediaPlaybackItemUIInformation.Create(ffmpegInteropMss, mediaData));
-
-                    await MediaPlaybackItemDisplayPropertiesHelper.SetPlaybackItemMediaProperties(ffmpegInteropMss.PlaybackItem, mediaData);
-                    await extraData.SubtitleService.PrepareSubtitles(await mediaData.PrepareSubtitles());
-                    await ffmpegInteropMss.PlaybackItem.Source.OpenAsync();
-                    ffmpegInteropMss.PlaybackItem.Source.MediaStreamSource.MaxSupportedPlaybackRate = 2;
-
-                    return ffmpegInteropMss.PlaybackItem;
+                    ItemCreationFailed?.Invoke(this, new EventArgs());
+                    return await Task.FromResult(default(MediaPlaybackItem));
                 }
+                var ffmpegInteropMss = await dispatcher.EnqueueAsync(async () =>
+                {
+                    return await playbackItemProvider.GetFFmpegInteropMssAsync(mediaData, true, WindowId);
+                });
+
+                if (ffmpegInteropMss == null)
+                {
+                    ItemCreationFailed?.Invoke(this, new EventArgs());
+                    return await Task.FromResult(default(MediaPlaybackItem));
+                }
+                PlaybackItemExtraData extraData = ffmpegInteropMss.PlaybackItem.AddExtradataToPlaybackItem(mediaData, ffmpegInteropMss, MediaPlaybackItemUIInformation.Create(ffmpegInteropMss, mediaData));
+
+                await MediaPlaybackItemDisplayPropertiesHelper.SetPlaybackItemMediaProperties(ffmpegInteropMss.PlaybackItem, mediaData);
+                await extraData.SubtitleService.PrepareSubtitles(await mediaData.PrepareSubtitles());
+                await ffmpegInteropMss.PlaybackItem.Source.OpenAsync();
+                ffmpegInteropMss.PlaybackItem.Source.MediaStreamSource.MaxSupportedPlaybackRate = 2;
+
+                return ffmpegInteropMss.PlaybackItem;
             }
         }
 
         private async Task<bool> StartInternal(MediaPlaybackItem startingItem)
         {
-            CurrentBackStore?.Dispose();
+            //CurrentBackStore?.Dispose();
             nextBackStore?.Dispose();
 
             CurrentBackStore = null;
@@ -393,12 +380,9 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
 
         public void Stop()
         {
-            using (IsBusy.SetBusy())
-            {
-                Disposing?.Invoke(this, new EventArgs());
-                CurrentBackStore?.Dispose();
-                CurrentBackStore = null;
-            }
+            Disposing?.Invoke(this, new EventArgs());
+            CurrentBackStore?.Dispose();
+            CurrentBackStore = null;
         }
 
         /// <summary>
@@ -408,17 +392,14 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         /// <returns></returns>
         public Task<bool> ApplyMCVideoEffect(VideoEffectProcessorConfiguration configuration)
         {
-            using (IsBusy.SetBusy())
-            {
-                var currentPlaybackItem = currentbackStore.CurrentItem;
+            var currentPlaybackItem = currentbackStore.CurrentItem;
 
-                if (!currentPlaybackItem.IsVideo()) return Task.FromResult(false);
-                //if current item is video, switch to sequential source and apply effect
-                nextBackStore?.Dispose();
-                nextBackStore = null;
-                GetOrCreateMediaSequencer(currentPlaybackItem);
-                return Task.FromResult(true);
-            }
+            if (!currentPlaybackItem.IsVideo()) return Task.FromResult(false);
+            //if current item is video, switch to sequential source and apply effect
+            nextBackStore?.Dispose();
+            nextBackStore = null;
+            GetOrCreateMediaSequencer(currentPlaybackItem);
+            return Task.FromResult(true);
         }
 
         public MediaPlaybackItem DetachCurrentItem()

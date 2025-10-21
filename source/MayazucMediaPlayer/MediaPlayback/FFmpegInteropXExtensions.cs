@@ -12,7 +12,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback
 {
-    public static class MediaHelperExtensions
+    public static class FFmpegInteropXExtensions
     {
         public static bool IsVideo(this MediaPlaybackItem item)
         {
@@ -120,7 +120,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             config.Subtitles.AutoSelectForcedSubtitles = false;
             config.Subtitles.MinimumSubtitleDuration = TimeSpan.FromSeconds(SettingsService.Instance.MinimumSubtitleDuration);
             config.Subtitles.PreventModifiedSubtitleDurationOverlap = SettingsService.Instance.PreventSubtitleOverlaps;
-            
+
             //TimedTextStyle configStyle = config.Subtitles.SubtitleStyle;
             //configStyle.OutlineColor = Microsoft.UI.Colors.Blue;
             //configStyle.OutlineRadius = new TimedTextDouble(80, TimedTextUnit.Percentage);
@@ -138,6 +138,13 @@ namespace MayazucMediaPlayer.MediaPlayback
                 return true;
             }
             else return false;
+        }
+
+        public static double? GetCurrentVideoAspectRatio(this FFmpegMediaSource mediaSource)
+        {
+            if (mediaSource == null) return null;
+            if (mediaSource.CurrentVideoStream == null) return null;
+            return mediaSource.CurrentVideoStream.DisplayAspectRatio;
         }
     }
 }

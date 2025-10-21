@@ -2,6 +2,7 @@
 using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Services.MediaSources;
 using System;
+using System.Linq;
 using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback
@@ -13,7 +14,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         public bool Disposed
         {
             get => disposedValue;
-            set
+            private set
             {
                 disposedValue = value;
             }

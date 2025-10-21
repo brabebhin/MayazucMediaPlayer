@@ -99,12 +99,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         Task SkipToIndex(int index);
 
         /// <summary>
-        /// DONE
-        /// cross-concearn: set to busy when doing other strategies.
-        /// </summary>
-        BusyFlag DataBusyFlag { get; }
-
-        /// <summary>
         /// DONE: Strategy: reload next track in playback list
         /// </summary>
         /// <returns></returns>
