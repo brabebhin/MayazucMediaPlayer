@@ -9,6 +9,7 @@ using MayazucMediaPlayer.MediaPlayback.PlayTo;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
+using MayazucMediaPlayer.VideoEffects;
 using MayazucNativeFramework;
 using Microsoft.UI.Dispatching;
 using Nito.AsyncEx;
@@ -28,7 +29,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         private const int MediaPlayerAsyncOperationTimeoutInSeconds = 25;
         CommandDispatcher commandDispatcher = new CommandDispatcher();
         StopMusicOnTimerService stopMusicOnTimerService;
-        public VideoEffectProcessorConfiguration VideoEffectsConfiguration { get; private set; } = new VideoEffectProcessorConfiguration();
+        public ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration { get; private set; } = new ManagedVideoEffectProcessorConfiguration();
 
         public EqualizerConfiguration CurrentEqualizerConfiguration
         {

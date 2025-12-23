@@ -1,5 +1,6 @@
 ﻿using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.MediaPlayback;
+using MayazucMediaPlayer.VideoEffects;
 using MayazucNativeFramework;
 using Microsoft.UI.Xaml.Controls;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
     public sealed partial class MediaEffectsPage : BasePage
     {
         private readonly AudioEnhancementsPageViewModel AudioModel;
-        private readonly VideoEffectProcessorConfiguration VideoEffectConfig;
+        private readonly ManagedVideoEffectProcessorConfiguration VideoEffectConfig;
 
         public override string Title => "Media Effects";
 

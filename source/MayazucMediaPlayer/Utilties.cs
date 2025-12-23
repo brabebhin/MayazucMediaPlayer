@@ -4,6 +4,7 @@ using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text;
@@ -40,8 +41,8 @@ namespace MayazucMediaPlayer
         {
             var hashAlg = new SHA512Managed();
             var hash = hashAlg.ComputeHash(Encoding.UTF8.GetBytes(path));
-            var base32 = Base32.ToBase32String(hash);
-            return base32;
+            var safeRandomName = WebUtility.UrlEncode(Convert.ToBase64String(hash));
+            return safeRandomName;
         }
 
         public static void ConfigureFilePicker(this FileOpenPicker filepicker, SupportedFileTypesConfiguration config)

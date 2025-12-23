@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 
-namespace MayazucMediaPlayer.Runtime
+namespace MayazucMediaPlayer.FileSystemViews
 {
     public interface IFileOpenPicker
     {

@@ -1,7 +1,7 @@
 ﻿using Windows.Storage.Pickers;
 using WinRT;
 
-namespace MayazucMediaPlayer.Runtime
+namespace MayazucMediaPlayer.FileSystemViews
 {
     public static class FileFolderPickerService
     {

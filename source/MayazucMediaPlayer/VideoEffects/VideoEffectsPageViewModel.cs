@@ -42,7 +42,7 @@ namespace MayazucMediaPlayer.VideoEffects
             private set;
         }
 
-        public VideoEffectProcessorConfiguration EffectConfig
+        public ManagedVideoEffectProcessorConfiguration EffectConfig
         {
             get;
             private set;
@@ -52,12 +52,12 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             get
             {
-                return EffectConfig.GrayscaleEffect;
+                return EffectConfig.GrayscaleEnabled;
             }
             set
             {
-                if (EffectConfig.GrayscaleEffect == value) return;
-                EffectConfig.GrayscaleEffect = value.GetValueOrDefault(false);
+                if (EffectConfig.GrayscaleEnabled == value) return;
+                EffectConfig.GrayscaleEnabled = value.GetValueOrDefault(false);
                 NotifyPropertyChanged(nameof(GrayscaleEnabled));
             }
         }
@@ -66,13 +66,13 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             get
             {
-                return EffectConfig.BlurEffect;
+                return EffectConfig.BlurEnabled;
             }
             set
             {
-                if (EffectConfig.BlurEffect == value) return;
+                if (EffectConfig.BlurEnabled == value) return;
 
-                EffectConfig.BlurEffect = value.GetValueOrDefault(false);
+                EffectConfig.BlurEnabled = value.GetValueOrDefault(false);
                 NotifyPropertyChanged(nameof(BlurEnabled));
             }
         }
@@ -97,7 +97,7 @@ namespace MayazucMediaPlayer.VideoEffects
             }
         }
 
-        public VideoEffectsPageViewModel(DispatcherQueue dp, VideoEffectProcessorConfiguration effectConfig) : base(dp)
+        public VideoEffectsPageViewModel(DispatcherQueue dp, ManagedVideoEffectProcessorConfiguration effectConfig) : base(dp)
         {
             LoadSliders();
             ResetDefault = new RelayCommand(ResetDefaultValues);

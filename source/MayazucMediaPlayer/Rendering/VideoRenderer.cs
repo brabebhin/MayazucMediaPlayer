@@ -21,7 +21,7 @@ namespace MayazucMediaPlayer.Rendering
         private CanvasRenderTarget? subtitlesRenderTarget;
 
         private CanvasDevice? canvasDevice;
-        VideoEffectProcessor videoProcessor = new VideoEffectProcessor();
+        VideoEffectProcessor videoEffectsProcessor = new VideoEffectProcessor();
 
         private uint height
         {
@@ -77,7 +77,7 @@ namespace MayazucMediaPlayer.Rendering
             SwapChainAllocResources(width, height, dpi, pixelformat);
         }
 
-        public void RenderMediaPlayerFrame(MediaPlayer player, _VideoEffectProcessorConfiguration effectConfiguration)
+        public void RenderMediaPlayerFrame(MediaPlayer player, ManagedVideoEffectProcessorConfiguration effectConfiguration)
         {
             if (canvasDevice!.IsDeviceLost())
             {
@@ -87,9 +87,9 @@ namespace MayazucMediaPlayer.Rendering
             using (var drawingSession = swapChain!.CreateDrawingSession(Microsoft.UI.Colors.Transparent))
             {
                 player.CopyFrameToVideoSurface(canvasRenderTarget);
-                var processed = videoProcessor.ProcessFrame(canvasRenderTarget!, effectConfiguration);
+                var processed = videoEffectsProcessor.ProcessFrame(canvasRenderTarget!, effectConfiguration);
                 var rendered = player.RenderSubtitlesToSurface(canvasRenderTarget);
-                drawingSession.DrawImage(canvasRenderTarget);
+                drawingSession.DrawImage(processed);
                 swapChain.Present(1);
             }
         }

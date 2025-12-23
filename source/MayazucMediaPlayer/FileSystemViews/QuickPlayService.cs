@@ -1,5 +1,4 @@
-﻿using MayazucMediaPlayer.Runtime;
-using MayazucMediaPlayer.Services;
+﻿using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using Microsoft.WindowsAPICodePack.Shell;
 using System;

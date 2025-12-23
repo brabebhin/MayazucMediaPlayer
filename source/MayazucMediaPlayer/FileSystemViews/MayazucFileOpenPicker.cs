@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 
-namespace MayazucMediaPlayer.Runtime
+namespace MayazucMediaPlayer.FileSystemViews
 {
     public class MayazucFileOpenPicker : IFileOpenPicker
     {

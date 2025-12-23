@@ -1,4 +1,5 @@
-﻿using MayazucNativeFramework;
+﻿using MayazucMediaPlayer.VideoEffects;
+using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         public event EventHandler<MediaOpenedEventArgs>? MediaOpened;
         public event EventHandler<MediaPlaybackItem>? MediaFailed;
         MediaPlayer? player;
-        readonly VideoEffectProcessorConfiguration VideoEffectsConfiguration;
+        readonly ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration;
 
         MediaPlayer? Player
         {
@@ -67,7 +68,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             player.MediaFailed -= Player_MediaFailed;
         }
 
-        public VideoEffectSequentialMediaSourceSequence(VideoEffectProcessorConfiguration videoEffectConfig)
+        public VideoEffectSequentialMediaSourceSequence(ManagedVideoEffectProcessorConfiguration videoEffectConfig)
         {
             VideoEffectsConfiguration = videoEffectConfig;
         }

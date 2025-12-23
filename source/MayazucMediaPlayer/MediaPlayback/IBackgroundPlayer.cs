@@ -3,6 +3,7 @@ using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.Helpers;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
+using MayazucMediaPlayer.VideoEffects;
 using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace MayazucMediaPlayer.MediaPlayback
     public interface IBackgroundPlayer : IDisposable
     {
         bool LocalSource { get; }
-        VideoEffectProcessorConfiguration VideoEffectsConfiguration { get; }
+        ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration { get; }
         PlaybackSequenceService PlaybackQueueService { get; }
         IMediaPlayerItemSource CurrentPlaybackData { get; }
         MediaPlaybackItem CurrentPlaybackItem { get; }

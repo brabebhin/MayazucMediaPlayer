@@ -55,7 +55,13 @@ namespace MayazucMediaPlayer.Controls
         private readonly Task VideoRenderingTask;
         private readonly ManualResetEventSlim PlayPauseSignal = new ManualResetEventSlim(false);
 
-        _VideoEffectProcessorConfiguration effectProcessorConfiguration = new _VideoEffectProcessorConfiguration();
+        ManagedVideoEffectProcessorConfiguration effectProcessorConfiguration
+        {
+            get
+            {
+                return AppState.Current.MediaServiceConnector.VideoEffectsConfiguration;
+            }
+        }
 
         MayazucNativeFramework.SubtitleRenderer NativeSubtitleRenderer
         {
@@ -123,6 +129,7 @@ namespace MayazucMediaPlayer.Controls
 
             _ = nowPlayingList.InitializeStateAsync(null);
             VideoRenderingTask = Task.Factory.StartNew(VideoRenderingLoop, TaskCreationOptions.LongRunning);
+
         }
 
         private async Task VideoRenderingLoop()
@@ -134,9 +141,9 @@ namespace MayazucMediaPlayer.Controls
                     PlayPauseSignal.Wait();
                     await DrawVideoFrame(_mediaPlayer);
                 }
-                finally
+                catch
                 {
-                    PlayPauseSignal.Set();
+                    //something may have happened with the video rendering loop, carry on
                 }
             }
         }
@@ -208,6 +215,14 @@ namespace MayazucMediaPlayer.Controls
             ShowMouseShowTransportControls();
         }
 
+        private void PlayPauseSignalSetIfVideo(MediaPlaybackItem item)
+        {
+            if (item.IsVideo())
+            {
+                PlayPauseSignal.Set();
+            }
+        }
+
         private void CurrentPlaybackSession_PlaybackStateChanged(MediaPlayer sender, MediaPlaybackState state)
         {
             DispatcherQueue.TryEnqueue((() =>
@@ -215,7 +230,7 @@ namespace MayazucMediaPlayer.Controls
                 if (state == MediaPlaybackState.Playing)
                 {
                     StartMouseTransportControlHideTimer();
-                    PlayPauseSignal.Set();
+                    PlayPauseSignalSetIfVideo(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem);
                 }
                 else
                 {
@@ -292,16 +307,18 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (args.Data.PlaybackItem != null)
                 {
-                    pendingResizesQueue.Enqueue(new VideoSwapChainResizeRequest(new Size(this.ActualWidth, this.ActualHeight), args.Data.ExtraData.FFmpegMediaSource.CurrentVideoStream.DisplayAspectRatio));
                     if (!args.Data.PlaybackItem.IsVideo())
                     {
+
                         PosterImageImage.Visibility = Visibility.Visible;
                         VideoSwapChain.Visibility = Visibility.Collapsed;
                         PlayPauseSignal.Reset();
                     }
                     else
                     {
-                        PlayPauseSignal.Set();
+                        pendingResizesQueue.Enqueue(new VideoSwapChainResizeRequest(new Size(this.ActualWidth, this.ActualHeight), args.Data.ExtraData.FFmpegMediaSource.CurrentVideoStream.DisplayAspectRatio));
+
+                        PlayPauseSignalSetIfVideo(args.Data.PlaybackItem);
                         PosterImageImage.Visibility = Visibility.Collapsed;
                         VideoSwapChain.Visibility = Visibility.Visible;
                     }
@@ -375,11 +392,11 @@ namespace MayazucMediaPlayer.Controls
             catch { }
         }
 
-        private async void EffectConfiguration_ConfigurationChanged(object? sender, string e)
+        private void EffectConfiguration_ConfigurationChanged(object? sender, string e)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                //RedrawPaused(WrappedMediaPlayer);
+                _ = RedrawPaused(WrappedMediaPlayer);
             });
         }
 
@@ -418,11 +435,11 @@ namespace MayazucMediaPlayer.Controls
             });
         }
 
-        private void RedrawPaused(MediaPlayer sender)
+        private async Task RedrawPaused(MediaPlayer sender)
         {
-            //if (WrappedMediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
-            //    if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
-            //        DrawVideoFrame(sender);
+            if (WrappedMediaPlayer.PlaybackSession.PlaybackState != MediaPlaybackState.Playing)
+                if (AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem.IsVideo())
+                    await DrawVideoFrame(sender);
         }
 
 

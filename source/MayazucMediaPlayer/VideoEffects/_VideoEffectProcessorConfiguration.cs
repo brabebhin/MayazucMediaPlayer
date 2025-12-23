@@ -4,7 +4,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.VideoEffects
 {
-    public partial class _VideoEffectProcessorConfiguration : ObservableObject
+    public partial class ManagedVideoEffectProcessorConfiguration : ObservableObject
     {
         bool _masterSwitch;
         float _Brightness;
@@ -14,7 +14,8 @@ namespace MayazucMediaPlayer.VideoEffects
         float _Tint;
         float _Sharpness;
         float _SharpnessThreshold;
-
+        bool _grayscaleEnabled;
+        bool _blurEnabled;
 
         public bool MasterSwitch
         {
@@ -23,6 +24,26 @@ namespace MayazucMediaPlayer.VideoEffects
             {
                 base.SetProperty(ref _masterSwitch, value, nameof(MasterSwitch));
                 ConfigurationChanged(this, nameof(MasterSwitch));
+            }
+        }
+
+        public bool GrayscaleEnabled
+        {
+            get => _grayscaleEnabled;
+            set
+            {
+                base.SetProperty(ref _grayscaleEnabled, value, nameof(GrayscaleEnabled));
+                ConfigurationChanged(this, nameof(GrayscaleEnabled));
+            }
+        }
+
+        public bool BlurEnabled
+        {
+            get => _blurEnabled;
+            set
+            {
+                base.SetProperty(ref _blurEnabled, value, nameof(BlurEnabled));
+                ConfigurationChanged(this, nameof(BlurEnabled));
             }
         }
 

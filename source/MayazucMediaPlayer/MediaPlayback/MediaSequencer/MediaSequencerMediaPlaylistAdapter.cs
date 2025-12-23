@@ -3,6 +3,7 @@ using MayazucMediaPlayer.Helpers;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
+using MayazucMediaPlayer.VideoEffects;
 using MayazucNativeFramework;
 using Microsoft.UI.Dispatching;
 using System;
@@ -37,7 +38,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         readonly DispatcherQueue dispatcher;
         readonly CommandDispatcher mediaCommandsDispatcher;
 
-        readonly VideoEffectProcessorConfiguration VideoEffectsConfiguration;
+        readonly ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration;
         readonly ulong WindowId = 0;
 
         public MediaSequencerMediaPlaylistAdapter(
@@ -46,7 +47,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             MediaPlayer player,
             DispatcherQueue dispatcher,
             CommandDispatcher mediaCommandsDispatcher,
-            VideoEffectProcessorConfiguration videoEffectsConfiguration,
+            ManagedVideoEffectProcessorConfiguration videoEffectsConfiguration,
             ulong windowId)
         {
             PlaybackModelsInstance = playbackQueueService ?? throw new ArgumentNullException(nameof(playbackQueueService));

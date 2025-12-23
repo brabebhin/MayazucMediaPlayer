@@ -1,9 +1,8 @@
-﻿using MayazucMediaPlayer.Dialogs;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.UI.Popups;
 using WinRT;
 
-namespace MayazucMediaPlayer.Runtime
+namespace MayazucMediaPlayer.Dialogs
 {
     internal class MessageDialogService : IMessageDialogService
     {

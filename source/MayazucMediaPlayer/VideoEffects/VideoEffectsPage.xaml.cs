@@ -33,7 +33,7 @@ namespace MayazucMediaPlayer.VideoEffects
             cbSavedProfiles.SelectedItem = null;
         }
 
-        public async Task LoadState(VideoEffectProcessorConfiguration effectConfig)
+        public async Task LoadState(ManagedVideoEffectProcessorConfiguration effectConfig)
         {
             DataService = new VideoEffectsPageViewModel(DispatcherQueue, effectConfig);
             DataContext = DataService;

@@ -99,7 +99,7 @@ namespace MayazucMediaPlayer.Controls
         {
         }
 
-        public ICanvasImage ProcessFrame(ICanvasImage source, _VideoEffectProcessorConfiguration EffectConfiguration)
+        public ICanvasImage ProcessFrame(ICanvasImage source, ManagedVideoEffectProcessorConfiguration EffectConfiguration)
         {
             if (EffectConfiguration.MasterSwitch)
             {
