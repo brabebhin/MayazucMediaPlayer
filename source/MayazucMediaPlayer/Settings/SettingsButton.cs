@@ -33,7 +33,7 @@ namespace MayazucMediaPlayer.Settings
         }
 
 
-        public SettingsButton(string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
+        public SettingsButton(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback) : base(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
         }
 

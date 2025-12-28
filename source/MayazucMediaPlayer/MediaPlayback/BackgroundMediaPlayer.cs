@@ -326,7 +326,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             var resumeRequest = new ResumeRequest()
             {
                 StartIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(CurrentPlaybackData),
-                StartTime = CurrentPlayer.PlaybackSession.Position.Ticks,
+                StartTimeMiliseconds = CurrentPlayer.PlaybackSession.Position.Ticks,
                 InitialItem = _playbackSource?.DetachCurrentItem()
             };
 
@@ -348,7 +348,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                  CurrentPlayer.Pause();
                  if (!CurrentPlaybackDataIsDlna())
                  {
-                     SettingsService.Instance.ResumePositionDlnaIntrerupt = CurrentPlayer.PlaybackSession.Position.Ticks;
+                     SettingsService.Instance.ResumePositionDlnaIntrerupt = CurrentPlayer.PlaybackSession.Position.TotalMilliseconds;
                      SettingsService.Instance.PlaybackIndexDlnaIntrerupt = SettingsService.Instance.PlaybackIndex;
                  }
                  PlaybackListAdapter = e.PlaybackSource;
@@ -579,7 +579,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             return commandDispatcher.EnqueueAsync(async () =>
             {
-                var RestartPosition = CurrentPlayer.PlaybackSession.Position.Ticks;
+                var RestartPosition = CurrentPlayer.PlaybackSession.Position.TotalMilliseconds;
                 DestroySource();
 
                 await PlaybackQueueService.LoadNowPlaying();
@@ -601,7 +601,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 {
                     if (RestartPosition != 0)
                     {
-                        var seekTimeSpan = TimeSpan.FromTicks(RestartPosition);
+                        var seekTimeSpan = TimeSpan.FromMilliseconds(RestartPosition);
                         if (CanSeekToPosition(seekTimeSpan, CurrentPlaybackItem))
                         {
                             await AwaitForSeek(seekTimeSpan);
@@ -752,7 +752,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 if (forceStart)
                 {
                     ResumeRequest request = new ResumeRequest();
-                    request.StartTime = SettingsService.Instance.PlayerResumePosition;
+                    request.StartTimeMiliseconds = SettingsService.Instance.PlayerResumePosition;
                     request.StartIndex = SettingsService.Instance.PlaybackIndex;
                     await ResumeAsyncInternal(request, true);
                 }
@@ -765,7 +765,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             {
                 try
                 {
-                    SettingsService.Instance.PlayerResumePosition = CurrentPlayer.PlaybackSession.Position.Ticks;
+                    SettingsService.Instance.PlayerResumePosition = CurrentPlayer.PlaybackSession.Position.TotalMilliseconds;
                     CurrentPlayer.Pause();
                     CurrentPlayer.Source = null;
                     DestroySource();
@@ -1174,7 +1174,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                     var request = new ResumeRequest();
                     request.StartIndex = SettingsService.Instance.PlaybackIndexDlnaIntrerupt;
-                    request.StartTime = SettingsService.Instance.ResumePositionDlnaIntrerupt;
+                    request.StartTimeMiliseconds = SettingsService.Instance.ResumePositionDlnaIntrerupt;
 
                     DestroySource();
                     await PlaybackQueueService.LoadNowPlaying();
@@ -1268,9 +1268,9 @@ namespace MayazucMediaPlayer.MediaPlayback
 
             if (eventData)
             {
-                if (request.StartTime != 0)
+                if (request.StartTimeMiliseconds != 0)
                 {
-                    var seekTimeSpan = TimeSpan.FromTicks(request.StartTime);
+                    var seekTimeSpan = TimeSpan.FromMilliseconds(request.StartTimeMiliseconds);
                     if (CanSeekToPosition(seekTimeSpan, CurrentPlaybackItem))
                     {
                         await AwaitForSeek(seekTimeSpan);
@@ -1483,7 +1483,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             });
         }
 
-        private async Task StartPlaybackFromIndexAndPositionInternal(IEnumerable<IMediaPlayerItemSource> FilesToAdd, int index, long position)
+        private async Task StartPlaybackFromIndexAndPositionInternal(IEnumerable<IMediaPlayerItemSource> FilesToAdd, int index, double position)
         {
             if (!FilesToAdd.Any())
             {
@@ -1501,7 +1501,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             SettingsService.Instance.PlayerResumePath = FilesToAdd.ElementAt(index).MediaPath;
             ResumeRequest request = new ResumeRequest();
             request.StartIndex = index;
-            request.StartTime = position;
+            request.StartTimeMiliseconds = position;
             await ResumeAsyncInternal(request, true);
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MayazucMediaPlayer.Common;
+using Microsoft.UI.Xaml;
 
 namespace MayazucMediaPlayer.Settings
 {
@@ -18,7 +19,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public ContentSettingsItem(IContentSettingsItem content) : base(string.Empty)
+        public ContentSettingsItem(IContentSettingsItem content) : base(string.Empty, EmptyCallbacks.Action, EmptyCallbacks.Func)
         {
             Content = content;
         }

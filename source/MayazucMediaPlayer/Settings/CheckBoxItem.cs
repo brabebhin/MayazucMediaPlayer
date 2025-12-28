@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using System;
 
 namespace MayazucMediaPlayer.Settings
 {
@@ -29,7 +30,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public CheckBoxItem(string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
+        public CheckBoxItem(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback) : base(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
         }
 

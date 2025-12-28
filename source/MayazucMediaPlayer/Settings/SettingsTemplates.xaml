@@ -29,13 +29,10 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:FieldModifier="public" x:Key="CheckBoxWithTimePicker">
+    <DataTemplate x:FieldModifier="public" x:Key="TimePickerSettingsItem">
         <StackPanel Visibility="{Binding ElementVisible}"  Margin="5">
-            <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}">
-                <TextBlock FontWeight="SemiBold"  VerticalAlignment="Center" TextWrapping="WrapWholeWords" Grid.Column="1" Text="{Binding Description}"   />
-            </CheckBox>
-
-            <TimePicker  FontWeight="SemiBold"    Time="{Binding SelectedTime, Mode=TwoWay}" IsEnabled="{Binding IsChecked}">
+ 
+            <TimePicker  FontWeight="SemiBold"    Time="{Binding PropertyValue, Mode=TwoWay}">
                 <TimePicker.Header>
                     <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"  TextWrapping="WrapWholeWords" Grid.Column="1" Text="{Binding TimePickerDescription}"   />
                 </TimePicker.Header>
@@ -43,30 +40,7 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="ComboboxWithHeaderAndImage">
-        <Grid HorizontalAlignment="Left"  Visibility="{Binding ElementVisible}"  Margin="5" Width="280" >
-            <ComboBox FontWeight="SemiBold"   ItemsSource="{Binding ComboboxStringList}" IsEnabled="{Binding IsEnabled}" SelectedIndex="{Binding SlectedIndex, Mode=TwoWay}" HorizontalAlignment="Stretch">
-                <ComboBox.Header>
-                    <Grid HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-
-                        <Image  Margin="5" Grid.Column="0">
-                            <Image.Source>
-                                <BitmapImage DecodePixelHeight="48" DecodePixelWidth="48" UriSource="{Binding ImagePath}"></BitmapImage>
-                            </Image.Source>
-                        </Image>
-
-                        <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemDisabledForegroundThemeBrush}" Text="{Binding ComboboxHeader}" TextWrapping="WrapWholeWords"/>
-                    </Grid>
-                </ComboBox.Header>
-            </ComboBox>
-        </Grid>
-    </DataTemplate>
-
-    <DataTemplate x:FieldModifier="public"  x:Key="ButtonWithImage">
+     <DataTemplate x:FieldModifier="public"  x:Key="ButtonWithImage">
         <Grid Visibility="{Binding ElementVisible}"  Margin="5">
             <Button  HorizontalContentAlignment="Center"  Command="{Binding Command}" CommandParameter="{Binding}" Width="300"  HorizontalAlignment="Left">
                 <Grid>

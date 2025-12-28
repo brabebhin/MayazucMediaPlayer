@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MayazucMediaPlayer.Common;
+using Microsoft.UI.Xaml;
 
 namespace MayazucMediaPlayer.Settings
 {
@@ -31,7 +32,7 @@ namespace MayazucMediaPlayer.Settings
 
         string textDescription;
 
-        public VerbatimTextBlock() : base(string.Empty)
+        public VerbatimTextBlock() : base(string.Empty, EmptyCallbacks.Action, EmptyCallbacks.Func)
         {
 
         }

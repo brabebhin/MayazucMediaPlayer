@@ -17,24 +17,24 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                lock (singletonLock)
+                if (instance == null)
                 {
-                    if (instance == null)
+                    lock (singletonLock)
                     {
-                        instance = new SettingsService();
+                        if (instance == null)
+                        {
+                            instance = new SettingsService();
+                        }
                     }
-
-                    return instance;
                 }
+                return instance;
             }
         }
 
-        private SettingsStoreService SettingsStoreService = new SettingsStoreService();
-
         private const string DefaultEqualizerPresetValue = "default";
 
-        public event EventHandler<string> RepeatModeChanged;
-        public event EventHandler<bool> ShuffleModeChanged;
+        public event EventHandler<string>? RepeatModeChanged;
+        public event EventHandler<bool>? ShuffleModeChanged;
 
         readonly ConcurrentDictionary<string, List<Action<object, string>>> PropertyHandlerMap = new ConcurrentDictionary<string, List<Action<object, string>>>();
 
@@ -68,33 +68,15 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        readonly Dictionary<string, PropertyInfo> settingsProperties;
 
-        SettingsService()
+        private SettingsService()
         {
-            var props = typeof(SettingsService).GetProperties();
-            settingsProperties = props.ToDictionary(x => x.Name);
-        }
-
-        public void SetProperty(string name, object value, object? sender)
-        {
-            if (settingsProperties.TryGetValue(name, out var property))
-            {
-                property.SetValue(this, value);
-            }
-        }
-
-        public Object GetProperty(String name)
-        {
-            if (settingsProperties.TryGetValue(name, out var property))
-            {
-                return property.GetValue(this);
-            }
-            return null;
+            
         }
 
         internal void SaveSettings()
         {
+            //tbd no-op
         }
 
         [SettingDefaultValue(false)]
@@ -102,11 +84,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.AutoPlayMusic, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(AutoPlayMusic), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.AutoPlayMusic, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(AutoPlayMusic), false, value);
                 RiseSettingChanged(value, nameof(AutoPlayMusic));
             }
         }
@@ -116,11 +98,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.AutoPlayVideo, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(AutoPlayVideo), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.AutoPlayVideo, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(AutoPlayVideo), false, value);
                 RiseSettingChanged(value, nameof(AutoPlayVideo));
             }
         }
@@ -129,11 +111,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<string>("playerstate", "repeat", Constants.RepeatAll);
+                return SettingsStoreService.GetValueOrDefault<string>(nameof(RepeatMode), Constants.RepeatAll);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>("playerstate", "repeat", Constants.RepeatAll, value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(RepeatMode), Constants.RepeatAll, value);
                 RepeatModeChanged?.Invoke(null, value);
             }
         }
@@ -142,12 +124,12 @@ namespace MayazucMediaPlayer.Settings
         {
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>("playerstate", "index", 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(PlaybackIndex), 0, value);
                 RiseSettingChanged(value, nameof(PlaybackIndex));
             }
             get
             {
-                return SettingsStoreService.GetValueOrDefault("playerstate", "index", 0);
+                return SettingsStoreService.GetValueOrDefault(nameof(PlaybackIndex), 0);
             }
         }
 
@@ -155,11 +137,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>("playerstate", "shuffle", false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(ShuffleMode), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>("playerstate", "shuffle", false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(ShuffleMode), false, value);
                 ShuffleModeChanged?.Invoke(null, value);
                 //RiseSettingChanged(value, nameof(ShuffleMode));
             }
@@ -170,12 +152,12 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<double>(ContainerNames.PlayerState, ContainerKeys.AudioBalance, 0);
+                var userOption = SettingsStoreService.GetValueOrDefault<double>(nameof(AudioBalance), 0);
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<double>(ContainerNames.PlayerState, ContainerKeys.AudioBalance, 0, value);
+                SettingsStoreService.SetValueOrDefault<double>(nameof(AudioBalance), 0, value);
                 RiseSettingChanged(value, nameof(AudioBalance));
             }
         }
@@ -186,19 +168,19 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<string>(ContainerNames.Networking, ContainerKeys.NetworkRole, "");
+                var userOption = SettingsStoreService.GetValueOrDefault<string>(nameof(NetworkInstanceName), "");
                 if (string.IsNullOrWhiteSpace(userOption))
                 {
                     var hostNames = NetworkInformation.GetHostNames();
                     var localName = hostNames.FirstOrDefault(name => name.DisplayName.Contains(".local"));
                     var computerName = localName.DisplayName.Replace(".local", "");
-                    SettingsStoreService.SetValueOrDefault<string>(ContainerNames.Networking, ContainerKeys.NetworkRole, "", computerName);
+                    SettingsStoreService.SetValueOrDefault<string>(nameof(NetworkInstanceName), "", computerName);
                 }
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>(ContainerNames.Networking, ContainerKeys.NetworkRole, "", value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(NetworkInstanceName), "", value);
                 RiseSettingChanged(value, nameof(NetworkInstanceName));
             }
         }
@@ -208,12 +190,12 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.AutoClearFilePicker, false);
+                var userOption = SettingsStoreService.GetValueOrDefault<bool>(nameof(AutoClearFilePicker), false);
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.AutoClearFilePicker, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(AutoClearFilePicker), false, value);
                 RiseSettingChanged(value, nameof(AutoClearFilePicker));
             }
         }
@@ -224,12 +206,12 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.MetadataOptions, ContainerKeys.metadataOptionsUseDefault, true);
+                var userOption = SettingsStoreService.GetValueOrDefault<bool>(nameof(MetadataOptionsUseDefault), true);
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.MetadataOptions, ContainerKeys.metadataOptionsUseDefault, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(MetadataOptionsUseDefault), true, value);
                 RiseSettingChanged(value, nameof(MetadataOptionsUseDefault));
             }
         }
@@ -240,12 +222,12 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<int>(ContainerNames.MetadataOptions, ContainerKeys.metadataoptionsAlbumIndex, 0);
+                var userOption = SettingsStoreService.GetValueOrDefault<int>(nameof(MetadataAlbumIndex), 0);
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.MetadataOptions, ContainerKeys.metadataoptionsAlbumIndex, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(MetadataAlbumIndex), 0, value);
                 RiseSettingChanged(value, nameof(MetadataAlbumIndex));
             }
         }
@@ -255,12 +237,12 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<int>(ContainerNames.MetadataOptions, ContainerKeys.metadataoptionsArtistIndex, 0);
+                var userOption = SettingsStoreService.GetValueOrDefault<int>(nameof(MetadataArtistIndex), 0);
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.MetadataOptions, ContainerKeys.metadataoptionsArtistIndex, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(MetadataArtistIndex), 0, value);
                 RiseSettingChanged(value, nameof(MetadataArtistIndex));
             }
         }
@@ -270,12 +252,12 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var userOption = SettingsStoreService.GetValueOrDefault<int>(ContainerNames.MetadataOptions, ContainerKeys.metadataoptionsGenreIndex, 0);
+                var userOption = SettingsStoreService.GetValueOrDefault<int>(nameof(MetadataGenreIndex), 0);
                 return userOption;
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.MetadataOptions, ContainerKeys.metadataoptionsGenreIndex, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(MetadataGenreIndex), 0, value);
                 RiseSettingChanged(value, nameof(MetadataGenreIndex));
             }
         }
@@ -284,11 +266,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<TimeSpan>(ContainerNames.PlayerState, ContainerKeys.playerstateStopMusicTimePosition, TimeSpan.Zero);
+                return SettingsStoreService.GetValueOrDefault<TimeSpan>(nameof(StopMusicOnTimerPosition), TimeSpan.Zero);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<TimeSpan>(ContainerNames.PlayerState, ContainerKeys.playerstateStopMusicTimePosition, TimeSpan.Zero, value);
+                SettingsStoreService.SetValueOrDefault<TimeSpan>(nameof(StopMusicOnTimerPosition), TimeSpan.Zero, value);
                 RiseSettingChanged(value, nameof(StopMusicOnTimerPosition));
                 AppState.Current.MediaServiceConnector.PlayerInstance.HandleStopMusicOnTimer();
             }
@@ -299,29 +281,28 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.playerstateStopMusicEnabled, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(StopMusicOnTimerEnabled), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.playerstateStopMusicEnabled, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(StopMusicOnTimerEnabled), false, value);
                 RiseSettingChanged(value, nameof(StopMusicOnTimerEnabled));
                 AppState.Current.MediaServiceConnector.PlayerInstance.HandleStopMusicOnTimer();
             }
         }
 
         [SettingDefaultValue(0)]
-        public long PlayerResumePosition
+        public double PlayerResumePosition
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<long>(ContainerNames.PlayerState, ContainerKeys.ResumePosition, 0);
+                return SettingsStoreService.GetValueOrDefault<double>(nameof(PlayerResumePosition), 0.0);
 
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<long>(ContainerNames.PlayerState, ContainerKeys.ResumePosition, 0, value);
+                SettingsStoreService.SetValueOrDefault<double>(nameof(PlayerResumePosition), 0.0, value);
                 RiseSettingChanged(value, nameof(PlayerResumePosition));
-
             }
         }
 
@@ -331,11 +312,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.subtitleAutoDetect, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(AutoDetectExternalSubtitle), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.subtitleAutoDetect, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(AutoDetectExternalSubtitle), true, value);
                 RiseSettingChanged(value, nameof(AutoDetectExternalSubtitle));
             }
         }
@@ -345,11 +326,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                var index = SettingsStoreService.GetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.subtitleLanguage, -1);
+                var index = SettingsStoreService.GetValueOrDefault<int>(nameof(PreferredSubtitleLanguageIndex), -1);
                 if (index == -1)
                 {
                     index = LanguageCodesService.GetDefaultLanguageIndex();
-                    SettingsStoreService.SetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.subtitleLanguage, -1, index);
+                    SettingsStoreService.SetValueOrDefault<int>(nameof(PreferredSubtitleLanguageIndex), -1, index);
                 }
 
                 return index;
@@ -357,7 +338,7 @@ namespace MayazucMediaPlayer.Settings
             set
             {
                 var index = value;
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.subtitleLanguage, -1, index);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(PreferredSubtitleLanguageIndex), -1, index);
                 RiseSettingChanged(value, nameof(PreferredSubtitleLanguageIndex));
             }
         }
@@ -375,11 +356,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.AudioDSP, ContainerKeys.equalizerEnabled, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(EqualizerEnabled), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.AudioDSP, ContainerKeys.equalizerEnabled, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(EqualizerEnabled), true, value);
                 RiseSettingChanged(value, nameof(EqualizerEnabled));
 
             }
@@ -390,11 +371,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.VideoOutputAllowIyuv, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(VideoOutputAllowIyuv), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.VideoOutputAllowIyuv, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(VideoOutputAllowIyuv), false, value);
                 RiseSettingChanged(value, nameof(VideoOutputAllowIyuv));
 
             }
@@ -405,11 +386,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.VideoOutputAllow10bit, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(VideoOutputAllow10bit), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.VideoOutputAllow10bit, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(VideoOutputAllow10bit), false, value);
                 RiseSettingChanged(value, nameof(VideoOutputAllow10bit));
 
             }
@@ -420,11 +401,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.VideoOutputAllowBgra8, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(VideoOutputAllowBgra8), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.VideoOutputAllowBgra8, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(VideoOutputAllowBgra8), false, value);
                 RiseSettingChanged(value, nameof(VideoOutputAllowBgra8));
 
             }
@@ -435,11 +416,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.StartPlaybackAfterSeek, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(StartPlaybackAfterSeek), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.StartPlaybackAfterSeek, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(StartPlaybackAfterSeek), false, value);
                 RiseSettingChanged(value, nameof(StartPlaybackAfterSeek));
             }
         }
@@ -449,11 +430,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.PlaybackTapGestureMode, 2);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(PlaybackTapGestureModeRaw), 2);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.PlaybackTapGestureMode, 2, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(PlaybackTapGestureModeRaw), 2, value);
                 RiseSettingChanged(value, nameof(PlaybackTapGestureModeRaw));
             }
         }
@@ -463,11 +444,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.BlockConfirmationMessages, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(ShowConfirmationMessages), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.BlockConfirmationMessages, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(ShowConfirmationMessages), true, value);
                 RiseSettingChanged(value, nameof(ShowConfirmationMessages));
             }
         }
@@ -485,11 +466,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.DefaultUITheme, 0);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(DefaultUITheme), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.Customizations, ContainerKeys.DefaultUITheme, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(DefaultUITheme), 0, value);
                 RiseSettingChanged(value, nameof(DefaultUITheme));
             }
         }
@@ -498,11 +479,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<string>(ContainerNames.PlayerState, ContainerKeys.CurrentPlaylist, string.Empty);
+                return SettingsStoreService.GetValueOrDefault<string>(nameof(CurrentPlaylist), string.Empty);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>(ContainerNames.PlayerState, ContainerKeys.CurrentPlaylist, string.Empty, value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(CurrentPlaylist), string.Empty, value);
                 RiseSettingChanged(value, nameof(CurrentPlaylist));
             }
         }
@@ -513,11 +494,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.AutoloadInternalSubtitle, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(AutoloadInternalSubtitle), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.AutoloadInternalSubtitle, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(AutoloadInternalSubtitle), true, value);
                 RiseSettingChanged(value, nameof(AutoloadInternalSubtitle));
             }
         }
@@ -527,11 +508,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>(ContainerNames.PlayerState, ContainerKeys.FFmpegCharacterEncodingIndex, 0);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(FFmpegCharacterEncodingIndex), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.PlayerState, ContainerKeys.FFmpegCharacterEncodingIndex, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(FFmpegCharacterEncodingIndex), 0, value);
                 RiseSettingChanged(value, nameof(FFmpegCharacterEncodingIndex));
             }
         }
@@ -541,11 +522,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.KeepPlaybackRateBetweenTracks, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(KeepPlaybackRateBetweenTracks), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.KeepPlaybackRateBetweenTracks, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(KeepPlaybackRateBetweenTracks), true, value);
                 RiseSettingChanged(value, nameof(KeepPlaybackRateBetweenTracks));
             }
         }
@@ -555,11 +536,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.AutoloadForcedSubtitles, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(AutoloadForcedSubtitles), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.AutoloadForcedSubtitles, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(AutoloadForcedSubtitles), false, value);
                 RiseSettingChanged(value, nameof(AutoloadForcedSubtitles));
             }
         }
@@ -569,11 +550,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>(ContainerNames.PlayerState, ContainerKeys.VideoDecoderMode, 0);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(VideoDecoderMode), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.PlayerState, ContainerKeys.VideoDecoderMode, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(VideoDecoderMode), 0, value);
                 RiseSettingChanged(value, nameof(VideoDecoderMode));
             }
         }
@@ -582,11 +563,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<string>(ContainerNames.Networking, ContainerKeys.PlayerResumePath, string.Empty);
+                return SettingsStoreService.GetValueOrDefault<string>(nameof(PlayerResumePath), string.Empty);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>(ContainerNames.Networking, ContainerKeys.PlayerResumePath, string.Empty, value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(PlayerResumePath), string.Empty, value);
                 RiseSettingChanged(value, nameof(PlayerResumePath));
             }
         }
@@ -597,11 +578,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<double>(ContainerNames.Customizations, ContainerKeys.MinimumSubtitleDuration, 0);
+                return SettingsStoreService.GetValueOrDefault<double>(nameof(MinimumSubtitleDuration), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<double>(ContainerNames.Customizations, ContainerKeys.MinimumSubtitleDuration, 0, value);
+                SettingsStoreService.SetValueOrDefault<double>(nameof(MinimumSubtitleDuration), 0, value);
                 RiseSettingChanged(value, nameof(MinimumSubtitleDuration));
             }
         }
@@ -611,11 +592,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.PreventSubtitleOverlaps, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(PreventSubtitleOverlaps), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.PreventSubtitleOverlaps, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(PreventSubtitleOverlaps), true, value);
                 RiseSettingChanged(value, nameof(PreventSubtitleOverlaps));
             }
         }
@@ -626,11 +607,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.PlayToEnabled, false);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(PlayToEnabled), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.Customizations, ContainerKeys.PlayToEnabled, false, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(PlayToEnabled), false, value);
                 RiseSettingChanged(value, nameof(PlayToEnabled));
             }
         }
@@ -639,24 +620,24 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>(ContainerNames.PlayerState, ContainerKeys.PlaybackIndexDlnaIntrerupt, 0);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(PlaybackIndexDlnaIntrerupt), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>(ContainerNames.PlayerState, ContainerKeys.PlaybackIndexDlnaIntrerupt, 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(PlaybackIndexDlnaIntrerupt), 0, value);
                 RiseSettingChanged(value, nameof(PlaybackIndexDlnaIntrerupt));
             }
         }
 
-        public long ResumePositionDlnaIntrerupt
+        public double ResumePositionDlnaIntrerupt
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<long>(ContainerNames.PlayerState, ContainerKeys.ResumePositionDlnaIntrerupt, 0);
+                return SettingsStoreService.GetValueOrDefault<double>(nameof(ResumePositionDlnaIntrerupt), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<long>(ContainerNames.PlayerState, ContainerKeys.ResumePositionDlnaIntrerupt, 0, value);
+                SettingsStoreService.SetValueOrDefault<double>(nameof(ResumePositionDlnaIntrerupt), 0, value);
                 RiseSettingChanged(value, nameof(ResumePositionDlnaIntrerupt));
             }
         }
@@ -666,11 +647,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.StereoDownMix, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(StereoDownMix), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.PlayerState, ContainerKeys.StereoDownMix, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(StereoDownMix), true, value);
                 RiseSettingChanged(value, nameof(StereoDownMix));
             }
         }
@@ -681,11 +662,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<string>(ContainerNames.Customizations, ContainerKeys.EqualizerConfiguration, "MC Media Center");
+                return SettingsStoreService.GetValueOrDefault<string>(nameof(EqualizerConfiguration), "MC Media Center");
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>(ContainerNames.Customizations, ContainerKeys.EqualizerConfiguration, "MC Media Center", value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(EqualizerConfiguration), "MC Media Center", value);
                 RiseSettingChanged(value, nameof(EqualizerConfiguration));
             }
         }
@@ -695,11 +676,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<string>("savedPresetsState", "selectedPresetName", "default");
+                return SettingsStoreService.GetValueOrDefault<string>(nameof(SelectedEqualizerPreset), "default");
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>("savedPresetsState", "selectedPresetName", "default", value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(SelectedEqualizerPreset), "default", value);
                 RiseSettingChanged(value, nameof(SelectedEqualizerPreset));
             }
         }
@@ -709,11 +690,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<bool>(ContainerNames.MetadataOptions, ContainerKeys.OnlyUseCacheInFilePicker, true);
+                return SettingsStoreService.GetValueOrDefault<bool>(nameof(OnlyUseCacheInFilePicker), true);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<bool>(ContainerNames.MetadataOptions, ContainerKeys.OnlyUseCacheInFilePicker, true, value);
+                SettingsStoreService.SetValueOrDefault<bool>(nameof(OnlyUseCacheInFilePicker), true, value);
                 RiseSettingChanged(value, nameof(OnlyUseCacheInFilePicker));
             }
         }
@@ -723,11 +704,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<string>("metadataoptions", "foldercovers", "folder.jpg;folder.png");
+                return SettingsStoreService.GetValueOrDefault<string>(nameof(AlbumArtFolderCoverName), "folder.jpg;folder.png");
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<string>("metadataoptions", "foldercovers", "folder.jpg;folder.png", value);
+                SettingsStoreService.SetValueOrDefault<string>(nameof(AlbumArtFolderCoverName), "folder.jpg;folder.png", value);
                 RiseSettingChanged(value, nameof(AlbumArtFolderCoverName));
             }
         }
@@ -737,11 +718,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault("playerstate", "AutomaticPresetManagement", false);
+                return SettingsStoreService.GetValueOrDefault(nameof(AutomaticPresetManagement), false);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault("playerstate", "AutomaticPresetManagement", false, value);
+                SettingsStoreService.SetValueOrDefault(nameof(AutomaticPresetManagement), false, value);
                 RiseSettingChanged(value, nameof(AutomaticPresetManagement));
             }
         }
@@ -751,11 +732,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>("metadataoptions", "albumartindex", 0);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(AlbumArtOptionIndex), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>("metadataoptions", "albumartindex", 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(AlbumArtOptionIndex), 0, value);
                 RiseSettingChanged(value, nameof(AlbumArtOptionIndex));
             }
         }
@@ -765,11 +746,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return SettingsStoreService.GetValueOrDefault<int>("metadataoptions", "FolderHierarchyMetadataIndex", 0);
+                return SettingsStoreService.GetValueOrDefault<int>(nameof(FolderHierarchyMetadataIndex), 0);
             }
             set
             {
-                SettingsStoreService.SetValueOrDefault<int>("metadataoptions", "FolderHierarchyMetadataIndex", 0, value);
+                SettingsStoreService.SetValueOrDefault<int>(nameof(FolderHierarchyMetadataIndex), 0, value);
                 RiseSettingChanged(value, nameof(FolderHierarchyMetadataIndex));
             }
         }

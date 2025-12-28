@@ -26,11 +26,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return propertyValue = SettingsService.Instance.GetProperty(SettingsWrapperPropertyName);
+                return GetValueCallback();
             }
             set
             {
-                if (propertyValue.Equals(value)) return;
+                if (propertyValue != null && propertyValue.Equals(value)) return;
 
                 propertyValue = value;
                 NotifyPropertyChanged(nameof(PropertyValue));
@@ -38,17 +38,10 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        private object defaultValue = null;
         public virtual object DefaultValue
         {
-            get
-            {
-                return defaultValue;
-            }
-            set
-            {
-                defaultValue = value;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -97,9 +90,21 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
+        public Action<object> SetValueCallback
+        {
+            get;
+            private set;
+        }
+
+        public Func<object> GetValueCallback
+        {
+            get;
+            private set;
+        }
+
         private void SetValue()
         {
-            SettingsService.Instance.SetProperty(SettingsWrapperPropertyName, propertyValue, this);
+            SetValueCallback(propertyValue);
         }
 
         Visibility elementVisible = Visibility.Visible;
@@ -122,9 +127,11 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public SettingsItem(string settingsWrapperPropertyName)
+        public SettingsItem(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback)
         {
             SettingsWrapperPropertyName = settingsWrapperPropertyName;
+            SetValueCallback = setValueCallback;
+            GetValueCallback = getValueCallback;
         }
 
         public void RecheckValue()

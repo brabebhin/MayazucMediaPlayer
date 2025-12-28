@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MayazucMediaPlayer.Common;
 using Microsoft.UI.Xaml;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -136,7 +137,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public ComboBoxWithTextBlockAndButton(string settingsWrapperPropertyName, params string[] comboBoxItems) : base(settingsWrapperPropertyName)
+        public ComboBoxWithTextBlockAndButton(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback, params string[] comboBoxItems) : base(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
             foreach (string s in comboBoxItems)
             {

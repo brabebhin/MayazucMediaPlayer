@@ -279,7 +279,7 @@ namespace MayazucMediaPlayer.MediaPlayback
     {
         public int StartIndex { get; set; }
 
-        public long StartTime { get; set; }
+        public double StartTimeMiliseconds { get; set; }
 
         public MediaPlaybackItem InitialItem { get; set; }
     }

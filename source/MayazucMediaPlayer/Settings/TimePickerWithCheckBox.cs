@@ -3,50 +3,32 @@ using System;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public sealed partial class TimePickerWithCheckBox : CheckBoxItem
+    public sealed partial class TimePickerSettingsItem : SettingsItem
     {
-        readonly Action<object, string> settingPropertyChanged;
-
-        public TimePickerWithCheckBox(string enabledPropertyName, string storedPropertyName) : base(enabledPropertyName)
+        public TimePickerSettingsItem(string propertyName, Action<object> setValueCallback, Func<object> getValueCallback) : base(propertyName, setValueCallback, getValueCallback)
         {
-            TimePickerStorePropertyName = storedPropertyName;
-            settingPropertyChanged = new Action<object, string>(SettingsWrapper_SettingChanged);
-            SettingsService.Instance.RegisterSettingChangeCallback(TimePickerStorePropertyName, settingPropertyChanged);
         }
 
-        private void SettingsWrapper_SettingChanged(object? sender, string e)
+        public string TimePickerDescription
         {
-            if (e == TimePickerStorePropertyName) NotifyPropertyChanged(nameof(SelectedTime));
+            get;
+            set;
         }
 
-        public string TimePickerDescription { get; set; }
+        protected override void RecheckValueInternal()
+        {
+            
+        }
+               
+        public override object DefaultValue { get => TimeSpan.Zero; set => base.DefaultValue = value; }
+
 
         public override DataTemplate Template
         {
             get
             {
-                return TemplatesDictionary.CheckBoxWithTimePicker;
+                return TemplatesDictionary.TimePickerSettingsItem;
             }
-        }
-
-        public string TimePickerStorePropertyName
-        {
-            get;
-            private set;
-        }
-
-        public TimeSpan SelectedTime
-        {
-            get
-            {
-                return (TimeSpan)SettingsService.Instance.GetProperty(TimePickerStorePropertyName);
-            }
-            set
-            {
-                if ((TimeSpan)SettingsService.Instance.GetProperty(TimePickerStorePropertyName) == (TimeSpan)value) return;
-                SettingsService.Instance.SetProperty(TimePickerStorePropertyName, (TimeSpan)value, this);
-                NotifyPropertyChanged(nameof(SelectedTime));
-            }
-        }
+        }        
     }
 }

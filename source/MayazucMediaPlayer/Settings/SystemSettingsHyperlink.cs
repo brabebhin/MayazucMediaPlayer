@@ -1,10 +1,11 @@
-﻿using Microsoft.UI.Xaml;
+﻿using MayazucMediaPlayer.Common;
+using Microsoft.UI.Xaml;
 
 namespace MayazucMediaPlayer.Settings
 {
     public partial class SystemSettingsHyperlink : SettingsItem
     {
-        public SystemSettingsHyperlink() : base(string.Empty)
+        public SystemSettingsHyperlink() : base(string.Empty, EmptyCallbacks.Action, EmptyCallbacks.Func)
         {
         }
 

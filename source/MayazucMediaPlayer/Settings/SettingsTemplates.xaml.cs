@@ -51,19 +51,14 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public DataTemplate ComboboxWithHeaderAndImage
-        {
-            get { return (DataTemplate)this["ComboboxWithHeaderAndImage"]; }
-        }
-
         public DataTemplate ComboBoxWithHeader
         {
             get { return (DataTemplate)this["ComboBoxWithHeader"]; }
         }
 
-        public DataTemplate CheckBoxWithTimePicker
+        public DataTemplate TimePickerSettingsItem
         {
-            get { return (DataTemplate)this["CheckBoxWithTimePicker"]; }
+            get { return (DataTemplate)this["TimePickerSettingsItem"]; }
         }
 
         public DataTemplate ButtonWithImageAndText

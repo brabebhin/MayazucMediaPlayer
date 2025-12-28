@@ -65,7 +65,7 @@ namespace MayazucMediaPlayer.Settings
 
         string toggleSwitchHeader;
 
-        public ToggleSwitcher(string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
+        public ToggleSwitcher(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback) : base(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
         }
 

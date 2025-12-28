@@ -73,11 +73,11 @@ namespace MayazucMediaPlayer.Controls
                 await DispatcherQueue.EnqueueAsync(async () =>
                 {
                     var resumePosition = SettingsService.Instance.PlayerResumePosition;
-                    var thumbnail = await currentMds.Value.MediaData.GetThumbnailAtPositionAsync(TimeSpan.FromTicks(resumePosition));
+                    var thumbnail = await currentMds.Value.MediaData.GetThumbnailAtPositionAsync(TimeSpan.FromMilliseconds(resumePosition));
                     ResumeThumbnail.Source = thumbnail.MediaThumbnailData;
 
                     ResumeFile.Text = currentMds.Value.MediaData.Title;
-                    Position.Text = TimeSpan.FromTicks(resumePosition).ToString("hh':'mm':'ss");
+                    Position.Text = TimeSpan.FromMilliseconds(resumePosition).ToString("hh':'mm':'ss");
                 });
             }
         }

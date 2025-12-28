@@ -14,41 +14,51 @@ namespace MayazucMediaPlayer.Settings
 {
     public partial class SettingsStoreService
     {
-        public static AsyncLock lockObject = new AsyncLock();
+        private static AsyncLockManager lockManager = new AsyncLockManager();
+        private const string SettingsContainer = "settings";
 
-        public static T GetValueOrDefault<T>(string container, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(string key, T defaultValue)
         {
-            using (lockObject.Lock())
+            try
             {
-                var localSettings = ApplicationData.Current.LocalSettings;
-                EnsureDefault(container, key, defaultValue);
-                return (T)localSettings.Containers[container].Values[key];
+                using (lockManager.GetLock($"{SettingsContainer}.{key}").Lock())
+                {
+                    var localSettings = ApplicationData.Current.LocalSettings;
+                    EnsureDefault(key, defaultValue);
+                    return (T)localSettings.Containers[SettingsContainer].Values[key];
+                }
+            }
+            catch
+            {
+                // usually a parser error
+                EnsureDefault(key, defaultValue);
+                return defaultValue;
             }
         }
 
-        public static void SetValueOrDefault<T>(string container, string key, T defaultValue, T value)
+        public static void SetValueOrDefault<T>(string key, T defaultValue, T value)
         {
-            using (lockObject.Lock())
+            using (lockManager.GetLock($"{SettingsContainer}.{key}").Lock())
             {
                 var localSettings = ApplicationData.Current.LocalSettings;
-                EnsureDefault(container, key, defaultValue);
-                if (!localSettings.Containers[container].Values.ContainsKey(key))
+                EnsureDefault(key, defaultValue);
+                if (!localSettings.Containers[SettingsContainer].Values.ContainsKey(key))
                 {
-                    localSettings.Containers[container].Values.Add(key, value);
+                    localSettings.Containers[SettingsContainer].Values.Add(key, value);
                 }
                 else
                 {
-                    localSettings.Containers[container].Values[key] = value;
+                    localSettings.Containers[SettingsContainer].Values[key] = value;
                 }
             }
         }
 
-        public static bool SettingsExists(string container, string key)
+        private static bool SettingsExists(string key)
         {
             var localSettings = ApplicationData.Current.LocalSettings;
-            if (localSettings.Containers.ContainsKey(container))
+            if (localSettings.Containers.ContainsKey(SettingsContainer))
             {
-                var containerInstance = localSettings.Containers[container];
+                var containerInstance = localSettings.Containers[SettingsContainer];
                 if (containerInstance.Values.ContainsKey(key))
                 {
                     return true;
@@ -64,19 +74,19 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public static void EnsureDefault<T>(string container, string key, T defaultValue)
+        private static void EnsureDefault<T>(string key, T defaultValue)
         {
             ApplicationDataContainer containerValue = null;
-            if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(container))
+            if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(SettingsContainer))
             {
-                containerValue = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
+                containerValue = ApplicationData.Current.LocalSettings.CreateContainer(SettingsContainer, ApplicationDataCreateDisposition.Always);
                 containerValue.Values.Add(new KeyValuePair<string, object>(key, defaultValue));
             }
             else
             {
-                if (ApplicationData.Current.LocalSettings.Containers[container].Values.Keys.Contains(key) == false)
+                if (ApplicationData.Current.LocalSettings.Containers[SettingsContainer].Values.Keys.Contains(key) == false)
                 {
-                    ApplicationData.Current.LocalSettings.Containers[container].Values.Add(new KeyValuePair<string, object>(key, defaultValue));
+                    ApplicationData.Current.LocalSettings.Containers[SettingsContainer].Values.Add(new KeyValuePair<string, object>(key, defaultValue));
                 }
             }
         }

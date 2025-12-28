@@ -374,7 +374,7 @@ namespace MayazucMediaPlayer.Controls
                 }
                 else
                 {
-                    SettingsService.Instance.PlayerResumePosition = x.SeekPosition.Ticks;
+                    SettingsService.Instance.PlayerResumePosition = x.SeekPosition.TotalMilliseconds;
                     await instance.PlayPauseAsync();
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -64,13 +65,13 @@ namespace MayazucMediaPlayer.Settings
             NotifyPropertyChanged(nameof(SlectedIndex));
         }
 
-        public ComboboxWithHeader(string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
+        public ComboboxWithHeader(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback) : base(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
 
         }
 
 
-        public ComboboxWithHeader(string settingsWrapperPropertyName, params object[] comboboxItems) : this(settingsWrapperPropertyName)
+        public ComboboxWithHeader(string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback, params object[] comboboxItems) : this(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
             foreach (var s in comboboxItems)
             {
@@ -78,7 +79,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public ComboboxWithHeader(IEnumerable<object> comboboxItems, string settingsWrapperPropertyName) : base(settingsWrapperPropertyName)
+        public ComboboxWithHeader(IEnumerable<object> comboboxItems, string settingsWrapperPropertyName, Action<object> setValueCallback, Func<object> getValueCallback) : base(settingsWrapperPropertyName, setValueCallback, getValueCallback)
         {
             foreach (var s in comboboxItems)
             {
