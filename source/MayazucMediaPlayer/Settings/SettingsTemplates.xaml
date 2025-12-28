@@ -1,65 +1,67 @@
 ﻿<ResourceDictionary x:Class="MayazucMediaPlayer.Settings.SettingsTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:settings="using:MayazucMediaPlayer.Settings"
+    xmlns:sys="using:System"
     xmlns:local="using:MayazucMediaPlayer.Controls">
 
-    <DataTemplate  x:Key="SystemHyperlinkButton">
-        <local:SettingsAppHyperlinkButton  NavigateUri="{Binding SystemSettingsLink}">
-            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{Binding Description}" TextWrapping="WrapWholeWords"/>
+    <DataTemplate  x:Key="SystemHyperlinkButton" x:DataType="settings:SystemSettingsHyperlink">
+        <local:SettingsAppHyperlinkButton  NavigateUri="{x:Bind SystemSettingsLink}">
+            <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Text="{x:Bind Description}" TextWrapping="WrapWholeWords"/>
         </local:SettingsAppHyperlinkButton>
     </DataTemplate>
 
-    <DataTemplate  x:Key="SimpleCheckboxTemplate">
-        <Grid Visibility="{Binding ElementVisible}">
-            <CheckBox FontWeight="SemiBold"   IsChecked="{Binding IsChecked, Mode=TwoWay}">
-                <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   VerticalAlignment="Center" TextWrapping="WrapWholeWords" Grid.Column="1" Text="{Binding Description}"   />
+    <DataTemplate  x:Key="SimpleCheckboxTemplate" x:DataType="settings:CheckBoxItem">
+        <Grid Visibility="{x:Bind ElementVisible}">
+            <CheckBox FontWeight="SemiBold"   IsChecked="{x:Bind IsChecked, Mode=TwoWay}">
+                <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   VerticalAlignment="Center" TextWrapping="WrapWholeWords" Grid.Column="1" Text="{x:Bind Description}"   />
             </CheckBox>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="ComboBoxWithHeader">
-        <Grid HorizontalAlignment="Left" Visibility="{Binding ElementVisible}" Margin="5" Width="280">
-            <ComboBox  FontWeight="SemiBold" ItemsSource="{Binding ComboboxStringList}" IsEnabled="{Binding IsEnabled}" SelectedIndex="{Binding SlectedIndex, Mode=TwoWay}" HorizontalAlignment="Stretch">
+    <DataTemplate x:Key="ComboBoxWithHeader" x:DataType="settings:ComboboxWithHeader">
+        <Grid HorizontalAlignment="Left" Margin="5" Width="280">
+            <ComboBox  FontWeight="SemiBold" ItemsSource="{x:Bind ComboboxStringList}" IsEnabled="{x:Bind IsEnabled}" SelectedIndex="{x:Bind SlectedIndex, Mode=TwoWay}" HorizontalAlignment="Stretch">
                 <ComboBox.Header>
                     <StackPanel>
-                        <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"  TextWrapping="WrapWholeWords" Foreground="{StaticResource AppBarItemDisabledForegroundThemeBrush}" Text="{Binding ComboboxHeader}"/>
+                        <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"  TextWrapping="WrapWholeWords" Foreground="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Text="{x:Bind ComboboxHeader}"/>
                     </StackPanel>
                 </ComboBox.Header>
             </ComboBox>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:FieldModifier="public" x:Key="TimePickerSettingsItem">
-        <StackPanel Visibility="{Binding ElementVisible}"  Margin="5">
- 
-            <TimePicker  FontWeight="SemiBold"    Time="{Binding PropertyValue, Mode=TwoWay}">
+    <DataTemplate x:FieldModifier="public" x:Key="TimePickerSettingsItem"  x:DataType="settings:TimePickerSettingsItem">
+        <StackPanel  Margin="5">
+
+            <TimePicker  FontWeight="SemiBold" Time="{x:Bind Value, Mode=TwoWay}">
                 <TimePicker.Header>
-                    <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"  TextWrapping="WrapWholeWords" Grid.Column="1" Text="{Binding TimePickerDescription}"   />
+                    <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"  TextWrapping="WrapWholeWords" Grid.Column="1" Text="{x:Bind TimePickerDescription}"   />
                 </TimePicker.Header>
             </TimePicker>
         </StackPanel>
     </DataTemplate>
 
-     <DataTemplate x:FieldModifier="public"  x:Key="ButtonWithImage">
-        <Grid Visibility="{Binding ElementVisible}"  Margin="5">
-            <Button  HorizontalContentAlignment="Center"  Command="{Binding Command}" CommandParameter="{Binding}" Width="300"  HorizontalAlignment="Left">
+    <DataTemplate x:FieldModifier="public"  x:Key="ButtonWithImage"  x:DataType="settings:SettingsButton">
+        <Grid  Margin="5">
+            <Button  HorizontalContentAlignment="Center"  Command="{x:Bind Command}" CommandParameter="{x:Bind}" Width="300"  HorizontalAlignment="Left">
                 <Grid>
 
-                    <TextBlock   Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="1" Margin="5" VerticalAlignment="Center" Text="{Binding Label}"/>
+                    <TextBlock   Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Column="1" Margin="5" VerticalAlignment="Center" Text="{x:Bind Label}"/>
                 </Grid>
             </Button>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="PlainTextBlock">
-        <Grid Visibility="{Binding ElementVisible}"  Margin="5">
-            <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   Text="{Binding TextDescription}" TextAlignment="Justify" TextWrapping="WrapWholeWords"/>
+    <DataTemplate x:Key="PlainTextBlock"  x:DataType="settings:VerbatimTextBlock">
+        <Grid  Margin="5">
+            <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   Text="{x:Bind TextDescription}" TextAlignment="Justify" TextWrapping="WrapWholeWords"/>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="ComboboxWithTextBoxandButton">
-        <StackPanel Visibility="{Binding ElementVisible}"  Margin="5">
-            <ComboBox FontWeight="SemiBold" Margin="0, 5, 0, 5"  HorizontalAlignment="Left"  ItemsSource="{Binding ComboboxStringList}"  SelectedIndex="{Binding SelectedCBIndex, Mode=TwoWay}" >
+    <DataTemplate x:Key="ComboboxWithTextBoxandButton" x:DataType="settings:ComboBoxWithTextBlockAndButton">
+        <StackPanel  Margin="5">
+            <ComboBox FontWeight="SemiBold" Margin="0, 5, 0, 5"  HorizontalAlignment="Left"  ItemsSource="{x:Bind ComboboxStringList}"  SelectedIndex="{x:Bind SelectedCBIndex, Mode=TwoWay}" >
                 <ComboBox.Header>
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
@@ -68,7 +70,7 @@
                         </Grid.ColumnDefinitions>
 
 
-                        <TextBlock  Margin="0, 5, 0, 5"  Style="{ThemeResource BodyStrongTextBlockStyle}"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemDisabledForegroundThemeBrush}" Text="{Binding ComboboxHeader}" TextWrapping="WrapWholeWords"/>
+                        <TextBlock  Margin="0, 5, 0, 5"  Style="{ThemeResource BodyStrongTextBlockStyle}"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemDisabledForegroundThemeBrush}" Text="{x:Bind ComboboxHeader}" TextWrapping="WrapWholeWords"/>
                     </Grid>
                 </ComboBox.Header>
             </ComboBox>
@@ -79,25 +81,25 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock  FontWeight="SemiBold"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemDisabledForegroundThemeBrush}" Text="{Binding TextBoxHeader}" TextWrapping="WrapWholeWords"/>
+                <TextBlock  FontWeight="SemiBold"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemDisabledForegroundThemeBrush}" Text="{x:Bind TextBoxHeader}" TextWrapping="WrapWholeWords"/>
             </Grid>
 
-            <TextBox  Style="{ThemeResource BodyStrongTextBlockStyle}"  Margin="0, 5, 0, 5"  Text="{Binding FolderCoverNames, Mode=TwoWay}" IsEnabled="{Binding TextBoxEnabled}">
+            <TextBox  Style="{ThemeResource BodyStrongTextBlockStyle}"  Margin="0, 5, 0, 5"  Text="{x:Bind FolderCoverNames, Mode=TwoWay}" IsEnabled="{x:Bind TextBoxEnabled}">
 
             </TextBox>
 
-            <Button  HorizontalContentAlignment="Left"  Margin="0, 5, 0, 5" Command="{Binding Command}" CommandParameter="{Binding}"   IsEnabled="{Binding TextBoxEnabled}">
+            <Button  HorizontalContentAlignment="Left"  Margin="0, 5, 0, 5" Command="{x:Bind Command}" CommandParameter="{x:Bind}"   IsEnabled="{x:Bind TextBoxEnabled}">
                 <Grid>
-                    <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   Grid.Column="1" Margin="2" VerticalAlignment="Center" Text="{Binding Label}"/>
+                    <TextBlock  Style="{ThemeResource BodyStrongTextBlockStyle}"   Grid.Column="1" Margin="2" VerticalAlignment="Center" Text="{x:Bind Label}"/>
                 </Grid>
             </Button>
 
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="ToggleSwitchWithImage">
-        <Grid  Visibility="{Binding ElementVisible}" Margin="5">
-            <ToggleSwitch FontWeight="SemiBold"   IsOn="{Binding IsOn, Mode=TwoWay}" OnContent="{Binding OnText}" OffContent="{Binding OffText}">
+    <DataTemplate x:Key="ToggleSwitchWithImage"  x:DataType="settings:ToggleSwitcher">
+        <Grid  Margin="5">
+            <ToggleSwitch FontWeight="SemiBold"   IsOn="{x:Bind IsOn, Mode=TwoWay}" OnContent="{x:Bind OnText}" OffContent="{x:Bind OffText}">
                 <ToggleSwitch.Header>
                     <Grid HorizontalAlignment="Stretch">
                         <Grid.ColumnDefinitions>
@@ -105,20 +107,20 @@
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Viewbox Width="56" Height="56" Margin="2"  Grid.Column="0">
-                            <FontIcon Foreground="Blue"  Glyph="{Binding SwitchImageGlyph}">
+                            <FontIcon Foreground="Blue"  Glyph="{x:Bind SwitchImageGlyph}">
 
                             </FontIcon>
                         </Viewbox>
-                        <TextBlock Margin="0, 5, 0, 5"   Style="{ThemeResource BodyStrongTextBlockStyle}"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemForegroundThemeBrush}" Text="{Binding ToggleSwitchHeader}" TextWrapping="WrapWholeWords"/>
+                        <TextBlock Margin="0, 5, 0, 5"   Style="{ThemeResource BodyStrongTextBlockStyle}"  VerticalAlignment="Center" Grid.Column="1" Foreground="{StaticResource AppBarItemForegroundThemeBrush}" Text="{x:Bind ToggleSwitchHeader}" TextWrapping="WrapWholeWords"/>
                     </Grid>
                 </ToggleSwitch.Header>
             </ToggleSwitch>
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="GenericContentControl">
+    <DataTemplate x:Key="GenericContentControl"  x:DataType="settings:ContentSettingsItem">
         <Grid>
-            <ContentPresenter Margin="5" Content="{Binding Content}"></ContentPresenter>
+            <ContentPresenter Margin="5" Content="{x:Bind Content}"></ContentPresenter>
         </Grid>
     </DataTemplate>
 

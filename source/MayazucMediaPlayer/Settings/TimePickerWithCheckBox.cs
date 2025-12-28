@@ -17,9 +17,9 @@ namespace MayazucMediaPlayer.Settings
 
         protected override void RecheckValueInternal()
         {
-            
+
         }
-               
+
         public override object DefaultValue { get => TimeSpan.Zero; set => base.DefaultValue = value; }
 
 
@@ -29,6 +29,18 @@ namespace MayazucMediaPlayer.Settings
             {
                 return TemplatesDictionary.TimePickerSettingsItem;
             }
-        }        
+        }
+
+        public TimeSpan Value
+        {
+            get
+            {
+                return (TimeSpan)base.PropertyValue;
+            }
+            set
+            {
+                base.PropertyValue = value;
+            }
+        }
     }
 }
