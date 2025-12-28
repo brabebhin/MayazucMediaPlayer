@@ -4,11 +4,11 @@ using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.Services;
 using MayazucNativeFramework;
 using Microsoft.UI.Dispatching;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -146,7 +146,7 @@ namespace MayazucMediaPlayer.VideoEffects
                 {
                     var file = sfile as StorageFile;
                     var json = await FileIO.ReadTextAsync(file);
-                    var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                    var result = JsonSerializer.Deserialize<Dictionary<string, double>>(json, MayazucJsonSerializerContext.Default.DictionaryStringDouble);
                     foreach (var obj in EffectProperties)
                     {
                         obj.EffectPropertyValue = Convert.ToSingle((double)result[obj.EffectPropertyName]);
@@ -220,10 +220,13 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             var saveFolder = await LocalCache.LocalFolders.GetVideoColorProfilesFolder();
             var saveFile = await saveFolder.CreateFileAsync(path, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            var dictionaryValues = new Dictionary<string, double>();
+            foreach (var value in values)
+            {
+                dictionaryValues.Add(value.EffectPropertyName, value.EffectPropertyValue);
+            }
 
-            var dictionaryValues = values.ToDictionary(x => x.EffectPropertyName, x => (object)x.EffectPropertyValue);
-
-            var resultJson = JsonConvert.SerializeObject(dictionaryValues);
+            var resultJson = JsonSerializer.Serialize(dictionaryValues, MayazucJsonSerializerContext.Default.DictionaryStringDouble);
             await FileIO.WriteTextAsync(saveFile, resultJson);
             var profile = new SavedColorProfile(path);
             return profile;

@@ -54,7 +54,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async void DataServiceAddCommand(object sender, TappedRoutedEventArgs e)
         {
-           await DataService.AddCommand.ExecuteAsync(sender.GetDataContextObject<EqualizerConfiguration>());
+           await DataService.AddCommand.ExecuteAsync(sender.GetDataContextObject<EQConfigurationService>());
         }
 
         private async void EditEqualizerConfigurationPresetsCommand(object sender, TappedRoutedEventArgs e)

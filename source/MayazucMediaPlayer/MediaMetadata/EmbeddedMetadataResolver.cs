@@ -2,18 +2,19 @@
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Settings;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.MediaMetadata
 {
-    public partial class EmbeddedMetadataResult
+    public partial class EmbeddedMetadata
     {
         public string Album { get; private set; } = string.Empty;
 
@@ -49,7 +50,7 @@ namespace MayazucMediaPlayer.MediaMetadata
 
         public ReadOnlyDictionary<string, string> AdditionalMetadata { get; private set; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>());
 
-        public EmbeddedMetadataResult(string album, string artist, string genre, string title, ReadOnlyDictionary<string, string> additionalMetadata)
+        public EmbeddedMetadata(string album, string artist, string genre, string title, ReadOnlyDictionary<string, string> additionalMetadata)
         {
             Album = album;
             Artist = artist;
@@ -58,7 +59,7 @@ namespace MayazucMediaPlayer.MediaMetadata
             AdditionalMetadata = additionalMetadata;
         }
 
-        public EmbeddedMetadataResult(string album, string artist, string genre, string title, string savedThumbnailFile, ReadOnlyDictionary<string, string> additionalMetadata)
+        public EmbeddedMetadata(string album, string artist, string genre, string title, string savedThumbnailFile, ReadOnlyDictionary<string, string> additionalMetadata)
         {
             SavedThumbnailFile = string.IsNullOrWhiteSpace(savedThumbnailFile) ? AssetsPaths.PlaceholderAlbumArt : savedThumbnailFile;
             Album = album;
@@ -68,7 +69,7 @@ namespace MayazucMediaPlayer.MediaMetadata
             AdditionalMetadata = additionalMetadata;
         }
 
-        public EmbeddedMetadataResult(string album, string author, string genre, string title)
+        public EmbeddedMetadata(string album, string author, string genre, string title)
         {
             Artist = author;
             Album = album;
@@ -76,7 +77,7 @@ namespace MayazucMediaPlayer.MediaMetadata
             Title = title;
         }
 
-        public EmbeddedMetadataResult(string performer, string title)
+        public EmbeddedMetadata(string performer, string title)
         {
             Artist = performer;
             Title = title;
@@ -84,7 +85,7 @@ namespace MayazucMediaPlayer.MediaMetadata
 
         public override bool Equals(object obj)
         {
-            return obj is EmbeddedMetadataResult result &&
+            return obj is EmbeddedMetadata result &&
                    Album == result.Album &&
                    Artist == result.Artist &&
                    Genre == result.Genre &&
@@ -97,7 +98,7 @@ namespace MayazucMediaPlayer.MediaMetadata
         }
     }
 
-    public class EmbeddedMetadataResultFile
+    public class EmbeddedMetadataSeed
     {
         public string Album { get; set; } = string.Empty;
 
@@ -113,14 +114,14 @@ namespace MayazucMediaPlayer.MediaMetadata
 
         public Dictionary<string, string> AdditionalMetadata { get; set; } = new Dictionary<string, string>();
 
-        public EmbeddedMetadataResult ToMetadataResult()
+        public EmbeddedMetadata GetEmbeddedMetadata()
         {
-            return new EmbeddedMetadataResult(album: Album, artist: Artist, genre: Genre, title: Title, savedThumbnailFile: SavedThumbnailFile, additionalMetadata: new ReadOnlyDictionary<string, string>(AdditionalMetadata));
+            return new EmbeddedMetadata(album: Album, artist: Artist, genre: Genre, title: Title, savedThumbnailFile: SavedThumbnailFile, additionalMetadata: new ReadOnlyDictionary<string, string>(AdditionalMetadata));
         }
 
-        public EmbeddedMetadataResultFile() { }
+        public EmbeddedMetadataSeed() { }
 
-        public EmbeddedMetadataResultFile(EmbeddedMetadataResult metadata, string filePath)
+        public EmbeddedMetadataSeed(EmbeddedMetadata metadata, string filePath)
         {
             Album = metadata.Album;
             Artist = metadata.Artist;
@@ -142,19 +143,19 @@ namespace MayazucMediaPlayer.MediaMetadata
 
         public static async Task<FileInfo> GetMetadataDocumentForFile(string filePath)
         {
-            var filename = Utilities.GetRandomFileName(filePath, ".json");
+            var filename = Utilities.EncodePathWithExtension(filePath, ".json");
             var folder = await LocalFolders.MetadataDatabaseFolder();
             return new FileInfo(Path.Combine(folder.FullName, filename));
         }
 
-        public static EmbeddedMetadataResult ReadMetadataDocumentForFile(FileInfo document, FileInfo sourceFile)
+        public static EmbeddedMetadata ReadMetadataDocumentForFile(FileInfo document, FileInfo sourceFile)
         {
             try
             {
                 if (document.Exists)
                 {
-                    var documentData = JsonConvert.DeserializeObject<EmbeddedMetadataResultFile>(File.ReadAllText(document.FullName));
-                    var metadata = documentData.ToMetadataResult();
+                    var documentData = JsonSerializer.Deserialize<EmbeddedMetadataSeed>(File.ReadAllText(document.FullName), MayazucJsonSerializerContext.Default.EmbeddedMetadataSeed); ;
+                    var metadata = documentData.GetEmbeddedMetadata();
                     return metadata;
                 }
             }
@@ -164,17 +165,17 @@ namespace MayazucMediaPlayer.MediaMetadata
             return GetDefaultMetadataForFile(sourceFile.FullName);
         }
 
-        public static EmbeddedMetadataResult GetDefaultMetadataForFile(string filePath)
+        public static EmbeddedMetadata GetDefaultMetadataForFile(string filePath)
         {
-            return new EmbeddedMetadataResult(album: string.Empty, artist: string.Empty, genre: string.Empty, title: Path.GetFileNameWithoutExtension(filePath), additionalMetadata: new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()), savedThumbnailFile: AssetsPaths.PlaceholderAlbumArt);
+            return new EmbeddedMetadata(album: string.Empty, artist: string.Empty, genre: string.Empty, title: Path.GetFileNameWithoutExtension(filePath), additionalMetadata: new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()), savedThumbnailFile: AssetsPaths.PlaceholderAlbumArt);
         }
 
-        public static EmbeddedMetadataResult GetDefaultMetadataForFileNotFound(string filePath)
+        public static EmbeddedMetadata GetDefaultMetadataForFileNotFound(string filePath)
         {
-            return new EmbeddedMetadataResult("Source not available", "Source not available", "Source not available", Path.GetFileNameWithoutExtension(filePath), new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()));
+            return new EmbeddedMetadata("Source not available", "Source not available", "Source not available", Path.GetFileNameWithoutExtension(filePath), new ReadOnlyDictionary<string, string>(new Dictionary<string, string>()));
         }
 
-        public static async Task<EmbeddedMetadataResult> RetrieveEmbeddedMetadata(FFmpegMediaSource ffmpegMediaSource,
+        public static async Task<EmbeddedMetadata> RetrieveEmbeddedMetadata(FFmpegMediaSource ffmpegMediaSource,
             FileInfo fileToGetThMetadataFrom)
         {
             var fallbackTitle = fileToGetThMetadataFrom.FullName;
@@ -204,14 +205,14 @@ namespace MayazucMediaPlayer.MediaMetadata
                 return ffmpegMediaSource.GetGenre();
             });
 
-            var albumArtFile = Utilities.GetRandomFileNameWithoutExtension(fileToGetThMetadataFrom.FullName);
+            var albumArtFile = Utilities.EncodePathWithoutExtension(fileToGetThMetadataFrom.FullName);
 
             var thumbnail = await GetFFmpegInteropAlbumCover(albumArtFile, ffmpegMediaSource);
 
-            return new EmbeddedMetadataResult(album: Album, artist: Artist, genre: Genre, title: title, additionalMetadata: ffmpegMediaSource.GetMetadataDictionary(), savedThumbnailFile: thumbnail.FullName);
+            return new EmbeddedMetadata(album: Album, artist: Artist, genre: Genre, title: title, additionalMetadata: ffmpegMediaSource.GetMetadataDictionary(), savedThumbnailFile: thumbnail.FullName);
         }
 
-        public static async Task<EmbeddedMetadataResult> ExtractMetadataAsync(FileInfo fileToGetThumbnailFrom)
+        public static async Task<EmbeddedMetadata> ExtractMetadataAsync(FileInfo fileToGetThumbnailFrom)
         {
             var config = FFmpegInteropXExtensions.GetFFmpegUserConfigs();
             var mediaSource = await FFmpegInteropItemBuilder.CreateFFmpegInteropMediaSourceFromFileAsync(config, fileToGetThumbnailFrom);
@@ -281,6 +282,5 @@ namespace MayazucMediaPlayer.MediaMetadata
             return string.Empty;
         }
     }
-
 }
 

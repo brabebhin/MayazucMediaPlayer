@@ -22,14 +22,14 @@ namespace MayazucMediaPlayer
         /// </summary>
         /// <param name="extension">must also include the dot</param>
         /// <returns></returns>
-        public static string GetRandomFileName(string basePath, string extension)
+        public static string EncodePathWithExtension(string basePath, string extension)
         {
             if (string.IsNullOrWhiteSpace(extension))
             {
                 throw new ArgumentException("extension cannot be null, empty or white space");
             }
 
-            return $"{GetRandomFileNameWithoutExtension(basePath)}{extension}";
+            return $"{EncodePathWithoutExtension(basePath)}{extension}";
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace MayazucMediaPlayer
         /// </summary>
         /// <param name="extension">must also include the dot</param>
         /// <returns></returns>
-        public static string GetRandomFileNameWithoutExtension(string path)
+        public static string EncodePathWithoutExtension(string path)
         {
             var hashAlg = new SHA512Managed();
             var hash = hashAlg.ComputeHash(Encoding.UTF8.GetBytes(path));
@@ -73,7 +73,6 @@ namespace MayazucMediaPlayer
             {
                 filepicker.FileTypeFilter.Add(ext);
             }
-
         }
 
         static readonly AsyncLock CopyThumbnailStreamAsyncLock = new AsyncLock();
@@ -82,7 +81,7 @@ namespace MayazucMediaPlayer
             using (await CopyThumbnailStreamAsyncLock.LockAsync())
             {
                 var aaFolder = await LocalCache.LocalFolders.GetAlbumArtFolder();
-                using var file = aaFolder.CreateFile($"{Utilities.GetRandomFileNameWithoutExtension(path)}{mediaThumbnail.Extension}");
+                using var file = aaFolder.CreateFile($"{Utilities.EncodePathWithoutExtension(path)}{mediaThumbnail.Extension}");
                 var buffer = mediaThumbnail.Buffer.ToArray();
                 await file.FileStream.WriteAsync(buffer, 0, buffer.Length);
                 return file.FileInformation;

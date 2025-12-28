@@ -88,7 +88,7 @@ namespace MayazucMediaPlayer
                         var asyncLock = FileMetadataLockManager.GetLock(fileToProcess.File.FullName);
                         using (await asyncLock.LockAsync())
                         {
-                            EmbeddedMetadataResult metadata = EmbeddedMetadataResolver.GetDefaultMetadataForFile(fileToProcess.File.FullName);
+                            EmbeddedMetadata metadata = EmbeddedMetadataResolver.GetDefaultMetadataForFile(fileToProcess.File.FullName);
 
                             try
                             {
@@ -97,7 +97,7 @@ namespace MayazucMediaPlayer
                                 {
                                     metadata = await EmbeddedMetadataResolver.ExtractMetadataAsync(fileToProcess.File);
                                     //process the file
-                                    var metadatadocumentFile = new EmbeddedMetadataResultFile(metadata, fileToProcess.File.FullName);
+                                    var metadatadocumentFile = new EmbeddedMetadataSeed(metadata, fileToProcess.File.FullName);
                                     var json = System.Text.Json.JsonSerializer.Serialize(metadatadocumentFile);
                                     await File.WriteAllTextAsync(metadataFile.FullName, json);
                                 }
@@ -124,7 +124,7 @@ namespace MayazucMediaPlayer
             await ProcessingTask;
         }
 
-        public async Task<EmbeddedMetadataResult> ProcessFileAsync(FileInfo info, bool highPriority)
+        public async Task<EmbeddedMetadata> ProcessFileAsync(FileInfo info, bool highPriority)
         {
             var job = new FileInfoProcessingJob(info);
             backlog.Post(job, highPriority);
@@ -133,16 +133,16 @@ namespace MayazucMediaPlayer
 
         private class FileInfoProcessingJob
         {
-            readonly TaskCompletionSource<EmbeddedMetadataResult> taskCompletionSource = new TaskCompletionSource<EmbeddedMetadataResult>();
+            readonly TaskCompletionSource<EmbeddedMetadata> taskCompletionSource = new TaskCompletionSource<EmbeddedMetadata>();
 
             public FileInfo File { get; }
 
-            public Task<EmbeddedMetadataResult> AsyncTask
+            public Task<EmbeddedMetadata> AsyncTask
             {
                 get { return taskCompletionSource.Task; }
             }
 
-            public void SetResult(EmbeddedMetadataResult result)
+            public void SetResult(EmbeddedMetadata result)
             {
                 taskCompletionSource.SetResult(result);
             }

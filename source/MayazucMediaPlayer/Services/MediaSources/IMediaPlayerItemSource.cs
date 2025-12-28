@@ -22,13 +22,13 @@ namespace MayazucMediaPlayer.Services.MediaSources
     {
         Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId);
 
-        Task<EmbeddedMetadataResult> GetMetadataAsync();
+        Task<EmbeddedMetadata> GetMetadataAsync();
 
         string Title { get; }
 
         Guid ID { get; }
 
-        event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         /// <summary>
         /// True if this source is persistent (normally files or internet streams). False for DLNA sources
@@ -69,7 +69,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public static IMediaPlayerItemSource Get(Uri uri)
         {
-            return new InternetStreamMediaPlayerItemSource(title: uri.Host, streamingAddress: uri.OriginalString, metadata: new EmbeddedMetadataResult(title: uri.Host, performer: string.Empty) );
+            return new InternetStreamMediaPlayerItemSource(title: uri.Host, streamingAddress: uri.OriginalString, metadata: new EmbeddedMetadata(title: uri.Host, performer: string.Empty) );
         }
 
         public static IMediaPlayerItemSource Get(PickedFileItem item)
@@ -102,7 +102,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
             mediaPlayerItemSource.MetadataChanged += MediaPlayerItemSource_MetadataChanged;
         }
 
-        private void MediaPlayerItemSource_MetadataChanged(object? sender, EmbeddedMetadataResult e)
+        private void MediaPlayerItemSource_MetadataChanged(object? sender, EmbeddedMetadata e)
         {
 
 

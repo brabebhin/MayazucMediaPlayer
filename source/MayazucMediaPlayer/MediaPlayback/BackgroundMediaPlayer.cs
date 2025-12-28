@@ -102,7 +102,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
-        private async void CurrentPlaybackData_MetadataChanged(object? sender, EmbeddedMetadataResult e)
+        private async void CurrentPlaybackData_MetadataChanged(object? sender, EmbeddedMetadata e)
         {
             await commandDispatcher.EnqueueAsync(async () =>
             {

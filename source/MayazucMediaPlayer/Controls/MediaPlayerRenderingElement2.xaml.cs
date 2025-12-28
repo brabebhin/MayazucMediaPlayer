@@ -45,7 +45,7 @@ namespace MayazucMediaPlayer.Controls
             public Size TargetSize { get; private set; } = TargetSize;
             public double VideoStreamAspectRatio { get; private set; } = VideoStreamAspectRatio;
         }
-
+        volatile bool disposed = false;
         readonly InputSystemCursor hiddenCursor = InputSystemCursor.Create(InputSystemCursorShape.Arrow);
         ThreadPoolTimer? _fullscreenCursorTimer;
         volatile bool isPointerOverTransportControls = false;
@@ -134,12 +134,13 @@ namespace MayazucMediaPlayer.Controls
 
         private async Task VideoRenderingLoop()
         {
-            while (true)
+            while (!disposed)
             {
                 try
                 {
                     PlayPauseSignal.Wait();
-                    await DrawVideoFrame(_mediaPlayer);
+                    if (!disposed)
+                        await DrawVideoFrame(_mediaPlayer);
                 }
                 catch
                 {
@@ -162,6 +163,7 @@ namespace MayazucMediaPlayer.Controls
 
         protected override void OnDispose(bool disposing)
         {
+            disposed = true;
             base.OnDispose(disposing);
             displayInformation.AdvancedColorInfoChanged -= DisplayInformation_AdvancedColorInfoChanged;
             displayInformation.Dispose();
@@ -225,7 +227,7 @@ namespace MayazucMediaPlayer.Controls
 
         private void CurrentPlaybackSession_PlaybackStateChanged(MediaPlayer sender, MediaPlaybackState state)
         {
-            DispatcherQueue.TryEnqueue((() =>
+            DispatcherQueue?.TryEnqueue((() =>
             {
                 if (state == MediaPlaybackState.Playing)
                 {

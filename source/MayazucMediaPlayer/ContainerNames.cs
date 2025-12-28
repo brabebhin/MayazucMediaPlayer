@@ -40,7 +40,7 @@
 
         internal static readonly string AudioBalance = "audiobalance";
 
-        internal static readonly string ResumePosition = "LastTrackResumePosition";
+        internal static readonly string ResumePosition = "LastTrackResumePosition2";
 
         internal static readonly string NetworkRole = "Role";
 

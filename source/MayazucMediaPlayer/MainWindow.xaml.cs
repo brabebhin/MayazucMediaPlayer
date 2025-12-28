@@ -178,12 +178,19 @@ namespace MayazucMediaPlayer
         }
 
         private void MainWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
-        {            
-            var children = WindowLayoutRoot.FindVisualChildrenDeep<Control>().Select(x => x as IDisposable);
-            foreach (var c in children)
+        {
+            args.Cancel = true;
+            GetAppWindowForCurrentWindow().Closing -= MainWindow_Closing;
+
+            DispatcherQueue.TryEnqueue(() =>
             {
-                c?.Dispose();
-            }
+                var children = WindowLayoutRoot.FindVisualChildrenDeep<Control>().Select(x => x as IDisposable).Where(x => x != null);
+                foreach (var c in children)
+                {
+                    c?.Dispose();
+                }
+                this.Close();
+            });
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)

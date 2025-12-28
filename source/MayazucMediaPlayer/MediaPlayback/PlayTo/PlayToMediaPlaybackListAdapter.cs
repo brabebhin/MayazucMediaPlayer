@@ -83,7 +83,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
             try
             {
 
-                var metadata = new EmbeddedMetadataResult(Source.Album, Source.Author, Source.Genre, Source.Title);
+                var metadata = new EmbeddedMetadata(Source.Album, Source.Author, Source.Genre, Source.Title);
                 var data = IMediaPlayerItemSourceFactory.Get(Source);
 
                 ffmpeginteropMss = await data.GetFFmpegMediaSourceAsync(WindowId);

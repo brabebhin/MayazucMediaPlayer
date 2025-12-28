@@ -2,12 +2,13 @@
 using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Settings;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.AudioEffects
@@ -31,8 +32,7 @@ namespace MayazucMediaPlayer.AudioEffects
             private set;
         }
 
-        readonly FrequencyDefinitionCollection _bands = new FrequencyDefinitionCollection();
-
+        FrequencyDefinitionCollection _bands = new FrequencyDefinitionCollection();
         public ReadOnlyCollection<FrequencyDefinition> Bands
         {
             get
@@ -41,11 +41,16 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
+
+        AudioEqualizerPresetCollection _presets = new AudioEqualizerPresetCollection();
         public AudioEqualizerPresetCollection Presets
         {
-            get;
-            set;
-        } = new AudioEqualizerPresetCollection();
+            get
+            {
+                return _presets;
+            }
+        }
+
 
         public bool CanDelete
         {
@@ -55,27 +60,49 @@ namespace MayazucMediaPlayer.AudioEffects
             }
         }
 
-        public EqualizerConfiguration(IEnumerable<FrequencyDefinition> bands,
-            IEnumerable<AudioEqualizerPreset> presets, string name)
+        private EqualizerConfiguration(EqualizerConfigurationSeed seed) : this(seed.Bands, seed.Presets, seed.Name)
+        {
+
+        }
+
+        public EqualizerConfiguration(
+            IEnumerable<FrequencyDefinition> bands,
+            IEnumerable<AudioEqualizerPreset> presets,
+            string name)
         {
             _bands.AddRange(bands.OrderBy(x => x.CutOffFrequency));
             if (presets != null)
-                Presets.AddRange(presets);
+                _presets.AddRange(presets);
             Name = name;
+            ParseConfiguration();
+        }
 
-            var defaultFreq = new int[Bands.Count];
-            for (int i = 0; i < defaultFreq.Length; i++)
-            {
-                defaultFreq[i] = 0;
-            }
-
-            foreach (var v in bands)
+        private void ParseConfiguration()
+        {
+            foreach (var v in Bands)
             {
                 FrequencyDisplays += v.CutOffFrequency + " ";
             }
 
             if (!Presets.Any(x => x.PresetName == DefaultPresetName))
-                Presets.Add(new AudioEqualizerPreset(DefaultPresetName, defaultFreq));
+            {
+                var defaultFreq = new int[Bands.Count];
+                for (int i = 0; i < defaultFreq.Length; i++)
+                {
+                    defaultFreq[i] = 0;
+                }
+                _presets.Add(new AudioEqualizerPreset(DefaultPresetName, defaultFreq));
+            }
+        }
+
+        private EqualizerConfigurationSeed ToSeed()
+        {
+            return new EqualizerConfigurationSeed()
+            {
+                Bands = this._bands,
+                Presets = this._presets,
+                Name = this.Name
+            };
         }
 
 
@@ -117,8 +144,8 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public void SetPresets(IEnumerable<AudioEqualizerPreset> p)
         {
-            Presets.Clear();
-            Presets.AddRange(p);
+            _presets.Clear();
+            _presets.AddRange(p);
             NotifyPropertyChanged(nameof(Presets));
         }
 
@@ -166,7 +193,9 @@ namespace MayazucMediaPlayer.AudioEffects
             var json = File.ReadAllText(storedFile.FullName);
             try
             {
-                return Result.Ok(JsonConvert.DeserializeObject<EqualizerConfiguration>(json));
+                var deserialized = JsonSerializer.Deserialize<EqualizerConfigurationSeed>(json, MayazucJsonSerializerContext.Default.EqualizerConfigurationSeed);
+
+                return Result.Ok(new EqualizerConfiguration(deserialized));
             }
             catch
             {
@@ -179,7 +208,7 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             var saveFolder = Directory.CreateDirectory(LocalFolders.EqualizerConfigurationsPayloadFolderPath());
             var filePath = Path.Combine(saveFolder.FullName, Name + ".json");
-            var json = JsonConvert.SerializeObject(this);
+            var json = JsonSerializer.Serialize(this.ToSeed(), MayazucJsonSerializerContext.Default.EqualizerConfigurationSeed);
             File.WriteAllText(filePath, json);
             Changed?.Invoke(this, new EventArgs());
         }
@@ -191,6 +220,30 @@ namespace MayazucMediaPlayer.AudioEffects
             var fileInfo = new FileInfo(filePath);
             if (fileInfo.Exists)
                 fileInfo.Delete();
+        }
+
+        /// <summary>
+        /// payload for transmiting Equalizer configurations
+        /// </summary>
+        public class EqualizerConfigurationSeed
+        {
+            public string Name
+            {
+                get;
+                set;
+            } = string.Empty;
+
+            public FrequencyDefinitionCollection Bands
+            {
+                get;
+                set;
+            } = new FrequencyDefinitionCollection();
+
+            public AudioEqualizerPresetCollection Presets
+            {
+                get;
+                set;
+            } = new AudioEqualizerPresetCollection();
         }
     }
 }

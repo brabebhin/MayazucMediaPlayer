@@ -20,7 +20,7 @@ namespace MayazucMediaPlayer.Services
     /// </summary>
     public partial class MediaPlayerItemSourceUIWrapper : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
-        private Task<EmbeddedMetadataResult> metadataTask;
+        private Task<EmbeddedMetadata> metadataTask;
 
         [NotNull]
         public IMediaPlayerItemSource MediaData
@@ -64,7 +64,7 @@ namespace MayazucMediaPlayer.Services
 
         public Guid ItemID => MediaData.ID;
 
-        public EmbeddedMetadataResult Metadata
+        public EmbeddedMetadata Metadata
         {
             get
             {
@@ -79,7 +79,7 @@ namespace MayazucMediaPlayer.Services
         public bool SupportsMetadata => true;
 
         public event EventHandler<FileInfo> ImageFileChanged;
-        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         public Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>> GetMediaDataSourcesAsync()
         {
@@ -93,7 +93,7 @@ namespace MayazucMediaPlayer.Services
             mds.MetadataChanged += Mds_MetadataChanged;
         }
 
-        private async void Mds_MetadataChanged(object? sender, EmbeddedMetadataResult e)
+        private async void Mds_MetadataChanged(object? sender, EmbeddedMetadata e)
         {
             await Checkmetadata();
         }

@@ -1,78 +1,62 @@
 ﻿using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.LocalCache;
-using Newtonsoft.Json;
 using Nito.AsyncEx;
 using System;
 using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Timers;
+using Windows.Storage;
 
 namespace MayazucMediaPlayer.Settings
 {
     public partial class SettingsStoreService
     {
-        private AsyncLock lockObject = new AsyncLock();
-        ApplicationSettingsContainer Containers { get; set; } = new ApplicationSettingsContainer();
-        Timer autoSaveTimer = new Timer();
+        public static AsyncLock lockObject = new AsyncLock();
 
-        public SettingsStoreService(string path = null)
-        {
-            LoadSettings(path);
-            autoSaveTimer.Elapsed += AutoSaveTimer_Elapsed;
-            autoSaveTimer.AutoReset = false;
-            autoSaveTimer.Stop();
-        }
-
-        private void AutoSaveTimer_Elapsed(object? sender, ElapsedEventArgs e)
-        {
-            SaveSettings();
-        }
-
-        public T GetValueOrDefault<T>(string container, string key, T defaultValue)
+        public static T GetValueOrDefault<T>(string container, string key, T defaultValue)
         {
             using (lockObject.Lock())
             {
-                var localSettings = Containers;
+                var localSettings = ApplicationData.Current.LocalSettings;
                 EnsureDefault(container, key, defaultValue);
-                return (T)localSettings[container][key];
+                return (T)localSettings.Containers[container].Values[key];
             }
         }
 
-        public void SetValueOrDefault<T>(string container, string key, T defaultValue, T value)
+        public static void SetValueOrDefault<T>(string container, string key, T defaultValue, T value)
         {
             using (lockObject.Lock())
             {
-                var localSettings = Containers;
+                var localSettings = ApplicationData.Current.LocalSettings;
                 EnsureDefault(container, key, defaultValue);
-                if (!localSettings[container].ContainsKey(key))
+                if (!localSettings.Containers[container].Values.ContainsKey(key))
                 {
-                    localSettings[container].Add(key, value);
+                    localSettings.Containers[container].Values.Add(key, value);
                 }
                 else
                 {
-                    localSettings[container][key] = value;
+                    localSettings.Containers[container].Values[key] = value;
                 }
-
-                StartAutoSaveTimer();
             }
         }
 
-        private void StartAutoSaveTimer()
+        public static bool SettingsExists(string container, string key)
         {
-            autoSaveTimer.Stop();
-            autoSaveTimer.Interval = Random.Shared.Next(3000, 5000);
-            autoSaveTimer.Start();
-        }
-
-        public bool SettingsExists(string container, string key)
-        {
-            var localSettings = Containers;
-            if (localSettings.ContainsKey(container))
+            var localSettings = ApplicationData.Current.LocalSettings;
+            if (localSettings.Containers.ContainsKey(container))
             {
-                var containerInstance = localSettings[container];
-                return containerInstance.ContainsKey(key);
+                var containerInstance = localSettings.Containers[container];
+                if (containerInstance.Values.ContainsKey(key))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -80,60 +64,22 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        public void EnsureDefault<T>(string container, string key, T defaultValue)
+        public static void EnsureDefault<T>(string container, string key, T defaultValue)
         {
-            if (!Containers.ContainsKey(container))
+            ApplicationDataContainer containerValue = null;
+            if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(container))
             {
-                var valueContainer = new ApplicationSettingsContainerValue
-                {
-                    { key, defaultValue }
-                };
-                Containers.Add(container, valueContainer);
+                containerValue = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
+                containerValue.Values.Add(new KeyValuePair<string, object>(key, defaultValue));
             }
             else
             {
-                var valueContainer = Containers[container];
-                valueContainer.TryAdd(key, defaultValue);
-            }
-        }
-
-        public partial class ApplicationSettingsContainer : Dictionary<string, ApplicationSettingsContainerValue>
-        {
-
-        }
-
-        public partial class ApplicationSettingsContainerValue : Dictionary<string, dynamic>
-        {
-
-        }
-
-        public void SaveSettings(string path = null)
-        {
-            using (lockObject.Lock())
-            {
-                if (path == null)
+                if (ApplicationData.Current.LocalSettings.Containers[container].Values.Keys.Contains(key) == false)
                 {
-                    path = LocalFolders.GetDefaultSettingsFilePath().FullName;
+                    ApplicationData.Current.LocalSettings.Containers[container].Values.Add(new KeyValuePair<string, object>(key, defaultValue));
                 }
-
-                var data = JsonConvert.SerializeObject(Containers);
-                File.WriteAllText(path, data);
-            }
-        }
-
-        private void LoadSettings(string path = null)
-        {
-            if (path == null)
-            {
-                path = LocalFolders.GetDefaultSettingsFilePath().FullName;
-            }
-
-            var data = File.ReadAllText(path);
-            Containers = JsonExtensions.PreferInt32DeserializeObject<ApplicationSettingsContainer>(data);
-            if (Containers == null)
-            {
-                Containers = new ApplicationSettingsContainer();
             }
         }
     }
 }
+

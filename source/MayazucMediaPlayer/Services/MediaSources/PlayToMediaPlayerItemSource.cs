@@ -20,9 +20,9 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public SourceChangeRequestedEventArgs PlayToSourceEvent { get; private set; }
 
-        private EmbeddedMetadataResult Metadata { get; set; }
+        private EmbeddedMetadata Metadata { get; set; }
 
-        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId)
         {
@@ -49,7 +49,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public bool SupportsChapters => false;
 
-        public Task<EmbeddedMetadataResult> GetMetadataAsync()
+        public Task<EmbeddedMetadata> GetMetadataAsync()
         {
             return Task.FromResult(Metadata);
         }
@@ -92,7 +92,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
             PlayToSourceEvent = playToSourceEvent;
             ItemBuilder = new PlayToMediaPlaybackItemBuilder();
             Title = $"cast://{PlayToSourceEvent.Title}";
-            Metadata = new EmbeddedMetadataResult(PlayToSourceEvent.Album, PlayToSourceEvent.Author, PlayToSourceEvent.Genre, PlayToSourceEvent.Title);
+            Metadata = new EmbeddedMetadata(PlayToSourceEvent.Album, PlayToSourceEvent.Author, PlayToSourceEvent.Genre, PlayToSourceEvent.Title);
         }
 
         public override string ToString()

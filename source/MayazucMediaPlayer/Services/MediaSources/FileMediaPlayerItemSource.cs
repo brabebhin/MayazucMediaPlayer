@@ -21,7 +21,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public Guid ID { get; private set; }
 
-        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId)
         {
@@ -42,14 +42,14 @@ namespace MayazucMediaPlayer.Services.MediaSources
             return null;
         }
 
-        public Task<EmbeddedMetadataResult> GetMetadataAsync()
+        public Task<EmbeddedMetadata> GetMetadataAsync()
         {
             return MetadataTask;
         }
 
         public PickedFileItem PickedFile { get; private set; }
 
-        private Task<EmbeddedMetadataResult> MetadataTask { get; set; }
+        private Task<EmbeddedMetadata> MetadataTask { get; set; }
 
         public bool Persistent => true;
 
@@ -62,7 +62,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
             Title = pickedItem.File.Name;
         }
 
-        private void PickedItem_MetadataChanged(object? sender, EmbeddedMetadataResult e)
+        private void PickedItem_MetadataChanged(object? sender, EmbeddedMetadata e)
         {
             MetadataTask = Task.FromResult(e);
             MetadataChanged?.Invoke(this, e);

@@ -1,10 +1,11 @@
 ﻿using MayazucMediaPlayer.LocalCache;
+using MayazucMediaPlayer.MediaCollections;
+using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Users;
 using MovieCollection.OpenSubtitles;
 using MovieCollection.OpenSubtitles.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -204,111 +206,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
 
             return returnValue.AsReadOnly();
         }
-
-        private class LoginRequest
-        {
-            [JsonProperty("username")]
-            public string? Username { get; set; }
-
-            [JsonProperty("password")]
-            public string? Password { get; set; }
-        }
-
-        private class LoginResponse
-        {
-            [JsonProperty("user")]
-            public User? UserInfo { get; set; }
-
-            [JsonProperty("token")]
-            public string? Token { get; set; }
-
-            [JsonProperty("status")]
-            public int Status { get; set; }
-        }
-
-        private class User
-        {
-            [JsonProperty("allowed_downloads")]
-            public int AllowedDownloads { get; set; }
-
-            [JsonProperty("level")]
-            public string? Level { get; set; }
-
-            [JsonProperty("user_id")]
-            public int UserId { get; set; }
-
-            [JsonProperty("vip")]
-            public bool Vip { get; set; }
-        }
-
-        private class SubtitleSearchResponse
-        {
-            [JsonProperty("total_count")]
-            public int Count { get; set; }
-
-            [JsonProperty("data")]
-            public SubtitleDataProperty[]? Data { get; set; }
-        }
-
-        private class SubtitleDataProperty
-        {
-            [JsonProperty("type")]
-            public string? Type { get; set; }
-
-            [JsonProperty("attributes")]
-            public SubtitleDataAttribute? Attributes { get; set; }
-
-            [JsonProperty("id")]
-            public string? Id { get; set; }
-        }
-
-        private class SubtitleDataAttribute
-        {
-            [JsonProperty("subtitle_id")]
-            public string? SubtitleId { get; set; }
-
-            [JsonProperty("language")]
-            public string? Lanugage { get; set; }
-
-            [JsonProperty("format")]
-            public string? Format { get; set; }
-
-            [JsonProperty("url")]
-            public string? Url { get; set; }
-
-
-            [JsonProperty("points")]
-            public int Points { get; set; }
-
-
-            [JsonProperty("files")]
-            public SubtitleDataAttributeFiles[]? Files { get; set; }
-        }
-
-        private class SubtitleDataAttributeFiles
-        {
-            [JsonProperty("file_id")]
-            public string? FileId { get; set; }
-
-            [JsonProperty("cd_number")]
-            public int CdNumber { get; set; }
-
-            [JsonProperty("file_name")]
-            public string? FileName { get; set; }
-        }
-
-        private class SubtitleDownloadRequest
-        {
-            [JsonProperty("file_id")]
-            public string? FileId { get; set; }
-        }
-
-        private class SubtitleDownloadResponse
-        {
-            [JsonProperty("link")]
-            public string? Link { get; set; }
-        }
-
+        
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

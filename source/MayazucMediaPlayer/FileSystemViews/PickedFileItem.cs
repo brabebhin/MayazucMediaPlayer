@@ -65,9 +65,9 @@ namespace MayazucMediaPlayer.FileSystemViews
 
     public partial class PickedFileItem : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
-        public EmbeddedMetadataResult Metadata { get; private set; }
+        public EmbeddedMetadata Metadata { get; private set; }
 
-        public event EventHandler<EmbeddedMetadataResult?> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata?> MetadataChanged;
         public event EventHandler<FileInfo?> ImageFileChanged;
         private readonly Task MetadataInitializationTask;
 
@@ -239,7 +239,7 @@ namespace MayazucMediaPlayer.FileSystemViews
             private set;
         }
 
-        public EmbeddedMetadataResult Metadata
+        public EmbeddedMetadata Metadata
         {
             get;
             private set;
@@ -254,9 +254,9 @@ namespace MayazucMediaPlayer.FileSystemViews
         public bool SupportsMetadata => false;
 
         public event EventHandler<FileInfo> ImageFileChanged;
-        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata> MetadataChanged;
 
-        public InternetStreamMediaPlayerItemSourceProvder(string path, string title, EmbeddedMetadataResult metadata)
+        public InternetStreamMediaPlayerItemSourceProvder(string path, string title, EmbeddedMetadata metadata)
         {
             Path = path;
             DisplayName = title;

@@ -291,7 +291,7 @@ namespace MayazucMediaPlayer.Playlists
     public partial class PlayListItemMediaSourceProvider : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         private readonly IMediaPlayerItemSource data;
-        private readonly Task<EmbeddedMetadataResult> metadataTask;
+        private readonly Task<EmbeddedMetadata> metadataTask;
 
         public string DisplayName => data.Title;
 
@@ -307,7 +307,7 @@ namespace MayazucMediaPlayer.Playlists
 
         public Guid ItemID => data.ID;
 
-        public EmbeddedMetadataResult Metadata
+        public EmbeddedMetadata Metadata
         {
             get
             {
@@ -322,7 +322,7 @@ namespace MayazucMediaPlayer.Playlists
         public bool SupportsMetadata => true;
 
         public event EventHandler<FileInfo> ImageFileChanged;
-        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         public Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>> GetMediaDataSourcesAsync()
         {

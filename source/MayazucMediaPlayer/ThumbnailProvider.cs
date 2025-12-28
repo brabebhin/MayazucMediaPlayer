@@ -11,7 +11,7 @@ namespace MayazucMediaPlayer
         {
             var folderToSaveThumbnailIn = await LocalFolders.GetAlbumArtFolder();
 
-            var albumArtFile = Utilities.GetRandomFileNameWithoutExtension(inputFile.FullName);
+            var albumArtFile = Utilities.EncodePathWithoutExtension(inputFile.FullName);
             List<string> returnValue = new List<string>();
 
             foreach (var ext in SupportedFileFormats.SupportedAlbumArtPictureFormats)

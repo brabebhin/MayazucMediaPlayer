@@ -20,12 +20,12 @@ namespace MayazucMediaPlayer.FileSystemViews
         string DisplayName { get; }
         string ImageUri { get; }
         Guid ItemID { get; }
-        EmbeddedMetadataResult Metadata { get; }
+        EmbeddedMetadata Metadata { get; }
         string Path { get; }
         bool SupportsMetadata { get; }
 
         event EventHandler<FileInfo> ImageFileChanged;
-        event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         Task<Result<ReadOnlyCollection<IMediaPlayerItemSource>>> GetMediaDataSourcesAsync();
 

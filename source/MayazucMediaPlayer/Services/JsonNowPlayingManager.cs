@@ -1,9 +1,9 @@
 ﻿using MayazucMediaPlayer.Services.MediaSources;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 namespace MayazucMediaPlayer.Services
 {
@@ -36,7 +36,7 @@ namespace MayazucMediaPlayer.Services
 
         public void CreateNewPlaybackQueue(IEnumerable<IMediaPlayerItemSource> ToAdd)
         {
-            var json = JsonConvert.SerializeObject(ToAdd.Select(x => x.MediaPath));
+            var json = JsonSerializer.Serialize(ToAdd.Select(x => x.MediaPath).ToList(), MayazucJsonSerializerContext.Default.ListString);
             File.WriteAllText(BackStoreFile, json);
             NewPlaybackQueue?.Invoke(this, new List<IMediaPlayerItemSource>(ToAdd));
         }
@@ -52,7 +52,7 @@ namespace MayazucMediaPlayer.Services
             try
             {
                 var json = File.ReadAllText(BackStoreFile);
-                var data = JsonConvert.DeserializeObject<List<string>>(json);
+                var data = JsonSerializer.Deserialize(json, MayazucJsonSerializerContext.Default.ListString);
                 if (data == null) return new List<IMediaPlayerItemSource>().AsReadOnly();
                 return data.Select(x => IMediaPlayerItemSourceFactory.Get(x)).ToList().AsReadOnly();
             }

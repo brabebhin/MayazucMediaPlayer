@@ -100,5 +100,10 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             return HashCode.Combine(FrequencyValues, PresetName);
         }
+
+        public override string ToString()
+        {
+            return PresetName;
+        }
     }
 }

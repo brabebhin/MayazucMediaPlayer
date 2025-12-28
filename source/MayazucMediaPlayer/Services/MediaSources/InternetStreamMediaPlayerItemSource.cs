@@ -17,11 +17,11 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public string StreamingAddress { get; private set; }
 
-        private EmbeddedMetadataResult Metadata { get; set; }
+        private EmbeddedMetadata Metadata { get; set; }
 
         public bool Persistent => true;
 
-        public event EventHandler<EmbeddedMetadataResult> MetadataChanged;
+        public event EventHandler<EmbeddedMetadata> MetadataChanged;
 
         public async Task<FFmpegMediaSource> GetFFmpegMediaSourceAsync(ulong windowId)
         {
@@ -37,7 +37,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
             return null;
         }
 
-        public Task<EmbeddedMetadataResult> GetMetadataAsync()
+        public Task<EmbeddedMetadata> GetMetadataAsync()
         {
             return Task.FromResult(Metadata);
         }
@@ -72,7 +72,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
             return Task.FromResult(new SubtitleRequest(false, string.Empty, string.Empty));
         }
 
-        public InternetStreamMediaPlayerItemSource(string title, string streamingAddress, EmbeddedMetadataResult metadata)
+        public InternetStreamMediaPlayerItemSource(string title, string streamingAddress, EmbeddedMetadata metadata)
         {
             Title = title;
             StreamingAddress = streamingAddress;

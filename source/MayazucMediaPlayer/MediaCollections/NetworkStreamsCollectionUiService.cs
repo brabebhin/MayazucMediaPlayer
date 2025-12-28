@@ -1,15 +1,16 @@
-﻿using MayazucMediaPlayer.Services;
+﻿using CommunityToolkit.Mvvm.Input;
+using MayazucMediaPlayer.Services;
+using MayazucMediaPlayer.Services.MediaSources;
 using Microsoft.UI.Dispatching;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using MayazucMediaPlayer.Services.MediaSources;
-using CommunityToolkit.Mvvm.Input;
+using System.Linq;
 using System.Security.Policy;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.MediaCollections
 {
@@ -67,12 +68,15 @@ namespace MayazucMediaPlayer.MediaCollections
             NetworkStreamsHistory.Clear();
             var historyFile = await LocalCache.LocalFolders.GetInternetStreamsHistoryFile();
             var json = await File.ReadAllTextAsync(historyFile.FullName);
-            var entries = JsonConvert.DeserializeObject<List<NetworkStreamHistoryEntry>>(json);
-            if (entries != null)
+            if (!string.IsNullOrWhiteSpace(json))
             {
-                foreach (var entry in entries)
+                var entries = JsonSerializer.Deserialize<List<NetworkStreamHistoryEntry>>(json, MayazucJsonSerializerContext.Default.ListNetworkStreamHistoryEntry);
+                if (entries != null)
                 {
-                    NetworkStreamsHistory.Add(entry);
+                    foreach (var entry in entries)
+                    {
+                        NetworkStreamsHistory.Add(entry);
+                    }
                 }
             }
         }
@@ -81,7 +85,7 @@ namespace MayazucMediaPlayer.MediaCollections
         {
             var historyFile = await LocalCache.LocalFolders.GetInternetStreamsHistoryFile();
 
-            var json = JsonConvert.SerializeObject(NetworkStreamsHistory.OrderByDescending(x => x.Time).Take(HistorySize).ToList());
+            var json = JsonSerializer.Serialize(NetworkStreamsHistory.OrderByDescending(x => x.Time).Take(HistorySize).ToList(), MayazucJsonSerializerContext.Default.ListNetworkStreamHistoryEntry);
             await File.WriteAllTextAsync(historyFile.FullName, json);
         }
 
