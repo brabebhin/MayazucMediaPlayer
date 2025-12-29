@@ -12,10 +12,7 @@ namespace MayazucMediaPlayer
         /// <returns></returns>
         public static void ShowSuccessDialog()
         {
-            if (SettingsService.Instance.ShowConfirmationMessages)
-            {
-                NotificationRequest?.Invoke(null, new PopupRequestData("Success"));
-            }
+            NotificationRequest?.Invoke(null, new PopupRequestData("Success"));
         }
 
         /// <summary>
@@ -26,10 +23,7 @@ namespace MayazucMediaPlayer
         /// <returns></returns>
         public static void ShowInfoMessage(string content, string title)
         {
-            if (SettingsService.Instance.ShowConfirmationMessages)
-            {
-                NotificationRequest?.Invoke(null, new PopupRequestData(title, content));
-            }
+            NotificationRequest?.Invoke(null, new PopupRequestData(title, content));
         }
         /// <summary>
         /// always show the message dialog regardless of settings
@@ -39,10 +33,7 @@ namespace MayazucMediaPlayer
         /// <returns></returns>
         public static void ShowInfoMessage(string content)
         {
-            if (SettingsService.Instance.ShowConfirmationMessages)
-            {
-                NotificationRequest?.Invoke(null, new PopupRequestData(content));
-            }
+            NotificationRequest?.Invoke(null, new PopupRequestData(content));
         }
     }
 

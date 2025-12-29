@@ -27,7 +27,6 @@ namespace MayazucMediaPlayer.Settings
             List<SettingsItemGroup> groups = new List<SettingsItemGroup>
             {
                 ContextualSettings.GetUISettings(),
-                ContextualSettings.FilePickerPageSettings(),
                 ContextualSettings.GetPlaybackControlSettings(),
                 ContextualSettings.GetSubtitleSettings(),
 

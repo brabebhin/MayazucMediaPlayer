@@ -12,39 +12,6 @@ namespace MayazucMediaPlayer.Settings
 {
     public static class ContextualSettings
     {
-        public static SettingsItemGroup FilePickerPageSettings()
-        {
-            var Title = "Files + Folders";
-            SettingsItemGroup items = new SettingsItemGroup(groupImage: FontIconPaths.metadataFolderCovers, groupName: Title);
-
-            items.Add(new VerbatimTextBlock()
-            {
-                TextDescription = "Automatically clear the file picker view when queuing files"
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoClearFilePicker),
-                (value) => { SettingsService.Instance.AutoClearFilePicker = (bool)value; },
-                () => { return SettingsService.Instance.AutoClearFilePicker; })
-            {
-                Description = "Auto clear file selection view",
-            });
-
-            items.Add(new VerbatimTextBlock()
-            {
-                TextDescription = "Use only cached album art in file + folder, music and video pages. Disabling this option may reduce performance."
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.OnlyUseCacheInFilePicker),
-                (value) => { SettingsService.Instance.OnlyUseCacheInFilePicker = (bool)value; },
-                () => { return SettingsService.Instance.OnlyUseCacheInFilePicker; })
-            {
-                Description = "Only use album art cache for files views",
-            });
-
-
-            return items;
-        }
-
         public static SettingsItemGroup GetAutoPlaySettings()
         {
             var Title = "Auto play";
@@ -96,41 +63,8 @@ namespace MayazucMediaPlayer.Settings
                 {
                     TimePickerDescription = "Stop media time stamp"
                 },
-               
-                new VerbatimTextBlock()
-                {
-                    TextDescription = "Configure the behaviour of taps & clicks on the playback area of the now playing view"
-                },
 
-                new ComboboxWithHeader(nameof(SettingsService.Instance.PlaybackTapGestureModeRaw),
-                (value)=>{SettingsService.Instance.PlaybackTapGestureModeRaw = (int)value; },
-                ()=>{return SettingsService.Instance.PlaybackTapGestureModeRaw; },
-                "Always", "Never", "Fullscreen only", "Normal view only")
-                {
-                    ComboboxHeader = "Tap to play/resume playback",
-                },
-
-                new VerbatimTextBlock()
-                {
-                    TextDescription = "Prevent seek bar interactions from resuming playback if the player is paused"
-                },
-
-
-                new CheckBoxItem( nameof(SettingsService.Instance.StartPlaybackAfterSeek),
-                (value) => { SettingsService.Instance.StartPlaybackAfterSeek =(bool) value; },
-                () => { return SettingsService.Instance.StartPlaybackAfterSeek; })
-                {
-                    Description = "Automatically start / resume playback when seeking",
-                },
-
-
-                new CheckBoxItem(nameof(SettingsService.Instance.KeepPlaybackRateBetweenTracks),
-                (value) => { SettingsService.Instance.KeepPlaybackRateBetweenTracks =(bool) value; },
-                () => { return SettingsService.Instance.KeepPlaybackRateBetweenTracks; })
-                {
-                    Description = "Maintain playback rate when changing tracks",
-                },
-
+              
                 new CheckBoxItem(nameof(SettingsService.Instance.PlayToEnabled),
                 (value) => { SettingsService.Instance.PlayToEnabled =(bool) value; },
                 () => { return SettingsService.Instance.PlayToEnabled; })
@@ -258,13 +192,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 ComboboxHeader = "UI theme. Requires restart to take full effect",
             });
-
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.ShowConfirmationMessages), (value) => { SettingsService.Instance.ShowConfirmationMessages = (bool)value; }, () => { return SettingsService.Instance.ShowConfirmationMessages; })
-            {
-                Description = "Show confirmation messages for some common operations. Error messages will still show even if this setting is disabled"
-            });
-
+                                    
             return items;
         }
 
@@ -280,27 +208,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 ComboboxHeader = "Video decoder mode"
             });
-
-            items.Add(new VerbatimTextBlock()
-            {
-                TextDescription = "Modifying the settings below may improve performance and quality for some files when using software decoder."
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.VideoOutputAllowIyuv), (value) => { SettingsService.Instance.VideoOutputAllowIyuv = (bool)value; }, () => { return SettingsService.Instance.VideoOutputAllowIyuv; })
-            {
-                Description = "Allow IYUV software decoder output",
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.VideoOutputAllow10bit), (value) => { SettingsService.Instance.VideoOutputAllow10bit = (bool)value; }, () => { return SettingsService.Instance.VideoOutputAllow10bit; })
-            {
-                Description = "Allow 10bit software decoder output",
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.VideoOutputAllowBgra8), (value) => { SettingsService.Instance.VideoOutputAllowBgra8 = (bool)value; }, () => { return SettingsService.Instance.VideoOutputAllowBgra8; })
-            {
-                Description = "Allow BGRA8 software decoder output",
-            });
-
+                        
             items.Add(new CheckBoxItem(nameof(SettingsService.Instance.StereoDownMix), (value) => { SettingsService.Instance.StereoDownMix = (bool)value; }, () => { return SettingsService.Instance.StereoDownMix; })
             {
                 Description = "Stereo downmix",
@@ -337,7 +245,6 @@ namespace MayazucMediaPlayer.Settings
             items.Add(new ContentSettingsItem(new AdvancedTrackMetadataSettingsControl()));
             return items;
         }
-
 
         public static SettingsItemGroup GetEqualizerManagamenetGroup()
         {

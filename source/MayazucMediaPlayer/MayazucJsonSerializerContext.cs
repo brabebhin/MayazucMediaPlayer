@@ -17,6 +17,7 @@ namespace MayazucMediaPlayer
     [JsonSerializable(typeof(EmbeddedMetadataSeed))]
     [JsonSerializable(typeof(List<string>))]
     [JsonSerializable(typeof(Dictionary<string, double>))]
+    [JsonSerializable(typeof(Dictionary<string, string>))]
     public partial class MayazucJsonSerializerContext : JsonSerializerContext
     {
     }

@@ -196,7 +196,6 @@ namespace MayazucMediaPlayer.FileSystemViews
                     }
                 });
 
-                var cacheOnlyAa = SettingsService.Instance.OnlyUseCacheInFilePicker;
                 files.AddRange(validItems);
 
                 await OnContentAdded(validItems.AsReadOnly());

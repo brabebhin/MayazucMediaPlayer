@@ -4,7 +4,9 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Media;
+using Nito.AsyncEx;
 using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Gaming.Input;
 using Windows.Media.Core;
@@ -722,6 +725,23 @@ namespace MayazucMediaPlayer
             }
 
             return actualIndex;
+        }
+    }
+
+    public static class AsyncLockExtensions
+    {
+        public static IDisposable LockWithTimeout(this AsyncLock asyncLock)
+        {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(30000);
+            return asyncLock.Lock(cancellationTokenSource.Token);
+        }
+
+        public static Task<IDisposable> LockWithTimeoutAsync(this AsyncLock asyncLock)
+        {
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(30000);
+            return asyncLock.LockAsync(cancellationTokenSource.Token);
         }
     }
 }

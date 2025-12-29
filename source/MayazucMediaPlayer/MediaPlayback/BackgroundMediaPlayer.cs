@@ -430,7 +430,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                 if (CanSeekToPosition(position, CurrentPlaybackItem))
                 {
-                    bool autoPlayAfterSeek = SettingsService.Instance.StartPlaybackAfterSeek;
+                    bool autoPlayAfterSeek = CurrentPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing;
                     await AwaitForSeek(position);
                     if (autoPlayAfterSeek)
                     {
@@ -796,10 +796,6 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         private async Task HandleMediaOpened(MediaPlayer sender, MayazucCurrentMediaPlaybackItemChangedEventArgs args)
         {
-            if (!SettingsService.Instance.KeepPlaybackRateBetweenTracks && CurrentPlayer.PlaybackSession != null)
-            {
-                CurrentPlayer.PlaybackSession.PlaybackRate = 1;
-            }
             var newItem = args.NewItem;
             if (newItem != null)
             {

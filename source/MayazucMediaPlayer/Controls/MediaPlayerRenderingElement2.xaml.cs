@@ -558,25 +558,5 @@ namespace MayazucMediaPlayer.Controls
         {
             e.Handled = true;
         }
-
-        private async void HandlePlaybackAreaOverlayCommands(object sender, TappedRoutedEventArgs e)
-        {
-            bool canHandle = false;
-            switch (SettingsService.Instance.PlaybackTapGestureMode)
-            {
-                case PlaybackTapGestureMode.Always:
-                    canHandle = true;
-                    break;
-                case PlaybackTapGestureMode.NormalViewOnly:
-                    canHandle = !MainWindowingService.Instance.IsInFullScreenMode();
-                    break;
-                case PlaybackTapGestureMode.FullScreenOnly:
-                    canHandle = MainWindowingService.Instance.IsInFullScreenMode();
-                    break;
-            }
-
-            if (canHandle)
-                await AppState.Current.MediaServiceConnector.PlayPauseAutoSwitch();
-        }
     }
 }

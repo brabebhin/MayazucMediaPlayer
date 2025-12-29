@@ -107,9 +107,9 @@ namespace MayazucMediaPlayer.MediaPlayback
         {
             MediaSourceConfig config = new MediaSourceConfig();
 
-            config.Video.VideoOutputAllow10bit = SettingsService.Instance.VideoOutputAllow10bit;
-            config.Video.VideoOutputAllowBgra8 = SettingsService.Instance.VideoOutputAllowBgra8;
-            config.Video.VideoOutputAllowIyuv = SettingsService.Instance.VideoOutputAllowIyuv;
+            config.Video.VideoOutputAllow10bit = false;
+            config.Video.VideoOutputAllowBgra8 = false;
+            config.Video.VideoOutputAllowIyuv = false;
             config.General.FastSeek = true;
             config.Subtitles.UseLibassAsSubtitleRenderer = false;
             config.General.MaxSupportedPlaybackRate = 4;

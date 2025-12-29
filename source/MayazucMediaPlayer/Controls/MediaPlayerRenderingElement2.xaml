@@ -9,7 +9,6 @@
     xmlns:xaml="using:Microsoft.Graphics.Canvas.UI.Xaml" xmlns:nowplayingviews="using:MayazucMediaPlayer.NowPlayingViews" xmlns:navigation="using:MayazucMediaPlayer.Navigation"
     mc:Ignorable="d"
     IsDoubleTapEnabled="True"
-    Tapped="HandlePlaybackAreaOverlayCommands"
     DoubleTapped="GoFullScreen_doubleTapped">
 
     <Grid>

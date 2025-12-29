@@ -835,12 +835,9 @@ namespace MayazucMediaPlayer.Controls
 
         private async Task ClearListWithUserOptions()
         {
-            if (SettingsService.Instance.AutoClearFilePicker)
+            using (await _activationLock.LockAsync())
             {
-                using (await _activationLock.LockAsync())
-                {
-                    Items.Clear();
-                }
+                Items.Clear();
             }
         }
 

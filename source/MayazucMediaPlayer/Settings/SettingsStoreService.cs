@@ -1,13 +1,8 @@
-﻿using MayazucMediaPlayer.Common;
-using MayazucMediaPlayer.LocalCache;
-using Nito.AsyncEx;
+﻿using MayazucMediaPlayer.LocalCache;
 using System;
-using System.CodeDom;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Timers;
 using Windows.Storage;
 
 namespace MayazucMediaPlayer.Settings
@@ -15,79 +10,123 @@ namespace MayazucMediaPlayer.Settings
     public partial class SettingsStoreService
     {
         private static AsyncLockManager lockManager = new AsyncLockManager();
-        private const string SettingsContainer = "settings";
+        private const string SettingsKey = "settings";
 
-        public static T GetValueOrDefault<T>(string key, T defaultValue)
+        Dictionary<string, string> settings = new Dictionary<string, string>();
+
+        public SettingsStoreService()
+        {
+            LoadSettings();
+        }
+
+        public void SaveSettings()
+        {
+            var json = JsonSerializer.Serialize(settings, MayazucJsonSerializerContext.Default.DictionaryStringString);
+            File.WriteAllText(LocalFolders.GetDefaultSettingsFilePath().FullName, json);
+        }
+
+        public void LoadSettings()
         {
             try
             {
-                using (lockManager.GetLock($"{SettingsContainer}.{key}").Lock())
-                {
-                    var localSettings = ApplicationData.Current.LocalSettings;
-                    EnsureDefault(key, defaultValue);
-                    return (T)localSettings.Containers[SettingsContainer].Values[key];
-                }
+                var json = File.ReadAllText(LocalFolders.GetDefaultSettingsFilePath().FullName);
+                settings = JsonSerializer.Deserialize(json, MayazucJsonSerializerContext.Default.DictionaryStringString);
             }
             catch
             {
-                // usually a parser error
-                EnsureDefault(key, defaultValue);
-                return defaultValue;
+                settings = new Dictionary<string, string>();
             }
         }
 
-        public static void SetValueOrDefault<T>(string key, T defaultValue, T value)
+        public int IntGetValueOrDefault(string key, int defaultValue)
         {
-            using (lockManager.GetLock($"{SettingsContainer}.{key}").Lock())
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
             {
-                var localSettings = ApplicationData.Current.LocalSettings;
-                EnsureDefault(key, defaultValue);
-                if (!localSettings.Containers[SettingsContainer].Values.ContainsKey(key))
+                if (!settings.ContainsKey(key))
                 {
-                    localSettings.Containers[SettingsContainer].Values.Add(key, value);
+                    settings.Add(key, defaultValue.ToString());
                 }
-                else
-                {
-                    localSettings.Containers[SettingsContainer].Values[key] = value;
-                }
+                return int.Parse(settings[key]);
             }
         }
 
-        private static bool SettingsExists(string key)
+        public long LongGetValueOrDefault(string key, long defaultValue)
         {
-            var localSettings = ApplicationData.Current.LocalSettings;
-            if (localSettings.Containers.ContainsKey(SettingsContainer))
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
             {
-                var containerInstance = localSettings.Containers[SettingsContainer];
-                if (containerInstance.Values.ContainsKey(key))
+                if (!settings.ContainsKey(key))
                 {
-                    return true;
+                    settings.Add(key, defaultValue.ToString());
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
+                return long.Parse(settings[key]);
             }
         }
 
-        private static void EnsureDefault<T>(string key, T defaultValue)
+        public string StringGetValueOrDefault(string key, string defaultValue)
         {
-            ApplicationDataContainer containerValue = null;
-            if (!ApplicationData.Current.LocalSettings.Containers.ContainsKey(SettingsContainer))
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
             {
-                containerValue = ApplicationData.Current.LocalSettings.CreateContainer(SettingsContainer, ApplicationDataCreateDisposition.Always);
-                containerValue.Values.Add(new KeyValuePair<string, object>(key, defaultValue));
-            }
-            else
-            {
-                if (ApplicationData.Current.LocalSettings.Containers[SettingsContainer].Values.Keys.Contains(key) == false)
+                if (!settings.ContainsKey(key))
                 {
-                    ApplicationData.Current.LocalSettings.Containers[SettingsContainer].Values.Add(new KeyValuePair<string, object>(key, defaultValue));
+                    settings.Add(key, defaultValue.ToString());
                 }
+                return settings[key];
+            }
+        }
+
+        public TimeSpan TimeSpanGetValueOrDefault(string key, TimeSpan defaultValue)
+        {
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
+            {
+                if (!settings.ContainsKey(key))
+                {
+                    settings.Add(key, defaultValue.ToString());
+                }
+                return TimeSpan.Parse(settings[key]);
+            }
+        }
+
+        public bool BoolGetValueOrDefault(string key, bool defaultValue)
+        {
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
+            {
+                if (!settings.ContainsKey(key))
+                {
+                    settings.Add(key, defaultValue.ToString());
+                }
+                return bool.Parse(settings[key]);
+            }
+        }
+
+        public double DoubleGetValueOrDefault(string key, double defaultValue)
+        {
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
+            {
+                if (!settings.ContainsKey(key))
+                {
+                    settings.Add(key, defaultValue.ToString());
+                }
+                return double.Parse(settings[key]);
+            }
+        }
+
+        public float DoubleGetValueOrDefault(string key, float defaultValue)
+        {
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
+            {
+                if (!settings.ContainsKey(key))
+                {
+                    settings.Add(key, defaultValue.ToString());
+                }
+                return float.Parse(settings[key]);
+            }
+        }
+
+        public void SetValueOrDefault2(string key, object defaultValue, object value)
+        {
+            using (lockManager.GetLock($"{SettingsKey}.{key}").LockWithTimeout())
+            {
+                settings[key] = value.ToString();
             }
         }
     }
