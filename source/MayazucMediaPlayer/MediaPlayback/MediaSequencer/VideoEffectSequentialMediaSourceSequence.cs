@@ -1,5 +1,4 @@
 ﻿using MayazucMediaPlayer.VideoEffects;
-using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,7 +2,6 @@
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using System.Linq;
 using Windows.Security.Credentials;
 

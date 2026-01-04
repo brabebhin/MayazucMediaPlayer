@@ -1,6 +1,5 @@
 ﻿using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Settings;
-using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,7 +15,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             var items = new List<SettingsItemGroup>();
             var templates = new SettingsTemplates();
             items.Add(ContextualSettings.GetSubtitleSettings());
-            items.Add(ContextualSettings.GetAutoPlaySettings());
             items.Add(ContextualSettings.GetPlaybackControlSettings());
             var result = from act in items group act by act into grp select grp;
             cvsSettingsItems.Source = result;

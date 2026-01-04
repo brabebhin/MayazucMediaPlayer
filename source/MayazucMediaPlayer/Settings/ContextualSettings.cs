@@ -12,35 +12,6 @@ namespace MayazucMediaPlayer.Settings
 {
     public static class ContextualSettings
     {
-        public static SettingsItemGroup GetAutoPlaySettings()
-        {
-            var Title = "Auto play";
-            SettingsItemGroup items = new SettingsItemGroup(groupImage: FontIconPaths.AutoPlaySettings, groupName: Title);
-
-            items.Add(new VerbatimTextBlock()
-            {
-                TextDescription = "Automatically enqueue the next music or video file in the last track's folder"
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoPlayMusic),
-                (value) => { SettingsService.Instance.AutoPlayMusic = (bool)value; },
-                () => { return SettingsService.Instance.AutoPlayMusic; })
-            {
-                Description = "Auto play music",
-            });
-
-            items.Add(new CheckBoxItem(nameof(SettingsService.Instance.AutoPlayVideo),
-                (value) => { SettingsService.Instance.AutoPlayVideo = (bool)value; },
-                () => { return SettingsService.Instance.AutoPlayVideo; })
-            {
-                Description = "Auto play video",
-            });
-
-
-            return items;
-        }
-
-
         public static SettingsItemGroup GetPlaybackControlSettings()
         {
             var Title = "Playback Control";
@@ -64,7 +35,7 @@ namespace MayazucMediaPlayer.Settings
                     TimePickerDescription = "Stop media time stamp"
                 },
 
-              
+
                 new CheckBoxItem(nameof(SettingsService.Instance.PlayToEnabled),
                 (value) => { SettingsService.Instance.PlayToEnabled =(bool) value; },
                 () => { return SettingsService.Instance.PlayToEnabled; })
@@ -192,7 +163,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 ComboboxHeader = "UI theme. Requires restart to take full effect",
             });
-                                    
+
             return items;
         }
 
@@ -208,7 +179,7 @@ namespace MayazucMediaPlayer.Settings
             {
                 ComboboxHeader = "Video decoder mode"
             });
-                        
+
             items.Add(new CheckBoxItem(nameof(SettingsService.Instance.StereoDownMix), (value) => { SettingsService.Instance.StereoDownMix = (bool)value; }, () => { return SettingsService.Instance.StereoDownMix; })
             {
                 Description = "Stereo downmix",

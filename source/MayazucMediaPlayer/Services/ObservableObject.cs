@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.WinUI;
 using System;
 using System.ComponentModel;
-using System.Windows.Markup;
 
 namespace MayazucMediaPlayer.Services
 {

@@ -19,7 +19,7 @@ namespace MayazucMediaPlayer
             WriteableFormats = allWriteableFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
             AllVideoFormats = allVideoFormatsInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
             SupportedStreamingUriSchemes = allStreamingUriSchemeInternal.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
-       
+
             AllMusicAndPlaylistFormats = MusicFormats.Union(PlaylistFormats.ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase)).ToImmutableHashSet(StringComparer.CurrentCultureIgnoreCase);
             AllSupportedFileFormats = AllMusicAndPlaylistFormats.Union(AllVideoFormats).Union(WriteableFormats);
         }
@@ -183,7 +183,7 @@ namespace MayazucMediaPlayer
             return allSupportedFormatsInternal.Any(x => pathLower.EndsWith(x));
         }
 
-        public static bool IsSupportedStreamingProtocol(string  protocol)
+        public static bool IsSupportedStreamingProtocol(string protocol)
         {
             if (string.IsNullOrWhiteSpace(protocol)) return false;
             return SupportedStreamingUriSchemes.Contains(protocol);

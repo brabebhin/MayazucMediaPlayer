@@ -1,7 +1,6 @@
 ﻿using MayazucMediaPlayer.VideoEffects;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
-using System;
 using GrayscaleEffect = Microsoft.Graphics.Canvas.Effects.GrayscaleEffect;
 using TemperatureAndTintEffect = Microsoft.Graphics.Canvas.Effects.TemperatureAndTintEffect;
 

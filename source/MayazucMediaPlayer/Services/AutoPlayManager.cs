@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
-using Microsoft.WindowsAPICodePack.Shell;
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
@@ -101,7 +100,7 @@ namespace MayazucMediaPlayer.Services
 
                         var autoPlayQueryResult = parentFolder.EnumerateFiles(autoPlayViewQuery);
                         var flatFolderQueryResult = parentFolder.EnumerateFiles(flatFolderViewQuery);
-                       
+
                         //var files = await result.GetFilesAsync(3, 1);
                         //var fileIndex = await result.FindStartIndexAsync(files.FirstOrDefault());
 

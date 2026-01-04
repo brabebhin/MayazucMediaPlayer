@@ -1,14 +1,9 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using MayazucMediaPlayer.Controls;
+using MayazucMediaPlayer.VideoEffects;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Graphics.DirectX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Media.Playback;
-using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.VideoEffects;
 
 namespace MayazucMediaPlayer.Rendering
 {

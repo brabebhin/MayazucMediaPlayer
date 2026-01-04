@@ -24,20 +24,20 @@
                 <TextBlock Text="Media is not available. Most likely the file was deleted or the path is not available anymore" TextWrapping="WrapWholeWords"/>
             </StackPanel>
             <CommandBar Visibility="{x:Bind PlaybackCommandBarVisibility, Mode=OneWay}" x:Name="MenuBar" HorizontalAlignment="Left" DefaultLabelPosition="Right" FlowDirection="LeftToRight" Background="Transparent"  Grid.Row="1">
-                <controls:AppBarButtonWithToolTip IsEnabled="False"  Command="{x:Bind PlayCommand, Mode=OneWay}" CommandParameter="{x:Bind fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
-                </controls:AppBarButtonWithToolTip>
-                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{x:Bind AddToNowPlayingCommand, Mode=OneWay}" CommandParameter="{x:Bind fdEnqueue}" x:Name="fdEnqueue" Label="Add to now playing">
+                <AppBarButton IsEnabled="False"  Command="{x:Bind PlayCommand, Mode=OneWay}" CommandParameter="{x:Bind fdPlay}" x:Name="fdPlay" Icon="Play" Label="Play">
+                </AppBarButton>
+                <AppBarButton  IsEnabled="False"   Command="{x:Bind AddToNowPlayingCommand, Mode=OneWay}" CommandParameter="{x:Bind fdEnqueue}" x:Name="fdEnqueue" Label="Add to now playing">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                     </AppBarButton.Icon>
-                </controls:AppBarButtonWithToolTip>
+                </AppBarButton>
 
-                <controls:AppBarButtonWithToolTip  IsEnabled="False"   Command="{x:Bind SaveToPlaylistCommand, Mode=OneWay}" CommandParameter="{x:Bind AddToPlaylistButton}" Icon="Add" x:Name="AddToPlaylistButton" Label="Add to playlist"></controls:AppBarButtonWithToolTip>
-                <controls:AppBarButtonWithToolTip  Visibility="Visible"  IsEnabled="False"  ToolTipService.ToolTip="Plays the associated item in queue, enquing if necessary" Command="{x:Bind SkipToQueueItemCommand, Mode=OneWay}" CommandParameter="{x:Bind SkipToQueueItemButton}" x:Name="SkipToQueueItemButton" Label="Skip to queue item">
+                <AppBarButton  IsEnabled="False"   Command="{x:Bind SaveToPlaylistCommand, Mode=OneWay}" CommandParameter="{x:Bind AddToPlaylistButton}" Icon="Add" x:Name="AddToPlaylistButton" Label="Add to playlist"></AppBarButton>
+                <AppBarButton  Visibility="Visible"  IsEnabled="False"  ToolTipService.ToolTip="Plays the associated item in queue, enquing if necessary" Command="{x:Bind SkipToQueueItemCommand, Mode=OneWay}" CommandParameter="{x:Bind SkipToQueueItemButton}" x:Name="SkipToQueueItemButton" Label="Skip to queue item">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE84E;" />
                     </AppBarButton.Icon>
-                </controls:AppBarButtonWithToolTip>
+                </AppBarButton>
             </CommandBar>
         </StackPanel>
 

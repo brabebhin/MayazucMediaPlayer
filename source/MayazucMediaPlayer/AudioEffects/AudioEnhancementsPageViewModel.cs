@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.UserInput;
 using Microsoft.UI.Dispatching;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;

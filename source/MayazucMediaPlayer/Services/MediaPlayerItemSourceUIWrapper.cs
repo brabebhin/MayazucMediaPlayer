@@ -126,7 +126,7 @@ namespace MayazucMediaPlayer.Services
         }
     }
 
-    public class MediaDataStorageUIWrapperCollection<T> : IMediaPlayerItemSourceProvderCollection<T> where T: MediaPlayerItemSourceUIWrapper
+    public class MediaDataStorageUIWrapperCollection<T> : IMediaPlayerItemSourceProvderCollection<T> where T : MediaPlayerItemSourceUIWrapper
     {
         public MediaDataStorageUIWrapperCollection() : base()
         {

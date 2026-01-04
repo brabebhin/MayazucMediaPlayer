@@ -19,27 +19,27 @@
             <TextBlock Text="Manage subtitles for current media" Margin="1, 2, 1, 2" HorizontalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}"/>
             <local:MinimumSubtitleDurationControl x:Name="minimumSubtitleDurationDialogInstance"></local:MinimumSubtitleDurationControl>
             <StackPanel Orientation="Horizontal">
-                <local:AppBarButtonWithToolTip  Click="LookForSubtitlesOnline" Label="Online search" ToolTipService.ToolTip="Search on opensubtitles.org">
+                <AppBarButton  Click="LookForSubtitlesOnline" Label="Online search" ToolTipService.ToolTip="Search on opensubtitles.org">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE4;" />
                     </AppBarButton.Icon>
-                </local:AppBarButtonWithToolTip>
-                <local:AppBarButtonWithToolTip  Click="OpenLocalSubtitles" Label="Open local subtitle" ToolTipService.ToolTip="Open a subtitle from computer">
+                </AppBarButton>
+                <AppBarButton  Click="OpenLocalSubtitles" Label="Open local subtitle" ToolTipService.ToolTip="Open a subtitle from computer">
                     <AppBarButton.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" />
                     </AppBarButton.Icon>
-                </local:AppBarButtonWithToolTip>
-                <local:AppBarButtonWithToolTip   Icon="Clear" Label="Disable all" Click="DisableAllSubtitles"/>
-                <local:AppBarButtonWithToolTip   Click="FastenSubtitles"  Label="Fasten subtitles">
+                </AppBarButton>
+                <AppBarButton   Icon="Clear" Label="Disable all" Click="DisableAllSubtitles"/>
+                <AppBarButton   Click="FastenSubtitles"  Label="Fasten subtitles">
                     <AppBarButton.Icon>
                         <FontIcon Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" FontFamily="Segoe MDL2 Assets" Glyph="&#xE81C;"/>
                     </AppBarButton.Icon>
-                </local:AppBarButtonWithToolTip>
-                <local:AppBarButtonWithToolTip   Click="DelaySubtitles" Label="Delay subtitles">
+                </AppBarButton>
+                <AppBarButton   Click="DelaySubtitles" Label="Delay subtitles">
                     <AppBarButton.Icon>
                         <FontIcon Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" FontFamily="Segoe MDL2 Assets" Glyph="&#xECC5;" />
                     </AppBarButton.Icon>
-                </local:AppBarButtonWithToolTip>
+                </AppBarButton>
             </StackPanel>
         </StackPanel>
         <ListView  SelectionMode="None" x:Name="lsvSubtitles" Grid.Row="1">

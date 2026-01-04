@@ -119,7 +119,7 @@ namespace MayazucMediaPlayer.Controls
         {
             get
             {
-               return ToString();
+                return ToString();
             }
         }
 

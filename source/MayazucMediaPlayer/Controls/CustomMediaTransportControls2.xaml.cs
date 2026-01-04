@@ -1,30 +1,13 @@
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.Controls;
-using FluentResults;
-using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.MediaPlayback;
-using MayazucMediaPlayer.Navigation;
-using MayazucMediaPlayer.Services;
-using MayazucMediaPlayer.Services.MediaSources;
-using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
 using MayazucMediaPlayer.UserInput;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Input;
 using Nito.AsyncEx;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
 using Windows.Media.Playback;
-using Windows.System.Threading;
-using Windows.UI.ViewManagement;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 

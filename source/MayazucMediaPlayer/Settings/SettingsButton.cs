@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Navigation;
 using Microsoft.UI.Xaml;
 using System;

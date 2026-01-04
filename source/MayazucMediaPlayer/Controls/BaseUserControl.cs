@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.Converters;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.ComponentModel;

@@ -54,12 +54,12 @@ namespace MayazucMediaPlayer.Services.MediaSources
     }
 
     public static class IMediaPlayerItemSourceFactory
-    {       
+    {
         public static IMediaPlayerItemSource Get(string path)
         {
-            if(Uri.TryCreate(path, UriKind.Absolute, out var streamUri))
+            if (Uri.TryCreate(path, UriKind.Absolute, out var streamUri))
             {
-                if(SupportedFileFormats.IsSupportedStreamingProtocol(streamUri.Scheme))
+                if (SupportedFileFormats.IsSupportedStreamingProtocol(streamUri.Scheme))
                 {
                     return Get(streamUri);
                 }
@@ -69,7 +69,7 @@ namespace MayazucMediaPlayer.Services.MediaSources
 
         public static IMediaPlayerItemSource Get(Uri uri)
         {
-            return new InternetStreamMediaPlayerItemSource(title: uri.Host, streamingAddress: uri.OriginalString, metadata: new EmbeddedMetadata(title: uri.Host, performer: string.Empty) );
+            return new InternetStreamMediaPlayerItemSource(title: uri.Host, streamingAddress: uri.OriginalString, metadata: new EmbeddedMetadata(title: uri.Host, performer: string.Empty));
         }
 
         public static IMediaPlayerItemSource Get(PickedFileItem item)

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Xaml;
@@ -10,7 +9,6 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Foundation.Collections;
 using Windows.Media.Playback;
 using Windows.System.Threading;
 
@@ -32,7 +30,7 @@ namespace MayazucMediaPlayer.AudioEffects
         {
             InitializeComponent();
         }
-      
+
         private void CbSavedPresets_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
             if (cbSavedPresets.SelectedIndex != -1)

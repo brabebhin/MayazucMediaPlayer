@@ -1,5 +1,4 @@
-﻿using MayazucMediaPlayer.Helpers;
-using MayazucNativeFramework;
+﻿using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

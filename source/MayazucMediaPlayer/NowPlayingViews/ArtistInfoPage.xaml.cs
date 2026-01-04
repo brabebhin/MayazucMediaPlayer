@@ -1,7 +1,5 @@
 ﻿using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaPlayback;
-using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
 using System.Threading.Tasks;
 using Windows.Media.Playback;

@@ -1,7 +1,6 @@
 ﻿using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.VideoEffects;
-using MayazucNativeFramework;
 using Microsoft.UI.Xaml.Controls;
 using System.Threading.Tasks;
 using Windows.Media.Playback;

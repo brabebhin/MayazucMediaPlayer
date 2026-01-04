@@ -4,12 +4,10 @@ using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
-using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -99,7 +97,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
         }
 
-  
+
         protected override async Task OnInitializeStateAsync(object? parameter)
         {
             DataContext = DataService;

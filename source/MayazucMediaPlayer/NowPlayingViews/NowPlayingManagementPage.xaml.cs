@@ -1,5 +1,4 @@
-﻿using MayazucMediaPlayer.FileSystemViews;
-using MayazucMediaPlayer.MediaPlayback;
+﻿using MayazucMediaPlayer.MediaPlayback;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
 

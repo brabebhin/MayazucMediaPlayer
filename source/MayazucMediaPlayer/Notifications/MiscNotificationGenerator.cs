@@ -1,6 +1,4 @@
-﻿using Windows.UI.Notifications;
-
-namespace MayazucMediaPlayer.Notifications
+﻿namespace MayazucMediaPlayer.Notifications
 {
     public static class MiscNotificationGenerator
     {

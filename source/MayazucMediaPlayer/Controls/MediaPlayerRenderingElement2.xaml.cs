@@ -3,26 +3,17 @@ using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.NowPlayingViews;
 using MayazucMediaPlayer.Rendering;
-using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.UserInput;
 using MayazucMediaPlayer.VideoEffects;
 using MayazucNativeFramework;
-using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Display;
 using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -31,7 +22,6 @@ using Windows.Graphics.DirectX;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.System.Threading;
-using WinRT;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

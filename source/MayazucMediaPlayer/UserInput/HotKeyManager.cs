@@ -210,7 +210,7 @@ namespace MayazucMediaPlayer.UserInput
             defaults.Add(new MayazucHotKey(new HotKeySettings("M", "shift"), HotKeyId.SkipNext));
             defaults.Add(new MayazucHotKey(new HotKeySettings("B", "shift"), HotKeyId.SkipPrevious));
             defaults.Add(new MayazucHotKey(new HotKeySettings("\u001b", "none"), HotKeyId.ExitFullScreen)); //ESC
-            defaults.Add(new MayazucHotKey(new HotKeySettings("s", "none"), HotKeyId.SaveVideoFrame)); 
+            defaults.Add(new MayazucHotKey(new HotKeySettings("s", "none"), HotKeyId.SaveVideoFrame));
 
             return defaults.AsReadOnly();
         }

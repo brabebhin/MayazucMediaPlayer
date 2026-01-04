@@ -1,6 +1,4 @@
 ﻿using MayazucMediaPlayer.LocalCache;
-using MayazucMediaPlayer.MediaCollections;
-using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Users;
@@ -13,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -206,7 +203,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
 
             return returnValue.AsReadOnly();
         }
-        
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)

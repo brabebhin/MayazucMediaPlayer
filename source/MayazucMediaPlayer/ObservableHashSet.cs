@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
 namespace MayazucMediaPlayer
 {
     public class ObservableHashSet<T> : ObservableCollection<T>
     {
         HashSet<T> uniqueCheck = new HashSet<T>();
-        
+
         public bool TryGetValue(T key, out T value)
         {
             return uniqueCheck.TryGetValue(key, out value);

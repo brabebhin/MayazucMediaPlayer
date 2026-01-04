@@ -70,7 +70,7 @@
                     <CommandBar HorizontalAlignment="Left" Background="Transparent" DefaultLabelPosition="Right"  Grid.Row="2" Grid.ColumnSpan="2">
                         <AppBarButton   IsEnabled="{Binding RenameIsEnabled}" x:Name="RenameButton" Command="{Binding RenamePlaylistCommand}" CommandParameter="{Binding ElementName=RenameButton}" Icon="Rename" Label="Rename"/>
 
-                        <controls:AppBarButtonWithToolTip    x:Name="Delete" IsEnabled="{Binding DeleteIsEnabled}" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=Delete}" Icon="Delete" Label="Delete" />
+                        <AppBarButton    x:Name="Delete" IsEnabled="{Binding DeleteIsEnabled}" Command="{Binding DeleteCommand}" CommandParameter="{Binding ElementName=Delete}" Icon="Delete" Label="Delete" />
 
                     </CommandBar>
                 </StackPanel>

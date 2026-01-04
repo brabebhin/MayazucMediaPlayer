@@ -1,9 +1,7 @@
 ﻿using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.VideoEffects;
-using MayazucNativeFramework;
 using Microsoft.UI.Xaml.Controls;
-using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -61,7 +59,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
-        public IBackgroundPlayer PlayerInstance { get; private set; }     
+        public IBackgroundPlayer PlayerInstance { get; private set; }
 
         public event EventHandler<MediaPlayerCompactOverlayEventArgs> CompactOverlayRequest;
         public void NotifyViewMode(bool isFullPlayer, UserControl element)

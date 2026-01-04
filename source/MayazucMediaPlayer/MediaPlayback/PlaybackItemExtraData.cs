@@ -2,7 +2,6 @@
 using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Services.MediaSources;
 using System;
-using System.Linq;
 using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.MediaPlayback

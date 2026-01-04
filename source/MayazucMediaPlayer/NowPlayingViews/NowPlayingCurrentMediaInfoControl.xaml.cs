@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaPlayback;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
 

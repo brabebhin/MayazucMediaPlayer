@@ -18,7 +18,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <local:AppBarButtonWithToolTip   Icon="Remove" Click="DecreaseSlider"></local:AppBarButtonWithToolTip>
+            <AppBarButton   Icon="Remove" Click="DecreaseSlider"></AppBarButton>
             <Slider x:Name="SliderInstance" Minimum="0" Grid.Column="1" Maximum="5" Width="{ThemeResource MTCHorizontalVolumeSliderWidth}" TickFrequency="0.25" TickPlacement="None" SnapsTo="Ticks" Value="{x:Bind Adapter.MinimumDuration, Mode=TwoWay}">
                 <Slider.Header>
                     <StackPanel Orientation="Horizontal">
@@ -27,7 +27,7 @@
                     </StackPanel>
                 </Slider.Header>
             </Slider>
-            <local:AppBarButtonWithToolTip   Grid.Column="2" Icon="Add" Click="AddSlider"></local:AppBarButtonWithToolTip>
+            <AppBarButton   Grid.Column="2" Icon="Add" Click="AddSlider"></AppBarButton>
         </Grid>
         <CheckBox IsChecked="{x:Bind Adapter.PreventOverlaps, Mode=TwoWay}" x:Name="cbPrevetOverlaps">Prevent overlaps</CheckBox>
     </StackPanel>

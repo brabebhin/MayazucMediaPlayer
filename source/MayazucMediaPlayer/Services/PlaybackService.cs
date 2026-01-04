@@ -1,12 +1,10 @@
 ﻿using CommunityToolkit.WinUI;
 using FluentResults;
 using MayazucMediaPlayer.MediaPlayback;
-using MayazucMediaPlayer.Playlists;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Dispatching;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 

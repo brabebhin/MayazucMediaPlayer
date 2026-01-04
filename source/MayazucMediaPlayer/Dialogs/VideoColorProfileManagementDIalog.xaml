@@ -23,11 +23,11 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextDecorations="{x:Bind TextDecoration, Mode=OneWay}" FontSize="20" VerticalAlignment="Center" Text="{x:Bind Title}"/>
-                    <controls:AppBarButtonWithToolTip   Grid.Column="1"  Click="DeleteProfile">
+                    <AppBarButton   Grid.Column="1"  Click="DeleteProfile">
                         <AppBarButton.Icon>
                             <SymbolIcon Symbol="{x:Bind ButtonIcon, Mode=OneWay}"/>
                         </AppBarButton.Icon>
-                    </controls:AppBarButtonWithToolTip>
+                    </AppBarButton>
                 </Grid>
             </DataTemplate>
         </ListView.ItemTemplate>

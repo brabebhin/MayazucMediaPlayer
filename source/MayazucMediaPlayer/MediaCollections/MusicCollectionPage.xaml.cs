@@ -6,8 +6,6 @@ using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.System;
-using WinRT;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -72,8 +70,8 @@ namespace MayazucMediaPlayer.MediaCollections
         {
             try
             {
-                StorageLibrary lib = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Music);  
-                
+                StorageLibrary lib = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Music);
+
                 var folder = await lib.RequestAddFolderAsync();
                 if (folder != null)
                 {

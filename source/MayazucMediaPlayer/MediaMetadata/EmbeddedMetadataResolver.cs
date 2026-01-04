@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.MediaMetadata
@@ -245,7 +244,7 @@ namespace MayazucMediaPlayer.MediaMetadata
                     retValue = resultingAlbumArtFile.FileInformation;
                 }
             }
-            catch {  }
+            catch { }
 
 
             return retValue;

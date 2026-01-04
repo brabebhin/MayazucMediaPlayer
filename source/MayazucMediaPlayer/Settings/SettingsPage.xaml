@@ -24,7 +24,7 @@
         <muxc:NavigationView x:Name="NavigationViewRoot"
                                  IsBackButtonVisible="Collapsed" 
                                  IsSettingsVisible="False" 
-                                 PaneDisplayMode="Auto"
+                                 PaneDisplayMode="Left"
                                  Grid.Row="1" 
                                  Background="Transparent"
                                  MenuItemTemplate="{StaticResource GenericCategoryDataTemplate}"

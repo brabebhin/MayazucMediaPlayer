@@ -1,13 +1,10 @@
 ﻿using FFmpegInteropX;
 using MayazucMediaPlayer.AudioEffects;
-using MayazucMediaPlayer.Helpers;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.VideoEffects;
-using MayazucNativeFramework;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Media.Playback;

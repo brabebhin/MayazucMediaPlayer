@@ -1,5 +1,4 @@
-﻿using MayazucMediaPlayer.Settings;
-using System;
+﻿using System;
 
 namespace MayazucMediaPlayer
 {

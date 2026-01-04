@@ -28,8 +28,8 @@
 
                 <CommandBar IsEnabled="{x:Bind DataService.NowPlayingCommandBarEnabled, Mode=OneWay}" Grid.Row="2"  HorizontalAlignment="Left"  x:Name="CommandBarus">
 
-                    <mcConrols:AppBarButtonWithToolTip Command="{x:Bind DataService.ShuffleRequestClickCommand, Mode=OneWay}" CommandParameter="{x:Bind npShuffleButton, Mode=OneWay}" Icon="Shuffle" x:Name="npShuffleButton" Label="Shuffle"/>
-                    <mcConrols:AppBarButtonWithToolTip IsEnabled="{x:Bind DataService.ClearQueueButtonEnabled, Mode=OneWay}"  Label="Clear queue" Command="{x:Bind DataService.ClearPlaybackQueueCommand, Mode=OneWay}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{x:Bind npStopPlaybackQueue, Mode=OneWay}"/>
+                    <AppBarButton Command="{x:Bind DataService.ShuffleRequestClickCommand, Mode=OneWay}" CommandParameter="{x:Bind npShuffleButton, Mode=OneWay}" Icon="Shuffle" x:Name="npShuffleButton" Label="Shuffle"/>
+                    <AppBarButton IsEnabled="{x:Bind DataService.ClearQueueButtonEnabled, Mode=OneWay}"  Label="Clear queue" Command="{x:Bind DataService.ClearPlaybackQueueCommand, Mode=OneWay}" Icon="Stop" x:Name="npStopPlaybackQueue" CommandParameter="{x:Bind npStopPlaybackQueue, Mode=OneWay}"/>
 
                 </CommandBar>
 

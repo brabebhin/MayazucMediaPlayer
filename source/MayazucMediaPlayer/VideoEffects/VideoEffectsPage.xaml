@@ -90,7 +90,7 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Column="0" VerticalAlignment="Center" Text="{x:Bind EffectPropertyName, Mode=OneWay}"/>
                                             <AppBarSeparator Grid.Column="1" ></AppBarSeparator>
-                                            <controls:AppBarButtonWithToolTip Height="48"   Grid.Column="2"  Icon="Refresh" Command="{x:Bind RestoreDefaultValue, Mode=OneWay}"/>
+                                            <AppBarButton Height="48"   Grid.Column="2"  Icon="Refresh" Command="{x:Bind RestoreDefaultValue, Mode=OneWay}"/>
                                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}"  Grid.Column="3"  VerticalAlignment="Center"  Text="{x:Bind EffectPropertyValue, Mode=OneWay}"/>
                                         </Grid>
                                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center" Grid.Row="0"  Grid.Column="4" Text="{x:Bind EffectPropertyMaximum, Mode=OneWay}"/>

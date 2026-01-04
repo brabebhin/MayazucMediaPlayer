@@ -4,22 +4,11 @@ using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
-using Microsoft.UI;
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Navigation;
-using Nito.AsyncEx;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
-using Windows.System.Threading;
-using Windows.UI.Core;
 
 namespace MayazucMediaPlayer.NowPlayingViews
 {

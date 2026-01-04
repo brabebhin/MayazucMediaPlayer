@@ -1,7 +1,6 @@
 ﻿using MayazucMediaPlayer.Controls;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.Help;
-using MayazucMediaPlayer.Users;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Navigation;
 using System.Collections.Generic;
@@ -32,7 +31,7 @@ namespace MayazucMediaPlayer.Settings
 
                 new SettingsItemGroup("\uED10", "Reset ") { new ContentSettingsItem(new ResetSettingsPage(allSettings)) },
 
-                new SettingsItemGroup("\uE7F5", "Audio + Video", ContextualSettings.GetVideoSettings(), new SettingsItem[]{ new ContentSettingsItem(new WindowsAudioSettingsShortcutControl()) }) 
+                new SettingsItemGroup("\uE7F5", "Audio + Video", ContextualSettings.GetVideoSettings(), new SettingsItem[]{ new ContentSettingsItem(new WindowsAudioSettingsShortcutControl()) })
             };
 
             groups = groups.OrderBy(x => x.GroupName).ToList();

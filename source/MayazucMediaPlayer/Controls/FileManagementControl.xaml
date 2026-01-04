@@ -146,11 +146,11 @@
             </Grid.RowDefinitions>
 
             <CommandBar  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:True), Mode=OneWay, FallbackValue=Collapsed}" x:Name="ReorderCommandBar" IsEnabled="{x:Bind DataService.CommandBarEnabled, Mode=OneWay,FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
-                <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrderResetButton" IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
+                <AppBarToggleButton  x:Name="changeItemOrderResetButton" IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder,Mode=TwoWay}" Label="Reorder">
                     <AppBarToggleButton.Icon>
                         <FontIcon Glyph="&#xE1ED;"></FontIcon>
                     </AppBarToggleButton.Icon>
-                </controls:AppBarToggleButtonWithToolTip>
+                </AppBarToggleButton>
             </CommandBar>
 
             <Grid  Visibility="{x:Bind Converters.BooleanToVisibleConverter(DataService.IsChangingOrder, x:False), Mode=OneWay}">
@@ -159,59 +159,59 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <controls:AppBarButtonWithToolTip Style="{StaticResource AppBarButtonStyleNoChevron}" Visibility="Collapsed" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
-                </controls:AppBarButtonWithToolTip>
+                <AppBarButton Style="{StaticResource AppBarButtonStyleNoChevron}" Visibility="Collapsed" x:Name="btnViewRefresh" Tapped="OnRefresh_click" Grid.Column="1" Icon="Refresh">
+                </AppBarButton>
 
                 <CommandBar  x:Name="PrimaryCommandBar" IsEnabled="{x:Bind DataService.CommandBarEnabled, Mode=OneWay, FallbackValue=false}"  Grid.Row="0" HorizontalAlignment="Left"  Background="Transparent" DefaultLabelPosition="Right" >
 
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}"/>
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}">
+                    <AppBarButton    Tapped="FullCollectionPlayCommand"  x:Name="PlayButton" Label="Play all" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}"/>
+                    <AppBarButton    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButton" Label="Enqueue all" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.NotSelectingPlayButtonsVisibility, Mode=OneWay}">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
-                    </controls:AppBarButtonWithToolTip>
+                    </AppBarButton>
 
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionPlayCommand"  x:Name="PlayButtonSelected" Label="Play selected" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}"  Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed, Mode=OneWay}"/>
-                    <controls:AppBarButtonWithToolTip    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButtonSelected" Label="Enqueue selected" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed, Mode=OneWay}">
+                    <AppBarButton    Tapped="FullCollectionPlayCommand"  x:Name="PlayButtonSelected" Label="Play selected" Icon="Play" IsEnabled="{x:Bind DataService.PlayButtonIsEnabled, Mode=OneWay}"  Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed, Mode=OneWay}"/>
+                    <AppBarButton    Tapped="FullCollectionAddToNowPlayingCommand"  x:Name="EnqueueButtonSelected" Label="Enqueue selected" IsEnabled="{x:Bind DataService.EnqueueButtonIsEnabled, Mode=OneWay}" Visibility="{x:Bind DataService.SelectingPlayButtonsVisibility, FallbackValue=Collapsed, Mode=OneWay}">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                         </AppBarButton.Icon>
-                    </controls:AppBarButtonWithToolTip>
+                    </AppBarButton>
 
-                    <controls:AppBarToggleButtonWithToolTip  IsChecked="{x:Bind Converters.selectionModeToBoolean(DataService.SelectionMode), Mode=OneWay}"  Tapped="FullCollectionEnableSelection"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
+                    <AppBarToggleButton  IsChecked="{x:Bind Converters.selectionModeToBoolean(DataService.SelectionMode), Mode=OneWay}"  Tapped="FullCollectionEnableSelection"  Label="Select" x:Name="SelectAllButton" Icon="SelectAll"/>
 
-                    <controls:AppBarButtonWithToolTip  Tapped="FullCollectionSaveAsPlaylistCommand"   Label="Save as playlist" x:Name="SaveAsPlaylistButton" Icon="Save"/>
+                    <AppBarButton  Tapped="FullCollectionSaveAsPlaylistCommand"   Label="Save as playlist" x:Name="SaveAsPlaylistButton" Icon="Save"/>
 
-                    <controls:AppBarToggleButtonWithToolTip   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
+                    <AppBarToggleButton   x:Name="changeItemOrder"   IsEnabled="{x:Bind DataService.IsReorderButtonEnabled, Mode=OneWay}"  IsChecked="{x:Bind DataService.IsChangingOrder, Mode=TwoWay}" Label="Reorder">
                         <AppBarToggleButton.Icon>
                             <FontIcon Glyph="&#xE1ED;"></FontIcon>
                         </AppBarToggleButton.Icon>
-                    </controls:AppBarToggleButtonWithToolTip>
+                    </AppBarToggleButton>
 
 
-                    <controls:AppBarButtonWithToolTip x:Name="ClearButton" Tapped="FullCollectionClearAllCommand"   Label="Remove all" Icon="Clear"  />
+                    <AppBarButton x:Name="ClearButton" Tapped="FullCollectionClearAllCommand"   Label="Remove all" Icon="Clear"  />
 
                     <AppBarButton  Tapped="FullCollectionAddToExistingPlaylistCommand"  Label="Add to playlist" Icon="Add"/>
 
                     <CommandBar.SecondaryCommands>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandOnlyAudio"  Label="Select music files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandOnlyVideo"  Label="Select video files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSelectAllCommandSelected"  Label="Select all"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionUnselectAllCommand"  Label="Unselect all"></controls:AppBarButtonWithToolTip>
+                        <AppBarButton Tapped="FullCollectionSelectAllCommandOnlyAudio"  Label="Select music files"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionSelectAllCommandOnlyVideo"  Label="Select video files"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionSelectAllCommandSelected"  Label="Select all"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionUnselectAllCommand"  Label="Unselect all"></AppBarButton>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyMusic" Label="Create playlist from music files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyVideo" Label="Create playlist from video files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnSaveAsPlaylistSelected"  Tapped="FullCollectionSaveAsPlaylistCommandOnlySelected" Label="Create only from selected files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionSaveAsPlaylistCommandOnlyunselected" Label="Create playlist from unselected files"></controls:AppBarButtonWithToolTip>
+                        <AppBarButton Tapped="FullCollectionSaveAsPlaylistCommandOnlyMusic" Label="Create playlist from music files"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionSaveAsPlaylistCommandOnlyVideo" Label="Create playlist from video files"></AppBarButton>
+                        <AppBarButton IsEnabled="False" x:Name="btnSaveAsPlaylistSelected"  Tapped="FullCollectionSaveAsPlaylistCommandOnlySelected" Label="Create only from selected files"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionSaveAsPlaylistCommandOnlyunselected" Label="Create playlist from unselected files"></AppBarButton>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnRemoveSelected"  Tapped="FullCollectionRemoveSelectedCommand" Label="Remove selected"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionRemoveOnlyMusicCommand"   Label="Remove music files"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionRemoveOnlyVideoCommand"   Label="Remove video files"></controls:AppBarButtonWithToolTip>
+                        <AppBarButton IsEnabled="False" x:Name="btnRemoveSelected"  Tapped="FullCollectionRemoveSelectedCommand" Label="Remove selected"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionRemoveOnlyMusicCommand"   Label="Remove music files"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionRemoveOnlyVideoCommand"   Label="Remove video files"></AppBarButton>
                         <AppBarSeparator></AppBarSeparator>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionAddToExistingPlaylistCommandOnlyMusic" Label="Add music files to playlist"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionAddToExistingPlaylistCommandOnlyVideo" Label="Add video files to playlist"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip IsEnabled="False" x:Name="btnAddToExistingPlaylist"  Tapped="FullCollectionAddToExistingPlaylistCommandOnlySelected" Label="Add selected files to playlist"></controls:AppBarButtonWithToolTip>
-                        <controls:AppBarButtonWithToolTip Tapped="FullCollectionAddToExistingPlaylistCommandOnlyUnselected" Label="Add unselected files to playlist"></controls:AppBarButtonWithToolTip>
+                        <AppBarButton Tapped="FullCollectionAddToExistingPlaylistCommandOnlyMusic" Label="Add music files to playlist"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionAddToExistingPlaylistCommandOnlyVideo" Label="Add video files to playlist"></AppBarButton>
+                        <AppBarButton IsEnabled="False" x:Name="btnAddToExistingPlaylist"  Tapped="FullCollectionAddToExistingPlaylistCommandOnlySelected" Label="Add selected files to playlist"></AppBarButton>
+                        <AppBarButton Tapped="FullCollectionAddToExistingPlaylistCommandOnlyUnselected" Label="Add unselected files to playlist"></AppBarButton>
                     </CommandBar.SecondaryCommands>
                 </CommandBar>
             </Grid>

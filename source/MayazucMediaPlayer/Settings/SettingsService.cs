@@ -3,7 +3,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Windows.Networking.Connectivity;
 
 namespace MayazucMediaPlayer.Settings
@@ -351,7 +350,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-       
+
         [SettingDefaultValue(0)]
         public int DefaultUITheme
         {
@@ -366,7 +365,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-       
+
         [SettingDefaultValue(true)]
         public bool AutoloadInternalSubtitle
         {
@@ -395,7 +394,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        
+
         [SettingDefaultValue(false)]
         public bool AutoloadForcedSubtitles
         {
@@ -550,7 +549,7 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        
+
         [SettingDefaultValue("folder.jpg;folder.png")]
         public string AlbumArtFolderCoverName
         {

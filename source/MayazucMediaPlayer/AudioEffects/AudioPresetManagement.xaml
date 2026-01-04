@@ -26,7 +26,7 @@
             <Grid Grid.Row="1">
 
                 <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="2">
-                    <controls:AppBarButtonWithToolTip   Label="Add new preset" Icon="Add" x:Name="AddNewPreset" Tapped="DataServiceAddNewPresetCommand" CommandParameter="{x:Bind AddNewPreset, Mode=OneWay}"/>
+                    <AppBarButton   Label="Add new preset" Icon="Add" x:Name="AddNewPreset" Tapped="DataServiceAddNewPresetCommand" CommandParameter="{x:Bind AddNewPreset, Mode=OneWay}"/>
                 </CommandBar>
             </Grid>
         </Grid>

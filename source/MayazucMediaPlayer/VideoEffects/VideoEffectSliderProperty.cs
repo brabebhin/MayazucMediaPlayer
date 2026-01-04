@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using MayazucMediaPlayer.Common;
 using MayazucMediaPlayer.Services;
-using MayazucMediaPlayer.UserInput;
 using System;
 
 namespace MayazucMediaPlayer.VideoEffects

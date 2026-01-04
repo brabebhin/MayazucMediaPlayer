@@ -1,9 +1,7 @@
-﻿using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.Settings;
+﻿using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using System.Collections.Generic;
 
 namespace MayazucMediaPlayer.AudioEffects
 {
@@ -54,7 +52,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async void DataServiceAddCommand(object sender, TappedRoutedEventArgs e)
         {
-           await DataService.AddCommand.ExecuteAsync(sender.GetDataContextObject<EQConfigurationService>());
+            await DataService.AddCommand.ExecuteAsync(sender.GetDataContextObject<EQConfigurationService>());
         }
 
         private async void EditEqualizerConfigurationPresetsCommand(object sender, TappedRoutedEventArgs e)

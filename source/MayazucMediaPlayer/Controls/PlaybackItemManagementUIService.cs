@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using FFmpegInteropX;
 using FluentResults;
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
@@ -7,29 +6,19 @@ using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.Playlists;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
-using MayazucMediaPlayer.Settings;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.VisualBasic;
-using Microsoft.WindowsAPICodePack.Shell;
 using Nito.AsyncEx;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Media.MediaProperties;
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using Windows.Storage.Search;
-using Windows.Storage.Streams;
 using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.Controls

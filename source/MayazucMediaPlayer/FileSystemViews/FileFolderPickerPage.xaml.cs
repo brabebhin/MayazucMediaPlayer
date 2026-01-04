@@ -1,5 +1,4 @@
-﻿using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.Services;
+﻿using MayazucMediaPlayer.Services;
 using Microsoft.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
@@ -47,7 +46,7 @@ namespace MayazucMediaPlayer.FileSystemViews
                 DataService = new FileManagementService(DispatcherQueue,
                     base.ApplicationDataModels.PlaybackModel,
                     ServiceProvider.GetService<PlaylistsService>());
-                
+
                 await fileManagementControl.LoadStateInternal(DataService);
 
                 DataContext = DataService;

@@ -1,12 +1,5 @@
 ﻿using MayazucMediaPlayer.Controls;
-using MayazucMediaPlayer.FileSystemViews;
-using MayazucMediaPlayer.Navigation;
-using MayazucMediaPlayer.Services;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Playlists

@@ -17,13 +17,13 @@
             </Grid.ColumnDefinitions>
             <StackPanel>
                 <CommandBar Background="Transparent" HorizontalAlignment="Left" FlowDirection="LeftToRight" Grid.ColumnSpan="2" DefaultLabelPosition="Right">
-                    <local:AppBarButtonWithToolTip   Tapped="Resume_click"  Label="Resume" Icon="Play"/>
-                    <local:AppBarButtonWithToolTip   Tapped="StartOver_click" Label="Restart">
+                    <AppBarButton   Tapped="Resume_click"  Label="Resume" Icon="Play"/>
+                    <AppBarButton   Tapped="StartOver_click" Label="Restart">
                         <AppBarButton.Icon>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF83E;" />
                         </AppBarButton.Icon>
-                    </local:AppBarButtonWithToolTip>
-                    <local:AppBarButtonWithToolTip   Tapped="Dissmiss_dialog" Label="Dismiss" Icon="Cancel"/>
+                    </AppBarButton>
+                    <AppBarButton   Tapped="Dissmiss_dialog" Label="Dismiss" Icon="Cancel"/>
                 </CommandBar>
                 <Grid Grid.Column="1" Grid.Row="1">
                     <Grid.RowDefinitions>

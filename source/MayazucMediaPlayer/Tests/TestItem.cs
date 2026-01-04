@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MayazucMediaPlayer.Services;
-using MayazucMediaPlayer.UserInput;
 using Microsoft.UI;
 using System.Threading.Tasks;
 using Windows.UI;

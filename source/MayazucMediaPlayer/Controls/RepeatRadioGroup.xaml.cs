@@ -48,7 +48,7 @@ namespace MayazucMediaPlayer.Controls
         private void LoadState()
         {
             SetSelectedButton();
-        }   
+        }
 
         private async void SettingsWrapper_RepeatModeChanged(object? sender, string e)
         {
@@ -60,7 +60,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void RepeatRadioGroup_Unloaded(object? sender, RoutedEventArgs e)
         {
-            SettingsService.Instance.RepeatModeChanged -= SettingsWrapper_RepeatModeChanged;      
+            SettingsService.Instance.RepeatModeChanged -= SettingsWrapper_RepeatModeChanged;
 
             Unloaded -= RepeatRadioGroup_Unloaded;
         }

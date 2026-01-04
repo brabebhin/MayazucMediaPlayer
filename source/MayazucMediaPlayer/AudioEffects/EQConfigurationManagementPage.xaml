@@ -18,7 +18,7 @@
 
         <StackPanel>
             <CommandBar Background="Transparent" DefaultLabelPosition="Right" HorizontalAlignment="Left" Grid.Row="2">
-                <controls:AppBarButtonWithToolTip  Tapped="DataServiceAddCommand" Icon="Add" Label="New" x:Name="CreateNewConfiguration"></controls:AppBarButtonWithToolTip>
+                <AppBarButton  Tapped="DataServiceAddCommand" Icon="Add" Label="New" x:Name="CreateNewConfiguration"></AppBarButton>
             </CommandBar>
         </StackPanel>
         <SplitView Grid.Row="2" PaneBackground="Transparent" x:Name="masterDetailsRoot" VerticalAlignment="Stretch" PanePlacement="Left" DisplayMode="Inline" LightDismissOverlayMode="Off" IsPaneOpen="True">
@@ -36,10 +36,10 @@
                                     <TextBlock Text="{x:Bind FrequencyDisplays, Mode=OneWay}" Margin="2" Style="{ThemeResource BodyTextBlockStyle}" />
                                 </StackPanel>
                                 <CommandBar DefaultLabelPosition="Right" Background="Transparent" Grid.Column="1">
-                                    <controls:AppBarButtonWithToolTip Grid.Column="1" Tapped="MakeSelectedDefault"  Icon="PostUpdate" Label="Set as active" ToolTipService.ToolTip="Set as active"/>
-                                    <controls:AppBarButtonWithToolTip Icon="Edit"  Tapped="EditEqualizerConfigurationPresetsCommand" Label="Edit"></controls:AppBarButtonWithToolTip>
+                                    <AppBarButton Grid.Column="1" Tapped="MakeSelectedDefault"  Icon="PostUpdate" Label="Set as active" ToolTipService.ToolTip="Set as active"/>
+                                    <AppBarButton Icon="Edit"  Tapped="EditEqualizerConfigurationPresetsCommand" Label="Edit"></AppBarButton>
                                     <AppBarSeparator></AppBarSeparator>
-                                    <controls:AppBarButtonWithToolTip Grid.Column="1" IsEnabled="{x:Bind CanDelete, Mode=OneWay}" Icon="Delete" Tapped="DeleteButtonCommand" Label="Delete configuration" ToolTipService.ToolTip="Delete configuration"/>
+                                    <AppBarButton Grid.Column="1" IsEnabled="{x:Bind CanDelete, Mode=OneWay}" Icon="Delete" Tapped="DeleteButtonCommand" Label="Delete configuration" ToolTipService.ToolTip="Delete configuration"/>
                                 </CommandBar>
                             </Grid>
                         </DataTemplate>
