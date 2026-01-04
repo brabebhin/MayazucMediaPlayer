@@ -44,8 +44,8 @@ namespace MayazucMediaPlayer.Controls
             matrix.M52 = t + b;
             matrix.M53 = t + b;
             matrix.M54 = 0;
-            //        {
-            //            c * (sr + s),   c * (sr),       c * (sr),       0,
+            //{
+            //    c * (sr + s),   c * (sr),       c * (sr),       0,
             //    c * (sg),       c * (sg + s),   c * (sg),       0,
             //    c * (sb),       c * (sb),       c * (sb + s),   0,
             //    0,              0,              0,              1,

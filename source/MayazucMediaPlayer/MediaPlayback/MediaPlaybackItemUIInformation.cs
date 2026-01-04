@@ -125,6 +125,7 @@ namespace MayazucMediaPlayer.MediaPlayback
         public string CodecName { get; }
         public string Language { get; }
         public string Name { get; }
+        public bool HasHdrMetadata { get; }
 
         public VideoStreamInfoWrapper(VideoStreamInfo info)
         {
@@ -139,6 +140,7 @@ namespace MayazucMediaPlayer.MediaPlayback
             CodecName = info.CodecName;
             Language = info.Language;
             Name = info.Name;
+            HasHdrMetadata = info.HasHdrMetadata;
         }
     }
 

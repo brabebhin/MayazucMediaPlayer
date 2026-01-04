@@ -29,6 +29,7 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="8"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="100"></ColumnDefinition>
@@ -53,26 +54,17 @@
                     <MenuFlyoutItem   Text="Video library" Tag="VideoLibrary" Click="GoToSomeScreen"/>
                     <MenuFlyoutItem   Text="Playlists" Tag="PlaylistsLibrary" Click="GoToSomeScreen"/>
                     <MenuFlyoutItem   Text="Network stream history" Tag="NetworkStreamHistory" Click="GoToSomeScreen"/>
-
-                </MenuBarItem>
-
-                <MenuBarItem Title="Queue" Visibility="Collapsed" Tapped="GoToQueueManagement">
-                </MenuBarItem>
-
-                <MenuBarItem Title="Media effects" Visibility="Collapsed"  Tapped="GoToMediaEffects">
-                </MenuBarItem>
-
-                <MenuBarItem   Title="Settings"  Tag="Settings" Tapped="GoToSomeScreen">
-                </MenuBarItem>
-                <MenuBarItem  Title="Equalizer configurations" Tag="MusicLibrary" Tapped="GoToMediaEqualizerConfigs">
-
+                    <MenuFlyoutItem   Text="Equalizer configurations" Click="GoToMediaEqualizerConfigs"/>
                 </MenuBarItem>
 
             </MenuBar>
-            <Button BorderBrush="Transparent" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="OverayModeButton" ToolTipService.ToolTip="Window overlay modes" Background="Transparent" Tapped="EnterExitOverlayMode" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
+            <Button BorderBrush="Transparent"  Tag="Settings" Tapped="GoToSomeScreen" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="settingsButton" ToolTipService.ToolTip="Settings" Background="Transparent" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
+                <SymbolIcon Symbol="Setting"/>
+            </Button>
+            <Button BorderBrush="Transparent" Grid.Column="3" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="OverayModeButton" ToolTipService.ToolTip="Window overlay modes" Background="Transparent" Tapped="EnterExitOverlayMode" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
                 <FontIcon FontFamily="Segoe MDL2 Assets" x:Name="OverayModeButtonIcon" Glyph="&#xEE49;"/>
             </Button>
-            <Grid Grid.Column="4" x:Name="TitleBarGrid" Background="{x:Bind PlayMenuItem.Background, Mode=OneWay}">
+            <Grid Grid.Column="5" x:Name="TitleBarGrid" Background="{x:Bind PlayMenuItem.Background, Mode=OneWay}">
                 <TextBlock VerticalAlignment="Center" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" TextWrapping="NoWrap" x:Name="CurrentViewTitle"/>
             </Grid>
             <Border  Width="100" Grid.Column="5">

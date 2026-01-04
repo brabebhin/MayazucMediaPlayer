@@ -135,7 +135,8 @@
                                                 <ScrollViewer>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                            <ColumnDefinition Width="10"></ColumnDefinition>
                                                             <ColumnDefinition></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
@@ -149,28 +150,28 @@
                                                             <RowDefinition></RowDefinition>
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="2" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="1" Grid.Column="0" Text="Language"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="2" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="2" Grid.Column="0" Text="Codec"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="2" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="Bitrate"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{x:Bind Bitrate, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="2" Text="{x:Bind Bitrate, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="4" Grid.Column="0" Text="Channels"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{x:Bind Channels, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="2" Text="{x:Bind Channels, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="5" Grid.Column="0" Text="Sample Rate"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{x:Bind SampleRate, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="2" Text="{x:Bind SampleRate, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="6" Grid.Column="0" Text="Bits Per Sample"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="1" Text="{x:Bind BitsPerSample, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="2" Text="{x:Bind BitsPerSample, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="7" Grid.Column="0" Text="Default"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="1" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="2" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
                                                     </Grid>
                                                 </ScrollViewer>
                                             </Expander.Content>
@@ -203,7 +204,8 @@
                                                 <ScrollViewer>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                            <ColumnDefinition Width="10"></ColumnDefinition>
                                                             <ColumnDefinition></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
@@ -215,30 +217,34 @@
                                                             <RowDefinition></RowDefinition>
                                                             <RowDefinition></RowDefinition>
                                                             <RowDefinition></RowDefinition>
+                                                            <RowDefinition></RowDefinition>
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="2" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="1" Grid.Column="0" Text="Language"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="2" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="2" Grid.Column="0" Text="Codec"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="2" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="3" Grid.Column="0" Text="Pixel Width"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{x:Bind PixelWidth, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="2" Text="{x:Bind PixelWidth, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="4" Grid.Column="0" Text="Pixel Height"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{x:Bind PixelHeight, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="2" Text="{x:Bind PixelHeight, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="5" Grid.Column="0" Text="Decoder Engine"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{x:Bind DecoderEngine, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="2" Text="{x:Bind DecoderEngine, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="6" Grid.Column="0" Text="Bits Per Sample"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="1" Text="{x:Bind BitsPerSample, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="6" Grid.Column="2" Text="{x:Bind BitsPerSample, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="7" Grid.Column="0" Text="Default"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="1" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="7" Grid.Column="2" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
+
+                                                        <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="8" Grid.Column="0" Text="Has HDR metadata"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="8" Grid.Column="2" Text="{x:Bind HasHdrMetadata, Mode=OneWay}"></TextBlock>
                                                     </Grid>
                                                 </ScrollViewer>
                                             </Expander.Content>
@@ -270,7 +276,8 @@
                                                 <ScrollViewer>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition></ColumnDefinition>
+                                                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                            <ColumnDefinition Width="10"></ColumnDefinition>
                                                             <ColumnDefinition></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
@@ -282,22 +289,22 @@
                                                             <RowDefinition></RowDefinition>
                                                         </Grid.RowDefinitions>
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="1" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="0" Grid.Column="2" Text="{x:Bind Name, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="1" Grid.Column="0" Text="Language"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="1" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="1" Grid.Column="2" Text="{x:Bind Language, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="2" Grid.Column="0" Text="Codec"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="1" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="2" Grid.Column="2" Text="{x:Bind CodecName, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="3" Grid.Column="0" Text="Bitrate"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="1" Text="{x:Bind Bitrate, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="3" Grid.Column="2" Text="{x:Bind Bitrate, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="4" Grid.Column="0" Text="Forced"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="1" Text="{x:Bind IsForced, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="4" Grid.Column="2" Text="{x:Bind IsForced, Mode=OneWay}"></TextBlock>
 
                                                         <TextBlock Style="{ThemeResource BodyStrongTextBlockStyle}"  Grid.Row="5" Grid.Column="0" Text="Default"></TextBlock>
-                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="1" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
+                                                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Grid.Row="5" Grid.Column="2" Text="{x:Bind IsDefault, Mode=OneWay}"></TextBlock>
 
                                                     </Grid>
                                                 </ScrollViewer>

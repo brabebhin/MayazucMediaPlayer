@@ -23,7 +23,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _masterSwitch, value, nameof(MasterSwitch));
-                ConfigurationChanged(this, nameof(MasterSwitch));
+                ConfigurationChanged?.Invoke(this, nameof(MasterSwitch));
             }
         }
 
@@ -33,7 +33,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _grayscaleEnabled, value, nameof(GrayscaleEnabled));
-                ConfigurationChanged(this, nameof(GrayscaleEnabled));
+                ConfigurationChanged?.Invoke(this, nameof(GrayscaleEnabled));
             }
         }
 
@@ -43,7 +43,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _blurEnabled, value, nameof(BlurEnabled));
-                ConfigurationChanged(this, nameof(BlurEnabled));
+                ConfigurationChanged?.Invoke(this, nameof(BlurEnabled));
             }
         }
 
@@ -53,7 +53,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _Brightness, value, nameof(Brightness));
-                ConfigurationChanged(this, nameof(Brightness));
+                ConfigurationChanged?.Invoke(this, nameof(Brightness));
             }
         }
         public float Contrast
@@ -62,7 +62,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _Contrast, value, nameof(Contrast));
-                ConfigurationChanged(this, nameof(Contrast));
+                ConfigurationChanged?.Invoke(this, nameof(Contrast));
             }
         }
         public float Saturation
@@ -71,7 +71,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _Saturation, value, nameof(Saturation));
-                ConfigurationChanged(this, nameof(Saturation));
+                ConfigurationChanged?.Invoke(this, nameof(Saturation));
             }
         }
 
@@ -81,7 +81,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _Temperature, value, nameof(Temperature));
-                ConfigurationChanged(this, nameof(Temperature));
+                ConfigurationChanged?.Invoke(this, nameof(Temperature));
             }
         }
 
@@ -91,7 +91,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 base.SetProperty(ref _Tint, value, nameof(Tint));
-                ConfigurationChanged(this, nameof(Tint));
+                ConfigurationChanged?.Invoke(this, nameof(Tint));
             }
         }
         public float Sharpness
@@ -100,7 +100,7 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 this.SetProperty(ref _Sharpness, value, nameof(Sharpness));
-                ConfigurationChanged(this, nameof(Sharpness));
+                ConfigurationChanged?.Invoke(this, nameof(Sharpness));
             }
         }
 
@@ -110,11 +110,11 @@ namespace MayazucMediaPlayer.VideoEffects
             set
             {
                 SetProperty(ref _SharpnessThreshold, value, nameof(SharpnessThreshold));
-                ConfigurationChanged(this, nameof(Brightness));
+                ConfigurationChanged?.Invoke(this, nameof(Brightness));
             }
         }
 
-        public event EventHandler<string> ConfigurationChanged;
+        public event EventHandler<string>? ConfigurationChanged;
 
         public void RemoveVideoEffect(MediaPlayer player)
         {
