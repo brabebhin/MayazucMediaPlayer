@@ -65,14 +65,14 @@
                 <AppBarButton  Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Style='{StaticResource AppBarButtonStyleNoChevron}' Icon="Audio">
                     <AppBarButton.Flyout>
                         <Flyout>
-                            <local:AudioTrackSelectionDialog x:Name="mtcAudioTracks"></local:AudioTrackSelectionDialog>
+                            <local:AudioTrackSelectionControl x:Name="mtcAudioTracks"></local:AudioTrackSelectionControl>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
                 <AppBarButton Visibility="{x:Bind FullCommandBarButtonsVisibility, Mode=OneWay}"  Icon="Video"  Style='{StaticResource AppBarButtonStyleNoChevron}'>
                     <AppBarButton.Flyout>
                         <Flyout>
-                            <local:VideoTrackSelectionDialog x:Name="mtcVideoTracks"></local:VideoTrackSelectionDialog>
+                            <local:VideoTrackSelectionControl x:Name="mtcVideoTracks"></local:VideoTrackSelectionControl>
                         </Flyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>

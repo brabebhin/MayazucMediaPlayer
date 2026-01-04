@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI;
 using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
 using System;
@@ -8,21 +8,22 @@ using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class VideoTrackSelectionDialog : BaseUserControl
+    public sealed partial class AudioTrackSelectionControl : BaseUserControl
     {
         readonly AsyncLock trackLock = new AsyncLock();
         MediaPlaybackItem currentItem = null;
 
-        public VideoTrackSelectionDialog()
+        public AudioTrackSelectionControl()
         {
             InitializeComponent();
         }
 
-        public async Task LoadVideoTracksAsync(MediaPlaybackItem item)
+        public async Task LoadAudioTracksAsync(MediaPlaybackItem item)
         {
             using (await trackLock.LockAsync())
             {
@@ -30,14 +31,14 @@ namespace MayazucMediaPlayer.Controls
                 {
                     if (currentItem != null)
                     {
-                        currentItem.VideoTracks.SelectedIndexChanged -= VideoTracks_SelectedIndexChanged;
+                        currentItem.VideoTracks.SelectedIndexChanged -= AudioTracks_SelectedIndexChanged;
                         currentItem.VideoTracksChanged -= CurrentItem_VideoTracksChanged;
                     }
                     currentItem = item;
 
                     ProcessPlaybackItem(item);
 
-                    currentItem.VideoTracks.SelectedIndexChanged += VideoTracks_SelectedIndexChanged;
+                    currentItem.VideoTracks.SelectedIndexChanged += AudioTracks_SelectedIndexChanged;
                     currentItem.VideoTracksChanged += CurrentItem_VideoTracksChanged;
                 }
             }
@@ -45,18 +46,18 @@ namespace MayazucMediaPlayer.Controls
 
         private void ProcessPlaybackItem(MediaPlaybackItem item)
         {
-            lsvVideoStreams.SelectionChanged -= LsvVideoStreams_SelectionChanged;
-            HashSet<VideoStreamPickerWrapper> items = new HashSet<VideoStreamPickerWrapper>();
+            lsvAudioStreams.SelectionChanged -= LsvVideoStreams_SelectionChanged;
+            HashSet<AudioStreamPickerWrapper> items = new HashSet<AudioStreamPickerWrapper>();
 
-            for (int i = 0; i < item.VideoTracks.Count; i++)
+            for (int i = 0; i < item.AudioTracks.Count; i++)
             {
-                var ms = item.VideoTracks[i];
-                items.Add(new VideoStreamPickerWrapper(ms, i + 1));
+                var ms = item.AudioTracks[i];
+                items.Add(new AudioStreamPickerWrapper(ms, i + 1));
             }
-            lsvVideoStreams.ItemsSource = items;
-            lsvVideoStreams.SelectedIndex = item.VideoTracks.SelectedIndex;
+            lsvAudioStreams.ItemsSource = items;
+            lsvAudioStreams.SelectedIndex = item.AudioTracks.SelectedIndex;
 
-            lsvVideoStreams.SelectionChanged += LsvVideoStreams_SelectionChanged;
+            lsvAudioStreams.SelectionChanged += LsvVideoStreams_SelectionChanged;
         }
 
         private async void LsvVideoStreams_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -65,8 +66,8 @@ namespace MayazucMediaPlayer.Controls
             {
                 if (currentItem != null)
                 {
-                    if (lsvVideoStreams.SelectedIndex >= 0)
-                        currentItem.VideoTracks.SelectedIndex = lsvVideoStreams.SelectedIndex;
+                    if (lsvAudioStreams.SelectedIndex >= 0)
+                        currentItem.VideoTracks.SelectedIndex = lsvAudioStreams.SelectedIndex;
                 }
             }
         }
@@ -83,21 +84,23 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        private async void VideoTracks_SelectedIndexChanged(ISingleSelectMediaTrackList sender, object args)
+        private async void AudioTracks_SelectedIndexChanged(ISingleSelectMediaTrackList sender, object args)
         {
             using (await trackLock.LockAsync())
             {
-                await DispatcherQueue.EnqueueAsync(() => { lsvVideoStreams.SelectedIndex = sender.SelectedIndex; });
+                await DispatcherQueue.EnqueueAsync(() => { lsvAudioStreams.SelectedIndex = sender.SelectedIndex; });
             }
         }
+
+
     }
 
-    public class VideoStreamPickerWrapper
+    internal class AudioStreamPickerWrapper
     {
-        readonly VideoTrack track;
+        readonly AudioTrack track;
         readonly int ordinal = 0;
 
-        public VideoStreamPickerWrapper(VideoTrack ms, int ord)
+        public AudioStreamPickerWrapper(AudioTrack ms, int ord)
         {
             track = ms;
             ordinal = ord;
@@ -105,8 +108,8 @@ namespace MayazucMediaPlayer.Controls
 
         public override bool Equals(object? obj)
         {
-            return obj is VideoStreamPickerWrapper wrapper &&
-                   EqualityComparer<VideoTrack>.Default.Equals(track, wrapper.track) &&
+            return obj is AudioStreamPickerWrapper wrapper &&
+                   EqualityComparer<AudioTrack>.Default.Equals(track, wrapper.track) &&
                    ordinal == wrapper.ordinal;
         }
 
@@ -127,11 +130,11 @@ namespace MayazucMediaPlayer.Controls
         {
             var name = track.Label;
             var encodingProperties = track.GetEncodingProperties();
-            var encodingInfo = $"{encodingProperties.Width} x {encodingProperties.Height}";
+            var encodingInfo = $"{encodingProperties.SampleRate} Hz, {encodingProperties.ChannelCount} Channels, {encodingProperties.Bitrate} bits/s";
 
             if (string.IsNullOrEmpty(name))
             {
-                name = $"Video track {ordinal}";
+                name = $"Track {ordinal}";
             }
 
             return $"{name} : {encodingInfo}";

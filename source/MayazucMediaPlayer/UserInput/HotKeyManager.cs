@@ -112,7 +112,7 @@ namespace MayazucMediaPlayer.UserInput
 
         public async Task SaveAcceleratorsAsync()
         {
-            var savedFile = await LocalFolders.GetKeyboardAcceleratorsFile();
+            var savedFile = await KnownLocations.GetKeyboardAcceleratorsFile();
         }
 
         public async Task RegisterAcceleratorsAsync(UIElement uiHost)
@@ -182,7 +182,7 @@ namespace MayazucMediaPlayer.UserInput
         private async Task<HotKeyCollection> GetAcceleratorsAsync()
         {
             List<MayazucHotKey> accels = new List<MayazucHotKey>();
-            var savedFile = await LocalFolders.GetKeyboardAcceleratorsFile();
+            var savedFile = await KnownLocations.GetKeyboardAcceleratorsFile();
             string json = string.Empty;
             if (savedFile.Exists)
                 json = System.IO.File.ReadAllText(savedFile.FullName);

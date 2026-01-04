@@ -182,7 +182,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public static async Task<Result<EqualizerConfiguration>> LoadFromFile(string name)
         {
-            var saveFolder = Directory.CreateDirectory(await LocalFolders.GetEqualizerPresetsFolderAsync());
+            var saveFolder = Directory.CreateDirectory(await KnownLocations.GetEqualizerPresetsFolderAsync());
             var storedFile = saveFolder.EnumerateFiles().FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.Name) == name);
             return LoadFromFile(storedFile);
         }
@@ -205,7 +205,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public void SaveToFileAsync()
         {
-            var saveFolder = Directory.CreateDirectory(LocalFolders.EqualizerConfigurationsPayloadFolderPath());
+            var saveFolder = Directory.CreateDirectory(KnownLocations.EqualizerConfigurationsPayloadFolderPath());
             var filePath = Path.Combine(saveFolder.FullName, Name + ".json");
             var json = JsonSerializer.Serialize(this.ToSeed(), MayazucJsonSerializerContext.Default.EqualizerConfigurationSeed);
             File.WriteAllText(filePath, json);
@@ -214,7 +214,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         public void Delete()
         {
-            var saveFolder = Directory.CreateDirectory(LocalFolders.EqualizerConfigurationsPayloadFolderPath());
+            var saveFolder = Directory.CreateDirectory(KnownLocations.EqualizerConfigurationsPayloadFolderPath());
             var filePath = Path.Combine(saveFolder.FullName, Name + ".json");
             var fileInfo = new FileInfo(filePath);
             if (fileInfo.Exists)

@@ -13,7 +13,7 @@ namespace MayazucMediaPlayer.Subtitles
         {
             using (await subtitleClearCacheAsyncLock.LockAsync())
             {
-                var subsFolder = await LocalFolders.GetCachedSubtitlesFolder();
+                var subsFolder = await KnownLocations.GetCachedSubtitlesFolder();
                 var files = await subsFolder.GetFilesAsync();
                 int deletedFiles = 0;
 

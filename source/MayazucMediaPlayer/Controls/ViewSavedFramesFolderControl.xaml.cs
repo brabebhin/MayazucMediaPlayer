@@ -19,7 +19,7 @@ namespace MayazucMediaPlayer.Controls
 
         private async void OpenSavedFramesFolder_click(object? sender, RoutedEventArgs e)
         {
-            var folder = await LocalCache.LocalFolders.GetSavedVideoFramesFolder();
+            var folder = await LocalCache.KnownLocations.GetSavedVideoFramesFolder();
             await Launcher.LaunchFolderAsync(folder);
         }
     }

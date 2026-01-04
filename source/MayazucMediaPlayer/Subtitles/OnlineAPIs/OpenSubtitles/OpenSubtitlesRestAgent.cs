@@ -93,7 +93,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
             try
             {
                 using var subtitleData = await httpClient.GetStreamAsync(downloadUrlResponse.Link);
-                var folder = await LocalFolders.GetCachedSubtitlesFolder();
+                var folder = await KnownLocations.GetCachedSubtitlesFolder();
                 var file = await folder.CreateFileAsync(info.SubFileName, CreationCollisionOption.ReplaceExisting);
                 //using (var deflateStream = new GZipStream(subtitleData, CompressionMode.Decompress))
                 {

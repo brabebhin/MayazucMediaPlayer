@@ -9,7 +9,7 @@ namespace MayazucMediaPlayer
     {
         public static async Task<IReadOnlyCollection<string>> GetExpectedAlbumArtFileNames(FileInfo inputFile)
         {
-            var folderToSaveThumbnailIn = await LocalFolders.GetAlbumArtFolder();
+            var folderToSaveThumbnailIn = await KnownLocations.GetAlbumArtFolder();
 
             var albumArtFile = Utilities.EncodePathWithoutExtension(inputFile.FullName);
             List<string> returnValue = new List<string>();

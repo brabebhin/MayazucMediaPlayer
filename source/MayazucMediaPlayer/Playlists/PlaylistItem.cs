@@ -123,7 +123,7 @@ namespace MayazucMediaPlayer.Playlists
 
         public Task<bool> RenameAsync(string newName)
         {
-            var newPath = Path.Combine(LocalFolders.GetPlaylistsFolderAsync().FullName, newName + FileExtension);
+            var newPath = Path.Combine(KnownLocations.GetPlaylistsFolderAsync().FullName, newName + FileExtension);
             BackStore.MoveTo(newPath);
             BackStore = new FileInfo(newPath);
 
@@ -224,7 +224,7 @@ namespace MayazucMediaPlayer.Playlists
 
         public static FileInfo GetDefaultPathForInternalPlaylistAsync(string playListName)
         {
-            var directory = LocalFolders.GetPlaylistsFolderAsync();
+            var directory = KnownLocations.GetPlaylistsFolderAsync();
             var finalPath = Path.Combine(directory.FullName, playListName + FileExtension);
             return new FileInfo(finalPath);
         }

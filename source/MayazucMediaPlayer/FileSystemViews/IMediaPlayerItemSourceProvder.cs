@@ -18,7 +18,6 @@ namespace MayazucMediaPlayer.FileSystemViews
     {
         string DisplayName { get; }
         string ImageUri { get; }
-        Guid ItemID { get; }
         EmbeddedMetadata Metadata { get; }
         string Path { get; }
         bool SupportsMetadata { get; }

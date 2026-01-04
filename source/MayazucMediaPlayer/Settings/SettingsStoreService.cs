@@ -18,14 +18,14 @@ namespace MayazucMediaPlayer.Settings
         public void SaveSettings()
         {
             var json = JsonSerializer.Serialize(settings, MayazucJsonSerializerContext.Default.ConcurrentDictionaryStringString);
-            File.WriteAllText(LocalFolders.GetDefaultSettingsFilePath().FullName, json);
+            File.WriteAllText(KnownLocations.GetDefaultSettingsFilePath().FullName, json);
         }
 
         public void LoadSettings()
         {
             try
             {
-                var json = File.ReadAllText(LocalFolders.GetDefaultSettingsFilePath().FullName);
+                var json = File.ReadAllText(KnownLocations.GetDefaultSettingsFilePath().FullName);
                 settings = JsonSerializer.Deserialize(json, MayazucJsonSerializerContext.Default.ConcurrentDictionaryStringString);
             }
             catch

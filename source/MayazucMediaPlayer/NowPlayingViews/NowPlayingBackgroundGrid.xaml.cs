@@ -43,7 +43,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             var imagesLoadTask = Task.Run<List<string>>(async () =>
             {
-                var albumArt = await LocalFolders.GetAlbumArtFolder();
+                var albumArt = await KnownLocations.GetAlbumArtFolder();
                 var files = albumArt.GetFiles();
                 files.Randomize();
                 return files.Select(x => x.FullName).ToList();

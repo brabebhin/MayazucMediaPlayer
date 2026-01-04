@@ -160,14 +160,14 @@ namespace MayazucMediaPlayer.Controls
                 try
                 {
                     var session = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
-                    var outputFolder = await LocalFolders.GetSavedVideoFramesFolder();
+                    var outputFolder = await KnownLocations.GetSavedVideoFramesFolder();
                     var currentMediaData = AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackData;
 
                     var sourceFile = new FileInfo(currentMediaData.MediaPath);
                     if (sourceFile != null && sourceFile.Exists)
                     {
                         var name = $"{Path.GetFileNameWithoutExtension(sourceFile.Name)}-{session.Position.TotalSeconds}.png";
-                        var folder = await LocalCache.LocalFolders.GetSavedVideoFramesFolder();
+                        var folder = await LocalCache.KnownLocations.GetSavedVideoFramesFolder();
                         var file = await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
                         using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                         {

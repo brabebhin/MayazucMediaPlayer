@@ -56,7 +56,7 @@ namespace MayazucMediaPlayer.VideoEffects
 
         private async void ShowManagementDialog(object? sender, RoutedEventArgs e)
         {
-            VideoColorProfileManagementDIalog diag = new VideoColorProfileManagementDIalog(DataService);
+            VideoColorProfileManagementDialog diag = new VideoColorProfileManagementDialog(DataService);
             await ContentDialogService.Instance.ShowAsync(diag);
 
         }

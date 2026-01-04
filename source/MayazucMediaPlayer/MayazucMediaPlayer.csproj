@@ -27,12 +27,13 @@
 		<Compile Remove="AudioEffects\AudioEqualizerSlider.xaml.cs" />
 		<Compile Remove="Common\AsyncRelayCommand.cs" />
 		<Compile Remove="Common\RelayCommand.cs" />
+		<Compile Remove="Controls\PageTitle.xaml.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Controls\NotificationControl.xaml" />
+		<None Remove="Controls\PageTitle.xaml" />
 		<None Remove="Controls\ResumePlaybackControl.xaml" />
 		<None Remove="AudioEffects\AudioEqualizerSlider.xaml" />
-		<None Remove="Controls\AudioTrackSelectionDialog.xaml" />
 		<None Remove="Controls\ChapterSelectionControl.xaml" />
 		<None Remove="Controls\CustomMediaTransportControls2.xaml" />
 		<None Remove="Controls\EqualizerPresetAmplificationsPreview.xaml" />
@@ -190,7 +191,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Controls\AudioTrackSelectionDialog.xaml">
+		<Page Update="Controls\AudioTrackSelectionControl.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
@@ -249,6 +250,7 @@
 
 	<ItemGroup>
 		<Page Remove="AudioEffects\AudioEqualizerSlider.xaml" />
+		<Page Remove="Controls\PageTitle.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -324,7 +326,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Controls/AudioTrackSelectionDialog.xaml">
+		<Page Update="Controls\AudioTrackSelectionControl.xaml">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
@@ -422,14 +424,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Controls/PageTitle.xaml">
-			<Generator>MSBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</Page>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Page Update="Controls/QRCodeDialog.xaml">
+		<Page Update="Controls\QRCodeControl.xaml">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
@@ -471,7 +466,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Controls/VideoTrackSelectionDialog.xaml">
+		<Page Update="Controls\VideoTrackSelectionControl.xaml">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>
@@ -562,7 +557,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Page Update="Dialogs/VideoColorProfileManagementDIalog.xaml">
+		<Page Update="Dialogs\VideoColorProfileManagementDialog.xaml">
 			<Generator>MSBuild:Compile</Generator>
 			<SubType>Designer</SubType>
 		</Page>

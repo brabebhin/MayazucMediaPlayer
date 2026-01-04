@@ -41,7 +41,7 @@ namespace MayazucMediaPlayer.Settings
                 try
                 {
                     EqualizerConfigurationsPayload returnValue = new EqualizerConfigurationsPayload();
-                    var equalizerConfigurationDirectory = Directory.CreateDirectory(LocalCache.LocalFolders.EqualizerConfigurationsPayloadFolderPath());
+                    var equalizerConfigurationDirectory = Directory.CreateDirectory(LocalCache.KnownLocations.EqualizerConfigurationsPayloadFolderPath());
                     var filesEnumeration = equalizerConfigurationDirectory.EnumerateFiles();
 
                     filesEnumeration = equalizerConfigurationDirectory.EnumerateFiles();

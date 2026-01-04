@@ -1,39 +1,12 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using MayazucMediaPlayer.Common;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 
 namespace MayazucMediaPlayer.LocalCache
 {
-    public class SimpleObjectCache
-    {
-        private readonly ConcurrentDictionary<string, object> cache = new ConcurrentDictionary<string, object>();
-
-        public T TryAdd<T>(string key, T value)
-        {
-            cache.TryAdd(key, value);
-            return value;
-        }
-
-        public T Get<T>(string key)
-        {
-            return (T)cache[key];
-        }
-
-        public bool HasKey(string key)
-        {
-            return cache.ContainsKey(key);
-        }
-
-        public void Clear()
-        {
-            cache.Clear();
-        }
-    }
-
-
-    public static class LocalFolders
+    public static class KnownLocations
     {
         static readonly AsyncLockManager lockProvider = new AsyncLockManager();
         static readonly SimpleObjectCache resultsProvider = new SimpleObjectCache();

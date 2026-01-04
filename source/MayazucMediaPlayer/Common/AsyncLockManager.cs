@@ -1,7 +1,7 @@
 ﻿using Nito.AsyncEx;
 using System.Collections.Concurrent;
 
-namespace MayazucMediaPlayer.LocalCache
+namespace MayazucMediaPlayer.Common
 {
     public class AsyncLockManager
     {

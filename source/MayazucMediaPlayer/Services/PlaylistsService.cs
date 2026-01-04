@@ -29,7 +29,7 @@ namespace MayazucMediaPlayer.Services
 
         public IEnumerable<PlaylistItem> LoadPlaylistsAsync()
         {
-            var folder = LocalCache.LocalFolders.GetPlaylistsFolderAsync();
+            var folder = LocalCache.KnownLocations.GetPlaylistsFolderAsync();
             var files = folder.EnumerateFiles().Where(x => SupportedFileFormats.IsPlaylistFile(x.FullName));
             Playlists.AddRange(LoadPlaylistsFromFiles(files));
             return Playlists;

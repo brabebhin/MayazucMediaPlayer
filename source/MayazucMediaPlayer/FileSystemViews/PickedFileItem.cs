@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using MayazucMediaPlayer.BackgroundServices;
 using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
@@ -70,12 +71,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         public event EventHandler<FileInfo?> ImageFileChanged;
         private readonly Task MetadataInitializationTask;
 
-        public Guid ItemID
-        {
-            get;
-            private set;
-        }
-
+        
         public FileInfo File
         {
             get;
@@ -104,7 +100,6 @@ namespace MayazucMediaPlayer.FileSystemViews
             File = file;
             Path = file.FullName;
             DisplayName = File.Name;
-            ItemID = Guid.NewGuid();
             Metadata = EmbeddedMetadataResolver.GetDefaultMetadataForFile(file.FullName);
             SupportsMetadata = EmbeddedMetadataResolver.IsSupportedExtension(File);
             MetadataInitializationTask = RetrieveThumbnailImageAsync();

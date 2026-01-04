@@ -302,8 +302,6 @@ namespace MayazucMediaPlayer.Playlists
             }
         }
 
-        public Guid ItemID => data.ID;
-
         public EmbeddedMetadata Metadata
         {
             get

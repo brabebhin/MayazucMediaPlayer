@@ -123,7 +123,7 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             try
             {
-                var saveFolder = await LocalCache.LocalFolders.GetVideoColorProfilesFolder();
+                var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
                 var sfile = await saveFolder.TryGetItemAsync(profileName.Name);
                 if (sfile != null)
                 {
@@ -138,7 +138,7 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             try
             {
-                var saveFolder = await LocalCache.LocalFolders.GetVideoColorProfilesFolder();
+                var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
                 var sfile = await saveFolder.TryGetItemAsync(selectedItem.Name);
                 if (sfile != null)
                 {
@@ -162,7 +162,7 @@ namespace MayazucMediaPlayer.VideoEffects
         {
             await CreateDefaultColorProfiles();
 
-            var saveFolder = await LocalCache.LocalFolders.GetVideoColorProfilesFolder();
+            var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
             var result = await saveFolder.GetFilesAsync();
             var values = EffectProperties.ToList().AsEnumerable();
 
@@ -216,7 +216,7 @@ namespace MayazucMediaPlayer.VideoEffects
 
         private async Task<SavedColorProfile> SaveColorProfileToFile(string path, IEnumerable<VideoEffectSliderProperty> values)
         {
-            var saveFolder = await LocalCache.LocalFolders.GetVideoColorProfilesFolder();
+            var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
             var saveFile = await saveFolder.CreateFileAsync(path, Windows.Storage.CreationCollisionOption.ReplaceExisting);
             var dictionaryValues = new Dictionary<string, double>();
             foreach (var value in values)

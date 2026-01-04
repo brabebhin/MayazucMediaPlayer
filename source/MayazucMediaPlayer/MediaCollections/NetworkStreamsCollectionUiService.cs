@@ -63,7 +63,7 @@ namespace MayazucMediaPlayer.MediaCollections
         public async Task LoadHistory()
         {
             NetworkStreamsHistory.Clear();
-            var historyFile = await LocalCache.LocalFolders.GetInternetStreamsHistoryFile();
+            var historyFile = await LocalCache.KnownLocations.GetInternetStreamsHistoryFile();
             var json = await File.ReadAllTextAsync(historyFile.FullName);
             if (!string.IsNullOrWhiteSpace(json))
             {
@@ -80,7 +80,7 @@ namespace MayazucMediaPlayer.MediaCollections
 
         public async Task SaveHistory()
         {
-            var historyFile = await LocalCache.LocalFolders.GetInternetStreamsHistoryFile();
+            var historyFile = await LocalCache.KnownLocations.GetInternetStreamsHistoryFile();
 
             var json = JsonSerializer.Serialize(NetworkStreamsHistory.OrderByDescending(x => x.Time).Take(HistorySize).ToList(), MayazucJsonSerializerContext.Default.ListNetworkStreamHistoryEntry);
             await File.WriteAllTextAsync(historyFile.FullName, json);

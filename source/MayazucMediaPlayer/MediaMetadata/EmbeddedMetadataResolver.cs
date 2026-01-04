@@ -143,7 +143,7 @@ namespace MayazucMediaPlayer.MediaMetadata
         public static async Task<FileInfo> GetMetadataDocumentForFile(string filePath)
         {
             var filename = Utilities.EncodePathWithExtension(filePath, ".json");
-            var folder = await LocalFolders.MetadataDatabaseFolder();
+            var folder = await KnownLocations.MetadataDatabaseFolder();
             return new FileInfo(Path.Combine(folder.FullName, filename));
         }
 
@@ -222,7 +222,7 @@ namespace MayazucMediaPlayer.MediaMetadata
             string albumartFileName,
             FFmpegMediaSource mediaSource)
         {
-            var folderToSaveThumbnailIn = await LocalFolders.GetAlbumArtFolder();
+            var folderToSaveThumbnailIn = await KnownLocations.GetAlbumArtFolder();
             FileInfo retValue = new FileInfo(AssetsPaths.PlaceholderAlbumArt);
             if (!mediaSource.HasThumbnail) return retValue;
 

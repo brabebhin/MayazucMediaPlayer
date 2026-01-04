@@ -33,13 +33,13 @@ namespace MayazucMediaPlayer.Settings
                 try
                 {
                     (sender as Button).IsEnabled = false;
-                    var files = (await LocalFolders.GetAlbumArtFolder()).EnumerateFiles();
+                    var files = (await KnownLocations.GetAlbumArtFolder()).EnumerateFiles();
                     foreach (var f in files)
                     {
                         f.Delete();
                     }
 
-                    var metadataFiles = (await LocalFolders.MetadataDatabaseFolder()).EnumerateFiles();
+                    var metadataFiles = (await KnownLocations.MetadataDatabaseFolder()).EnumerateFiles();
                     foreach (var f in metadataFiles)
                     {
                         f.Delete();

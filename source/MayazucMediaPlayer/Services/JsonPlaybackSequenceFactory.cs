@@ -8,7 +8,7 @@ namespace MayazucMediaPlayer.Services
         {
             get
             {
-                var finalPath = LocalFolders.GetNowPlayingJsonFile();
+                var finalPath = KnownLocations.GetNowPlayingJsonFile();
                 return finalPath;
             }
         }

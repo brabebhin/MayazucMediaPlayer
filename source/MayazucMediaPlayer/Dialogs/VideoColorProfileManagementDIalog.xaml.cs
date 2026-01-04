@@ -12,7 +12,7 @@ using Windows.UI.Text;
 
 namespace MayazucMediaPlayer.Dialogs
 {
-    public sealed partial class VideoColorProfileManagementDIalog : BaseDialog
+    public sealed partial class VideoColorProfileManagementDialog : BaseDialog
     {
         readonly IEnumerable<SavedColorProfileUIWrapper> ItemsSource;
 
@@ -22,7 +22,7 @@ namespace MayazucMediaPlayer.Dialogs
             private set;
         }
 
-        public VideoColorProfileManagementDIalog(VideoEffectsPageViewModel model)
+        public VideoColorProfileManagementDialog(VideoEffectsPageViewModel model)
         {
             InitializeComponent();
             DataContext = Model = model;

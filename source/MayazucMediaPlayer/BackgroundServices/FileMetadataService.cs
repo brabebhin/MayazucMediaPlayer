@@ -7,8 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-
-namespace MayazucMediaPlayer
+namespace MayazucMediaPlayer.BackgroundServices
 {
     public static class FileMetadataLockManager
     {
@@ -75,6 +74,7 @@ namespace MayazucMediaPlayer
         readonly PriorityBufferBlock<FileInfoProcessingJob> backlog = new PriorityBufferBlock<FileInfoProcessingJob>();
         readonly CancellationTokenSource cancelSignal = new CancellationTokenSource();
         readonly Task ProcessingTask;
+
         public FileMetadataService()
         {
             ProcessingTask = Task.Run(async () =>
