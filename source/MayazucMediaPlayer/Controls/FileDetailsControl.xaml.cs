@@ -343,16 +343,28 @@ namespace MayazucMediaPlayer.Controls
         {
             try
             {
-                IReadOnlyCollection<MediaThumbnailPreviewData> videothubnails = null;
-                videothubnails = MediaThumbnailPreviewData.ProcessMediaPlaybackItem(item);
                 await DispatcherQueue.EnqueueAsync(async () =>
                 {
-                    this.VideoThumbnails.Clear();
-                    if (videothubnails != null)
-                        this.VideoThumbnails.AddRange(videothubnails);
-
                     await LoadFileInfo(item);
                 });
+
+
+                if (item.Chapters.Count > 0)
+                {
+                    chaptersTabView.Visibility = Visibility.Visible;
+
+                    var videothubnails = MediaThumbnailPreviewData.ProcessMediaPlaybackItem(item);
+                    await DispatcherQueue.EnqueueAsync(() =>
+                    {
+                        this.VideoThumbnails.Clear();
+                        if (videothubnails != null)
+                            this.VideoThumbnails.AddRange(videothubnails);
+                    });
+                }
+                else
+                {
+                    chaptersTabView.Visibility = Visibility.Collapsed;
+                }
             }
             catch { }
         }

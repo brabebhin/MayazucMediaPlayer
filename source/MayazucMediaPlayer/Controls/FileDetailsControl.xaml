@@ -317,14 +317,13 @@
                     </ScrollViewer>
                 </Grid>
             </TabViewItem>
-            <TabViewItem Header="Chapters"  IsClosable="False">
+            <TabViewItem Header="Chapters"  IsClosable="False" x:Name="chaptersTabView">
                 <Grid Grid.Row="0" x:Name="gvVideoThumbnails" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
-
                         <AppBarButton   Click="LoadViewPreviews_click" x:Name="LoadPreviewsButton" Icon="Video" Label="Load previews"/>
                     </StackPanel>
 

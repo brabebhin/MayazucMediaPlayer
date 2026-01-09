@@ -3,8 +3,6 @@ using MayazucMediaPlayer.BackgroundServices;
 using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,56 +11,6 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.FileSystemViews
 {
-    public partial class IMediaPlayerItemSourceProviderBase : ObservableObject
-    {
-        int trackNumber;
-        public int ExpectedPlaybackIndex
-        {
-            get => trackNumber;
-            set
-            {
-                if (trackNumber == value) return;
-
-                trackNumber = value;
-                NotifyPropertyChanged(nameof(ExpectedPlaybackIndex));
-                NotifyPropertyChanged(nameof(UIDisplayedIndex));
-            }
-        }
-
-        public int UIDisplayedIndex
-        {
-            get => trackNumber + 1;
-        }
-
-        bool isInPlayback;
-
-        public bool IsInPlayback
-        {
-            get => isInPlayback;
-            set
-            {
-                if (isInPlayback != value)
-                {
-                    isInPlayback = value;
-                    NotifyPropertyChanged(nameof(IsInPlayback));
-                    NotifyPropertyChanged(nameof(BackgroundColor));
-                }
-            }
-        }
-
-        public SolidColorBrush BackgroundColor
-        {
-            get
-            {
-                if (IsInPlayback)
-                {
-                    return new SolidColorBrush(Colors.Coral);
-                }
-                return new SolidColorBrush(Colors.Transparent);
-            }
-        }
-    }
-
     public partial class PickedFileItem : IMediaPlayerItemSourceProviderBase, IMediaPlayerItemSourceProvder
     {
         public EmbeddedMetadata Metadata { get; private set; }
@@ -197,7 +145,6 @@ namespace MayazucMediaPlayer.FileSystemViews
                     MetadataChanged?.Invoke(this, Metadata);
 
                     NotifyPropertyChanged(nameof(Metadata));
-
                 }
             }
         }
