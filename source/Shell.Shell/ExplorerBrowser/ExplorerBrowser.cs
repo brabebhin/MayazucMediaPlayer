@@ -11,6 +11,7 @@ using MS.WindowsAPICodePack.Internal;
 using System.Text;
 using System.Linq;
 using Microsoft.WindowsAPICodePack.Shell.Interop;
+using System.ComponentModel;
 
 namespace Microsoft.WindowsAPICodePack.Controls.WindowsForms
 {
@@ -98,6 +99,7 @@ namespace Microsoft.WindowsAPICodePack.Controls.WindowsForms
         /// <summary>
         /// The name of the property bag used to persist changes to the ExplorerBrowser's view state.
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string PropertyBagName
         {
             get { return propertyBagName; }

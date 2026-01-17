@@ -45,48 +45,49 @@
             <TabViewItem Header="General" IsClosable="False">
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock   Text="File name" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <TextBlock   Text="File name" Margin="5" Style="{ThemeResource BodyTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"    Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="Wrap" x:Name="FileNameTextBlock" Margin="5" />
 
-                        <TextBlock   Text="Full path" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <TextBlock   Text="Full path" Margin="5" Style="{ThemeResource BodyTextBlockStyle}" />
                         <TextBlock IsTextSelectionEnabled="True"   Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="Wrap" x:Name="FullPathTextBlock" Margin="5" />
 
                         <StackPanel Visibility="Collapsed">
-                            <TextBlock    Text="Date created" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                            <TextBlock    Text="Date created" Margin="5" Style="{ThemeResource BodyTextBlockStyle}" />
                             <TextBlock x:Name="DateModifedTextBlock" Margin="5"    Style="{ThemeResource BodyTextBlockStyle}"  />
 
-                            <TextBlock    Text="Date modifed" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                            <TextBlock    Text="Date modifed" Margin="5" Style="{ThemeResource BodyTextBlockStyle}" />
                             <TextBlock x:Name="ActualDateModifedTextBlock"   Style="{ThemeResource BodyTextBlockStyle}"  Margin="5"  />
 
-                            <TextBlock    Text="File size (bytes)" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                            <TextBlock    Text="File size (bytes)" Margin="5" Style="{ThemeResource BodyTextBlockStyle}" />
                             <TextBlock x:Name="FileSizeTextBlock"   Style="{ThemeResource BodyTextBlockStyle}"  Margin="5"  />
                         </StackPanel>
 
-                        <TextBlock  Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}"  Text="Title" />
+                        <TextBlock  Margin="5" Style="{ThemeResource BodyTextBlockStyle}"  Text="Title" />
                         <StackPanel>
                             <TextBlock   IsTextSelectionEnabled="True"  Margin="8"   x:Name="TrackInfoTitle" Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="WrapWholeWords" />
                         </StackPanel>
 
-                        <TextBlock Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"  Margin="5, 0, 0, 0" Text="Artist" Style="{StaticResource SubheaderTextBlockStyle}" />
+                        <TextBlock Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"  Margin="5, 0, 0, 0" Text="Artist" Style="{StaticResource BodyTextBlockStyle}" />
                         <StackPanel  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"  >
                             <TextBlock   IsTextSelectionEnabled="True"  Margin="8"    x:Name="TrackInfoArtist" Style="{ThemeResource BodyTextBlockStyle}"  TextWrapping="WrapWholeWords" />
                         </StackPanel>
-                        <TextBlock  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"   Margin="5, 0, 0, 0" Text="Album" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <TextBlock  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"   Margin="5, 0, 0, 0" Text="Album" Style="{ThemeResource BodyTextBlockStyle}" />
                         <StackPanel Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}" >
                             <TextBlock    IsTextSelectionEnabled="True" Margin="8"    x:Name="TrackInfoAlbum" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords"  />
                         </StackPanel>
-                        <TextBlock  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"   Margin="5, 0, 0, 0" Text="Genre" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <TextBlock  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}"   Margin="5, 0, 0, 0" Text="Genre" Style="{ThemeResource BodyTextBlockStyle}" />
                         <StackPanel  Visibility="{x:Bind IsAudioFileVisibility, Mode=OneWay}" >
                             <TextBlock    IsTextSelectionEnabled="True" Margin="8"    x:Name="TrackInfoGenre" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords"  />
                         </StackPanel>
 
-                        <TextBlock    Text="Extension" Margin="5" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                        <TextBlock    Text="Extension" Margin="5" Style="{ThemeResource BodyTextBlockStyle}" />
                         <TextBlock x:Name="FileExtensionTextBlock"   Style="{ThemeResource BodyTextBlockStyle}"  Margin="5"  />
 
                     </StackPanel>
                 </ScrollViewer>
             </TabViewItem>
             <TabViewItem Header="Embedded metadata"  IsClosable="False">
+                
                 <ListView x:Name="lsvMetadataDisplay" SelectionMode="None">
                     <ListView.Header>
                         <Grid>
@@ -99,8 +100,8 @@
                     </ListView.Header>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="controls:MetadataKeyValuePair">
-                            <StackPanel Margin="0, 10, 0, 10">
-                                <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 8" Text="{x:Bind Key, Mode=OneWay}" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                            <StackPanel Margin="0, 2, 0, 2">
+                                <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 0" Text="{x:Bind Key, Mode=OneWay}" Style="{ThemeResource BodyTextBlockStyle}"/>
                                 <TextBlock IsTextSelectionEnabled="True"  Margin="0, 8, 0, 8" Style="{ThemeResource BodyTextBlockStyle}" TextWrapping="WrapWholeWords" Text="{x:Bind Value, Mode=OneWay}"/>
                             </StackPanel>
                         </DataTemplate>
@@ -111,7 +112,7 @@
                 <Grid x:Name="GridViewStreams">
                     <ScrollViewer>
                         <StackPanel>
-                            <TextBlock Text="Audio Streams" Margin="8" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                            <TextBlock Text="Audio Streams" Margin="8" Style="{ThemeResource BodyTextBlockStyle}"/>
 
                             <ListView ItemsSource="{x:Bind AudioStreams, Mode=OneWay}" SelectionMode="None">
                                 <ListView.ItemTemplate>
@@ -180,7 +181,7 @@
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                            <TextBlock Text="Video Streams" Margin="8"  Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                            <TextBlock Text="Video Streams" Margin="8"  Style="{ThemeResource BodyTextBlockStyle}"/>
 
                             <ListView ItemsSource="{x:Bind VideoStreams, Mode=OneWay}" SelectionMode="None">
                                 <ListView.ItemTemplate>
@@ -253,7 +254,7 @@
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                            <TextBlock Text="Embeded subtitles" Margin="8" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                            <TextBlock Text="Embeded subtitles" Margin="8" Style="{ThemeResource BodyTextBlockStyle}"/>
 
                             <ListView ItemsSource="{x:Bind SubtitleStreams, Mode=OneWay}" SelectionMode="None">
                                 <ListView.ItemTemplate>

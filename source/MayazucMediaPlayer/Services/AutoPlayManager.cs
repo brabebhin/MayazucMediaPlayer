@@ -11,18 +11,13 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Services
 {
-    public class AutoPlayManager : IAutoPlayManager
+    public class AutoPlayManager(PlaybackSequenceService playbackServiceInstance) : IAutoPlayManager
     {
         public PlaybackSequenceService PlaybackServiceInstance
         {
             get;
             private set;
-        }
-
-        public AutoPlayManager(PlaybackSequenceService playbackServiceInstance)
-        {
-            PlaybackServiceInstance = playbackServiceInstance;
-        }
+        } = playbackServiceInstance;
 
         public DirectoryInfo CurrentAutoPlayFolder
         {

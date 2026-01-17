@@ -56,7 +56,6 @@
                     <MenuFlyoutItem   Text="Network stream history" Tag="NetworkStreamHistory" Click="GoToSomeScreen"/>
                     <MenuFlyoutItem   Text="Equalizer configurations" Click="GoToMediaEqualizerConfigs"/>
                 </MenuBarItem>
-
             </MenuBar>
             <Button BorderBrush="Transparent"  Tag="Settings" Tapped="GoToSomeScreen" Grid.Column="2" Margin="4, 0, 0, 0" Width="{ThemeResource NavigationBackButtonWidth}" x:Name="settingsButton" ToolTipService.ToolTip="Settings" Background="Transparent" Height="{ThemeResource NavigationBackButtonHeight}" Padding="0">
                 <SymbolIcon Symbol="Setting"/>
