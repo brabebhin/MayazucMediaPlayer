@@ -1,6 +1,4 @@
-﻿
-using CommunityToolkit.WinUI;
-using MayazucMediaPlayer.Playlists;
+﻿using MayazucMediaPlayer.Playlists;
 using MayazucMediaPlayer.Services.MediaSources;
 using Microsoft.UI.Dispatching;
 using System;

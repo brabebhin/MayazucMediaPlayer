@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using FluentResults;
+﻿using FluentResults;
 using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaMetadata;
 using MayazucMediaPlayer.Services.MediaSources;

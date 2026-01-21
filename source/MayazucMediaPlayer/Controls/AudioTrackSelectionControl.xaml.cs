@@ -1,4 +1,3 @@
-using CommunityToolkit.WinUI;
 using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
 using System;

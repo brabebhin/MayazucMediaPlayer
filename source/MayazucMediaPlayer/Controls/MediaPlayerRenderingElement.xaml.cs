@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using MayazucMediaPlayer.LocalCache;
+﻿using MayazucMediaPlayer.LocalCache;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Tests;
 using Microsoft.UI.Dispatching;

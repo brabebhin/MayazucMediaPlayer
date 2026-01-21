@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using MayazucMediaPlayer.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
@@ -21,7 +22,7 @@ namespace MayazucMediaPlayer.Users
             set;
         }
 
-        string _userName, _password;
+        string _userName, _password, _apiKey = string.Empty;
         public string UserName
         {
             get
@@ -95,9 +96,6 @@ namespace MayazucMediaPlayer.Users
             {
                 WindowsCredential.RetrievePassword();
                 Password = WindowsCredential.Password;
-
-                //InAppNotification notificationRoot = inappNotification as InAppNotification;
-                //notificationRoot.Show("Password retrieved from storage", 2000);
             }
             catch { }
         }
@@ -107,11 +105,9 @@ namespace MayazucMediaPlayer.Users
             try
             {
                 RemoveAllCredentials();
-                Password = "";
-                UserName = "";
+                Password = string.Empty; 
+                UserName = string.Empty; 
                 await ServiceProvider.LogoutAsync();
-                //InAppNotification notificationRoot = inappNotification as InAppNotification;
-                //notificationRoot.Show("Credentials deleted", 2000);
             }
             catch { }
         }
@@ -128,19 +124,16 @@ namespace MayazucMediaPlayer.Users
 
         private async Task Save(object inappNotification)
         {
-            //InAppNotification notificationRoot = inappNotification as InAppNotification;
-
             try
             {
                 if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(Password))
                 {
                     WindowsCredential.UserName = UserName;
                     WindowsCredential.Password = Password;
-
+                   
                     try
                     {
                         PasswordVault vault = new PasswordVault();
-                        //vault.Remove(WindowsCredential);
                         try
                         {
                             RemoveAllCredentials();

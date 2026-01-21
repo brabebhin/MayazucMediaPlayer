@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using Windows.Networking.Connectivity;
 
 namespace MayazucMediaPlayer.Settings
@@ -32,6 +33,8 @@ namespace MayazucMediaPlayer.Settings
 
         private SettingsStoreService storageService = new SettingsStoreService();
         private const string DefaultEqualizerPresetValue = "default";
+        private Timer autoSaveTimer = new Timer();
+
 
         public event EventHandler<string>? RepeatModeChanged;
         public event EventHandler<bool>? ShuffleModeChanged;
@@ -58,6 +61,12 @@ namespace MayazucMediaPlayer.Settings
 
         private void RiseSettingChanged(object value, string settingName)
         {
+            autoSaveTimer.Stop();
+
+            autoSaveTimer.Interval = TimeSpan.FromSeconds(10).TotalMilliseconds;
+            autoSaveTimer.AutoReset = false;
+            autoSaveTimer.Start();
+
             List<Action<object, string>> x;
             if (PropertyHandlerMap.TryGetValue(settingName, out x))
             {
@@ -68,10 +77,14 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
+        private void AutoSaveSettingsElapsed(object? sender, ElapsedEventArgs e)
+        {
+            storageService.SaveSettings();
+        }
 
         private SettingsService()
         {
-
+            autoSaveTimer.Elapsed += AutoSaveSettingsElapsed;
         }
 
         internal void SaveSettings()
@@ -603,6 +616,20 @@ namespace MayazucMediaPlayer.Settings
             {
                 storageService.SetValueOrDefault2(nameof(FolderHierarchyMetadataIndex), 0, value);
                 RiseSettingChanged(value, nameof(FolderHierarchyMetadataIndex));
+            }
+        }
+
+        [SettingDefaultValue("")]
+        public string OpenSubtitlesApiKey
+        {
+            get
+            {
+                return storageService.StringGetValueOrDefault(nameof(OpenSubtitlesApiKey), string.Empty);
+            }
+            set
+            {
+                storageService.SetValueOrDefault2(nameof(OpenSubtitlesApiKey), string.Empty, value);
+                RiseSettingChanged(value, nameof(OpenSubtitlesApiKey));
             }
         }
     }

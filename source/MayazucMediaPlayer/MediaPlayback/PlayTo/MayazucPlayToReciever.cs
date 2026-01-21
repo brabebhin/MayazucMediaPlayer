@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using MayazucMediaPlayer.Services;
+﻿using MayazucMediaPlayer.Services;
 using Microsoft.UI.Dispatching;
 using System;
 using System.Threading.Tasks;

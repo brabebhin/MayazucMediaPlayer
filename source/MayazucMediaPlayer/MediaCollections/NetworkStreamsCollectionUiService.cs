@@ -28,7 +28,7 @@ namespace MayazucMediaPlayer.MediaCollections
             }
             set
             {
-                base.SetProperty(ref _inputStreamUrl, value);
+                base.SetProperty(ref _inputStreamUrl, value, nameof(InputStreamUrl));
                 HasValidUrl = ValidateUrl(_inputStreamUrl, out var _);
             }
         }

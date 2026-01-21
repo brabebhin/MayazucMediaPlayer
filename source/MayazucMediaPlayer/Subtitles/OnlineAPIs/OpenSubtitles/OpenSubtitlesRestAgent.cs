@@ -27,7 +27,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
         {
             get
             {
-                return Environment.GetEnvironmentVariable("mayazuc.opensubtitles.apikey", EnvironmentVariableTarget.User);
+                return SettingsService.Instance.OpenSubtitlesApiKey;
             }
         }
 
@@ -35,7 +35,7 @@ namespace MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles
         {
             if (string.IsNullOrWhiteSpace(ApiKey))
             {
-                throw new InvalidOperationException("API key must be supplied in environment variable \"mayazuc.opensubtitles.apikey\" for current user account.");
+                throw new InvalidOperationException("API key must be supplied in settings >> subtitles + CC >> open subtitles settings for current user account.");
             }
         }
 

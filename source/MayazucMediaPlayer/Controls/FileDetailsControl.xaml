@@ -5,7 +5,8 @@
     xmlns:local="using:MayazucMediaPlayer.NowPlayingViews"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:MayazucMediaPlayer.Controls" xmlns:controls1="using:CommunityToolkit.WinUI.Controls" xmlns:mediaplayback="using:MayazucMediaPlayer.MediaPlayback" xmlns:generic="using:System.Collections.Generic"
+    xmlns:controls="using:MayazucMediaPlayer.Controls" 
+    xmlns:mediaplayback="using:MayazucMediaPlayer.MediaPlayback" xmlns:generic="using:System.Collections.Generic"
     mc:Ignorable="d"
     Background="Transparent">
 

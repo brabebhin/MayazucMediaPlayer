@@ -19,7 +19,7 @@ namespace MayazucMediaPlayer.FileSystemViews
         public event EventHandler<FileInfo?> ImageFileChanged;
         private readonly Task MetadataInitializationTask;
 
-        
+
         public FileInfo File
         {
             get;

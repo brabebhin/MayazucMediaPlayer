@@ -1,4 +1,3 @@
-using CommunityToolkit.WinUI;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.UserInput;
 using Microsoft.UI.Dispatching;

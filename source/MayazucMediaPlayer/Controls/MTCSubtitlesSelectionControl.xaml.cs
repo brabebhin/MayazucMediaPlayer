@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using MayazucMediaPlayer.Dialogs;
+﻿using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaPlayback;
 using MayazucMediaPlayer.Notifications;

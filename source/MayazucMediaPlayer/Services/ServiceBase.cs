@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using MayazucMediaPlayer.Navigation;
+﻿using MayazucMediaPlayer.Navigation;
 using Microsoft.UI.Dispatching;
 using System;
 

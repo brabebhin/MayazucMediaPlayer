@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI;
-using FFmpegInteropX;
+﻿using FFmpegInteropX;
 using MayazucMediaPlayer.AudioEffects;
 using MayazucMediaPlayer.BackgroundServices;
 using MayazucMediaPlayer.MediaMetadata;

@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dialogs="using:MayazucMediaPlayer.Dialogs"
     xmlns:controls="using:MayazucMediaPlayer.Controls"
-    xmlns:controls1="using:CommunityToolkit.WinUI.Controls"
     xmlns:videoEffects="using:MayazucMediaPlayer.VideoEffects"
     xmlns:converters="using:MayazucMediaPlayer.Converters">
 

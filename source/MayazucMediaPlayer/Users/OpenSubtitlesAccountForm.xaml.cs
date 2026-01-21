@@ -3,6 +3,7 @@ using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Subtitles.OnlineAPIs.OpenSubtitles;
 using Microsoft.UI.Xaml;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Security.Credentials;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -12,7 +13,7 @@ namespace MayazucMediaPlayer.Users
     public sealed partial class OpenSubtitlesAccountForm : BaseUserControl, IContentSettingsItem
     {
         public const string openSubtitleServiceName = "Open subtitles";
-        UserLoginInformation Model;
+        UserLoginInformation LoginDataModel;
 
         public IOpenSubtitlesAgent SubtitlesAgent
         {
@@ -25,6 +26,7 @@ namespace MayazucMediaPlayer.Users
             InitializeComponent();
             Loaded += OpenSubtitlesAccountForm_Loaded;
             Unloaded += OpenSubtitlesAccountForm_Unloaded;
+            pbApiKey.Text = SettingsService.Instance.OpenSubtitlesApiKey;
         }
 
         private void OpenSubtitlesAccountForm_Unloaded(object? sender, RoutedEventArgs e)
@@ -49,12 +51,18 @@ namespace MayazucMediaPlayer.Users
                 credential.Resource = openSubtitleServiceName;
             }
 
-            Model = new UserLoginInformation(credential, SubtitlesAgent);
-            DataContext = Model;
+            LoginDataModel = new UserLoginInformation(credential, SubtitlesAgent);
+            DataContext = LoginDataModel;
         }
 
         public void RecheckValue()
         {
+        }
+
+        private async void SaveCredentials_click(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            SettingsService.Instance.OpenSubtitlesApiKey = pbApiKey.Text;
+            LoginDataModel.SaveCommand.Execute(sender);
         }
     }
 }
