@@ -9,6 +9,7 @@ namespace MayazucMediaPlayer.Settings
     public partial class SettingsStoreService
     {
         ConcurrentDictionary<string, string> settings = new ConcurrentDictionary<string, string>();
+        object lockObject = new object();
 
         public SettingsStoreService()
         {
@@ -17,16 +18,22 @@ namespace MayazucMediaPlayer.Settings
 
         public void SaveSettings()
         {
-            var json = JsonSerializer.Serialize(settings, MayazucJsonSerializerContext.Default.ConcurrentDictionaryStringString);
-            File.WriteAllText(KnownLocations.GetDefaultSettingsFilePath().FullName, json);
+            lock (lockObject)
+            {
+                var json = JsonSerializer.Serialize(settings, MayazucJsonSerializerContext.Default.ConcurrentDictionaryStringString);
+                File.WriteAllText(KnownLocations.GetDefaultSettingsFilePath().FullName, json);
+            }
         }
 
         public void LoadSettings()
         {
             try
             {
-                var json = File.ReadAllText(KnownLocations.GetDefaultSettingsFilePath().FullName);
-                settings = JsonSerializer.Deserialize(json, MayazucJsonSerializerContext.Default.ConcurrentDictionaryStringString);
+                lock (lockObject)
+                {
+                    var json = File.ReadAllText(KnownLocations.GetDefaultSettingsFilePath().FullName);
+                    settings = JsonSerializer.Deserialize(json, MayazucJsonSerializerContext.Default.ConcurrentDictionaryStringString);
+                }
             }
             catch
             {

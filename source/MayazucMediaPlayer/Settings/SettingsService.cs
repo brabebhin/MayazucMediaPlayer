@@ -10,7 +10,7 @@ namespace MayazucMediaPlayer.Settings
 {
     public class SettingsService
     {
-        static SettingsService instance;
+        static SettingsService? instance;
         static object singletonLock = new object();
 
         public static SettingsService Instance
@@ -34,7 +34,6 @@ namespace MayazucMediaPlayer.Settings
         private SettingsStoreService storageService = new SettingsStoreService();
         private const string DefaultEqualizerPresetValue = "default";
         private Timer autoSaveTimer = new Timer();
-
 
         public event EventHandler<string>? RepeatModeChanged;
         public event EventHandler<bool>? ShuffleModeChanged;
