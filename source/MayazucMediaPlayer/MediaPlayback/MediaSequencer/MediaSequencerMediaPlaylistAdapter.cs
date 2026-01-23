@@ -34,7 +34,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
         IReadOnlyList<AvEffectDefinition> currentVideoEffects;
 
         readonly DispatcherQueue dispatcher;
-        readonly CommandDispatcher mediaCommandsDispatcher;
+        readonly AsyncCommandDispatcher mediaCommandsDispatcher;
 
         readonly ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration;
         readonly ulong WindowId = 0;
@@ -44,7 +44,7 @@ namespace MayazucMediaPlayer.MediaPlayback.MediaSequencer
             IFFmpegInteropMediaSourceProvider<IMediaPlayerItemSource> provider,
             MediaPlayer player,
             DispatcherQueue dispatcher,
-            CommandDispatcher mediaCommandsDispatcher,
+            AsyncCommandDispatcher mediaCommandsDispatcher,
             ManagedVideoEffectProcessorConfiguration videoEffectsConfiguration,
             ulong windowId)
         {

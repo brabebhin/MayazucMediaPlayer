@@ -233,7 +233,7 @@ namespace MayazucMediaPlayer.MediaMetadata
             if (string.IsNullOrWhiteSpace(fileExtension))
                 return retValue;
 
-            using var resultingAlbumArtFile = folderToSaveThumbnailIn.CreateFile(albumartFileName + fileExtension);
+            using var resultingAlbumArtFile = folderToSaveThumbnailIn.CreateFileStream(albumartFileName + fileExtension);
 
             try
             {

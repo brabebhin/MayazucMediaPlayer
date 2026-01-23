@@ -25,9 +25,9 @@ namespace MayazucMediaPlayer
             return Task.FromResult(file.OpenRead().AsRandomAccessStream());
         }
 
-        public static FileCreationResult CreateFile(this DirectoryInfo fodler, string fileName)
+        public static FileCreationResult CreateFileStream(this DirectoryInfo folder, string fileName)
         {
-            var path = Path.Combine(fodler.FullName, fileName);
+            var path = Path.Combine(folder.FullName, fileName);
             var file = new FileInfo(path);
             if (!file.Exists)
             {
@@ -37,6 +37,11 @@ namespace MayazucMediaPlayer
             {
                 return new FileCreationResult(file, file.Open(FileMode.Open));
             }
+        }
+
+        public static string GetFilePath(this DirectoryInfo folder, string fileName)
+        {
+            return Path.Combine(folder.FullName, fileName);
         }
 
         public static IEnumerable<FileInfo> EnumerateFiles(this DirectoryInfo folder, IEnumerable<string> extensions)

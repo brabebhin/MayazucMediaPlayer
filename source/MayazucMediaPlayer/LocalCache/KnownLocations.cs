@@ -11,17 +11,17 @@ namespace MayazucMediaPlayer.LocalCache
         static readonly AsyncLockManager lockProvider = new AsyncLockManager();
         static readonly SimpleObjectCache resultsProvider = new SimpleObjectCache();
 
-        public static async Task<StorageFolder> GetVideoColorProfilesFolder()
+        public static async Task<DirectoryInfo> GetVideoColorProfilesFolder()
         {
             const string Key = "GetVideoColorProfilesFolder";
-            using (await lockProvider.GetLock(Key).LockAsync())
+            using (lockProvider.GetLock(Key).Lock())
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var value = resultsProvider.TryAdd(Key,
-                        await ApplicationData.Current.LocalFolder.CreateFolderAsync("VideoColorProfiles", CreationCollisionOption.OpenIfExists).AsTask());
+                    var videoColorProfileFolder = Directory.CreateDirectory(Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "videoColorProfiles"));
+                    resultsProvider.TryAdd(Key, videoColorProfileFolder);
                 }
-                return resultsProvider.Get<StorageFolder>(Key);
+                return resultsProvider.Get<DirectoryInfo>(Key);
             }
         }
 
@@ -77,7 +77,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var folder = new DirectoryInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "album art"));
+                    var folder = new DirectoryInfo(Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "album art"));
                     if (!folder.Exists) folder.Create();
                     resultsProvider.TryAdd(Key, folder);
                 }
@@ -92,7 +92,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var dbFolder = ApplicationData.Current.LocalFolder.Path;
+                    var dbFolder = ApplicationDataFolder.CurrentLocalFolderPath();
                     var filePath = "nowplaying.json";
                     var finalPath = Path.Combine(dbFolder, filePath);
                     FileInfo info = new FileInfo(finalPath);
@@ -110,7 +110,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var _equalizerPresetsFolderPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "equalizerPresets");
+                    var _equalizerPresetsFolderPath = Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "equalizerPresets");
                     if (!Directory.Exists(_equalizerPresetsFolderPath))
                         Directory.CreateDirectory(_equalizerPresetsFolderPath);
                     resultsProvider.TryAdd(Key, _equalizerPresetsFolderPath);
@@ -126,7 +126,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var _equalizerConfigFolderPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, FolderNames.EqualizerConfigurations);
+                    var _equalizerConfigFolderPath = Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), FolderNames.EqualizerConfigurations);
                     resultsProvider.TryAdd(Key, _equalizerConfigFolderPath);
                 }
                 return resultsProvider.Get<string>(Key);
@@ -140,7 +140,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var folder = new DirectoryInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "meta"));
+                    var folder = new DirectoryInfo(Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "meta"));
                     if (!folder.Exists) folder.Create();
                     resultsProvider.TryAdd(Key, folder);
                 }
@@ -155,7 +155,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var file = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "keyboard.json"));
+                    var file = new FileInfo(Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "keyboard.json"));
                     resultsProvider.TryAdd(Key, file);
                 }
                 return resultsProvider.Get<FileInfo>(Key);
@@ -169,7 +169,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var file = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "streamhistory.json"));
+                    var file = new FileInfo(Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "streamhistory.json"));
                     if (!file.Exists) file.Create().Dispose();
                     resultsProvider.TryAdd(Key, file);
                 }
@@ -184,7 +184,7 @@ namespace MayazucMediaPlayer.LocalCache
             {
                 if (!resultsProvider.HasKey(Key))
                 {
-                    var file = new FileInfo(Path.Combine(ApplicationData.Current.LocalFolder.Path, "settings.json"));
+                    var file = new FileInfo(Path.Combine(ApplicationDataFolder.CurrentLocalFolderPath(), "settings.json"));
                     if (!file.Exists) file.Create().Dispose();
                     resultsProvider.TryAdd(Key, file);
                 }

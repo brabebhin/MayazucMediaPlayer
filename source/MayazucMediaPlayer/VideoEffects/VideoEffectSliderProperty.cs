@@ -6,7 +6,6 @@ namespace MayazucMediaPlayer.VideoEffects
 {
     public partial class VideoEffectSliderProperty : ObservableObject
     {
-
         public event EventHandler<float> ValueChanged;
 
         private bool enabled;
@@ -21,7 +20,6 @@ namespace MayazucMediaPlayer.VideoEffects
                 NotifyPropertyChanged(nameof(Enabled));
             }
         }
-
 
         public string EffectPropertyName
         {
@@ -94,7 +92,6 @@ namespace MayazucMediaPlayer.VideoEffects
             get;
             private set;
         }
-
 
         public VideoEffectSliderProperty(string effectPropertyName, double resolution, float effectPropertyMaximum, float effectPropertyValue, float effectPropertyMinimum, float defaultValue) : this(effectPropertyName)
         {

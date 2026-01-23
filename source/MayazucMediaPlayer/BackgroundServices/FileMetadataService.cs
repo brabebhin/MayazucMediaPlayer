@@ -23,147 +23,54 @@ namespace MayazucMediaPlayer.BackgroundServices
         }
     }
 
-    public partial class PriorityBufferBlock<T> : IDisposable
-    {
-        readonly PriorityQueue<T, int> priorityQueue = new System.Collections.Generic.PriorityQueue<T, int>();
-        private ManualResetEventSlim queueHasItems = new ManualResetEventSlim(false);
-
-        public PriorityBlockResult<T> OutputAvailable(CancellationToken token)
-        {
-            while (!token.IsCancellationRequested)
-            {
-                try
-                {
-                    if (priorityQueue.Count == 0)
-                    {
-                        queueHasItems.Reset();
-                    }
-                    queueHasItems.Wait(token);
-                    var hadItem = priorityQueue.TryDequeue(out var lowestPriority, out var priority);
-                    return new PriorityBlockResult<T>(hadItem, lowestPriority);
-                }
-                catch
-                {
-
-                }
-            }
-            return new PriorityBlockResult<T>(false, default(T));
-        }
-
-        public void Post(T item, bool isHighPriority)
-        {
-            priorityQueue.Enqueue(item, isHighPriority ? 0 : 1);
-            queueHasItems.Set();
-        }
-
-        public void Dispose()
-        {
-            priorityQueue.Clear();
-            queueHasItems.Set();
-            queueHasItems.Dispose();
-        }
-    }
-
-    public class PriorityBlockResult<T>
-    {
-        public bool OutputAvailable { get; private set; }
-
-        public T Result { get; private set; }
-
-        public PriorityBlockResult(bool outputAvailable, T result)
-        {
-            OutputAvailable = outputAvailable;
-            Result = result;
-        }
-    }
-
     public partial class FileMetadataService : IDisposable
     {
-        readonly PriorityBufferBlock<FileInfoProcessingJob> backlog = new PriorityBufferBlock<FileInfoProcessingJob>();
-        readonly CancellationTokenSource cancelSignal = new CancellationTokenSource();
-        readonly Task ProcessingTask;
+        readonly AsyncCommandDispatcher executionQueue = new AsyncCommandDispatcher();
 
         public FileMetadataService()
         {
-            ProcessingTask = Task.Run(async () =>
-            {
-                while (!cancelSignal.IsCancellationRequested)
-                {
-                    var outputAvailableResult = backlog.OutputAvailable(cancelSignal.Token);
-                    if (outputAvailableResult.OutputAvailable)
-                    {
-                        var fileToProcess = outputAvailableResult.Result;
-                        var asyncLock = FileMetadataLockManager.GetLock(fileToProcess.File.FullName);
-                        using (await asyncLock.LockAsync())
-                        {
-                            EmbeddedMetadata metadata = EmbeddedMetadataResolver.GetDefaultMetadataForFile(fileToProcess.File.FullName);
-
-                            try
-                            {
-                                var metadataFile = await EmbeddedMetadataResolver.GetMetadataDocumentForFile(fileToProcess.File.FullName);
-                                if (!metadataFile.Exists || metadataFile.CreationTimeUtc < fileToProcess.File.LastWriteTimeUtc)
-                                {
-                                    metadata = await EmbeddedMetadataResolver.ExtractMetadataAsync(fileToProcess.File);
-                                    //process the file
-                                    var metadatadocumentFile = new EmbeddedMetadataSeed(metadata, fileToProcess.File.FullName);
-                                    var json = System.Text.Json.JsonSerializer.Serialize(metadatadocumentFile);
-                                    await File.WriteAllTextAsync(metadataFile.FullName, json);
-                                }
-                                else
-                                {
-                                    metadata = EmbeddedMetadataResolver.ReadMetadataDocumentForFile(metadataFile, fileToProcess.File);
-                                }
-
-                                fileToProcess.SetResult(metadata);
-                            }
-                            catch
-                            {
-                                fileToProcess.SetResult(metadata);
-                            }
-                        }
-                    }
-                }
-            });
+            
         }
 
         public void Dispose()
         {
-            backlog?.Dispose();
-            cancelSignal.Cancel();
-            while (!ProcessingTask.IsCompleted)
-            {
-                Thread.Yield();
-            }
-            cancelSignal.Dispose();
+            executionQueue.Dispose();
         }
 
         public async Task<EmbeddedMetadata> ProcessFileAsync(FileInfo info, bool highPriority)
         {
-            var job = new FileInfoProcessingJob(info);
-            backlog.Post(job, highPriority);
-            return await job.AsyncTask;
-        }
+           var result = await executionQueue.EnqueueAsync(async () => {
 
-        private class FileInfoProcessingJob
-        {
-            readonly TaskCompletionSource<EmbeddedMetadata> taskCompletionSource = new TaskCompletionSource<EmbeddedMetadata>();
+                var asyncLock = FileMetadataLockManager.GetLock(info.FullName);
+                using (await asyncLock.LockAsync())
+                {
+                    EmbeddedMetadata metadata = EmbeddedMetadataResolver.GetDefaultMetadataForFile(info.FullName);
 
-            public FileInfo File { get; }
+                    try
+                    {
+                        var metadataFile = await EmbeddedMetadataResolver.GetMetadataDocumentForFile(info.FullName);
+                        if (!metadataFile.Exists || metadataFile.CreationTimeUtc < info.LastWriteTimeUtc)
+                        {
+                            metadata = await EmbeddedMetadataResolver.ExtractMetadataAsync(info);
+                            //process the file
+                            var metadatadocumentFile = new EmbeddedMetadataSeed(metadata, info.FullName);
+                            var json = System.Text.Json.JsonSerializer.Serialize(metadatadocumentFile);
+                            await File.WriteAllTextAsync(metadataFile.FullName, json);
+                        }
+                        else
+                        {
+                            metadata = EmbeddedMetadataResolver.ReadMetadataDocumentForFile(metadataFile, info);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    return metadata;
+                }
 
-            public Task<EmbeddedMetadata> AsyncTask
-            {
-                get { return taskCompletionSource.Task; }
-            }
+            });
 
-            public void SetResult(EmbeddedMetadata result)
-            {
-                taskCompletionSource.SetResult(result);
-            }
-
-            public FileInfoProcessingJob(FileInfo file)
-            {
-                File = file;
-            }
-        }
+            return (EmbeddedMetadata)result.Result!;
+        }        
     }
 }

@@ -2,9 +2,11 @@
 using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.Services;
 using Microsoft.UI.Dispatching;
+using Microsoft.UI.Xaml.Controls.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -124,10 +126,10 @@ namespace MayazucMediaPlayer.VideoEffects
             try
             {
                 var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
-                var sfile = await saveFolder.TryGetItemAsync(profileName.Name);
+                var sfile = saveFolder.GetFilePath(profileName.Name);
                 if (sfile != null)
                 {
-                    await sfile.DeleteAsync();
+                    File.Delete(sfile);
                     SavedColorProfiles.Remove(profileName);
                 }
             }
@@ -139,11 +141,10 @@ namespace MayazucMediaPlayer.VideoEffects
             try
             {
                 var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
-                var sfile = await saveFolder.TryGetItemAsync(selectedItem.Name);
+                var sfile = saveFolder.GetFilePath(selectedItem.Name);
                 if (sfile != null)
                 {
-                    var file = sfile as StorageFile;
-                    var json = await FileIO.ReadTextAsync(file);
+                    var json = await File.ReadAllTextAsync(sfile);
                     var result = JsonSerializer.Deserialize<Dictionary<string, double>>(json, MayazucJsonSerializerContext.Default.DictionaryStringDouble);
                     foreach (var obj in EffectProperties)
                     {
@@ -163,8 +164,8 @@ namespace MayazucMediaPlayer.VideoEffects
             await CreateDefaultColorProfiles();
 
             var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
-            var result = await saveFolder.GetFilesAsync();
-            var values = EffectProperties.ToList().AsEnumerable();
+            var result = saveFolder.EnumerateFiles();
+            var values = EffectProperties.AsEnumerable();
 
             foreach (var v in result.Select(y => y.Name).OrderBy(x => x))
             {
@@ -217,7 +218,8 @@ namespace MayazucMediaPlayer.VideoEffects
         private async Task<SavedColorProfile> SaveColorProfileToFile(string path, IEnumerable<VideoEffectSliderProperty> values)
         {
             var saveFolder = await LocalCache.KnownLocations.GetVideoColorProfilesFolder();
-            var saveFile = await saveFolder.CreateFileAsync(path, Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            var saveFile = saveFolder.GetFilePath(path);
+
             var dictionaryValues = new Dictionary<string, double>();
             foreach (var value in values)
             {
@@ -225,10 +227,9 @@ namespace MayazucMediaPlayer.VideoEffects
             }
 
             var resultJson = JsonSerializer.Serialize(dictionaryValues, MayazucJsonSerializerContext.Default.DictionaryStringDouble);
-            await FileIO.WriteTextAsync(saveFile, resultJson);
+            await File.WriteAllTextAsync(saveFile, resultJson);
             var profile = new SavedColorProfile(path);
             return profile;
-
         }
 
         private void ResetDefaultValues()

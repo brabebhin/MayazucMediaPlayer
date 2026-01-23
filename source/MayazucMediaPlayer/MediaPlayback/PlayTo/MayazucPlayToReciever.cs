@@ -29,7 +29,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
             private set;
         }
 
-        public CommandDispatcher MediaCommandsDispatcher
+        public AsyncCommandDispatcher MediaCommandsDispatcher
         {
             get;
             private set;
@@ -52,7 +52,7 @@ namespace MayazucMediaPlayer.MediaPlayback.PlayTo
         public MayazucPlayToReciever(DispatcherQueue dispatcher,
             MediaPlayer currentPlayer,
             PlayToConfiguration configuration,
-            CommandDispatcher mediaCommandsDispatcher,
+            AsyncCommandDispatcher mediaCommandsDispatcher,
             PlaybackSequenceService playbackService,
             ulong windowId)
         {

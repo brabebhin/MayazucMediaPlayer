@@ -162,9 +162,9 @@ namespace MayazucMediaPlayer
             PopupHelper.NotificationRequest += PopupHelper_NotificationRequest;
             PlaybackCommandsModel = new NowPlayingCommandBarViewModel(DispatcherQueue);
             RootFrame.AsyncNavigated += RootFrame_AsyncNavigated;
-            //SizeChanged += MCMediaCenterRootApplication_SizeChanged;
 
             OverayModeButtonIcon.Glyph = !IsAlwaysOnTop ? EnterOverlayModeIcon : ExitOverlayModeIcon;
+
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)

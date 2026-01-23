@@ -81,7 +81,7 @@ namespace MayazucMediaPlayer
             using (await CopyThumbnailStreamAsyncLock.LockAsync())
             {
                 var aaFolder = await LocalCache.KnownLocations.GetAlbumArtFolder();
-                using var file = aaFolder.CreateFile($"{Utilities.EncodePathWithoutExtension(path)}{mediaThumbnail.Extension}");
+                using var file = aaFolder.CreateFileStream($"{Utilities.EncodePathWithoutExtension(path)}{mediaThumbnail.Extension}");
                 var buffer = mediaThumbnail.Buffer.ToArray();
                 await file.FileStream.WriteAsync(buffer, 0, buffer.Length);
                 return file.FileInformation;

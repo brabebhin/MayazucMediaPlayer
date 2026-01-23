@@ -23,7 +23,7 @@ namespace MayazucMediaPlayer.MediaPlayback
     public partial class BackgroundMediaPlayer : IBackgroundPlayer
     {
         private const int MediaPlayerAsyncOperationTimeoutInSeconds = 25;
-        CommandDispatcher commandDispatcher = new CommandDispatcher();
+        AsyncCommandDispatcher commandDispatcher = new AsyncCommandDispatcher();
         StopMusicOnTimerService stopMusicOnTimerService;
         public ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration { get; private set; } = new ManagedVideoEffectProcessorConfiguration();
 
@@ -1113,7 +1113,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
         public void ResumeDispatcher()
         {
-            commandDispatcher = new CommandDispatcher();
+            commandDispatcher = new AsyncCommandDispatcher();
         }
 
         /// <summary>
