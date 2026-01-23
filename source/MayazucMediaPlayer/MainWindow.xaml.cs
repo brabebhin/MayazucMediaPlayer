@@ -51,7 +51,6 @@ namespace MayazucMediaPlayer
             }
         }
 
-
         public async Task RequestAlwaysOnTopOverlayMode(bool shouldOverlayOnTop)
         {
             await HostWindow.SetWindowOnTopOverlayMode(shouldOverlayOnTop);
@@ -109,7 +108,6 @@ namespace MayazucMediaPlayer
         string NowPlayingPageTitle = "Now Playing";
 
         private NowPlayingHome NowPlayingPage { get; set; }
-        private bool NowPlayingWasJustMinimized { get; set; }
 
         public NowPlayingCommandBarViewModel PlaybackCommandsModel
         {
@@ -162,29 +160,11 @@ namespace MayazucMediaPlayer
             RootFrame.ServiceProvider = ServiceProvider;
             MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += BackgroundMediaService_MediaPlayerElementFullScreenModeChanged;
             PopupHelper.NotificationRequest += PopupHelper_NotificationRequest;
-
             PlaybackCommandsModel = new NowPlayingCommandBarViewModel(DispatcherQueue);
             RootFrame.AsyncNavigated += RootFrame_AsyncNavigated;
-            SizeChanged += MCMediaCenterRootApplication_SizeChanged;
+            //SizeChanged += MCMediaCenterRootApplication_SizeChanged;
 
             OverayModeButtonIcon.Glyph = !IsAlwaysOnTop ? EnterOverlayModeIcon : ExitOverlayModeIcon;
-            GetAppWindowForCurrentWindow().Closing += MainWindow_Closing;
-        }
-
-        private void MainWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
-        {
-            args.Cancel = true;
-            GetAppWindowForCurrentWindow().Closing -= MainWindow_Closing;
-
-            DispatcherQueue.TryEnqueue(() =>
-            {
-                var children = WindowLayoutRoot.FindVisualChildrenDeep<Control>().Select(x => x as IDisposable).Where(x => x != null);
-                foreach (var c in children)
-                {
-                    c?.Dispose();
-                }
-                this.Close();
-            });
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
@@ -202,9 +182,6 @@ namespace MayazucMediaPlayer
 
         private void MCMediaCenterRootApplication_SizeChanged(object? sender, Microsoft.UI.Xaml.WindowSizeChangedEventArgs e)
         {
-            var width = e.Size.Width;
-            var height = e.Size.Height;
-
             if (!IsNowPlayingMaximized())
             {
                 MinimizeNowPlaying();
@@ -349,8 +326,6 @@ namespace MayazucMediaPlayer
             {
                 await RootFrame.NavigateAsync(xPageNavigationType);
             }
-
-            NowPlayingWasJustMinimized = NowPlayingMaximized;
 
             NowPlayingMaximized = false;
         }
@@ -552,7 +527,6 @@ namespace MayazucMediaPlayer
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }
-
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

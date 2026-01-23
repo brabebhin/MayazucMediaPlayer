@@ -1637,7 +1637,8 @@ namespace MayazucMediaPlayer.MediaPlayback
                     // TODO: dispose managed state (managed objects)
                 }
                 PlaybackListAdapter.Dispose();
-                commandDispatcher.SignalToCancel();
+                commandDispatcher.Dispose();
+                stopMusicOnTimerService?.StopService();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
@@ -1650,7 +1651,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }
-
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

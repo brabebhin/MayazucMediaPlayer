@@ -125,24 +125,18 @@ namespace MayazucMediaPlayer
                     // TODO: dispose managed state (managed objects)
                 }
                 Services.Dispose();
+                FileMetadataService.Dispose();
+                SettingsService.Instance.Dispose();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        ~AppState()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
-        }
-
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
     }
 
@@ -159,7 +153,7 @@ namespace MayazucMediaPlayer
         public App()
         {
             InitializeComponent();
-            UnhandledException += App_UnhandledException;
+            //UnhandledException += App_UnhandledException;
             AppState.Current.ConfigureDependencyInjection(DispatcherQueue.GetForCurrentThread);
             SetupApplication();
         }
@@ -179,7 +173,6 @@ namespace MayazucMediaPlayer
             {
                 RequestedTheme = requestedUserTheme.Value;
             }
-
         }
 
         private void InitBackgroundMediaPlayer(IntPtr hwnd, ulong windowId)
@@ -203,8 +196,6 @@ namespace MayazucMediaPlayer
             }
         }
 
-        public static object LaunchConstants { get; internal set; }
-
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file (that's a lie .
@@ -214,11 +205,10 @@ namespace MayazucMediaPlayer
         {
             m_window = new MainWindow();
             m_window.Activate();
-
             InitBackgroundMediaPlayer(GetActiveWindow(), m_window.AppWindow.Id.Value);
 
             await m_window.LoadAsync();
-            AppState.Current.MusicLibraryIndexService.Start();
+            //AppState.Current.MusicLibraryIndexService.Start();
 
             var launchArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
             if (launchArgs.Kind == ExtendedActivationKind.File)
@@ -237,7 +227,6 @@ namespace MayazucMediaPlayer
             return Task.CompletedTask;
         }
 
-
         public XamlRoot CurrentXamlRoot()
         {
             return m_window.Content.XamlRoot;
@@ -252,22 +241,15 @@ namespace MayazucMediaPlayer
             {
                 if (disposing)
                 {
-                    //m_window?.Dispose();
                     // TODO: dispose managed state (managed objects)
                 }
                 AppState.Current?.Dispose();
+                m_window?.Dispose();
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;
             }
-        }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        ~App()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
         }
 
         public void Dispose()

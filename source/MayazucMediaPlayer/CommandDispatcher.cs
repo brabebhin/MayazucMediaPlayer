@@ -15,7 +15,7 @@ namespace MayazucMediaPlayer
     ///     It works around the Dispatcher/Queue not having async/await support in run delegates
     ///     Provides some rate limiting (especially for user input) and bulkhead isolation in error scenarios.
     /// </summary>
-    public class CommandDispatcher
+    public partial class CommandDispatcher : IDisposable
     {
         Task backgroundThread = Task.CompletedTask;
         bool cancel = false;
@@ -56,7 +56,7 @@ namespace MayazucMediaPlayer
             }
         }
 
-        public void SignalToCancel()
+        public void Dispose()
         {
             cancel = true;
             executionQueue.Complete();

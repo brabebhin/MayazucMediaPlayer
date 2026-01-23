@@ -156,6 +156,7 @@ namespace MayazucMediaPlayer.Controls
             base.OnDispose(disposing);
             displayInformation.AdvancedColorInfoChanged -= DisplayInformation_AdvancedColorInfoChanged;
             displayInformation.Dispose();
+            _fullscreenCursorTimer?.Cancel();
             WrappedMediaPlayer = null;
         }
 

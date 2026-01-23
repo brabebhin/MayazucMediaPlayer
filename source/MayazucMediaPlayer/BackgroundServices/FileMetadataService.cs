@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using Nito.AsyncEx;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,37 +23,44 @@ namespace MayazucMediaPlayer.BackgroundServices
         }
     }
 
-    public class PriorityBufferBlock<T>
+    public partial class PriorityBufferBlock<T> : IDisposable
     {
-        readonly BufferBlock<T> lowPriority = new BufferBlock<T>();
-        readonly BufferBlock<T> highPriority = new BufferBlock<T>();
+        readonly PriorityQueue<T, int> priorityQueue = new System.Collections.Generic.PriorityQueue<T, int>();
+        private ManualResetEventSlim queueHasItems = new ManualResetEventSlim(false);
 
-        public async Task<PriorityBlockResult<T>> OutputAvailableAsync(CancellationToken token)
+        public PriorityBlockResult<T> OutputAvailable(CancellationToken token)
         {
-            var hpAvailable = highPriority.OutputAvailableAsync(token);
-            var lpAvailable = lowPriority.OutputAvailableAsync(token);
-            var outputAvailableTask = (await Task.WhenAny(hpAvailable, lpAvailable));
-            if (outputAvailableTask == hpAvailable)
+            while (!token.IsCancellationRequested)
             {
-                return new PriorityBlockResult<T>(true, highPriority.Receive());
-            }
-            if (outputAvailableTask == lpAvailable)
-            {
-                return new PriorityBlockResult<T>(true, lowPriority.Receive());
-            }
+                try
+                {
+                    if (priorityQueue.Count == 0)
+                    {
+                        queueHasItems.Reset();
+                    }
+                    queueHasItems.Wait(token);
+                    var hadItem = priorityQueue.TryDequeue(out var lowestPriority, out var priority);
+                    return new PriorityBlockResult<T>(hadItem, lowestPriority);
+                }
+                catch
+                {
 
+                }
+            }
             return new PriorityBlockResult<T>(false, default(T));
         }
 
         public void Post(T item, bool isHighPriority)
         {
-            if (isHighPriority) highPriority.Post(item);
-            else lowPriority.Post(item);
+            priorityQueue.Enqueue(item, isHighPriority ? 0 : 1);
+            queueHasItems.Set();
         }
 
-        public long Count()
+        public void Dispose()
         {
-            return lowPriority.Count + highPriority.Count;
+            priorityQueue.Clear();
+            queueHasItems.Set();
+            queueHasItems.Dispose();
         }
     }
 
@@ -69,7 +77,7 @@ namespace MayazucMediaPlayer.BackgroundServices
         }
     }
 
-    public class FileMetadataService : IAsyncDisposable
+    public partial class FileMetadataService : IDisposable
     {
         readonly PriorityBufferBlock<FileInfoProcessingJob> backlog = new PriorityBufferBlock<FileInfoProcessingJob>();
         readonly CancellationTokenSource cancelSignal = new CancellationTokenSource();
@@ -81,7 +89,7 @@ namespace MayazucMediaPlayer.BackgroundServices
             {
                 while (!cancelSignal.IsCancellationRequested)
                 {
-                    var outputAvailableResult = await backlog.OutputAvailableAsync(cancelSignal.Token);
+                    var outputAvailableResult = backlog.OutputAvailable(cancelSignal.Token);
                     if (outputAvailableResult.OutputAvailable)
                     {
                         var fileToProcess = outputAvailableResult.Result;
@@ -118,10 +126,15 @@ namespace MayazucMediaPlayer.BackgroundServices
             });
         }
 
-        public async ValueTask DisposeAsync()
+        public void Dispose()
         {
+            backlog?.Dispose();
             cancelSignal.Cancel();
-            await ProcessingTask;
+            while (!ProcessingTask.IsCompleted)
+            {
+                Thread.Yield();
+            }
+            cancelSignal.Dispose();
         }
 
         public async Task<EmbeddedMetadata> ProcessFileAsync(FileInfo info, bool highPriority)

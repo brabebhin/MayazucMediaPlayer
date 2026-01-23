@@ -125,9 +125,9 @@ namespace MayazucMediaPlayer.Navigation
                 foreach (var backEntry in PageBackStack)
                     backEntry.Dispose();
                 PageBackStack.Clear();
-                var currentPage = (BasePage)Content;
-                currentPage?.Dispose();
-                Content = null;
+                //var currentPage = (BasePage)Content;
+                //currentPage?.Dispose();
+                //Content = null;
                 ServiceProvider = null;
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
@@ -141,7 +141,6 @@ namespace MayazucMediaPlayer.Navigation
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }
-
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

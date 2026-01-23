@@ -11,7 +11,6 @@ namespace MayazucMediaPlayer
     public static class Program
     {
         const string SingleInstanceKey = "B9BA688B46CC431B93D07B9D48468C18";
-        internal static event EventHandler<EventArgs> OnApplicationClosing;
 
         // Replaces the standard App.g.i.cs.
         // Note: We can't declare Main to be async because in a WinUI app
@@ -33,10 +32,12 @@ namespace MayazucMediaPlayer
                         DispatcherQueue.GetForCurrentThread());
                     SynchronizationContext.SetSynchronizationContext(context);
                     app = new App();
+
                 });
-                OnApplicationClosing?.Invoke(null, new EventArgs());
-                SettingsService.Instance.SaveSettings();
+                System.AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
                 app?.Dispose();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
 
@@ -92,7 +93,7 @@ namespace MayazucMediaPlayer
         public static void RedirectActivationTo(
             AppActivationArguments args, AppInstance keyInstance)
         {
-            var redirectSemaphore = new Semaphore(0, 1);
+            using var redirectSemaphore = new Semaphore(0, 1);
             Task.Run(() =>
             {
                 keyInstance.RedirectActivationToAsync(args).AsTask().Wait();

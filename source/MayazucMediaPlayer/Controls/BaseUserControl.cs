@@ -19,6 +19,13 @@ namespace MayazucMediaPlayer.Controls
 
         public BaseUserControl()
         {
+            this.Unloaded += BaseUserControl_Unloaded;
+        }
+
+        private void BaseUserControl_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            Dispose();
+            this.Unloaded -= BaseUserControl_Unloaded;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

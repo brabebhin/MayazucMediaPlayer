@@ -8,7 +8,7 @@ using Windows.Networking.Connectivity;
 
 namespace MayazucMediaPlayer.Settings
 {
-    public class SettingsService
+    public partial class SettingsService : IDisposable
     {
         static SettingsService? instance;
         static object singletonLock = new object();
@@ -89,6 +89,13 @@ namespace MayazucMediaPlayer.Settings
         internal void SaveSettings()
         {
             storageService.SaveSettings();
+        }
+
+        public void Dispose()
+        {
+            SaveSettings();
+            autoSaveTimer.Stop();
+            autoSaveTimer.Dispose();
         }
 
         [SettingDefaultValue(false)]

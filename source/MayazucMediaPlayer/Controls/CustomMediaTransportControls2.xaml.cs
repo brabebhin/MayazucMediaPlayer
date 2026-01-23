@@ -12,7 +12,7 @@ using Windows.Media.Playback;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public sealed partial class CustomMediaTransportControls2 : BaseUserControl, IDisposable
+    public sealed partial class CustomMediaTransportControls2 : BaseUserControl
     {
         DispatcherQueueTimer StateUpdateTimer;
         SymbolIcon PlayIcon = new SymbolIcon(Symbol.Play);
@@ -46,14 +46,6 @@ namespace MayazucMediaPlayer.Controls
             this.SizeChanged += CustomMediaTransportControls2_SizeChanged;
 
             VolumeControlBarInstance.SetMediaPlayer(AppState.Current.MediaServiceConnector.CurrentPlayer);
-
-            Program.OnApplicationClosing += Program_OnApplicationClosing;
-        }
-
-        private void Program_OnApplicationClosing(object? sender, EventArgs e)
-        {
-            StateUpdateTimer.Stop();
-            Program.OnApplicationClosing -= Program_OnApplicationClosing;
         }
 
         private void CustomMediaTransportControls2_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -213,7 +205,6 @@ namespace MayazucMediaPlayer.Controls
         }
 
         public static DependencyProperty RightContentProperty = DependencyProperty.Register(nameof(RightContent), typeof(object), typeof(CustomMediaTransportControls2), new PropertyMetadata(null, RightContentChanged));
-        private bool disposedValue;
 
         private static void RightContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -232,35 +223,15 @@ namespace MayazucMediaPlayer.Controls
             set => SetValue(RightContentProperty, value);
         }
 
-        private void Dispose(bool disposing)
+        protected override void OnDispose(bool disposing)
         {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects)
-                }
-                AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened -= Current_MediaOpened;
-                AppState.Current.MediaServiceConnector.PlayerInstance.OnStateChanged -= CurrentPlaybackSession_PlaybackStateChanged;
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened -= Current_MediaOpened;
+            AppState.Current.MediaServiceConnector.PlayerInstance.OnStateChanged -= CurrentPlaybackSession_PlaybackStateChanged;
+            StateUpdateTimer.Tick -= StateUpdateTimer_Tick;
 
-                StateUpdateTimer.Stop();
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
-            }
-        }
-
-        ~CustomMediaTransportControls2()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            StateUpdateTimer.Stop();
+            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+            // TODO: set large fields to null
         }
     }
 }

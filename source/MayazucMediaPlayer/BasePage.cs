@@ -62,6 +62,13 @@ namespace MayazucMediaPlayer
         public BasePage()
         {
             DataContext = this;
+            this.Unloaded += BasePage_Unloaded;
+        }
+
+        private void BasePage_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            Dispose();
+            this.Unloaded -= BasePage_Unloaded;
         }
 
         private void SubscribeEventHandlersInternal()
@@ -189,7 +196,6 @@ namespace MayazucMediaPlayer
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: false);
         }
-
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method

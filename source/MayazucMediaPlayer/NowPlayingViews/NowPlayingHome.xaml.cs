@@ -90,12 +90,12 @@ namespace MayazucMediaPlayer.NowPlayingViews
             {
                 if (args.Reason == MediaOpenedEventReason.MediaPlaybackListItemChanged)
                 {
-                    MediaOpenedCode(sender);
+                    HandleMediaOpened(sender);
                 }
             });
         }
 
-        private void MediaOpenedCode(MediaPlayer sender)
+        private void HandleMediaOpened(MediaPlayer sender)
         {
             if (sender == null)
             {
