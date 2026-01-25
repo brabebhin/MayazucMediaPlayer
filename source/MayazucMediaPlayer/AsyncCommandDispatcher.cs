@@ -64,25 +64,25 @@ namespace MayazucMediaPlayer
             started = false;
         }
 
-        public Task<CommandDispatcherOperationAsyncContext> EnqueueAsync(Action a)
+        public Task<AsyncCommandDispatcherOperationContext> EnqueueAsync(Action a)
         {
-            var returnValue = new CommandDispatcherOperationAsyncContext();
+            var returnValue = new AsyncCommandDispatcherOperationContext();
             if (cancel) return Task.FromResult(returnValue.SetTimedOut(true));
 
             var e = new AsyncCommandDispatcherOperation(a);
             return SafeQueueOperation(e);
         }
 
-        public Task<CommandDispatcherOperationAsyncContext> EnqueueAsync(Func<object> actionWithReturnValue)
+        public Task<AsyncCommandDispatcherOperationContext> EnqueueAsync(Func<object> actionWithReturnValue)
         {
-            var returnValue = new CommandDispatcherOperationAsyncContext();
+            var returnValue = new AsyncCommandDispatcherOperationContext();
             if (cancel) return Task.FromResult(returnValue.SetTimedOut(true));
 
             var e = new AsyncCommandDispatcherOperation((Func<object>)actionWithReturnValue);
             return SafeQueueOperation(e);
         }
 
-        private Task<CommandDispatcherOperationAsyncContext> SafeQueueOperation(AsyncCommandDispatcherOperation e)
+        private Task<AsyncCommandDispatcherOperationContext> SafeQueueOperation(AsyncCommandDispatcherOperation e)
         {
             executionQueue.Post(e);
             if (backgroundThread.Status == TaskStatus.RanToCompletion)
@@ -95,9 +95,9 @@ namespace MayazucMediaPlayer
             return e.GetAsyncOperation();
         }
 
-        public Task<CommandDispatcherOperationAsyncContext> EnqueueAsync(Func<Task> a)
+        public Task<AsyncCommandDispatcherOperationContext> EnqueueAsync(Func<Task> a)
         {
-            var returnValue = new CommandDispatcherOperationAsyncContext();
+            var returnValue = new AsyncCommandDispatcherOperationContext();
 
             if (cancel) return Task.FromResult(returnValue.SetTimedOut(true));
 
@@ -105,9 +105,9 @@ namespace MayazucMediaPlayer
             return SafeQueueOperation(e);
         }
 
-        public Task<CommandDispatcherOperationAsyncContext> EnqueueAsync(Func<Task<object>> a)
+        public Task<AsyncCommandDispatcherOperationContext> EnqueueAsync(Func<Task<object>> a)
         {
-            var returnValue = new CommandDispatcherOperationAsyncContext();
+            var returnValue = new AsyncCommandDispatcherOperationContext();
             if (cancel) return Task.FromResult(returnValue.SetTimedOut(true));
 
             var e = new AsyncCommandDispatcherOperation(a);
@@ -119,11 +119,11 @@ namespace MayazucMediaPlayer
             readonly Func<object>? syncActionWithReturnValue;
             readonly Func<Task<object>>? asyncActionWithReturnValue;
             readonly Func<Task>? asyncActionWithoutReturnValue;
-            readonly TaskCompletionSource<CommandDispatcherOperationAsyncContext> executionTask = new TaskCompletionSource<CommandDispatcherOperationAsyncContext>();
+            readonly TaskCompletionSource<AsyncCommandDispatcherOperationContext> executionTask = new TaskCompletionSource<AsyncCommandDispatcherOperationContext>();
 
             public AsyncCommandDispatcherOperation(Action a)
             {
-                syncActionWithReturnValue = new Func<CommandDispatcherOperationAsyncContext>(() => { a(); return new CommandDispatcherOperationAsyncContext(); });
+                syncActionWithReturnValue = new Func<AsyncCommandDispatcherOperationContext>(() => { a(); return new AsyncCommandDispatcherOperationContext(); });
             }
 
             public AsyncCommandDispatcherOperation(Func<object> a)
@@ -143,7 +143,7 @@ namespace MayazucMediaPlayer
 
             public async Task Execute()
             {
-                var returnValue = new CommandDispatcherOperationAsyncContext();
+                var returnValue = new AsyncCommandDispatcherOperationContext();
                 try
                 {
                     var result = syncActionWithReturnValue?.Invoke();
@@ -170,7 +170,7 @@ namespace MayazucMediaPlayer
                 executionTask.SetResult(returnValue);
             }
 
-            public Task<CommandDispatcherOperationAsyncContext> GetAsyncOperation()
+            public Task<AsyncCommandDispatcherOperationContext> GetAsyncOperation()
             {
                 return executionTask.Task;
             }
@@ -178,11 +178,11 @@ namespace MayazucMediaPlayer
     }
 
 
-    public class CommandDispatcherOperationAsyncContext
+    public class AsyncCommandDispatcherOperationContext
     {
         public object? Result { get; private set; }
 
-        public CommandDispatcherOperationAsyncContext SetResult(object result)
+        public AsyncCommandDispatcherOperationContext SetResult(object result)
         {
             if (Result == null)
             {
@@ -195,7 +195,7 @@ namespace MayazucMediaPlayer
 
         public Exception? Error { get; private set; }
 
-        public CommandDispatcherOperationAsyncContext SetError(Exception error)
+        public AsyncCommandDispatcherOperationContext SetError(Exception error)
         {
             if (Error == null)
             {
@@ -208,7 +208,7 @@ namespace MayazucMediaPlayer
 
         public bool? TimedOut { get; private set; }
 
-        public CommandDispatcherOperationAsyncContext SetTimedOut(bool timeout)
+        public AsyncCommandDispatcherOperationContext SetTimedOut(bool timeout)
         {
             if (!TimedOut.HasValue)
             {
