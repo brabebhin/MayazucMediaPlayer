@@ -43,9 +43,9 @@ namespace MayazucMediaPlayer.FileSystemViews
 
         public override IMediaPlayerItemSourceProvderCollection<PickedFileItem> Items => files;
 
-        public FileManagementService(DispatcherQueue dp,
-            PlaybackSequenceService m,
-            PlaylistsService playlistsService) : base(dp, m, playlistsService)
+        public FileManagementService(DispatcherQueue dispatcherQueue,
+            PlaybackSequenceService playbackSequenceService,
+            PlaylistsService playlistsService, Func<bool> shouldClearItemsCallback) : base(dispatcherQueue, playbackSequenceService, playlistsService, shouldClearItemsCallback)
         {
             folderPicker = FileFolderPickerService.GetFolderPicker();
             filePicker = FileFolderPickerService.GetFileOpenPicker();

@@ -131,7 +131,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
         public NowPlayingUiService(DispatcherQueue dispatcher,
             PlaybackSequenceService m,
             IBackgroundPlayer backgroundMediaPlayerInstance,
-            PlaylistsService playlistsService) : base(dispatcher, m, playlistsService)
+            PlaylistsService playlistsService) : base(dispatcher, m, playlistsService, () => false)
         {
             PlaylistsService = playlistsService;
             BackgroundMediaPlayerInstance = backgroundMediaPlayerInstance;

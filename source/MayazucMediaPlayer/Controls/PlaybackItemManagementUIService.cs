@@ -23,7 +23,7 @@ using Windows.UI.Popups;
 
 namespace MayazucMediaPlayer.Controls
 {
-    public partial class PlaybackItemManagementUIService<T> : MainViewModelBase, IPlaybackItemManagementUIService where T : IMediaPlayerItemSourceProvder
+    public partial class PlaybackItemManagementUIService<T> : ServiceBase, IPlaybackItemManagementUIService where T : IMediaPlayerItemSourceProvder
     {
         bool playButtonIsEnabled = false;
         bool _EnqueueButtonIsEnabled = false;
@@ -435,15 +435,19 @@ namespace MayazucMediaPlayer.Controls
 
         public bool CommandBarEnabled { get; private set; }
 
-        public PlaybackItemManagementUIService(DispatcherQueue dp,
-            PlaybackSequenceService m,
-            PlaylistsService playlistsService) : base(dp, m)
+        private Func<bool> ShouldClearViewCallback { get; set; }
+
+        public PlaybackItemManagementUIService(DispatcherQueue dispatcherQueue,
+            PlaybackSequenceService playbackSequenceService,
+            PlaylistsService playlistsService,
+            Func<bool> shouldClearViewCallback) : base(dispatcherQueue, playbackSequenceService)
         {
             FilterCollectionView = new AdvancedCollectionView();
             PlaylistsService = playlistsService;
 
             InitializeMembers();
             NotifyPropertyChanged(nameof(FilterCollectionView));
+            ShouldClearViewCallback = shouldClearViewCallback;
         }
 
         private void CollectionViewModelInstance_NavigationRequest(object? sender, NavigationRequestEventArgs e)
@@ -824,9 +828,12 @@ namespace MayazucMediaPlayer.Controls
 
         private async Task ClearListWithUserOptions()
         {
-            using (await _activationLock.LockAsync())
+            if (ShouldClearViewCallback())
             {
-                Items.Clear();
+                using (await _activationLock.LockAsync())
+                {
+                    Items.Clear();
+                }
             }
         }
 

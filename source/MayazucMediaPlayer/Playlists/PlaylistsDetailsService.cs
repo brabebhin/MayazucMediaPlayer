@@ -79,7 +79,7 @@ namespace MayazucMediaPlayer.Playlists
         }
 
 
-        public PlaylistsDetailsService(DispatcherQueue dp, PlaybackSequenceService m, PlaylistsService playlistsService) : base(dp, m, playlistsService)
+        public PlaylistsDetailsService(DispatcherQueue dp, PlaybackSequenceService m, PlaylistsService playlistsService) : base(dp, m, playlistsService, () => false)
         {
             base.Items.CollectionChanged += Files_CollectionChanged;
 

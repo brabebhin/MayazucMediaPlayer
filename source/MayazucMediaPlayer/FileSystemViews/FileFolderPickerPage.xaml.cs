@@ -45,7 +45,8 @@ namespace MayazucMediaPlayer.FileSystemViews
             {
                 DataService = new FileManagementService(DispatcherQueue,
                     base.ApplicationDataModels.PlaybackModel,
-                    ServiceProvider.GetService<PlaylistsService>());
+                    ServiceProvider.GetService<PlaylistsService>(),
+                    () => true);
 
                 await fileManagementControl.LoadStateInternal(DataService);
 

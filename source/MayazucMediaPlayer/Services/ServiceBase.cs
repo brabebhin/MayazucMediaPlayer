@@ -32,23 +32,4 @@ namespace MayazucMediaPlayer.Services
                });
         }
     }
-
-    public abstract class MainViewModelBase : ServiceBase
-    {
-        public PlaybackSequenceService PlaybackServiceInstance
-        {
-            get;
-            protected set;
-        }
-
-        public MainViewModelBase(DispatcherQueue disp) : base(disp)
-        {
-
-        }
-
-        public MainViewModelBase(DispatcherQueue disp, PlaybackSequenceService m) : base(disp)
-        {
-            PlaybackServiceInstance = m;
-        }
-    }
 }

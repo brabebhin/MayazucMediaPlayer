@@ -27,7 +27,8 @@ namespace MayazucMediaPlayer.MediaCollections
             Model = new VideoCollectionUiService(DispatcherQueue);
             FileModel = new FileManagementService(DispatcherQueue,
                 base.ApplicationDataModels.PlaybackModel,
-                ServiceProvider.GetService<PlaylistsService>());
+                ServiceProvider.GetService<PlaylistsService>(),
+                () => false);
         }
 
         protected override async Task OnInitializeStateAsync(object? parameter)

@@ -10,7 +10,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:navigation="using:MayazucMediaPlayer.Navigation"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls" 
     xmlns:controls1="using:MayazucMediaPlayer.Controls"
     mc:Ignorable="d">
 
