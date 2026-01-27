@@ -92,7 +92,7 @@ namespace MayazucMediaPlayer.Playlists
             DisplayList.SelectionChanged -= DisplayList_SelectionChanged;
 
             PlaylistViewModelInstance = null;
-            PlaylistDetailsViewPage.Dispose();
+            PlaylistDetailsViewPage?.Dispose();
             base.FreeMemory();
         }
 

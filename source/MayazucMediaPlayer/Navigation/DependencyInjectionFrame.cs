@@ -29,7 +29,6 @@ namespace MayazucMediaPlayer.Navigation
             ExternalNavigationRequest?.Invoke(this, args);
         }
 
-        MemoryCache PageCache { get; set; } = new MemoryCache(new MemoryCacheOptions());
 
         public bool AllowsNestedNavigation
         {
@@ -89,13 +88,7 @@ namespace MayazucMediaPlayer.Navigation
 
         protected async Task<BasePage> CreateAndActivatePage(Type pageType, object args)
         {
-            var cacheHit = PageCache.TryGetValue(pageType, out BasePage page);
-            if (!cacheHit || !UseCache)
-            {
-                page = await PageFactory.GetPage(pageType, args);
-
-                PageCache.Set(pageType, page, DateTimeOffset.Now.AddMinutes(30));
-            }
+            var page = await PageFactory.GetPage(pageType, args);
 
             Content = page;
 
