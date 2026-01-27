@@ -48,14 +48,21 @@ namespace MayazucMediaPlayer.MediaPlayback
             return eqDefinitions.AsReadOnly();
         }
 
-        public static IReadOnlyList<AvEffectDefinition> GetAdditionalEffectsDefinitions()
+        public static IReadOnlyList<AvEffectDefinition> GetEchoFilters()
         {
             List<AvEffectDefinition> eqDefinitions = new List<AvEffectDefinition>();
 
-            var echoContainer = ApplicationDataContainers.EchoEffectsContainer;
-            foreach (var kvp in echoContainer.Values)
+            if(SettingsService.Instance.EchoInstrumentsEffectEnabled)
             {
-                eqDefinitions.Add(new AvEffectDefinition("aecho", (string)kvp.Value));
+                eqDefinitions.Add(new AvEffectDefinition("aecho", "0.8:0.88:60:0.4"));
+            }
+            if (SettingsService.Instance.EchoMountainsEffectEnabled)
+            {
+                eqDefinitions.Add(new AvEffectDefinition("aecho", "0.8:0.9:1000:0.3"));
+            }
+            if (SettingsService.Instance.EchoRoboticVoiceEffectEnabled)
+            {
+                eqDefinitions.Add(new AvEffectDefinition("aecho", "0.8:0.88:6:0.4"));
             }
 
             return eqDefinitions.AsReadOnly();

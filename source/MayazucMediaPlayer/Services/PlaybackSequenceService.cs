@@ -25,10 +25,9 @@ namespace MayazucMediaPlayer.Services
             private set;
         }
 
-
-        public PlaybackSequenceService(DispatcherQueue disp, IPlaybackSequenceProviderFactory nowPlayingSequenceProvider)
+        public PlaybackSequenceService(DispatcherQueue dispatcherQueue, IPlaybackSequenceProviderFactory nowPlayingSequenceProvider)
         {
-            Dispatcher = disp;
+            Dispatcher = dispatcherQueue;
             NowPlayingBackStore = new NowPlayingPlaybackSequence(Dispatcher, nowPlayingSequenceProvider);
         }
 
@@ -65,7 +64,7 @@ namespace MayazucMediaPlayer.Services
             NowPlayingBackStore.LoadSequence();
         }
 
-        public Task LoadNowPlaying()
+        public Task LoadSequence()
         {
             return NowPlayingBackStore.LoadSequenceAsync();
         }

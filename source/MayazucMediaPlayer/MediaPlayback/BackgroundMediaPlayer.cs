@@ -578,7 +578,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                 var RestartPosition = CurrentPlayer.PlaybackSession.Position.TotalMilliseconds;
                 DestroySource();
 
-                await PlaybackQueueService.LoadNowPlaying();
+                await PlaybackQueueService.LoadSequence();
                 await ResetToLocalPlaybackAdapter();
 
                 //ShiftTracks: false, userAction: true, incrementIndex: false, autoPlay: true)
@@ -861,7 +861,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
             //defs.Add(new AvEffectDefinition("sine", "frequency=8500:beep_factor=4:duration=5"));
             defs.AddRange(FFmpegInteropXExtensions.GetEqualizerEffectDefinitions(EqualizerService.GetCurrentEqualizerConfig()));
-            defs.AddRange(FFmpegInteropXExtensions.GetAdditionalEffectsDefinitions());
+            defs.AddRange(FFmpegInteropXExtensions.GetEchoFilters());
 
             playbackListAdapter?.SetFFmpegAudioEffects(defs);
         }
@@ -1169,7 +1169,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     request.StartTimeMiliseconds = SettingsService.Instance.ResumePositionDlnaIntrerupt;
 
                     DestroySource();
-                    await PlaybackQueueService.LoadNowPlaying();
+                    await PlaybackQueueService.LoadSequence();
                     await ResetToLocalPlaybackAdapter();
 
                     if (!await PlaybackListAdapter.BackstoreHasItems())

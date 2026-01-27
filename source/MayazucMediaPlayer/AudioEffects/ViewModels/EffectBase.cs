@@ -1,7 +1,5 @@
-﻿using MayazucMediaPlayer.LocalCache;
-using MayazucMediaPlayer.Services;
+﻿using MayazucMediaPlayer.Services;
 using System;
-using Windows.Storage;
 
 namespace MayazucMediaPlayer.AudioEffects.ViewModels
 {
@@ -13,7 +11,6 @@ namespace MayazucMediaPlayer.AudioEffects.ViewModels
             private set;
         }
 
-        private bool _enabled;
         /// <summary>
         /// a user defined string used to identify this effect. Must be unique
         /// </summary>
@@ -36,60 +33,24 @@ namespace MayazucMediaPlayer.AudioEffects.ViewModels
         {
             get
             {
-                return _enabled;
+                return _getEnabledCallback();
             }
             set
             {
-                if (_enabled == value) return;
-
-                _enabled = value;
+                _setEnabledCallback(value);
                 NotifyPropertyChanged(nameof(IsEnabled));
             }
         }
 
+        private Func<bool> _getEnabledCallback;
+        private Action<bool> _setEnabledCallback;
 
-        public AudioEffect(string title, string type)
+        public AudioEffect(string title, string type, Func<bool> getEnabledCallback, Action<bool> setEnabledCallback)
         {
             Type = type;
             Title = title;
-            IsEnabled = GetStoreContainer().Values.ContainsKey(Title);
-        }
-
-        public void DisableEffect()
-        {
-            var container = GetStoreContainer();
-            container.Values.Remove(Title);
-            IsEnabled = false;
-        }
-
-        private ApplicationDataContainer GetStoreContainer()
-        {
-            switch (Type)
-            {
-                case EffectTypes.aecho:
-                    return ApplicationDataContainers.EchoEffectsContainer;
-
-                case EffectTypes.extraStereo:
-                    return ApplicationDataContainers.ExtraStereoEffectsContainer;
-                default: break;
-            }
-            //TODO: move on from application data containers
-            return null;
-        }
-
-        public void EnableEffect()
-        {
-            var container = GetStoreContainer();
-            if (!container.Values.ContainsKey(Title))
-            {
-                container.Values.Add(Title, GetSlimConfigurationString());
-            }
-        }
-
-        public Func<string> GetSlimConfigurationString
-        {
-            get;
-            set;
+            _getEnabledCallback = getEnabledCallback;
+            _setEnabledCallback = setEnabledCallback;
         }
     }
 }

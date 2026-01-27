@@ -17,8 +17,6 @@ namespace MayazucMediaPlayer.Playlists
 {
     public partial class PlaylistViewerModel : ServiceBase
     {
-        readonly AsyncLock randomPlaylistLock = new AsyncLock();
-
         public event EventHandler<List<PlaylistItem>> GetSelectedItemsRequest;
 
         bool _EnqueueButtonIsEnabled = false;
@@ -96,7 +94,7 @@ namespace MayazucMediaPlayer.Playlists
             private set;
         }
 
-        public PlaylistViewerModel(DispatcherQueue disp, PlaybackSequenceService playbackSeqService, PlaylistsService playlistService) : base(disp, playbackSeqService)
+        public PlaylistViewerModel(DispatcherQueue disp, PlaybackSequenceService playbackSeqService, PlaylistsService playlistService) : base(disp)
         {
             PlaylistsService = playlistService;
             PlaylistsView = new AdvancedCollectionView();

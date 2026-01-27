@@ -14,7 +14,6 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Search;
 
-
 namespace MayazucMediaPlayer.FileSystemViews
 {
     public partial class FileManagementService : PlaybackItemManagementUIService<PickedFileItem>

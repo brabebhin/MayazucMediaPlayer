@@ -26,11 +26,11 @@ namespace MayazucMediaPlayer
 
         private bool disposedValue;
 
-        protected ApplicationDataModel ApplicationDataModels
+        protected AppState AppStateServcies
         {
             get
             {
-                return ServiceProvider.GetService<ApplicationDataModel>();
+                return AppState.Current;
             }
         }
 

@@ -36,26 +36,13 @@ namespace MayazucMediaPlayer.AudioEffects
                 //LoadDefaultEffects();
                 foreach (var x in Effects)
                 {
-                    x.DisableEffect();
+                    x.IsEnabled = false;
                 }
                 await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsService.Instance.EqualizerEnabled);
             });
             SaveEffectsCommand = new AsyncRelayCommand(async () =>
             {
-                foreach (var x in Effects)
-                {
-                    if (x.IsEnabled)
-                    {
-                        x.EnableEffect();
-                    }
-                    else
-                    {
-                        x.DisableEffect();
-                    }
-                }
-
                 await AppState.Current.MediaServiceConnector.NotifyResetFiltering(SettingsService.Instance.EqualizerEnabled);
-
             });
         }
 
@@ -63,22 +50,19 @@ namespace MayazucMediaPlayer.AudioEffects
         private void LoadDefaultEffects()
         {
             Effects.Clear();
-            Effects.Add(new AudioEffect("echoInstruments", EffectTypes.aecho)
+            Effects.Add(new AudioEffect("echoInstruments", EffectTypes.aecho, () => SettingsService.Instance.EchoInstrumentsEffectEnabled, (enabled) => SettingsService.Instance.EchoInstrumentsEffectEnabled = enabled)
             {
                 DisplayTitle = "Instruments",
-                GetSlimConfigurationString = () => { return "0.8:0.88:60:0.4"; }
             });
 
-            Effects.Add(new AudioEffect("echoMountain", EffectTypes.aecho)
+            Effects.Add(new AudioEffect("echoMountain", EffectTypes.aecho, () => SettingsService.Instance.EchoMountainsEffectEnabled, (enabled) => SettingsService.Instance.EchoMountainsEffectEnabled = enabled)
             {
                 DisplayTitle = "Mountains",
-                GetSlimConfigurationString = () => { return "0.8:0.9:1000:0.3"; }
             });
 
-            Effects.Add(new AudioEffect("echoRobot", EffectTypes.aecho)
+            Effects.Add(new AudioEffect("echoRobot", EffectTypes.aecho, () => SettingsService.Instance.EchoRoboticVoiceEffectEnabled, (enabled) => SettingsService.Instance.EchoRoboticVoiceEffectEnabled = enabled)
             {
                 DisplayTitle = "Robotic",
-                GetSlimConfigurationString = () => { return "0.8:0.88:6:0.4"; }
             });
         }
     }

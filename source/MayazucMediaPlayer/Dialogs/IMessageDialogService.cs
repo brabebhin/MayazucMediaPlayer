@@ -7,6 +7,5 @@ namespace MayazucMediaPlayer.Dialogs
     {
         public IAsyncOperation<IUICommand> ShowMessageDialogAsync(string message, string title, params IUICommand[]? commands);
         public IAsyncOperation<IUICommand> ShowMessageDialogAsync(string message);
-
     }
 }

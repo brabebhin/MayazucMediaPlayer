@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.UI.Core;
+
 namespace MayazucMediaPlayer.AudioEffects
 {
     public partial class AudioEqualizerPreset : ObservableObject
@@ -22,20 +22,6 @@ namespace MayazucMediaPlayer.AudioEffects
             get;
             set;
         } = new List<int>();
-
-        public double WindowWidth
-        {
-            get
-            {
-                var window = CoreWindow.GetForCurrentThread();
-                if (window != null)
-                {
-
-                    return window.Bounds.Width;
-                }
-                else return 0;
-            }
-        }
 
         public bool IsEnabled { set; get; }
 

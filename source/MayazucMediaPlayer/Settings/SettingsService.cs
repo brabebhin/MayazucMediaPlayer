@@ -638,5 +638,44 @@ namespace MayazucMediaPlayer.Settings
                 RiseSettingChanged(value, nameof(OpenSubtitlesApiKey));
             }
         }
+
+        public bool EchoMountainsEffectEnabled
+        {
+            get
+            {
+                return storageService.BoolGetValueOrDefault(nameof(EchoMountainsEffectEnabled), false);
+            }
+            set
+            {
+                storageService.SetValueOrDefault2(nameof(EchoMountainsEffectEnabled), false, value);
+                RiseSettingChanged(value, nameof(EchoMountainsEffectEnabled));
+            }
+        }
+
+        public bool EchoInstrumentsEffectEnabled
+        {
+            get
+            {
+                return storageService.BoolGetValueOrDefault(nameof(EchoInstrumentsEffectEnabled), false);
+            }
+            set
+            {
+                storageService.SetValueOrDefault2(nameof(EchoInstrumentsEffectEnabled), false, value);
+                RiseSettingChanged(value, nameof(EchoInstrumentsEffectEnabled));
+            }
+        }
+
+        public bool EchoRoboticVoiceEffectEnabled
+        {
+            get
+            {
+                return storageService.BoolGetValueOrDefault(nameof(EchoRoboticVoiceEffectEnabled), false);
+            }
+            set
+            {
+                storageService.SetValueOrDefault2(nameof(EchoRoboticVoiceEffectEnabled), false, value);
+                RiseSettingChanged(value, nameof(EchoRoboticVoiceEffectEnabled));
+            }
+        }
     }
 }

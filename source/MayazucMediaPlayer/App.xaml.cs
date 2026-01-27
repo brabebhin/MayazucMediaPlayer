@@ -78,6 +78,22 @@ namespace MayazucMediaPlayer
 
         public MusicLibraryIndexingService MusicLibraryIndexService { get; private set; } = new MusicLibraryIndexingService();
 
+        public PlaybackSequenceService PlaybackSequenceService
+        {
+            get
+            {
+                return Services.GetService<PlaybackSequenceService>();
+            }
+        }
+
+        public IOpenSubtitlesAgent OpenSubtitlesAgent
+        {
+            get
+            {
+                return Services.GetService<IOpenSubtitlesAgent>();
+            }
+        }
+
         public ServiceProvider ConfigureDependencyInjection(Func<DispatcherQueue> dispatcherQueueFactory)
         {
             var serviceCollection = new ServiceCollection();
@@ -101,9 +117,6 @@ namespace MayazucMediaPlayer
             serviceCollection.AddSingleton<AudioEnhancementsPageViewModel>();
 
             serviceCollection.AddSingleton<IOpenSubtitlesAgent, OpenSubtitlesRestAgent>();
-
-
-            serviceCollection.AddSingleton<ApplicationDataModel>();
 
             serviceCollection.AddTransient<FileManagementService>();
             serviceCollection.AddTransient<PlaylistViewerModel>();

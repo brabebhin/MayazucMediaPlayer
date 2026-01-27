@@ -11,12 +11,6 @@ namespace MayazucMediaPlayer.Navigation
     {
         public event EventHandler<NavigationRequestEventArgs> ExternalNavigationRequest;
 
-        public ApplicationDataModel ModelToPageTypeBinding
-        {
-            get;
-            private set;
-        }
-
         public void NotifyExternalNavigationRequest(object? sender, NavigationRequestEventArgs args)
         {
             ExternalNavigationRequest?.Invoke(sender, args);
