@@ -41,6 +41,7 @@ namespace MayazucMediaPlayer
         {
             get
             {
+                if (_current != null) return _current;
                 lock (lockState)
                 {
                     if (_current == null)

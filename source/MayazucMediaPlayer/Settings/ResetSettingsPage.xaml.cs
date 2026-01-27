@@ -82,7 +82,7 @@ namespace MayazucMediaPlayer.Settings
 
             if (diag.Result)
             {
-                SettingsDefaultValues.RestoreSettingsDefaults();
+                SettingsService.Instance.ResetToDefaultValues();
                 foreach (var s in allSettingsCallback())
                 {
                     s.RecheckValue();

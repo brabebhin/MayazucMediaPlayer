@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Timers;
+using System.Windows.Media.Animation;
 using Windows.Networking.Connectivity;
 
 namespace MayazucMediaPlayer.Settings
@@ -39,6 +41,48 @@ namespace MayazucMediaPlayer.Settings
         public event EventHandler<bool>? ShuffleModeChanged;
 
         readonly ConcurrentDictionary<string, List<Action<object, string>>> PropertyHandlerMap = new ConcurrentDictionary<string, List<Action<object, string>>>();
+        readonly static ReadOnlyDictionary<string, object> DefaultValuesMap = new ReadOnlyDictionary<string, object>(
+            new Dictionary<string, object>
+            {
+                { nameof(AutoPlayMusic), false },
+                { nameof(AutoPlayVideo), false },
+                { nameof(RepeatMode), Constants.RepeatAll },
+                { nameof(ShuffleMode), false },
+                { nameof(AudioBalance), 0.0 },
+                { nameof(MetadataOptionsUseDefault), true },
+                { nameof(MetadataAlbumIndex), 0 },
+                { nameof(MetadataArtistIndex), 0 },
+                { nameof(MetadataGenreIndex), 0 },
+                { nameof(StopMusicOnTimerPosition), TimeSpan.Zero },
+                { nameof(StopMusicOnTimerEnabled), false },
+                { nameof(PlayerResumePosition), 0.0 },
+                { nameof(AutoDetectExternalSubtitle), true },
+                { nameof(PreferredSubtitleLanguageIndex), -1 },
+                { nameof(EqualizerEnabled), true },
+                { nameof(DefaultUITheme), 0 },
+                { nameof(AutoloadInternalSubtitle), true },
+                { nameof(FFmpegCharacterEncodingIndex), 0 },
+                { nameof(AutoloadForcedSubtitles), false },
+                { nameof(VideoDecoderMode), 0 },
+                { nameof(MinimumSubtitleDuration), 0.0 },
+                { nameof(PreventSubtitleOverlaps), true },
+                { nameof(PlayToEnabled), false },
+                { nameof(StereoDownMix),true  },
+                { nameof(EqualizerConfiguration), "MC Media Center" },
+                { nameof(SelectedEqualizerPreset), DefaultEqualizerPresetValue },
+                { nameof(AlbumArtFolderCoverName), "folder.jpg;folder.png" },
+                { nameof(AutomaticPresetManagement), false },
+                { nameof(AlbumArtOptionIndex), 0 },
+                { nameof(FolderHierarchyMetadataIndex), 0 },
+                { nameof(OpenSubtitlesApiKey), string.Empty },
+                { nameof(EchoMountainsEffectEnabled), false },
+                { nameof(EchoInstrumentsEffectEnabled), false },
+                { nameof(EchoRoboticVoiceEffectEnabled), false },
+                { nameof(PlaybackIndexDlnaIntrerupt), 0  },
+                { nameof(ResumePositionDlnaIntrerupt), 0.0   },
+                { nameof(PlayerResumePath), string.Empty },
+            }
+        );
 
         public Action<object, string> RegisterSettingChangeCallback(string settingName, Action<object, string> callback)
         {
@@ -98,30 +142,63 @@ namespace MayazucMediaPlayer.Settings
             autoSaveTimer.Dispose();
         }
 
-        [SettingDefaultValue(false)]
+        public void ResetToDefaultValues()
+        {
+            AutoPlayMusic = (bool)DefaultValuesMap[nameof(AutoPlayMusic)];
+            AutoPlayVideo = (bool)DefaultValuesMap[nameof(AutoPlayVideo)];
+            AudioBalance = (double)DefaultValuesMap[nameof(AudioBalance)];
+            MetadataOptionsUseDefault = (bool)DefaultValuesMap[nameof(MetadataOptionsUseDefault)];
+            MetadataAlbumIndex = (int)DefaultValuesMap[nameof(MetadataAlbumIndex)];
+            MetadataArtistIndex = (int)DefaultValuesMap[nameof(MetadataArtistIndex)];
+            MetadataGenreIndex = (int)DefaultValuesMap[nameof(MetadataGenreIndex)];
+            StopMusicOnTimerEnabled = (bool)DefaultValuesMap[nameof(StopMusicOnTimerEnabled)];
+            PlayerResumePosition = (double)DefaultValuesMap[nameof(PlayerResumePosition)];
+            AutoDetectExternalSubtitle = (bool)DefaultValuesMap[nameof(AutoDetectExternalSubtitle)];
+            PreferredSubtitleLanguageIndex = (int)DefaultValuesMap[nameof(PreferredSubtitleLanguageIndex)];
+            EqualizerEnabled = (bool)DefaultValuesMap[nameof(EqualizerEnabled)];
+            DefaultUITheme = (int)DefaultValuesMap[nameof(DefaultUITheme)];
+            AutoloadInternalSubtitle = (bool)DefaultValuesMap[nameof(AutoloadInternalSubtitle)];
+            FFmpegCharacterEncodingIndex = (int)DefaultValuesMap[nameof(FFmpegCharacterEncodingIndex)];
+            AutoloadForcedSubtitles = (bool)DefaultValuesMap[nameof(AutoloadForcedSubtitles)];
+            VideoDecoderMode = (int)DefaultValuesMap[nameof(VideoDecoderMode)];
+            MinimumSubtitleDuration = (double)DefaultValuesMap[nameof(MinimumSubtitleDuration)];
+            PreventSubtitleOverlaps = (bool)DefaultValuesMap[nameof(PreventSubtitleOverlaps)];
+            StereoDownMix = (bool)DefaultValuesMap[nameof(StereoDownMix)];
+            SelectedEqualizerPreset = (string)DefaultValuesMap[nameof(SelectedEqualizerPreset)];
+            AlbumArtFolderCoverName = (string)DefaultValuesMap[nameof(AlbumArtFolderCoverName)];
+            AutomaticPresetManagement = (bool)DefaultValuesMap[nameof(AutomaticPresetManagement)];
+            AlbumArtOptionIndex = (int)DefaultValuesMap[nameof(AlbumArtOptionIndex)];
+            FolderHierarchyMetadataIndex = (int)DefaultValuesMap[nameof(FolderHierarchyMetadataIndex)];
+            OpenSubtitlesApiKey = (string)DefaultValuesMap[nameof(OpenSubtitlesApiKey)];
+            EchoMountainsEffectEnabled = (bool)DefaultValuesMap[nameof(EchoMountainsEffectEnabled)];
+            EchoInstrumentsEffectEnabled = (bool)DefaultValuesMap[nameof(EchoInstrumentsEffectEnabled)];
+            EchoRoboticVoiceEffectEnabled = (bool)DefaultValuesMap[nameof(EchoRoboticVoiceEffectEnabled)];
+            PlayerResumePath = (string)DefaultValuesMap[nameof(PlayerResumePath)];
+        }
+
+
         public bool AutoPlayMusic
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(AutoPlayMusic), false);
+                return storageService.BoolGetValueOrDefault(nameof(AutoPlayMusic), (bool)DefaultValuesMap[nameof(AutoPlayMusic)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AutoPlayMusic), false, value);
+                storageService.SetValueOrDefault2(nameof(AutoPlayMusic), (bool)DefaultValuesMap[nameof(AutoPlayMusic)], value);
                 RiseSettingChanged(value, nameof(AutoPlayMusic));
             }
         }
 
-        [SettingDefaultValue(false)]
         public bool AutoPlayVideo
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(AutoPlayVideo), false);
+                return storageService.BoolGetValueOrDefault(nameof(AutoPlayVideo), (bool)DefaultValuesMap[nameof(AutoPlayVideo)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AutoPlayVideo), false, value);
+                storageService.SetValueOrDefault2(nameof(AutoPlayVideo), (bool)DefaultValuesMap[nameof(AutoPlayVideo)], value);
                 RiseSettingChanged(value, nameof(AutoPlayVideo));
             }
         }
@@ -166,101 +243,94 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        [SettingDefaultValue(0)]
         public double AudioBalance
         {
             get
             {
-                var userOption = storageService.DoubleGetValueOrDefault(nameof(AudioBalance), 0);
+                var userOption = storageService.DoubleGetValueOrDefault(nameof(AudioBalance), (double)DefaultValuesMap[nameof(AudioBalance)]);
                 return userOption;
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AudioBalance), 0, value);
+                storageService.SetValueOrDefault2(nameof(AudioBalance), ((double)DefaultValuesMap[nameof(AudioBalance)]), value);
                 RiseSettingChanged(value, nameof(AudioBalance));
             }
         }
 
 
-        [SettingDefaultValue("")]
         public string NetworkInstanceName
         {
             get
             {
-                var userOption = storageService.StringGetValueOrDefault(nameof(NetworkInstanceName), "");
+                var userOption = storageService.StringGetValueOrDefault(nameof(NetworkInstanceName), (string)DefaultValuesMap[nameof(NetworkInstanceName)]);
                 if (string.IsNullOrWhiteSpace(userOption))
                 {
                     var hostNames = NetworkInformation.GetHostNames();
                     var localName = hostNames.FirstOrDefault(name => name.DisplayName.Contains(".local"));
-                    var computerName = localName.DisplayName.Replace(".local", "");
-                    storageService.SetValueOrDefault2(nameof(NetworkInstanceName), "", computerName);
+                    var computerName = localName.DisplayName.Replace(".local", (string)DefaultValuesMap[nameof(NetworkInstanceName)]);
+                    storageService.SetValueOrDefault2(nameof(NetworkInstanceName), (string)DefaultValuesMap[nameof(NetworkInstanceName)], computerName);
                 }
                 return userOption;
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(NetworkInstanceName), "", value);
+                storageService.SetValueOrDefault2(nameof(NetworkInstanceName), (string)DefaultValuesMap[nameof(NetworkInstanceName)], value);
                 RiseSettingChanged(value, nameof(NetworkInstanceName));
             }
         }
 
-        [SettingDefaultValue(true)]
         public bool MetadataOptionsUseDefault
         {
             get
             {
-                var userOption = storageService.BoolGetValueOrDefault(nameof(MetadataOptionsUseDefault), true);
+                var userOption = storageService.BoolGetValueOrDefault(nameof(MetadataOptionsUseDefault), (bool)DefaultValuesMap[nameof(MetadataOptionsUseDefault)]);
                 return userOption;
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(MetadataOptionsUseDefault), true, value);
+                storageService.SetValueOrDefault2(nameof(MetadataOptionsUseDefault), (bool)DefaultValuesMap[nameof(MetadataOptionsUseDefault)], value);
                 RiseSettingChanged(value, nameof(MetadataOptionsUseDefault));
             }
         }
 
-
-        [SettingDefaultValue(0)]
         public int MetadataAlbumIndex
         {
             get
             {
-                var userOption = storageService.IntGetValueOrDefault(nameof(MetadataAlbumIndex), 0);
+                var userOption = storageService.IntGetValueOrDefault(nameof(MetadataAlbumIndex), (int)DefaultValuesMap[nameof(MetadataAlbumIndex)]);
                 return userOption;
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(MetadataAlbumIndex), 0, value);
+                storageService.SetValueOrDefault2(nameof(MetadataAlbumIndex), (int)DefaultValuesMap[nameof(MetadataAlbumIndex)], value);
                 RiseSettingChanged(value, nameof(MetadataAlbumIndex));
             }
         }
 
-        [SettingDefaultValue(0)]
         public int MetadataArtistIndex
         {
             get
             {
-                var userOption = storageService.IntGetValueOrDefault(nameof(MetadataArtistIndex), 0);
+                var userOption = storageService.IntGetValueOrDefault(nameof(MetadataArtistIndex), (int)DefaultValuesMap[nameof(MetadataArtistIndex)]);
                 return userOption;
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(MetadataArtistIndex), 0, value);
+                storageService.SetValueOrDefault2(nameof(MetadataArtistIndex), (int)DefaultValuesMap[nameof(MetadataArtistIndex)], value);
                 RiseSettingChanged(value, nameof(MetadataArtistIndex));
             }
         }
 
-        [SettingDefaultValue(0)]
         public int MetadataGenreIndex
         {
             get
             {
-                var userOption = storageService.IntGetValueOrDefault(nameof(MetadataGenreIndex), 0);
+                var userOption = storageService.IntGetValueOrDefault(nameof(MetadataGenreIndex), (int)DefaultValuesMap[nameof(MetadataGenreIndex)]);
                 return userOption;
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(MetadataGenreIndex), 0, value);
+                storageService.SetValueOrDefault2(nameof(MetadataGenreIndex), (int)DefaultValuesMap[nameof(MetadataGenreIndex)], value);
                 RiseSettingChanged(value, nameof(MetadataGenreIndex));
             }
         }
@@ -279,61 +349,56 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        [SettingDefaultValue(false)]
         public bool StopMusicOnTimerEnabled
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(StopMusicOnTimerEnabled), false);
+                return storageService.BoolGetValueOrDefault(nameof(StopMusicOnTimerEnabled), (bool)DefaultValuesMap[nameof(StopMusicOnTimerEnabled)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(StopMusicOnTimerEnabled), false, value);
+                storageService.SetValueOrDefault2(nameof(StopMusicOnTimerEnabled), (bool)DefaultValuesMap[nameof(StopMusicOnTimerEnabled)], value);
                 RiseSettingChanged(value, nameof(StopMusicOnTimerEnabled));
                 AppState.Current.MediaServiceConnector.PlayerInstance.HandleStopMusicOnTimer();
             }
         }
 
-        [SettingDefaultValue(0)]
         public double PlayerResumePosition
         {
             get
             {
-                return storageService.DoubleGetValueOrDefault(nameof(PlayerResumePosition), 0.0);
+                return storageService.DoubleGetValueOrDefault(nameof(PlayerResumePosition), (double)DefaultValuesMap[nameof(PlayerResumePosition)]);
 
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(PlayerResumePosition), 0.0, value);
+                storageService.SetValueOrDefault2(nameof(PlayerResumePosition), (double)DefaultValuesMap[nameof(PlayerResumePosition)], value);
                 RiseSettingChanged(value, nameof(PlayerResumePosition));
             }
         }
 
-
-        [SettingDefaultValue(true)]
         public bool AutoDetectExternalSubtitle
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(AutoDetectExternalSubtitle), true);
+                return storageService.BoolGetValueOrDefault(nameof(AutoDetectExternalSubtitle), (bool)DefaultValuesMap[nameof(AutoDetectExternalSubtitle)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AutoDetectExternalSubtitle), true, value);
+                storageService.SetValueOrDefault2(nameof(AutoDetectExternalSubtitle), (bool)DefaultValuesMap[nameof(AutoDetectExternalSubtitle)], value);
                 RiseSettingChanged(value, nameof(AutoDetectExternalSubtitle));
             }
         }
 
-        [SettingDefaultValue(-1)]
         public int PreferredSubtitleLanguageIndex
         {
             get
             {
-                var index = storageService.IntGetValueOrDefault(nameof(PreferredSubtitleLanguageIndex), -1);
-                if (index == -1)
+                var index = storageService.IntGetValueOrDefault(nameof(PreferredSubtitleLanguageIndex), (int)DefaultValuesMap[nameof(PreferredSubtitleLanguageIndex)]);
+                if (index == (int)DefaultValuesMap[nameof(PreferredSubtitleLanguageIndex)])
                 {
                     index = LanguageCodesService.GetDefaultLanguageIndex();
-                    storageService.SetValueOrDefault2(nameof(PreferredSubtitleLanguageIndex), -1, index);
+                    storageService.SetValueOrDefault2(nameof(PreferredSubtitleLanguageIndex), (int)DefaultValuesMap[nameof(PreferredSubtitleLanguageIndex)], index);
                 }
 
                 return index;
@@ -341,7 +406,7 @@ namespace MayazucMediaPlayer.Settings
             set
             {
                 var index = value;
-                storageService.SetValueOrDefault2(nameof(PreferredSubtitleLanguageIndex), -1, index);
+                storageService.SetValueOrDefault2(nameof(PreferredSubtitleLanguageIndex), (int)DefaultValuesMap[nameof(PreferredSubtitleLanguageIndex)], index);
                 RiseSettingChanged(value, nameof(PreferredSubtitleLanguageIndex));
             }
         }
@@ -354,90 +419,82 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        [SettingDefaultValue(true)]
         public bool EqualizerEnabled
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(EqualizerEnabled), true);
+                return storageService.BoolGetValueOrDefault(nameof(EqualizerEnabled), (bool)DefaultValuesMap[nameof(EqualizerEnabled)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(EqualizerEnabled), true, value);
+                storageService.SetValueOrDefault2(nameof(EqualizerEnabled), (bool)DefaultValuesMap[nameof(EqualizerEnabled)], value);
                 RiseSettingChanged(value, nameof(EqualizerEnabled));
 
             }
         }
 
-
-        [SettingDefaultValue(0)]
         public int DefaultUITheme
         {
             get
             {
-                return storageService.IntGetValueOrDefault(nameof(DefaultUITheme), 0);
+                return storageService.IntGetValueOrDefault(nameof(DefaultUITheme), (int)DefaultValuesMap[nameof(DefaultUITheme)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(DefaultUITheme), 0, value);
+                storageService.SetValueOrDefault2(nameof(DefaultUITheme), (int)DefaultValuesMap[nameof(DefaultUITheme)], value);
                 RiseSettingChanged(value, nameof(DefaultUITheme));
             }
         }
 
 
-        [SettingDefaultValue(true)]
         public bool AutoloadInternalSubtitle
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(AutoloadInternalSubtitle), true);
+                return storageService.BoolGetValueOrDefault(nameof(AutoloadInternalSubtitle), (bool)DefaultValuesMap[nameof(AutoloadInternalSubtitle)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AutoloadInternalSubtitle), true, value);
+                storageService.SetValueOrDefault2(nameof(AutoloadInternalSubtitle), (bool)DefaultValuesMap[nameof(AutoloadInternalSubtitle)], value);
                 RiseSettingChanged(value, nameof(AutoloadInternalSubtitle));
             }
         }
 
-        [SettingDefaultValue(0)]
         public int FFmpegCharacterEncodingIndex
         {
             get
             {
-                return storageService.IntGetValueOrDefault(nameof(FFmpegCharacterEncodingIndex), 0);
+                return storageService.IntGetValueOrDefault(nameof(FFmpegCharacterEncodingIndex), (int)DefaultValuesMap[nameof(FFmpegCharacterEncodingIndex)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(FFmpegCharacterEncodingIndex), 0, value);
+                storageService.SetValueOrDefault2(nameof(FFmpegCharacterEncodingIndex), (int)DefaultValuesMap[nameof(FFmpegCharacterEncodingIndex)], value);
                 RiseSettingChanged(value, nameof(FFmpegCharacterEncodingIndex));
             }
         }
 
-
-        [SettingDefaultValue(false)]
         public bool AutoloadForcedSubtitles
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(AutoloadForcedSubtitles), false);
+                return storageService.BoolGetValueOrDefault(nameof(AutoloadForcedSubtitles), (bool)DefaultValuesMap[nameof(AutoloadForcedSubtitles)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AutoloadForcedSubtitles), false, value);
+                storageService.SetValueOrDefault2(nameof(AutoloadForcedSubtitles), (bool)DefaultValuesMap[nameof(AutoloadForcedSubtitles)], value);
                 RiseSettingChanged(value, nameof(AutoloadForcedSubtitles));
             }
         }
 
-        [SettingDefaultValue(0)]
         public int VideoDecoderMode
         {
             get
             {
-                return storageService.IntGetValueOrDefault(nameof(VideoDecoderMode), 0);
+                return storageService.IntGetValueOrDefault(nameof(VideoDecoderMode), (int)DefaultValuesMap[nameof(VideoDecoderMode)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(VideoDecoderMode), 0, value);
+                storageService.SetValueOrDefault2(nameof(VideoDecoderMode), (int)DefaultValuesMap[nameof(VideoDecoderMode)], value);
                 RiseSettingChanged(value, nameof(VideoDecoderMode));
             }
         }
@@ -446,55 +503,50 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return storageService.StringGetValueOrDefault(nameof(PlayerResumePath), string.Empty);
+                return storageService.StringGetValueOrDefault(nameof(PlayerResumePath), (string)DefaultValuesMap[nameof(PlayerResumePath)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(PlayerResumePath), string.Empty, value);
+                storageService.SetValueOrDefault2(nameof(PlayerResumePath), (string)DefaultValuesMap[nameof(PlayerResumePath)], value);
                 RiseSettingChanged(value, nameof(PlayerResumePath));
             }
         }
 
-
-        [SettingDefaultValue(0)]
         public double MinimumSubtitleDuration
         {
             get
             {
-                return storageService.DoubleGetValueOrDefault(nameof(MinimumSubtitleDuration), 0);
+                return storageService.DoubleGetValueOrDefault(nameof(MinimumSubtitleDuration), (double)DefaultValuesMap[nameof(MinimumSubtitleDuration)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(MinimumSubtitleDuration), 0, value);
+                storageService.SetValueOrDefault2(nameof(MinimumSubtitleDuration), (double)DefaultValuesMap[nameof(MinimumSubtitleDuration)], value);
                 RiseSettingChanged(value, nameof(MinimumSubtitleDuration));
             }
         }
 
-        [SettingDefaultValue(true)]
         public bool PreventSubtitleOverlaps
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(PreventSubtitleOverlaps), true);
+                return storageService.BoolGetValueOrDefault(nameof(PreventSubtitleOverlaps), (bool)DefaultValuesMap[nameof(PreventSubtitleOverlaps)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(PreventSubtitleOverlaps), true, value);
+                storageService.SetValueOrDefault2(nameof(PreventSubtitleOverlaps), (bool)DefaultValuesMap[nameof(PreventSubtitleOverlaps)], value);
                 RiseSettingChanged(value, nameof(PreventSubtitleOverlaps));
             }
         }
 
-
-        [SettingDefaultValue(false)]
         public bool PlayToEnabled
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(PlayToEnabled), false);
+                return storageService.BoolGetValueOrDefault(nameof(PlayToEnabled), (bool)DefaultValuesMap[nameof(PlayToEnabled)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(PlayToEnabled), false, value);
+                storageService.SetValueOrDefault2(nameof(PlayToEnabled), (bool)DefaultValuesMap[nameof(PlayToEnabled)], value);
                 RiseSettingChanged(value, nameof(PlayToEnabled));
             }
         }
@@ -503,11 +555,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return storageService.IntGetValueOrDefault(nameof(PlaybackIndexDlnaIntrerupt), 0);
+                return storageService.IntGetValueOrDefault(nameof(PlaybackIndexDlnaIntrerupt), (int)DefaultValuesMap[nameof(PlaybackIndexDlnaIntrerupt)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(PlaybackIndexDlnaIntrerupt), 0, value);
+                storageService.SetValueOrDefault2(nameof(PlaybackIndexDlnaIntrerupt), (int)DefaultValuesMap[nameof(PlaybackIndexDlnaIntrerupt)], value);
                 RiseSettingChanged(value, nameof(PlaybackIndexDlnaIntrerupt));
             }
         }
@@ -516,31 +568,28 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return storageService.DoubleGetValueOrDefault(nameof(ResumePositionDlnaIntrerupt), 0);
+                return storageService.DoubleGetValueOrDefault(nameof(ResumePositionDlnaIntrerupt), (int)DefaultValuesMap[nameof(ResumePositionDlnaIntrerupt)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(ResumePositionDlnaIntrerupt), 0, value);
+                storageService.SetValueOrDefault2(nameof(ResumePositionDlnaIntrerupt), (int)DefaultValuesMap[nameof(ResumePositionDlnaIntrerupt)], value);
                 RiseSettingChanged(value, nameof(ResumePositionDlnaIntrerupt));
             }
         }
 
-        [SettingDefaultValue(true)]
         public bool StereoDownMix
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(StereoDownMix), true);
+                return storageService.BoolGetValueOrDefault(nameof(StereoDownMix), (bool)DefaultValuesMap[nameof(StereoDownMix)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(StereoDownMix), true, value);
+                storageService.SetValueOrDefault2(nameof(StereoDownMix), (bool)DefaultValuesMap[nameof(StereoDownMix)], value);
                 RiseSettingChanged(value, nameof(StereoDownMix));
             }
         }
 
-
-        [SettingDefaultValue("MC Media Center")]
         public string EqualizerConfiguration
         {
             get
@@ -554,87 +603,80 @@ namespace MayazucMediaPlayer.Settings
             }
         }
 
-        [SettingDefaultValue(DefaultEqualizerPresetValue)]
         public string SelectedEqualizerPreset
         {
             get
             {
-                return storageService.StringGetValueOrDefault(nameof(SelectedEqualizerPreset), "default");
+                return storageService.StringGetValueOrDefault(nameof(SelectedEqualizerPreset), (string)DefaultValuesMap[nameof(SelectedEqualizerPreset)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(SelectedEqualizerPreset), "default", value);
+                storageService.SetValueOrDefault2(nameof(SelectedEqualizerPreset), (string)DefaultValuesMap[nameof(SelectedEqualizerPreset)], value);
                 RiseSettingChanged(value, nameof(SelectedEqualizerPreset));
             }
         }
 
-
-        [SettingDefaultValue("folder.jpg;folder.png")]
         public string AlbumArtFolderCoverName
         {
             get
             {
-                return storageService.StringGetValueOrDefault(nameof(AlbumArtFolderCoverName), "folder.jpg;folder.png");
+                return storageService.StringGetValueOrDefault(nameof(AlbumArtFolderCoverName), (string)DefaultValuesMap[nameof(AlbumArtFolderCoverName)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AlbumArtFolderCoverName), "folder.jpg;folder.png", value);
+                storageService.SetValueOrDefault2(nameof(AlbumArtFolderCoverName), (string)DefaultValuesMap[nameof(AlbumArtFolderCoverName)], value);
                 RiseSettingChanged(value, nameof(AlbumArtFolderCoverName));
             }
         }
 
-        [SettingDefaultValue(false)]
         public bool AutomaticPresetManagement
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(AutomaticPresetManagement), false);
+                return storageService.BoolGetValueOrDefault(nameof(AutomaticPresetManagement), (bool)DefaultValuesMap[nameof(AutomaticPresetManagement)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AutomaticPresetManagement), false, value);
+                storageService.SetValueOrDefault2(nameof(AutomaticPresetManagement), (bool)DefaultValuesMap[nameof(AutomaticPresetManagement)], value);
                 RiseSettingChanged(value, nameof(AutomaticPresetManagement));
             }
         }
 
-        [SettingDefaultValue(0)]
         public int AlbumArtOptionIndex
         {
             get
             {
-                return storageService.IntGetValueOrDefault(nameof(AlbumArtOptionIndex), 0);
+                return storageService.IntGetValueOrDefault(nameof(AlbumArtOptionIndex), (int)DefaultValuesMap[nameof(AlbumArtOptionIndex)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(AlbumArtOptionIndex), 0, value);
+                storageService.SetValueOrDefault2(nameof(AlbumArtOptionIndex), (int)DefaultValuesMap[nameof(AlbumArtOptionIndex)], value);
                 RiseSettingChanged(value, nameof(AlbumArtOptionIndex));
             }
         }
 
-        [SettingDefaultValue(0)]
         public int FolderHierarchyMetadataIndex
         {
             get
             {
-                return storageService.IntGetValueOrDefault(nameof(FolderHierarchyMetadataIndex), 0);
+                return storageService.IntGetValueOrDefault(nameof(FolderHierarchyMetadataIndex), (int)DefaultValuesMap[nameof(FolderHierarchyMetadataIndex)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(FolderHierarchyMetadataIndex), 0, value);
+                storageService.SetValueOrDefault2(nameof(FolderHierarchyMetadataIndex), (int)DefaultValuesMap[nameof(FolderHierarchyMetadataIndex)], value);
                 RiseSettingChanged(value, nameof(FolderHierarchyMetadataIndex));
             }
         }
 
-        [SettingDefaultValue("")]
         public string OpenSubtitlesApiKey
         {
             get
             {
-                return storageService.StringGetValueOrDefault(nameof(OpenSubtitlesApiKey), string.Empty);
+                return storageService.StringGetValueOrDefault(nameof(OpenSubtitlesApiKey), (string)DefaultValuesMap[nameof(OpenSubtitlesApiKey)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(OpenSubtitlesApiKey), string.Empty, value);
+                storageService.SetValueOrDefault2(nameof(OpenSubtitlesApiKey), (string)DefaultValuesMap[nameof(OpenSubtitlesApiKey)], value);
                 RiseSettingChanged(value, nameof(OpenSubtitlesApiKey));
             }
         }
@@ -643,11 +685,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(EchoMountainsEffectEnabled), false);
+                return storageService.BoolGetValueOrDefault(nameof(EchoMountainsEffectEnabled), (bool)DefaultValuesMap[nameof(EchoMountainsEffectEnabled)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(EchoMountainsEffectEnabled), false, value);
+                storageService.SetValueOrDefault2(nameof(EchoMountainsEffectEnabled), (bool)DefaultValuesMap[nameof(EchoMountainsEffectEnabled)], value);
                 RiseSettingChanged(value, nameof(EchoMountainsEffectEnabled));
             }
         }
@@ -656,11 +698,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(EchoInstrumentsEffectEnabled), false);
+                return storageService.BoolGetValueOrDefault(nameof(EchoInstrumentsEffectEnabled), (bool)DefaultValuesMap[nameof(EchoInstrumentsEffectEnabled)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(EchoInstrumentsEffectEnabled), false, value);
+                storageService.SetValueOrDefault2(nameof(EchoInstrumentsEffectEnabled), (bool)DefaultValuesMap[nameof(EchoInstrumentsEffectEnabled)], value);
                 RiseSettingChanged(value, nameof(EchoInstrumentsEffectEnabled));
             }
         }
@@ -669,11 +711,11 @@ namespace MayazucMediaPlayer.Settings
         {
             get
             {
-                return storageService.BoolGetValueOrDefault(nameof(EchoRoboticVoiceEffectEnabled), false);
+                return storageService.BoolGetValueOrDefault(nameof(EchoRoboticVoiceEffectEnabled), (bool)DefaultValuesMap[nameof(EchoRoboticVoiceEffectEnabled)]);
             }
             set
             {
-                storageService.SetValueOrDefault2(nameof(EchoRoboticVoiceEffectEnabled), false, value);
+                storageService.SetValueOrDefault2(nameof(EchoRoboticVoiceEffectEnabled), (bool)DefaultValuesMap[nameof(EchoRoboticVoiceEffectEnabled)], value);
                 RiseSettingChanged(value, nameof(EchoRoboticVoiceEffectEnabled));
             }
         }

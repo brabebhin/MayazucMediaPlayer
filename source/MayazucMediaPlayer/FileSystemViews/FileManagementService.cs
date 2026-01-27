@@ -227,9 +227,5 @@ namespace MayazucMediaPlayer.FileSystemViews
         {
             return Task.CompletedTask;
         }
-
-        private ListViewReorderMode reorderMode = ListViewReorderMode.Disabled;
-        private bool _CanReorderItems;
-        private bool isChangingOrder;
     }
 }
