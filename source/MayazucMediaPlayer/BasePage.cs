@@ -62,13 +62,13 @@ namespace MayazucMediaPlayer
         public BasePage()
         {
             DataContext = this;
-            this.Unloaded += BasePage_Unloaded;
+            Program.ApplicationShutDownStarted += Program_ApplicationShutDownStarted;
         }
 
-        private void BasePage_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        private void Program_ApplicationShutDownStarted(object? sender, EventArgs e)
         {
             Dispose();
-            this.Unloaded -= BasePage_Unloaded;
+            Program.ApplicationShutDownStarted -= Program_ApplicationShutDownStarted;
         }
 
         private void SubscribeEventHandlersInternal()
@@ -147,13 +147,6 @@ namespace MayazucMediaPlayer
         {
             return Task.CompletedTask;
         }
-
-        /// <summary>
-        /// Override to get parameters passed to this instance.
-        /// </summary>
-        /// <param name="parameter"></param>
-        /// <returns></returns>
-
 
         /// <summary>
         /// Used to finalize initialization of async resources

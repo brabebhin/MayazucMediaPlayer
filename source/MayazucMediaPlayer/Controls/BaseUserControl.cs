@@ -19,12 +19,18 @@ namespace MayazucMediaPlayer.Controls
 
         public BaseUserControl()
         {
+            Program.ApplicationShutDownStarted += Program_ApplicationShutDownStarted;
             this.Unloaded += BaseUserControl_Unloaded;
+        }
+
+        private void Program_ApplicationShutDownStarted(object? sender, EventArgs e)
+        {
+            Dispose();
+            Program.ApplicationShutDownStarted -= Program_ApplicationShutDownStarted;
         }
 
         private void BaseUserControl_Unloaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            Dispose();
             this.Unloaded -= BaseUserControl_Unloaded;
         }
 

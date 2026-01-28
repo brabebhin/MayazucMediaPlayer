@@ -11,6 +11,7 @@ namespace MayazucMediaPlayer
     public static class Program
     {
         const string SingleInstanceKey = "B9BA688B46CC431B93D07B9D48468C18";
+        public static event EventHandler? ApplicationShutDownStarted;
 
         // Replaces the standard App.g.i.cs.
         // Note: We can't declare Main to be async because in a WinUI app
@@ -28,17 +29,30 @@ namespace MayazucMediaPlayer
                 App? app = null;
                 Microsoft.UI.Xaml.Application.Start((p) =>
                 {
+                    var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+                    dispatcherQueue.ShutdownStarting += DispatcherQueue_ShutdownStarting;
                     var context = new DispatcherQueueSynchronizationContext(
-                        DispatcherQueue.GetForCurrentThread());
+                        dispatcherQueue);
                     SynchronizationContext.SetSynchronizationContext(context);
                     app = new App();
-
                 });
                 System.AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
                 app?.Dispose();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
+        }
+
+        private static async void DispatcherQueue_ShutdownStarting(DispatcherQueue sender, DispatcherQueueShutdownStartingEventArgs args)
+        {
+            var deferal = args.GetDeferral();
+
+            //signal UI elements it is time to get ready to be disposed
+            ApplicationShutDownStarted?.Invoke(null, null);
+
+            SettingsService.Instance.SaveSettings();
+
+            deferal.Complete();
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -94,6 +94,8 @@ namespace MayazucMediaPlayer.Controls
 
         private volatile bool windowSupportsHdr = false;
         private DisplayInformation displayInformation;
+        private CancellationTokenSource disposeSignal = new CancellationTokenSource();
+        private ManualResetEventSlim disposeFinished = new ManualResetEventSlim(false);
 
         public MediaPlayerRenderingElement2()
         {
@@ -118,7 +120,6 @@ namespace MayazucMediaPlayer.Controls
 
             _ = nowPlayingList.InitializeStateAsync(null);
             VideoRenderingTask = Task.Factory.StartNew(VideoRenderingLoop, TaskCreationOptions.LongRunning);
-
         }
 
         private async Task VideoRenderingLoop()
@@ -127,7 +128,7 @@ namespace MayazucMediaPlayer.Controls
             {
                 try
                 {
-                    PlayPauseSignal.Wait();
+                    PlayPauseSignal.Wait(disposeSignal.Token);
                     if (!disposed)
                         await DrawVideoFrame(_mediaPlayer);
                 }
@@ -136,6 +137,7 @@ namespace MayazucMediaPlayer.Controls
                     //something may have happened with the video rendering loop, carry on
                 }
             }
+            disposeFinished.Set();
         }
 
         void allocSubtitleRenderer()
@@ -152,12 +154,15 @@ namespace MayazucMediaPlayer.Controls
 
         protected override void OnDispose(bool disposing)
         {
+            disposeFinished.Reset();
             disposed = true;
+            disposeSignal.Cancel();
             base.OnDispose(disposing);
             displayInformation.AdvancedColorInfoChanged -= DisplayInformation_AdvancedColorInfoChanged;
             displayInformation.Dispose();
             _fullscreenCursorTimer?.Cancel();
             WrappedMediaPlayer = null;
+            disposeFinished.Wait(TimeSpan.FromSeconds(10)); //give some time for the video rendering loop to finish
         }
 
         private async void DisplayInformation_AdvancedColorInfoChanged(DisplayInformation sender, object args)
