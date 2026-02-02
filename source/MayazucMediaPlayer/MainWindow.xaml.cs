@@ -127,14 +127,6 @@ namespace MayazucMediaPlayer
             }
         }
 
-        private void MCMediaCenterRootApplication_SizeChanged(object? sender, Microsoft.UI.Xaml.WindowSizeChangedEventArgs e)
-        {
-            if (!IsNowPlayingMaximized())
-            {
-                MinimizeNowPlaying();
-            }
-        }
-
         private async void BackgroundMediaService_MediaPlayerElementFullScreenModeChanged(object? sender, bool e)
         {
             if (e)
@@ -352,18 +344,6 @@ namespace MayazucMediaPlayer
             catch { }
         }
 
-        private void CheckNowPlayingSlitterSize()
-        {
-            if (!IsNowPlayingMaximized())
-            {
-                NowPlayingMaximized = true;
-            }
-            else
-            {
-                NowPlayingMaximized = false;
-            }
-        }
-
         private async Task MaximizeNowPlayingIfCollapsed()
         {
             if (!IsNowPlayingMaximized())
@@ -577,34 +557,6 @@ namespace MayazucMediaPlayer
             else MaximizeNowPlaying();
         }
 
-        private async void GoToConvertFilesPage(object sender, TappedRoutedEventArgs e)
-        {
-        }
-
-        private async void GoToQueueManagement(object sender, RoutedEventArgs e)
-        {
-            await OpenPageOrNowPlaying(typeof(NowPlayingManagementPage));
-        }
-
-        private async void GoToMediaEffects(object sender, RoutedEventArgs e)
-        {
-            await OpenPageOrNowPlaying(typeof(MediaEffectsPage));
-        }
-
-        private async Task OpenPageOrNowPlaying(Type pageType)
-        {
-            if (!NowPlayingMaximized &&
-                RootFrame.CurrentSourcePageType == pageType)
-            {
-                MaximizeNowPlaying();
-            }
-            else
-            {
-                System.Diagnostics.Debugger.Break();
-                // await NavigateCommandInternal(pageType);
-            }
-        }
-
         public Task<ContentDialogServiceResult> ShowDialogAsync(FrameworkElement content)
         {
             return contentDialogService.ShowDialogAsync(content);
@@ -612,7 +564,7 @@ namespace MayazucMediaPlayer
 
         private async void GoToMediaEqualizerConfigs(object sender, RoutedEventArgs e)
         {
-            await OpenPageOrNowPlaying(typeof(EQConfigurationManagementPage));
+            await NavigateCommandInternal(await EQConfigurationManagementPageInstance.GetPageAsync(null));
         }
 
         private async void EnterExitOverlayMode(object sender, TappedRoutedEventArgs e)

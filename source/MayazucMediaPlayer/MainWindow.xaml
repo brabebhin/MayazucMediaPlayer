@@ -92,17 +92,17 @@
                 <Grid Grid.Row="1" Grid.Column="0" x:Name="DragAnDropHelper">
                     <Rectangle Width="24" Fill="Transparent"/>
                     <StackPanel Orientation="Horizontal">
-                        <Border Drop="FileDropped_dropped" Tag="Play"  DragOver="FileDrag_dragover" Width="54" AllowDrop="True" BorderThickness="0" Margin="4" ToolTipService.ToolTip="Drop files to play them"  BorderBrush="Gray" CornerRadius="10">
+                        <Border Drop="FileDropped_dropped" Tag="Play"  DragOver="FileDrag_dragover" Width="54" AllowDrop="True" BorderThickness="0" Margin="4" ToolTipService.ToolTip="Drop files here to play them"  BorderBrush="Gray" CornerRadius="10">
                             <Viewbox Width="24" HorizontalAlignment="Center">
                                 <FontIcon Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE768;" />
                             </Viewbox>
                         </Border>
-                        <Border Drop="FileDropped_dropped" Tag="Enqueue" DragOver="FileDrag_dragover" Width="54"  AllowDrop="True"  BorderThickness="0" Margin="4"  ToolTipService.ToolTip="Drop files to enqueue them"  BorderBrush="Gray" CornerRadius="10">
+                        <Border Drop="FileDropped_dropped" Tag="Enqueue" DragOver="FileDrag_dragover" Width="54"  AllowDrop="True"  BorderThickness="0" Margin="4"  ToolTipService.ToolTip="Drop files here to enqueue them"  BorderBrush="Gray" CornerRadius="10">
                             <Viewbox Width="24" HorizontalAlignment="Center">
                                 <FontIcon Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xED0E;" />
                             </Viewbox>
                         </Border>
-                        <Border Drop="FileDropped_dropped" Tag="Playlist" DragOver="FileDrag_dragover" Width="54" AllowDrop="True" BorderThickness="0" Margin="4" ToolTipService.ToolTip="Drop files to add to a playlist"  BorderBrush="Gray" CornerRadius="10">
+                        <Border Drop="FileDropped_dropped" Tag="Playlist" DragOver="FileDrag_dragover" Width="54" AllowDrop="True" BorderThickness="0" Margin="4" ToolTipService.ToolTip="Drop files here to add to a playlist"  BorderBrush="Gray" CornerRadius="10">
                             <Viewbox Width="24" HorizontalAlignment="Center">
                                 <FontIcon Foreground="{ThemeResource SystemControlBackgroundAccentBrush}" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xF57E;" />
                             </Viewbox>
