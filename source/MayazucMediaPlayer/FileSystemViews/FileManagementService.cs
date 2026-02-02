@@ -71,11 +71,6 @@ namespace MayazucMediaPlayer.FileSystemViews
             catch { }
         }
 
-        private void CollectionViewModelInstance_NavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            SubmitNavigationEvent(e.PageType, e.Parameter);
-        }
-
         private void InitializeMembers()
         {
             ConfigureFilePickers();

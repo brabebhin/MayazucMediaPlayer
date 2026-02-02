@@ -118,7 +118,6 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private void manageEqualizerConfigurations()
         {
-            SubmitNavigationEvent(typeof(EQConfigurationManagementPage), EQModels);
         }
 
         public void ResetEqualizerSliders()

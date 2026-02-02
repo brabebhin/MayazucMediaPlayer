@@ -7,12 +7,6 @@ namespace MayazucMediaPlayer.Settings
 {
     public partial class SettingsButton : SettingsItem
     {
-        private static void navigate(Object obj)
-        {
-            var button = (SettingsButton)obj;
-            button.CurrentFrame.NavigateAsync(button.TargetPageType, button.NavigationArgument);
-        }
-
         public override DataTemplate Template
         {
             get
@@ -54,7 +48,7 @@ namespace MayazucMediaPlayer.Settings
         public virtual RelayCommand<object> Command
         {
             get; set;
-        } = new RelayCommand<object>(navigate);
+        }
 
         protected override void RecheckValueInternal()
         {

@@ -62,11 +62,6 @@ namespace MayazucMediaPlayer.Playlists
             InitializeComponent();
         }
 
-        private void PlaylistDetailsViewPage_ExternalNavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            Frame.NotifyExternalNavigationRequest(sender, e);
-        }
-
         private void PlaylistViewerPage_SizeChanged(object? sender, SizeChangedEventArgs e)
         {
             CheckSize(e.NewSize.Width);
@@ -88,7 +83,6 @@ namespace MayazucMediaPlayer.Playlists
         protected override void FreeMemory()
         {
             PlaylistViewModelInstance.GetSelectedItemsRequest -= Model_GetSelectedItemsRequest;
-            PlaylistViewModelInstance.NavigationRequest -= Model_NavigationRequest;
             DisplayList.SelectionChanged -= DisplayList_SelectionChanged;
 
             PlaylistViewModelInstance = null;
@@ -107,15 +101,8 @@ namespace MayazucMediaPlayer.Playlists
             DisplayList.SelectionChanged += DisplayList_SelectionChanged;
 
             PlaylistViewModelInstance.GetSelectedItemsRequest += Model_GetSelectedItemsRequest;
-            PlaylistViewModelInstance.NavigationRequest += Model_NavigationRequest;
             mcSearchBar.Filter = (x) => { return ((PlaylistItem)x).Title; };
             return Task.CompletedTask;
-        }
-
-
-        private void Model_NavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            (Frame as DependencyInjectionFrame).NotifyExternalNavigationRequest(this, e);
         }
 
         private void Model_GetSelectedItemsRequest(object? sender, List<PlaylistItem> e)

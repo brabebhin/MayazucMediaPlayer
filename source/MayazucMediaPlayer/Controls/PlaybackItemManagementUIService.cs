@@ -450,11 +450,6 @@ namespace MayazucMediaPlayer.Controls
             ShouldClearViewCallback = shouldClearViewCallback;
         }
 
-        private void CollectionViewModelInstance_NavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            SubmitNavigationEvent(e.PageType, e.Parameter);
-        }
-
         private void InitializeMembers()
         {
             Items.CollectionChanged += Items_CollectionChanged;

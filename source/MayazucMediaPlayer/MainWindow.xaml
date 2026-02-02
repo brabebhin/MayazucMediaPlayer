@@ -76,7 +76,7 @@
             </Grid.RowDefinitions>
 
             <Grid IsDoubleTapEnabled="True" x:Name="LayoutRoot" Grid.Column="0" Grid.ColumnSpan="1" Grid.Row="0" >
-                <navigation:DependencyInjectionFrame Margin="1" Grid.Row="1" AllowsNestedNavigation="True" x:Name="RootFrame">
+                <navigation:DependencyInjectionFrame Margin="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.Row="1" x:Name="RootFrame">
                 </navigation:DependencyInjectionFrame>
             </Grid>
 

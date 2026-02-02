@@ -7,15 +7,8 @@ using System.Threading.Tasks;
 
 namespace MayazucMediaPlayer.Navigation
 {
-    public partial class DependencyInjectionFrame : ContentPresenter, IDisposable
+    public partial class DependencyInjectionFrame : ContentControl
     {
-        public event EventHandler<NavigationRequestEventArgs> ExternalNavigationRequest;
-
-        public void NotifyExternalNavigationRequest(object? sender, NavigationRequestEventArgs args)
-        {
-            ExternalNavigationRequest?.Invoke(sender, args);
-        }
-
         public BasePage CurrentPage
         {
             get
@@ -24,39 +17,25 @@ namespace MayazucMediaPlayer.Navigation
             }
         }
 
-        protected virtual void SubmitExternalNavigation(NavigationRequestEventArgs args)
-        {
-            ExternalNavigationRequest?.Invoke(this, args);
-        }
-
-
-        public bool AllowsNestedNavigation
-        {
-            get; set;
-        } = false;
-
-        public bool UseCache { get; set; } = true;
-
         public DependencyInjectionFrame()
         {
         }
 
+        public event EventHandler<BasePage> AsyncNavigated;
 
-        private readonly Stack<BasePage> PageBackStack = new Stack<BasePage>();
-
-        public IServiceProvider ServiceProvider
+        public async Task NavigateAsync(BasePage page)
         {
-            get;
-            set;
+            if (this.Content != page)
+                this.Content = page;
+            AsyncNavigated?.Invoke(this, page);
         }
 
-        private bool disposedValue;
-
-        public event EventHandler<Type> AsyncNavigated;
-
-        public Task<BasePage> NavigateAsync(Type pageType)
+        public async Task InitializeAndNavigateAsync(BasePage page, object args)
         {
-            return NavigateAsync(pageType, null);
+            await page.InitializeStateAsync(args);
+
+            this.Content = page;
+            AsyncNavigated?.Invoke(this, page);
         }
 
         public Type CurrentSourcePageType
@@ -66,88 +45,6 @@ namespace MayazucMediaPlayer.Navigation
                 if (Content != null) return Content.GetType();
                 return GetType();
             }
-        }
-
-        public Task<BasePage> NavigateAsync(Type pageType, object args)
-        {
-            return NavigateAsyncInternal(pageType, args);
-        }
-
-        private async Task<BasePage> NavigateAsyncInternal(Type pageType, object args)
-        {
-            if (ShouldNavigatePage())
-            {
-                return await CreateAndActivatePage(pageType, args);
-            }
-            else
-            {
-                SubmitExternalNavigation(new NavigationRequestEventArgs(pageType, args));
-            }
-            return CurrentPage;
-        }
-
-        protected async Task<BasePage> CreateAndActivatePage(Type pageType, object args)
-        {
-            var page = await PageFactory.GetPage(pageType, args);
-
-            Content = page;
-
-            AsyncNavigated?.Invoke(this, pageType);
-            return page;
-        }
-
-        private bool ShouldNavigatePage()
-        {
-            return Content == null || AllowsNestedNavigation;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    // TODO: dispose managed state (managed objects)
-                }
-                foreach (var backEntry in PageBackStack)
-                    backEntry.Dispose();
-                PageBackStack.Clear();
-                //var currentPage = (BasePage)Content;
-                //currentPage?.Dispose();
-                //Content = null;
-                ServiceProvider = null;
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
-            }
-        }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        ~DependencyInjectionFrame()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: false);
-        }
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-    }
-
-    public static class PageFactory
-    {
-        public static async Task<BasePage> GetPage(Type pageType, object args)
-        {
-            var page = (BasePage)Activator.CreateInstance(pageType);
-            await LoadPage(page, args);
-            return page;
-        }
-
-        private static async Task LoadPage(BasePage page, object args)
-        {
-            await page.InitializeStateAsync(args);
         }
     }
 }

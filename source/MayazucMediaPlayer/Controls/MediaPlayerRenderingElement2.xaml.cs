@@ -97,6 +97,8 @@ namespace MayazucMediaPlayer.Controls
         private CancellationTokenSource disposeSignal = new CancellationTokenSource();
         private ManualResetEventSlim disposeFinished = new ManualResetEventSlim(false);
 
+        MediaEffectsPage MediaEffectsPage = new MediaEffectsPage();
+
         public MediaPlayerRenderingElement2()
         {
             this.InitializeComponent();
@@ -109,7 +111,10 @@ namespace MayazucMediaPlayer.Controls
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
             videoRenderer = new VideoRenderer(VideoSwapChain);
             allocSubtitleRenderer();
-            _ = MediaEffectsFrame.NavigateAsync(typeof(MediaEffectsPage));
+            DispatcherQueue.EnqueueAsync(async () => {
+                await MediaEffectsPage.InitializeStateAsync(null);
+                MediaEffectsFrame.NavigateAsync(MediaEffectsPage);
+            });
             AppState.Current.KeyboardInputManager.AcceleratorInvoked += KeyboardInputManager_AcceleratorInvoked;
             MediaTransportControlsInstance.PointerEntered += MediaTransportControlsInstance_PointerEntered;
             MediaTransportControlsInstance.PointerExited += MediaTransportControlsInstance_PointerExited;

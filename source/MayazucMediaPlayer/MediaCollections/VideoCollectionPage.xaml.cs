@@ -33,20 +33,12 @@ namespace MayazucMediaPlayer.MediaCollections
 
         protected override async Task OnInitializeStateAsync(object? parameter)
         {
-            FileModel.NavigationRequest += DataModel_NavigationRequest;
             await RefreshVideoLibraryInternal();
         }
 
         protected override void FreeMemory()
         {
-            FileModel.NavigationRequest -= DataModel_NavigationRequest;
-
             base.FreeMemory();
-        }
-
-        private void DataModel_NavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            Frame.NavigateAsync(e.PageType, e.Parameter);
         }
 
         private async Task RefreshVideoLibraryInternal()

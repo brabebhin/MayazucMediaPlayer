@@ -79,11 +79,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             return Task.CompletedTask;
         }
 
-        private void NowPlayingCOntroller_ExternalNavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            NotifyExternalNavigationRequest(sender, e);
-        }
-
         protected async override Task OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)
         {
             await DispatcherQueue.EnqueueAsync(() =>

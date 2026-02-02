@@ -239,8 +239,6 @@ namespace MayazucMediaPlayer.Playlists
         {
             var mod = CurrentPlaylistItem as PlaylistItem;
             await PlaylistsService.RemovePlaylist(mod);
-
-            SubmitNavigationEvent(typeof(FileFolderPickerPage), null);
         }
 
         protected override Task OnContentsChanged(ReadOnlyCollection<PlayListItemMediaSourceProvider> newContent)

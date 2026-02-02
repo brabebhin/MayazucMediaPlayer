@@ -22,43 +22,11 @@ namespace MayazucMediaPlayer.NowPlayingViews
         public override string Title => "Now playing";
 
         readonly AsyncLock _AddToPlaylistLock = new AsyncLock();
-        public event EventHandler<NavigationRequestEventArgs> OpenInDifferentFrame;
 
-        NowPlayingUiService dataService;
         public NowPlayingUiService DataService
         {
-            get
-            {
-                return dataService;
-            }
-            private set
-            {
-                if (dataService != value)
-                {
-                    if (dataService != null)
-                    {
-                        dataService.NavigationRequest -= SignalNavigationRequest;
-                    }
-
-                    dataService = value;
-
-                    DataContext = dataService;
-                    dataService.NavigationRequest += SignalNavigationRequest;
-
-                }
-            }
-        }
-
-        private void SignalNavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            if (Frame == null)
-            {
-                OpenInDifferentFrame?.Invoke(sender, e);
-            }
-            else
-            {
-                (Frame as DependencyInjectionFrame).NotifyExternalNavigationRequest(sender, e);
-            }
+            get;
+            private set;
         }
 
         public NowPlayingList()

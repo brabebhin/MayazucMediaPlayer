@@ -11,16 +11,17 @@ using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
 using MayazucMediaPlayer.Transcoding;
-using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Gaming.Input;
 using Windows.Media.Playback;
 using Windows.Storage;
 using Windows.System;
@@ -30,66 +31,6 @@ using Windows.System;
 
 namespace MayazucMediaPlayer
 {
-    public class MainWindowingService
-    {
-        private MainWindow HostWindow
-        {
-            get;
-            set;
-        }
-
-        public MainWindowingService(MainWindow HostWindow)
-        {
-            this.HostWindow = HostWindow;
-        }
-
-        public WindowId Id
-        {
-            get
-            {
-                return HostWindow.AppWindow.Id;
-            }
-        }
-
-        public async Task RequestAlwaysOnTopOverlayMode(bool shouldOverlayOnTop)
-        {
-            await HostWindow.SetWindowOnTopOverlayMode(shouldOverlayOnTop);
-        }
-
-        public async Task RequestFullScreenMode(bool shouldFullScreen)
-        {
-            await HostWindow.GoToFullScreenMode(shouldFullScreen);
-            MediaPlayerElementFullScreenModeChanged?.Invoke(this, shouldFullScreen);
-        }
-
-        public bool IsAlwaysOnTopWindowOverlayMode()
-        {
-            return HostWindow.IsInCompactOverlayMode();
-        }
-
-        public bool IsInFullScreenMode()
-        {
-            return HostWindow.IsInFullScreenMode();
-        }
-
-        public static MainWindowingService Instance { get; private set; }
-
-        public static void InitializeInstanceAsync(MainWindow window)
-        {
-            Instance = new MainWindowingService(window);
-        }
-
-        public Task<ContentDialogServiceResult> ShowContentDialog(FrameworkElement element)
-        {
-            return HostWindow.ShowDialogAsync(element);
-        }
-
-        public event EventHandler<bool> MediaPlayerElementFullScreenModeChanged;
-    }
-
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : WindowBase, IDisposable, IContentDialogService
     {
         private bool disposedValue;
@@ -108,6 +49,13 @@ namespace MayazucMediaPlayer
         string NowPlayingPageTitle = "Now Playing";
 
         private NowPlayingHome NowPlayingPage { get; set; }
+        private PageInstanceInitializer<FileFolderPickerPage> FileFolderPickerPageInstance { get; set; } = new PageInstanceInitializer<FileFolderPickerPage>();
+        private PageInstanceInitializer<MusicCollectionPage> MusicCollectionPageInstance { get; set; } = new PageInstanceInitializer<MusicCollectionPage>();
+        private PageInstanceInitializer<VideoCollectionPage> VideoCollectionPageInstance { get; set; } = new PageInstanceInitializer<VideoCollectionPage>();
+        private PageInstanceInitializer<SettingsPage> SettingsPageInstance { get; set; } = new PageInstanceInitializer<SettingsPage>();
+        private PageInstanceInitializer<EQConfigurationManagementPage> EQConfigurationManagementPageInstance { get; set; } = new PageInstanceInitializer<EQConfigurationManagementPage>();
+        private PageInstanceInitializer<PlaylistViewerPage> PlaylistViewerPageInstance { get; set; } = new PageInstanceInitializer<PlaylistViewerPage>();
+        private PageInstanceInitializer<NetworkStreamsCollectionPage> NetworkStreamsCollectionPageInstance { get; set; } = new PageInstanceInitializer<NetworkStreamsCollectionPage>();
 
         public NowPlayingCommandBarViewModel PlaybackCommandsModel
         {
@@ -157,7 +105,6 @@ namespace MayazucMediaPlayer
             SetTitleBar(TitleBarGrid);
 
             Title = "Mayazuc Media Player";
-            RootFrame.ServiceProvider = ServiceProvider;
             MainWindowingService.Instance.MediaPlayerElementFullScreenModeChanged += BackgroundMediaService_MediaPlayerElementFullScreenModeChanged;
             PopupHelper.NotificationRequest += PopupHelper_NotificationRequest;
             PlaybackCommandsModel = new NowPlayingCommandBarViewModel(DispatcherQueue);
@@ -172,7 +119,7 @@ namespace MayazucMediaPlayer
             await HandleMediaOpened(sender, args);
         }
 
-        private void RootFrame_AsyncNavigated(object? sender, Type e)
+        private void RootFrame_AsyncNavigated(object? sender, BasePage e)
         {
             if (!IsNowPlayingMaximized())
             {
@@ -201,10 +148,6 @@ namespace MayazucMediaPlayer
 
         private void FreeMemory()
         {
-            RootFrame.Dispose();
-
-            NowPlayingPage.ExternalNavigationRequest -= NowPlayingSplitFrame_ExternalNavigationRequest;
-
             PopupHelper.NotificationRequest -= PopupHelper_NotificationRequest;
 
             NowPlayingPage.MediaPlayerElementInstance.DoubleTapped -= MediaPlayerElementInstance_DoubleTapped;
@@ -224,12 +167,11 @@ namespace MayazucMediaPlayer
 
         private async Task InitializeNowPlayingViewAsync()
         {
-            NowPlayingPage = (NowPlayingHome)await PageFactory.GetPage(typeof(NowPlayingHome), null);
+            NowPlayingPage = new NowPlayingHome();
             NowPlayingPage.HorizontalAlignment = HorizontalAlignment.Stretch;
             NowPlayingPage.VerticalAlignment = VerticalAlignment.Stretch;
             NowPlayingPage.VerticalContentAlignment = VerticalAlignment.Stretch;
             NowPlayingPage.HorizontalAlignment = HorizontalAlignment.Stretch;
-            NowPlayingPage.ExternalNavigationRequest += NowPlayingSplitFrame_ExternalNavigationRequest;
             NowPlayingContainer.Children.Add(NowPlayingPage);
             await NowPlayingPage.InitializeStateAsync(null);
             NowPlayingPage.MediaPlayerElementInstance.DoubleTapped += MediaPlayerElementInstance_DoubleTapped;
@@ -275,12 +217,6 @@ namespace MayazucMediaPlayer
             });
         }
 
-        private async void NowPlayingSplitFrame_ExternalNavigationRequest(object? sender, NavigationRequestEventArgs e)
-        {
-            await RootFrame.NavigateAsync(e.PageType, e.Parameter);
-            if (IsNowPlayingMaximized()) MinimizeNowPlaying();
-        }
-
         public async Task FileActivate(IReadOnlyList<IStorageItem> files, string verb)
         {
             List<IMediaPlayerItemSource> mediaDataSources = new List<IMediaPlayerItemSource>();
@@ -308,8 +244,8 @@ namespace MayazucMediaPlayer
 
         private async Task FirstNavigate()
         {
-            var firstPageNavigationType = typeof(FileSystemViews.FileFolderPickerPage);
-            await RootFrame.NavigateAsync(firstPageNavigationType);
+            var filePickerPage = await FileFolderPickerPageInstance.GetPageAsync(null);
+            await RootFrame.NavigateAsync(filePickerPage);
             var session = AppState.Current.MediaServiceConnector.CurrentPlaybackSession;
             if (session != null)
             {
@@ -320,11 +256,11 @@ namespace MayazucMediaPlayer
             }
         }
 
-        private async Task NavigateCommandInternal(Type xPageNavigationType)
+        private async Task NavigateCommandInternal(BasePage targetPage)
         {
-            if (RootFrame.CurrentSourcePageType == null || (xPageNavigationType != null && xPageNavigationType != RootFrame.CurrentSourcePageType))
+            if (RootFrame.CurrentSourcePageType == null || (targetPage != null && targetPage.GetType() != RootFrame.CurrentSourcePageType))
             {
-                await RootFrame.NavigateAsync(xPageNavigationType);
+                await RootFrame.NavigateAsync(targetPage);
             }
 
             NowPlayingMaximized = false;
@@ -580,22 +516,22 @@ namespace MayazucMediaPlayer
             switch (obj.Tag.ToString())
             {
                 case "Settings":
-                    await NavigateCommandInternal(typeof(SettingsPage));
+                    await NavigateCommandInternal(await SettingsPageInstance.GetPageAsync(null));
                     break;
                 case "MusicLibrary":
-                    await NavigateCommandInternal(typeof(MusicCollectionPage));
+                    await NavigateCommandInternal(await MusicCollectionPageInstance.GetPageAsync(null));
                     break;
                 case "VideoLibrary":
-                    await NavigateCommandInternal(typeof(VideoCollectionPage));
+                    await NavigateCommandInternal(await VideoCollectionPageInstance.GetPageAsync(null));
                     break;
                 case "PlaylistsLibrary":
-                    await NavigateCommandInternal(typeof(PlaylistViewerPage));
+                    await NavigateCommandInternal(await PlaylistViewerPageInstance.GetPageAsync(null));
                     break;
                 case "FilesFolders":
-                    await NavigateCommandInternal(typeof(FileFolderPickerPage));
+                    await NavigateCommandInternal(await FileFolderPickerPageInstance.GetPageAsync(null));
                     break;
                 case "NetworkStreamHistory":
-                    await NavigateCommandInternal(typeof(NetworkStreamsCollectionPage));
+                    await NavigateCommandInternal(await NetworkStreamsCollectionPageInstance.GetPageAsync(null));
                     break;
             }
         }
@@ -643,7 +579,6 @@ namespace MayazucMediaPlayer
 
         private async void GoToConvertFilesPage(object sender, TappedRoutedEventArgs e)
         {
-            await NavigateCommandInternal(typeof(TranscodingRootPage));
         }
 
         private async void GoToQueueManagement(object sender, RoutedEventArgs e)
@@ -665,7 +600,8 @@ namespace MayazucMediaPlayer
             }
             else
             {
-                await NavigateCommandInternal(pageType);
+                System.Diagnostics.Debugger.Break();
+                // await NavigateCommandInternal(pageType);
             }
         }
 
@@ -689,5 +625,29 @@ namespace MayazucMediaPlayer
         private readonly string EnterOverlayModeIcon = "\uEE49";
         private readonly string ExitOverlayModeIcon = "\uEE47";
 
+        private class PageInstanceInitializer<T> where T : BasePage, new()
+        {
+            private Lazy<T> Instance { get; set; } = new Lazy<T>(() => new T());
+            private Task PageInitTask = null;
+            private AsyncLock initLock = new AsyncLock();
+
+            public async Task<T> GetPageAsync(object args)
+            {
+                using (await initLock.LockAsync())
+                {
+                    var instance = this.Instance.Value;
+                    if (PageInitTask == null)
+                    {
+                        PageInitTask = instance.InitializeStateAsync(args);
+                        await PageInitTask;
+                    }
+                    instance.VerticalAlignment = VerticalAlignment.Stretch;
+                    instance.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    instance.VerticalContentAlignment = VerticalAlignment.Stretch;
+                    instance.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                    return instance;
+                }
+            }
+        }
     }
 }

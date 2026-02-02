@@ -13,7 +13,6 @@ namespace MayazucMediaPlayer
 {
     public abstract class BasePage : Page, INotifyPropertyChanged, IDisposable
     {
-        public event EventHandler<NavigationRequestEventArgs> ExternalNavigationRequest;
         public abstract string Title { get; }
         public IBackgroundPlayer BackgroundMediaPlayerInstance
         {
@@ -81,11 +80,6 @@ namespace MayazucMediaPlayer
         protected virtual Task CompactOverlayRequest(MediaPlayerCompactOverlayEventArgs e)
         {
             return Task.CompletedTask;
-        }
-
-        protected virtual void NotifyExternalNavigationRequest(object? sender, NavigationRequestEventArgs args)
-        {
-            ExternalNavigationRequest?.Invoke(sender, args);
         }
 
         private void OnDispose()

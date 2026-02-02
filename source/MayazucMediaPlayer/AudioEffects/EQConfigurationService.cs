@@ -81,7 +81,7 @@ namespace MayazucMediaPlayer.AudioEffects
 
         private async Task EditEqualizerConfigurationPresets(EqualizerConfiguration arg)
         {
-            var editPage = await PageFactory.GetPage(typeof(AudioPresetManagement), arg);
+            var editPage = new AudioPresetManagement();
             await editPage.InitializeStateAsync(arg);
             EqualizerPresetEditPage = editPage;
         }
