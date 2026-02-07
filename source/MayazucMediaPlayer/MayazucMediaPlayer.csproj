@@ -58,7 +58,6 @@
 		<None Remove="NowPlayingViews\NowPlayingBackgroundGrid.xaml" />
 		<None Remove="NowPlayingViews\NowPlayingManagementPage.xaml" />
 		<None Remove="Settings\SubtitlesSettingsItem.xaml" />
-		<None Remove="Transcoding\TranscodingRootPage.xaml" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="Help\Licenses\bzip2.txt" />
@@ -141,14 +140,6 @@
 			</AllItemsFullPathWithTargetPath>
 		</ItemGroup>
 	</Target>
-
-	<ItemGroup>
-		<CustomAdditionalCompileInputs Remove="Transcoding\TranscodingRootPage.xaml" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Resource Remove="Transcoding\TranscodingRootPage.xaml" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\FFmpegInterop\FFmpegInteropX.vcxproj" />

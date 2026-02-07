@@ -72,8 +72,8 @@ namespace MayazucMediaPlayer.Services
                 var newMembers = mediaDatas.Select(x => new MediaPlayerItemSourceUIWrapper(x, Dispatcher)).ToList();
                 AddToSequence(newMembers, index);
                 NumberNowPlayingInternal();
-                LoadNowPlayingThumbnails(newMembers);
-                SaveInstanceToBackstore();
+                LoadThumbnails(newMembers);
+                SaveInstanceToBackstoreInternal();
             });
         }
 
@@ -81,7 +81,7 @@ namespace MayazucMediaPlayer.Services
         {
             var retValue = this.Randomize<MediaPlayerItemSourceUIWrapper>(observableIndex);
             //NumberNowPlayingInternal();
-            SaveInstanceToBackstore();
+            SaveInstanceToBackstoreInternal();
 
             return retValue;
         }
@@ -93,7 +93,7 @@ namespace MayazucMediaPlayer.Services
                 HandleNewSequence(mediaDatas);
             });
 
-            SaveInstanceToBackstore();
+            SaveInstanceToBackstoreInternal();
         }
 
         public async Task RemoveItemsFromSequenceAsync(IEnumerable<MediaPlayerItemSourceUIWrapper> items)
@@ -107,7 +107,7 @@ namespace MayazucMediaPlayer.Services
                 NumberNowPlayingInternal();
             });
 
-            SaveInstanceToBackstore();
+            SaveInstanceToBackstoreInternal();
         }
 
         public Task LoadSequenceAsync()
@@ -132,7 +132,7 @@ namespace MayazucMediaPlayer.Services
                     this.AddRange(files.Select(x => new MediaPlayerItemSourceUIWrapper(x, Dispatcher)));
                 }
                 NumberNowPlayingInternal();
-                LoadNowPlayingThumbnails(this);
+                LoadThumbnails(this);
             }
             catch { }
         }
@@ -141,7 +141,7 @@ namespace MayazucMediaPlayer.Services
         {
             this.Switch<MediaPlayerItemSourceUIWrapper>(source, destination);
             NumberNowPlayingInternal();
-            SaveInstanceToBackstore();
+            SaveInstanceToBackstoreInternal();
         }
 
         private void HandleNewSequence(IEnumerable<IMediaPlayerItemSource> e)
@@ -149,7 +149,7 @@ namespace MayazucMediaPlayer.Services
             Clear();
             this.AddRange(e.Select(x => new MediaPlayerItemSourceUIWrapper(x, Dispatcher)));
             NumberNowPlayingInternal();
-            LoadNowPlayingThumbnails(this);
+            LoadThumbnails(this);
         }
 
         private void NumberNowPlayingInternal()
@@ -161,7 +161,7 @@ namespace MayazucMediaPlayer.Services
             }
         }
 
-        private void LoadNowPlayingThumbnails(IEnumerable<MediaPlayerItemSourceUIWrapper> items)
+        private void LoadThumbnails(IEnumerable<MediaPlayerItemSourceUIWrapper> items)
         {
             var copy = new List<MediaPlayerItemSourceUIWrapper>(items);
             copy.ForEachAsync(4, async (t) =>
@@ -207,7 +207,12 @@ namespace MayazucMediaPlayer.Services
                 this.InsertRange(dataz, index);
         }
 
-        private void SaveInstanceToBackstore()
+        public void SaveInstanceToBackStore()
+        {
+            SaveInstanceToBackstoreInternal();
+        }
+
+        private void SaveInstanceToBackstoreInternal()
         {
             NowPlayingManager.CreateNewPlaybackQueue(this.Select(x => x.MediaData).Where(x => x.Persistent));
         }

@@ -277,7 +277,6 @@ namespace MayazucMediaPlayer.Controls
             private set;
         }
 
-
         public IAsyncRelayCommand<object> SaveAsPlaylistCommandOnlySelected
         {
             get;
@@ -813,6 +812,8 @@ namespace MayazucMediaPlayer.Controls
             {
                 Items.Clear();
             }
+
+            await OnContentsChanged(Items.AsReadOnly());
         }
 
         private async Task PlayClickCommandFunction(object? sender)
@@ -838,7 +839,6 @@ namespace MayazucMediaPlayer.Controls
             {
                 return;
             }
-
 
             var mediaSourcesToPlay = await PrepareForPlayback(Items);
             if (mediaSourcesToPlay.IsSuccess)

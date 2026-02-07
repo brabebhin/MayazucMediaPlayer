@@ -96,9 +96,12 @@ namespace MayazucMediaPlayer.Controls
 
         private async void PlayFile(object? sender, ItemClickEventArgs e)
         {
-            var file = e.ClickedItem as IMediaPlayerItemSourceProvder;
-            if (DataService != null)
-                await DataService.PlaySingleFileCommand.ExecuteAsync(file);
+            if (DataService.SelectionMode == ListViewSelectionMode.None)
+            {
+                var file = e.ClickedItem as IMediaPlayerItemSourceProvder;
+                if (DataService != null)
+                    await DataService.PlaySingleFileCommand.ExecuteAsync(file);
+            }
         }
 
         public string PlaceHolderText
@@ -326,13 +329,11 @@ namespace MayazucMediaPlayer.Controls
         private async void FullCollectionAddToExistingPlaylistCommandOnlyMusic(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             await DataService.AddToExistingPlaylistCommandOnlyMusic.ExecuteAsync(sender);
-
         }
 
         private async void FullCollectionAddToExistingPlaylistCommandOnlySelected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             await DataService.AddToExistingPlaylistCommandOnlySelected.ExecuteAsync(sender);
-
         }
 
         private async void FullCollectionAddToExistingPlaylistCommandOnlyUnselected(object sender, Microsoft.UI.Xaml.Input.TappedRoutedEventArgs e)

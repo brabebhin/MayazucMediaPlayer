@@ -4,13 +4,11 @@ using MayazucMediaPlayer.Dialogs;
 using MayazucMediaPlayer.FileSystemViews;
 using MayazucMediaPlayer.MediaCollections;
 using MayazucMediaPlayer.MediaPlayback;
-using MayazucMediaPlayer.Navigation;
 using MayazucMediaPlayer.NowPlayingViews;
 using MayazucMediaPlayer.Playlists;
 using MayazucMediaPlayer.Services;
 using MayazucMediaPlayer.Services.MediaSources;
 using MayazucMediaPlayer.Settings;
-using MayazucMediaPlayer.Transcoding;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -111,7 +109,6 @@ namespace MayazucMediaPlayer
             RootFrame.AsyncNavigated += RootFrame_AsyncNavigated;
 
             OverayModeButtonIcon.Glyph = !IsAlwaysOnTop ? EnterOverlayModeIcon : ExitOverlayModeIcon;
-
         }
 
         private async void PlayerInstance_OnMediaOpened(MediaPlayer sender, MediaOpenedEventArgs args)

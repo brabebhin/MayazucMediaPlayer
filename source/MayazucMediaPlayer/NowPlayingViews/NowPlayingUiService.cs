@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Controls;
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +19,10 @@ namespace MayazucMediaPlayer.NowPlayingViews
     {
         readonly AsyncLock stopPlaybackQueueLock = new AsyncLock();
 
-        bool npShuffleButton = true;
-        private bool _ClearQueueButtonEnabled = true;
-        private bool _ContextMenuEnabled = true;
-        private bool _NowPlayingCommandBarEnabled = true;
+        bool _shuffleButtonEnabled = true;
+        private bool _clearQueueButtonEnabled = true;
+        private bool _contextMenuEnabled = true;
+        private bool _nowPlayingCommandBarEnabled = true;
 
         public bool IsItemClickEnabled
         {
@@ -31,33 +32,33 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         public bool NowPlayingCommandBarEnabled
         {
-            get => _NowPlayingCommandBarEnabled;
+            get => _nowPlayingCommandBarEnabled;
             set
             {
-                if (_NowPlayingCommandBarEnabled == value) return;
-                _NowPlayingCommandBarEnabled = value;
+                if (_nowPlayingCommandBarEnabled == value) return;
+                _nowPlayingCommandBarEnabled = value;
                 NotifyPropertyChanged(nameof(NowPlayingCommandBarEnabled));
             }
         }
 
         public bool ContextMenuEnabled
         {
-            get => _ContextMenuEnabled;
+            get => _contextMenuEnabled;
             set
             {
-                if (_ContextMenuEnabled == value) return;
-                _ContextMenuEnabled = value;
+                if (_contextMenuEnabled == value) return;
+                _contextMenuEnabled = value;
                 NotifyPropertyChanged(nameof(ContextMenuEnabled));
             }
         }
 
         public bool ClearQueueButtonEnabled
         {
-            get => _ClearQueueButtonEnabled;
+            get => _clearQueueButtonEnabled;
             set
             {
-                if (_ClearQueueButtonEnabled == value) return;
-                _ClearQueueButtonEnabled = value;
+                if (_clearQueueButtonEnabled == value) return;
+                _clearQueueButtonEnabled = value;
                 NotifyPropertyChanged(nameof(ClearQueueButtonEnabled));
             }
         }
@@ -76,13 +77,13 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             get
             {
-                return npShuffleButton;
+                return _shuffleButtonEnabled;
             }
             set
             {
-                if (npShuffleButton == value) return;
+                if (_shuffleButtonEnabled == value) return;
 
-                npShuffleButton = value;
+                _shuffleButtonEnabled = value;
                 NotifyPropertyChanged(nameof(NpShuffleButton));
             }
         }
@@ -94,33 +95,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
                 return PlaybackServiceInstance.NowPlayingBackStore;
             }
         }
-
-        public IRelayCommand<object> ClearPlaybackQueueCommand
-        {
-            get;
-            private set;
-        }
-
-
-        public IRelayCommand<object> SaveNowPlayingAsPlaylistCommand
-        {
-            get;
-            private set;
-        }
-
-        public IRelayCommand<object> ShuffleRequestClickCommand
-        {
-            get;
-            private set;
-        }
-
-        public AsyncRelayCommand DecreasePlaybackRate
-        {
-            get;
-            private set;
-        }
-
-        public IBackgroundPlayer BackgroundMediaPlayerInstance
+                public IBackgroundPlayer BackgroundMediaPlayerInstance
         {
             get;
             private set;
@@ -135,14 +110,8 @@ namespace MayazucMediaPlayer.NowPlayingViews
         {
             PlaylistsService = playlistsService;
             BackgroundMediaPlayerInstance = backgroundMediaPlayerInstance;
-            SaveNowPlayingAsPlaylistCommand = new AsyncRelayCommand<object>(SaveAsPlaylistCommandFunction);
-            ShuffleRequestClickCommand = new AsyncRelayCommand<object>(ShuffleRequestCommandFunction);
 
-            DecreasePlaybackRate = new AsyncRelayCommand(async () =>
-            {
-                await AppState.Current.MediaServiceConnector.SlowerPlaybackRate();
-            });
-
+           
             base.PlaybackServiceInstance.NowPlayingBackStore.CollectionChanged += NowPlayingBackStore_CollectionChanged;
             AppState.Current.MediaServiceConnector.PlayerInstance.OnMediaOpened += PlayerInstance_OnMediaOpened;
             CheckCommandBarEnabled();
@@ -172,7 +141,7 @@ namespace MayazucMediaPlayer.NowPlayingViews
 
         }
 
-        private async Task StopPlaybackAsync(object arg)
+        private async Task StopPlaybackAsync()
         {
             using (await stopPlaybackQueueLock.LockAsync())
             {
@@ -195,103 +164,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
             }
         }
 
-        private async Task SaveAsPlaylistCommandFunction(object? sender)
-        {
-            var diag = new StringInputDialog("Playlist name", "Pick a playlist name");
-            await ContentDialogService.Instance.ShowAsync(diag);
-
-            var PlayListName = diag.Result;
-            if (PlayListName == null)
-            {
-                return;
-            }
-
-            await PlaylistsService.AddPlaylist(PlayListName, PlaybackServiceInstance.NowPlayingBackStore.Select(x => x.MediaData));
-
-            PopupHelper.ShowSuccessDialog();
-
-        }
-
-        private async Task ShuffleRequestCommandFunction(object? sender)
-        {
-            NpShuffleButton = false;
-            IsChangingOrder = true;
-            await RandomizeNowPlaying(sender);
-            NotifyPropertyChanged(nameof(NowPlayingCollectionViewSource));
-            //SetFlipViewSelectedIndex();
-
-            IsChangingOrder = false;
-            NpShuffleButton = true;
-        }
-
-        public async Task RandomizeNowPlaying(object? sender)
-        {
-            IsChangingOrder = true;
-            try
-            {
-                await (AppState.Current.MediaServiceConnector.PlayerInstance).RandomizeNowPlayingQueue();
-                //var oldIndex = SettingsWrapper.Instance.PlaybackIndex;
-                //var newIndex = Models.NowPlaying.RandomizeMusicDataStorage(oldIndex);
-                //SettingsWrapper.Instance.PlaybackIndex = newIndex;
-
-                //AppState.Current.MediaServiceConnector.SendNewNowPlaying(Models.NowPlaying.Select(x => x.MediaData).ToArray());
-            }
-            finally
-            {
-                IsChangingOrder = false;
-            }
-        }
-
-        private async Task ChangeSongRequestCommandFunction(object? sender)
-        {
-
-            try
-            {
-                await HandleReorderRequest(sender);
-            }
-            catch
-            {
-            }
-        }
-
-        public async Task HandleReorderRequest(object? sender)
-        {
-            if (ReorderMode == ListViewReorderMode.Enabled)
-            {
-                ReorderMode = ListViewReorderMode.Disabled;
-                IsChangingOrder = false;
-                await (AppState.Current.MediaServiceConnector.PlayerInstance).SavePlaylistReorderAsync();
-                (sender as AppBarToggleButton).Label = "Reorder";
-                NpShuffleButton = true;
-            }
-            else
-            {
-                ReorderMode = ListViewReorderMode.Enabled;
-                IsChangingOrder = true;
-                (sender as AppBarToggleButton).Label = "Save reorder";
-                NpShuffleButton = false;
-            }
-        }
-
-        private async Task RemoveFromPlaybackRequestCommandFunction(object? sender)
-        {
-            await RemoveFromPlayback(sender);
-        }
-
-        public async Task RemoveFromPlayback(object? sender)
-        {
-            var selectedItems = new List<MediaPlayerItemSourceUIWrapper>();
-            //GetSelectedItemsRequest?.Invoke(this, selectedItems);
-            if (selectedItems.Count == Items.Count)
-            {
-                await StopPlaybackAsync(sender);
-            }
-            else
-            {
-                await RemoveItemsFromPlaybackAsync(selectedItems);
-            }
-        }
-
         public async Task RemoveItemsFromPlaybackAsync(IList<MediaPlayerItemSourceUIWrapper> selectedItems)
         {
             await (AppState.Current.MediaServiceConnector.PlayerInstance).RemoveItemsFromNowPlayingQueue(selectedItems);
@@ -306,6 +178,24 @@ namespace MayazucMediaPlayer.NowPlayingViews
                     await AppState.Current.MediaServiceConnector.SkipToIndex(itemsToPlay.First().ExpectedPlaybackIndex);
                 }
             }
+        }
+
+        protected override async Task OnContentsChanged(ReadOnlyCollection<MediaPlayerItemSourceUIWrapper> newContent)
+        {
+            if(newContent.Count == 0)
+            {
+               await StopPlaybackAsync();
+            }
+            else
+            {
+                PlaybackServiceInstance.NowPlayingBackStore.SaveInstanceToBackStore();
+            }
+        }
+
+        protected override Task OnContentAdded(ReadOnlyCollection<MediaPlayerItemSourceUIWrapper> addedContent)
+        {
+            PlaybackServiceInstance.NowPlayingBackStore.SaveInstanceToBackStore();
+            return Task.CompletedTask; 
         }
 
         #region IDisposable Support
