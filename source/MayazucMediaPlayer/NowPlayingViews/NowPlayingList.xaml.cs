@@ -21,8 +21,6 @@ namespace MayazucMediaPlayer.NowPlayingViews
     {
         public override string Title => "Now playing";
 
-        readonly AsyncLock _AddToPlaylistLock = new AsyncLock();
-
         public NowPlayingUiService DataService
         {
             get;

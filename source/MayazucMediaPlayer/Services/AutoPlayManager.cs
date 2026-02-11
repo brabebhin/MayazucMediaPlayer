@@ -19,38 +19,9 @@ namespace MayazucMediaPlayer.Services
             private set;
         } = playbackServiceInstance;
 
-        public DirectoryInfo CurrentAutoPlayFolder
-        {
-            get;
-            private set;
-        }
+        private DirectoryInfo _currentAutoPlayFolder;
 
-        private AutoPlayStorageFileQueryResultQueue? AutoPlaybackQueue
-        {
-            get;
-            set;
-        }
-
-        public bool IsAutoPlayAvailable
-        {
-            get
-            {
-                if (SettingsService.Instance.AutoPlayMusic || SettingsService.Instance.AutoPlayVideo)
-                {
-                    return CurrentAutoPlayFolder != null;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        public FileInfo LoadedFile
-        {
-            get;
-            private set;
-        }
+        private AutoPlayStorageFileQueryResultQueue? _autoPlaybackQueue;
 
         readonly AsyncLock _operationLock = new AsyncLock();
 
@@ -65,7 +36,6 @@ namespace MayazucMediaPlayer.Services
                         return;
                     }
 
-                    LoadedFile = file;
                     var parentFolder = file.Directory;
                     bool aMusic = SettingsService.Instance.AutoPlayMusic, aVideo = SettingsService.Instance.AutoPlayVideo;
                     if (parentFolder != null)
@@ -99,25 +69,25 @@ namespace MayazucMediaPlayer.Services
                         //var files = await result.GetFilesAsync(3, 1);
                         //var fileIndex = await result.FindStartIndexAsync(files.FirstOrDefault());
 
-                        AutoPlaybackQueue = await AutoPlayStorageFileQueryResultQueue.Create(autoPlayQueryResult.ToImmutableList(), flatFolderQueryResult.ToImmutableList(), aVideo, aMusic);
+                        _autoPlaybackQueue = await AutoPlayStorageFileQueryResultQueue.Create(autoPlayQueryResult.ToImmutableList(), flatFolderQueryResult.ToImmutableList(), aVideo, aMusic);
                     }
-                    CurrentAutoPlayFolder = parentFolder;
+                    _currentAutoPlayFolder = parentFolder;
 
                 }
                 catch
                 {
-                    CurrentAutoPlayFolder = null;
-                    AutoPlaybackQueue = null;
+                    _currentAutoPlayFolder = null;
+                    _autoPlaybackQueue = null;
                 }
             }
         }
 
         public async Task<Result<IMediaPlayerItemSource>> GetNextFile(FileInfo file)
         {
-            if (AutoPlaybackQueue != null && CurrentAutoPlayFolder != null)
+            if (_autoPlaybackQueue != null && _currentAutoPlayFolder != null)
             {
                 //first, find the index of the file in the flat folder view
-                var currentFileIndex = await AutoPlaybackQueue.GetFolderViewIndexOfFile(file);
+                var currentFileIndex = await _autoPlaybackQueue.GetFolderViewIndexOfFile(file);
                 //if the file is not in the query, return null
                 if (currentFileIndex == -1) return Result.Fail("current file index == -1");
                 //compute the next index
@@ -125,11 +95,11 @@ namespace MayazucMediaPlayer.Services
                 //if the new index is too big, return null;
                 if (nextIndex == int.MaxValue) return Result.Fail("new index exceeded bounds");
                 //get the next file in the folder
-                var nextFile = await AutoPlaybackQueue.GetFolderViewFileAtIndex(nextIndex);
+                var nextFile = await _autoPlaybackQueue.GetFolderViewFileAtIndex(nextIndex);
                 //if next file not found, return null
                 if (nextFile == null) return Result.Fail("Next file not found");
                 //finally, look for the file index in the auto play query
-                var indexInAutoPlayQueue = await AutoPlaybackQueue.GetAutoPlayIndexOfFile(nextFile);
+                var indexInAutoPlayQueue = await _autoPlaybackQueue.GetAutoPlayIndexOfFile(nextFile);
                 //if the file is not found in the auto play query, return null
                 if (indexInAutoPlayQueue == -1) return Result.Fail("Sanity check failed");
                 //finally, everything is well.
@@ -139,49 +109,10 @@ namespace MayazucMediaPlayer.Services
             return await Task.FromResult(Result.Fail("Not enough data"));
         }
 
-        public async Task<bool> AddNextFileToNowPlaying(FileInfo file)
-        {
-            using (await _operationLock.LockAsync())
-            {
-                var mds = await GetNextFile(file);
-                if (mds.IsSuccess)
-                {
-                    try
-                    {
-                        await PlaybackServiceInstance.AddToNowPlayingAsync(new IMediaPlayerItemSource[] { mds.Value }, PlaybackSequenceService.AddToNowPlayingAtTheEnd);
-                    }
-                    catch { return false; }
-                }
-
-                return mds.IsSuccess;
-            }
-        }
-
-        public void Reset()
-        {
-            using (_operationLock.Lock())
-            {
-                LoadedFile = null;
-                CurrentAutoPlayFolder = null;
-                AutoPlaybackQueue = null;
-            }
-        }
-
-        public Task<bool> IsPathLoaded(string path, bool autoMusic, bool autoVideo)
-        {
-            var directoryPath = Path.GetDirectoryName(path);
-            var stringComp = StringComparer.OrdinalIgnoreCase;
-            if (CurrentAutoPlayFolder == null) return Task.FromResult(false);
-            if (AutoPlaybackQueue == null) return Task.FromResult(false);
-            if (autoMusic != AutoPlaybackQueue.AutoPlayMusic || autoVideo != AutoPlaybackQueue.AutoPlayVideo)
-                return Task.FromResult(false);
-            return Task.FromResult(stringComp.Equals(directoryPath, CurrentAutoPlayFolder.FullName));
-        }
-
         public Task<int> CountAsync()
         {
-            if (AutoPlaybackQueue != null)
-                return Task.FromResult(AutoPlaybackQueue.AutoPlayCount);
+            if (_autoPlaybackQueue != null)
+                return Task.FromResult(_autoPlaybackQueue.AutoPlayCount);
             else return Task.FromResult(0);
         }
 

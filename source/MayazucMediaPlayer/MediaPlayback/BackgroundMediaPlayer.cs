@@ -1343,7 +1343,7 @@ namespace MayazucMediaPlayer.MediaPlayback
 
                 await DispatcherUiThread.EnqueueAsync(async () =>
                 {
-                    var newIndex = await PlaybackQueueService.RandomizeNowPlayingAsync(oldIndex);
+                    var newIndex = await PlaybackQueueService.RandomizeSequence(oldIndex);
 
                     SettingsService.Instance.PlaybackIndex = newIndex;
 

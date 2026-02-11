@@ -11,15 +11,11 @@ namespace MayazucMediaPlayer.Services
 {
     public partial class PlaybackSequenceService : ObservableObject
     {
-        public const int AutoResetEventMSTimeout = 20 * 1000;
-        public static AutoResetEvent PlaylistReadWriteLock { get; private set; } = new AutoResetEvent(true);
-        public static object objLock = new object();
-        public static bool newVersion = false;
         public const int AddToNowPlayingAtTheEnd = -1;
 
         public PlaybackSequence NowPlayingBackStore { get; private set; }
 
-        public DispatcherQueue Dispatcher
+        public DispatcherQueue DispatcherQueue
         {
             get;
             private set;
@@ -27,11 +23,11 @@ namespace MayazucMediaPlayer.Services
 
         public PlaybackSequenceService(DispatcherQueue dispatcherQueue, IPlaybackSequenceProviderFactory nowPlayingSequenceProvider)
         {
-            Dispatcher = dispatcherQueue;
-            NowPlayingBackStore = new NowPlayingPlaybackSequence(Dispatcher, nowPlayingSequenceProvider);
+            DispatcherQueue = dispatcherQueue;
+            NowPlayingBackStore = new NowPlayingPlaybackSequence(DispatcherQueue, nowPlayingSequenceProvider);
         }
 
-        public async Task<int> RandomizeNowPlayingAsync(int oldIndex)
+        public async Task<int> RandomizeSequence(int oldIndex)
         {
             var newIndex = NowPlayingBackStore.Randomize(oldIndex);
             return newIndex;
@@ -75,7 +71,7 @@ namespace MayazucMediaPlayer.Services
             if (playerInstance != null && playerInstance.CurrentPlaybackData != null)
             {
                 var currentPlaybackData = playerInstance.CurrentPlaybackData;
-                return Result.Ok(new MediaPlayerItemSourceUIWrapper(currentPlaybackData, Dispatcher));
+                return Result.Ok(new MediaPlayerItemSourceUIWrapper(currentPlaybackData, DispatcherQueue));
             }
             else
             {
@@ -94,7 +90,7 @@ namespace MayazucMediaPlayer.Services
 
         public async Task SwitchItemInPlaybackQueue(int source, int destination)
         {
-            await Dispatcher.EnqueueAsync(() =>
+            await DispatcherQueue.EnqueueAsync(() =>
             {
                 NowPlayingBackStore.Switch(source, destination);
             });
