@@ -18,7 +18,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Viewbox Margin="8">
-            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Foreground="{StaticResource PinkLogo}" Glyph="&#xE7BA;" />
+            <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Foreground="Red" Glyph="&#xE7BA;" />
         </Viewbox>
         <TextBlock Margin="8" Style="{ThemeResource BodyTextBlockStyle}" Grid.Column="1" TextWrapping="WrapWholeWords" Text="The application needs to be restarted to apply your changes. Would you like to restart now?"/>
 

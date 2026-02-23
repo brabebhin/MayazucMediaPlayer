@@ -23,7 +23,7 @@ namespace MayazucMediaPlayer.MediaPlayback
     public partial class BackgroundMediaPlayer : IBackgroundPlayer
     {
         private const int MediaPlayerAsyncOperationTimeoutInSeconds = 25;
-        AsyncCommandDispatcher commandDispatcher = new AsyncCommandDispatcher();
+        readonly AsyncCommandDispatcher commandDispatcher = new AsyncCommandDispatcher();
         StopMusicOnTimerService stopMusicOnTimerService;
         public ManagedVideoEffectProcessorConfiguration VideoEffectsConfiguration { get; private set; } = new ManagedVideoEffectProcessorConfiguration();
 
@@ -204,7 +204,7 @@ namespace MayazucMediaPlayer.MediaPlayback
                     catch { }
                 });
             });
-            CurrentPlayer.AutoPlay = true;
+
             CurrentPlayer.MediaOpened += CurrentPlayer_MediaOpened;
             CurrentPlayer.PlaybackSession.PlaybackStateChanged += OnPlaybackStateChangedAsync;
             CurrentPlayer.IsLoopingEnabled = false;
@@ -312,29 +312,6 @@ namespace MayazucMediaPlayer.MediaPlayback
         private void VideoEffectsConfiguration_ConfigurationChanged(object? sender, string e)
         {
 
-        }
-
-        private async Task ReloadCurrentPlaybackItem(MediaPlaybackItem item)
-        {
-            var initialState = CurrentPlayer.PlaybackSession.PlaybackState;
-            CurrentPlayer.Pause();
-
-            var resumeRequest = new ResumeRequest()
-            {
-                StartIndex = PlaybackQueueService.NowPlayingBackStore.IndexOfMediaData(CurrentPlaybackData),
-                StartTimeMiliseconds = CurrentPlayer.PlaybackSession.Position.Ticks,
-                InitialItem = _playbackSource?.DetachCurrentItem()
-            };
-
-            await ResumeAsyncInternal(resumeRequest, autoPlay: initialState == MediaPlaybackState.Playing);
-        }
-
-        private async void CommandManager_PositionReceived(MediaPlaybackCommandManager sender, MediaPlaybackCommandManagerPositionReceivedEventArgs args)
-        {
-            using (var deferal = args.GetDeferral())
-            {
-                await Seek(args.Position, true);
-            }
         }
 
         private void PlayToRecieverInstance_SourceReady(object? sender, PlayToRecieverSourceReadyEventArgs e)
@@ -647,12 +624,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             return await itemChangedSignal.Task;
         }
 
-        private async Task ReloadCurrentItem()
-        {
-            await PlaybackListAdapter.ReloadNextItemAsync(CurrenItem: CurrentPlaybackItem, userAction: true, changeIndex: false, currentIndex: SettingsService.Instance.PlaybackIndex);
-            await PlaybackListAdapter.MoveToNextItem(CurrentItem: CurrentPlaybackItem, userAction: true, changeIndex: false);
-        }
-
         /// <summary>
         /// Strategy: if there's already a track playing, skip to the next one.
         /// Strategy: skip to next index if not playing.
@@ -939,24 +910,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             }
         }
 
-        bool StopMusicOnTimerCall(bool userAction)
-        {
-            if (userAction == false)
-            {
-                if (SettingsService.Instance.StopMusicOnTimerEnabled)
-                {
-                    var dtNow = DateTime.Now.TimeOfDay;
-                    var stopPosition = SettingsService.Instance.StopMusicOnTimerPosition;
-                    if (dtNow > stopPosition && dtNow < stopPosition.Add(TimeSpan.FromSeconds(25)))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         private async Task OnNextRecieved()
         {
             await commandDispatcher.EnqueueAsync(async () =>
@@ -1109,11 +1062,6 @@ namespace MayazucMediaPlayer.MediaPlayback
             });
 
             return (TimeSpan)result.Result;
-        }
-
-        public void ResumeDispatcher()
-        {
-            commandDispatcher = new AsyncCommandDispatcher();
         }
 
         /// <summary>
