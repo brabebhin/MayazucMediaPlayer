@@ -52,12 +52,6 @@ namespace MayazucMediaPlayer.Controls
             }
         }
 
-        MayazucNativeFramework.SubtitleRenderer NativeSubtitleRenderer
-        {
-            get;
-            set;
-        }
-
         MediaFoundationSubtitleRenderer MFSubtitleRenderer
         {
             get;
@@ -77,15 +71,11 @@ namespace MayazucMediaPlayer.Controls
                 {
                     if (_mediaPlayer != null)
                     {
-                        _mediaPlayer.SubtitleFrameChanged -= _mediaPlayer_SubtitleFrameChanged;
-                        _mediaPlayer.VideoFrameAvailable -= VideoFameAvailable;
                         _mediaPlayer.IsVideoFrameServerEnabled = false;
                     }
                     _mediaPlayer = value;
                     if (_mediaPlayer != null)
                     {
-                        _mediaPlayer.SubtitleFrameChanged += _mediaPlayer_SubtitleFrameChanged;
-                        _mediaPlayer.VideoFrameAvailable += VideoFameAvailable;
                         _mediaPlayer.IsVideoFrameServerEnabled = true;
                     }
                 }
@@ -111,7 +101,8 @@ namespace MayazucMediaPlayer.Controls
             this.PointerMoved += MediaPlayerRenderingElement2_PointerMoved;
             videoRenderer = new VideoRenderer(VideoSwapChain);
             allocSubtitleRenderer();
-            DispatcherQueue.EnqueueAsync(async () => {
+            DispatcherQueue.EnqueueAsync(async () =>
+            {
                 await MediaEffectsPage.InitializeStateAsync(null);
                 MediaEffectsFrame.NavigateAsync(MediaEffectsPage);
             });
@@ -147,14 +138,7 @@ namespace MayazucMediaPlayer.Controls
 
         void allocSubtitleRenderer()
         {
-            if (useMfSubsRenderer)
-            {
-                MFSubtitleRenderer = new MediaFoundationSubtitleRenderer(SubtitleSwapChain);
-            }
-            else
-            {
-                //NativeSubtitleRenderer = new SubtitleRenderer(SubtitleSwapChain);
-            }
+            MFSubtitleRenderer = new MediaFoundationSubtitleRenderer(SubtitleSwapChain);
         }
 
         protected override void OnDispose(bool disposing)
@@ -359,14 +343,8 @@ namespace MayazucMediaPlayer.Controls
                     SubtitleSwapChain.Visibility = Visibility.Visible;
                     SubtitleSwapChain.Opacity = 1;
 
-                    if (useMfSubsRenderer)
-                    {
-                        MFSubtitleRenderer.RenderSubtitlesToFrame(_mediaPlayer, (uint)thisActualWidth, (uint)thisActualHeight, 96u, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
-                    }
-                    else
-                    {
-                        NativeSubtitleRenderer.RenderSubtitlesToFrame(AppState.Current.MediaServiceConnector.PlayerInstance.CurrentPlaybackItem, (uint)thisActualWidth, (uint)thisActualHeight, 96u, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
-                    }
+                    MFSubtitleRenderer.RenderSubtitlesToFrame(_mediaPlayer, (uint)thisActualWidth, (uint)thisActualHeight, 96u, Windows.Graphics.DirectX.DirectXPixelFormat.R8G8B8A8UIntNormalized);
+
                 }
                 catch
                 {
@@ -421,21 +399,6 @@ namespace MayazucMediaPlayer.Controls
             });
         }
 
-        private void _mediaPlayer_SubtitleFrameChanged(MediaPlayer sender, object args)
-        {
-            //DispatcherQueue.TryEnqueue(() =>
-            //{
-            //    DrawSubtitles(new Size(this.ActualWidth, this.ActualHeight));
-            //});
-        }
-
-        private void VideoFameAvailable(MediaPlayer sender, object args)
-        {
-            DispatcherQueue.TryEnqueue(() =>
-            {
-                //_ = DrawVideoFrame(sender);
-            });
-        }
 
         private async Task RedrawPaused(MediaPlayer sender)
         {
